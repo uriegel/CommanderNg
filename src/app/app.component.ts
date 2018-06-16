@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  constructor() { 
+    const Path = (<any>window).require('path')
+    const text = Path.join("c:\\windows", "affe.txt")
+    this.title = text
+}
+title: string = "nein"
 }
