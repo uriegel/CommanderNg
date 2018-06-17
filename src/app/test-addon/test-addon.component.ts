@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core'
 
 interface Addon {
     getTest(input: string): string
+    getTestAsync(input: string, callback: (error: any, result: string) => void): void
 }
 
 enum Service {
@@ -32,6 +33,7 @@ export class TestAddonComponent implements OnInit {
     eventText = ""
     httpText = ""
     addonText = "leer"
+    addonAsyncText = "leer"
         
     ngOnInit() {
         setInterval(() => {
@@ -56,6 +58,14 @@ export class TestAddonComponent implements OnInit {
         const addon: Addon = (<any>window).require('addon')
         this.addonText = addon.getTest("Das erste Mal")
 
+    }
+
+    onAddonAsync() {
+        const addon: Addon = (<any>window).require('addon')
+        addon.getTestAsync("Das erste Mal", (_, res) => {
+            console.log(res)
+            this.addonAsyncText = res
+        })
     }
 
     async onHttp() {

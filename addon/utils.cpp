@@ -22,3 +22,8 @@ string Utf8Encode(const wstring &wstr)
 	WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), &strTo[0], size_needed, NULL, NULL);
 	return move(strTo);
 }
+
+void Sleep()
+{
+    Sleep(5000);
+}
