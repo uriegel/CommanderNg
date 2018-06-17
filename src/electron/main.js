@@ -12,6 +12,7 @@ function createWindow() {
         backgroundColor: '#ffffff',
         icon: `file://${__dirname}/dist/assets/logo.png`
     });
+    console.log("Creating Window");
     win.loadURL(url.format({
         pathname: path.join(__dirname, 'CommanderNg\\index.html'),
         protocol: 'file:',
@@ -20,6 +21,7 @@ function createWindow() {
     win.on('closed', () => win = null);
 }
 electron_1.app.on('ready', () => createWindow());
+console.log("Es geht los");
 electron_1.app.on('window-all-closed', () => {
     if (process.platform != 'darwin')
         electron_1.app.quit();

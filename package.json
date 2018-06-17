@@ -10,7 +10,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build-electron": "ng build --base-href . && copy src\\electron\\* dist\\",
-    "electron": "npm run build-electron && .\\node_modules\\.bin\\electron dist\\"
+    "electron": "npm run build-electron && .\\node_modules\\.bin\\electron --inspect=5858 dist\\"
   },
   "private": true,
   "dependencies": {
