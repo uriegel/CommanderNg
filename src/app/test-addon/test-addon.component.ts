@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core'
 
+interface Addon {
+    getTest(input: string): string
+}
+
 enum Service {
     All,
     CTI,
@@ -27,6 +31,7 @@ export class TestAddonComponent implements OnInit {
     intervalText = "später"
     eventText = ""
     httpText = ""
+    addonText = "leer"
         
     ngOnInit() {
         setInterval(() => {
@@ -45,6 +50,12 @@ export class TestAddonComponent implements OnInit {
             this.laterText = `${(new Date())}`
             console.log(this.laterText)
         }, 2000)
+    }
+
+    onAddon() {
+        const addon: Addon = (<any>window).require('addon')
+        this.addonText = addon.getTest("Das erste Mal")
+
     }
 
     async onHttp() {

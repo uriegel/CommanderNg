@@ -25,7 +25,8 @@
     "@angular/router": "^6.0.3",
     "core-js": "^2.5.4",
     "rxjs": "^6.0.0",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.26",
+    "addon": "file:./addon"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.6.8",
@@ -37,6 +38,7 @@
     "@types/node": "~8.9.4",
     "codelyzer": "~4.2.1",
     "electron": "^2.0.2",
+    "electron-rebuild": "^1.7.3",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~1.7.1",
