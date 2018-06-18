@@ -37,7 +37,7 @@ export class ScrollbarComponent implements OnInit {
                 recentHeight = this.list.clientHeight
                 let recentCapacity = capacity
                 capacity = this.calculateCapacity()
-                //scrollbar.itemsChanged(itemsCount, capacity)
+                //this.scrollbar.itemsChanged(itemsCount, capacity)
     
                 const itemsCountOld = Math.min(recentCapacity + 1, this.itemsCount - this.startPosition)
                 const itemsCountNew = Math.min(capacity + 1, this.itemsCount - this.startPosition)
