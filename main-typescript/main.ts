@@ -7,11 +7,8 @@ let win = null
 
 app.on('ready', () => {
 
-    console.log("Bin da")
-
     protocol.registerBufferProtocol('icon', 
         (request, callback) => {
-            console.log("Bin im Protokoll")
             const ext = decodeURI(request.url).substr(7)
             addon.getIcon(ext, (error, result) => callback(result))
         }, (error) => {}
