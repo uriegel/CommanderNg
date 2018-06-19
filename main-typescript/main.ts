@@ -1,10 +1,22 @@
-import {app, BrowserWindow} from 'electron'
+import {app, BrowserWindow, protocol} from 'electron'
 import * as path from 'path'
 import * as url from 'url'
+import * as addon from 'addon'
 
 let win = null
 
-function createWindow() {
+app.on('ready', () => {
+
+    console.log("Bin da")
+
+    protocol.registerBufferProtocol('icon', 
+        (request, callback) => {
+            console.log("Bin im Protokoll")
+            const ext = decodeURI(request.url).substr(7)
+            addon.getIcon(ext, (error, result) => callback(result))
+        }, (error) => {}
+    )
+
     // Initialize the window to our specified dimensions
     win = new BrowserWindow({
         width: 600, 
@@ -20,11 +32,7 @@ function createWindow() {
       }))
       
     win.on('closed', () => win = null)
-}
-
-app.on('ready', () => createWindow())
-
-console.log("Es geht los")
+})
 
 app.on('window-all-closed', () => {
     if (process.platform != 'darwin') 

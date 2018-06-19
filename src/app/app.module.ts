@@ -6,7 +6,8 @@ import { TestAddonComponent } from './test/test-addon/test-addon.component'
 import { ScrollbarComponent as TestScrollbarComponent } from './test/scrollbar/scrollbar.component'
 import { ScrollbarComponent } from './scrollbar/scrollbar.component';
 import { ColumnsComponent as TestColumnsComponent } from './test/columns/columns.component'
-import { ColumnsComponent } from './columns/columns.component'
+import { ColumnsComponent } from './columns/columns.component';
+import { IconViewComponent } from './test/icon-view/icon-view.component'
 
 @NgModule({
     declarations: [
@@ -15,7 +16,8 @@ import { ColumnsComponent } from './columns/columns.component'
         TestScrollbarComponent,
         TestColumnsComponent,
         ScrollbarComponent,
-        ColumnsComponent
+        ColumnsComponent,
+        IconViewComponent
     ],
     imports: [
         BrowserModule
