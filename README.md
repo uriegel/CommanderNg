@@ -30,3 +30,7 @@ import 'zone.js/dist/zone-mix';  // Included with Angular CLI.
 ```
 npm run electron
 ```
+## Create Angular
+### Component
+ng g c ```Name```  
+

@@ -1,24 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit, ViewChildren, ElementRef, QueryList, Renderer2 } from '@angular/core'
+
+export interface IColumns {
+    name: string
+    columns: IColumn[]
+}
+
+export interface IColumn {
+    name: string
+    onSort?: (ascending: boolean)=>void
+}
 
 @Component({
   selector: '[app-columns]',
   templateUrl: './columns.component.html',
   styleUrls: ['./columns.component.css']
 })
-export class ColumnsComponent implements OnInit {
+export class ColumnsComponent implements AfterViewInit {
 
-    constructor() {
-        setTimeout(() => {
-            this.columns = ['Windstorm', 'Bombasto', 'Magneta', 'Tornado']
-        }, 4000)
-        setTimeout(() => {
-            this.columns = ['Burhan', 'Her Frank', 'Das Küken', 'PQ']
-        }, 8000)
+    constructor(private renderer: Renderer2) {}
+
+    @ViewChildren("th") ths: QueryList<ElementRef>
+
+    columns: IColumns
+
+    ngAfterViewInit() {
+        this.ths.forEach((th, i) => {
+            this.renderer.setStyle(th.nativeElement, "width", `${(i * 10)}%`)
+        })
     }
-
-    columns = []
-
-    ngOnInit() {
-    }
-
 }
