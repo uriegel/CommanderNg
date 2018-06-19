@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild } from '@angular/core'
+import { ScrollbarComponent as Scrollbar } from '../../scrollbar/scrollbar.component'
 
 @Component({
   selector: 'app-test-scrollbar',
@@ -8,6 +9,8 @@ import { Component, OnInit } from '@angular/core'
 export class ScrollbarComponent implements OnInit {
 
     constructor() { }
+
+    @ViewChild(Scrollbar) scrollbar: Scrollbar
 
     ngOnInit() {
         this.list = document.getElementById("list") as HTMLUListElement
@@ -37,7 +40,7 @@ export class ScrollbarComponent implements OnInit {
                 recentHeight = this.list.clientHeight
                 let recentCapacity = capacity
                 capacity = this.calculateCapacity()
-                //this.scrollbar.itemsChanged(itemsCount, capacity)
+                this.scrollbar.itemsChanged(this.itemsCount, capacity)
     
                 const itemsCountOld = Math.min(recentCapacity + 1, this.itemsCount - this.startPosition)
                 const itemsCountNew = Math.min(capacity + 1, this.itemsCount - this.startPosition)
