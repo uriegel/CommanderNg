@@ -29,7 +29,7 @@ export class ScrollbarComponent implements OnInit {
     }
 
     startResizeChecking() {
-        let recentHeight = this.list.clientHeight
+        let recentHeight = 0
     
         window.addEventListener('resize', () => resizeChecking())
         let capacity = this.calculateCapacity()
@@ -57,6 +57,7 @@ export class ScrollbarComponent implements OnInit {
                 }
             }
         }
+        resizeChecking()
     }
     
     private initializeItemHeight() {
