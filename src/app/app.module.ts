@@ -7,7 +7,9 @@ import { ScrollbarComponent as TestScrollbarComponent } from './test/scrollbar/s
 import { ScrollbarComponent } from './scrollbar/scrollbar.component';
 import { ColumnsComponent as TestColumnsComponent } from './test/columns/columns.component'
 import { ColumnsComponent } from './columns/columns.component';
-import { IconViewComponent } from './test/icon-view/icon-view.component'
+import { IconViewComponent } from './test/icon-view/icon-view.component';
+import { TableViewComponent as TestTableViewComponent } from './test/table-view/table-view.component';
+import { TableViewComponent } from './table-view/table-view.component'
 
 @NgModule({
     declarations: [
@@ -17,7 +19,9 @@ import { IconViewComponent } from './test/icon-view/icon-view.component'
         TestColumnsComponent,
         ScrollbarComponent,
         ColumnsComponent,
-        IconViewComponent
+        IconViewComponent,
+        TestTableViewComponent,
+        TableViewComponent
     ],
     imports: [
         BrowserModule
