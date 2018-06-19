@@ -21,7 +21,10 @@ export class ColumnsComponent implements AfterViewInit {
 
     @ViewChildren("th") ths: QueryList<ElementRef>
 
-    columns: IColumns
+    columns: IColumns = {
+        name: "Nil",
+        columns: []            
+    }
 
     ngAfterViewInit() {
         this.ths.forEach((th, i) => {
