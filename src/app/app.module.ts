@@ -9,7 +9,9 @@ import { ColumnsComponent as TestColumnsComponent } from './test/columns/columns
 import { ColumnsComponent } from './columns/columns.component';
 import { IconViewComponent } from './test/icon-view/icon-view.component';
 import { TableViewComponent as TestTableViewComponent } from './test/table-view/table-view.component';
-import { TableViewComponent } from './table-view/table-view.component'
+import { TableViewComponent } from './table-view/table-view.component';
+import { FileItemComponent } from './file-item/file-item.component';
+import { DirectoryItemComponent } from './directory-item/directory-item.component'
 
 @NgModule({
     declarations: [
@@ -21,7 +23,9 @@ import { TableViewComponent } from './table-view/table-view.component'
         ColumnsComponent,
         IconViewComponent,
         TestTableViewComponent,
-        TableViewComponent
+        TableViewComponent,
+        FileItemComponent,
+        DirectoryItemComponent
     ],
     imports: [
         BrowserModule

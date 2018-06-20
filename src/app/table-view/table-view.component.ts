@@ -2,8 +2,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef, TemplateRef } from '@a
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as Columns } from '../columns/columns.component'
 
-
-interface Item {
+export interface Item {
     isDirectory: boolean
     name: string
     ext?: string
