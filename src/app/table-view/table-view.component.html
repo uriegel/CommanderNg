@@ -1,7 +1,15 @@
 <table #table>
     <thead app-columns></thead>
     <tbody>
-
+        <tr *ngFor="let item of items">
+            <td>
+                <ng-container *ngTemplateOutlet="zwei"></ng-container>
+                <!-- {{item.name}} -->
+            </td>
+        </tr>
     </tbody>
 </table>    
 <app-scrollbar></app-scrollbar>
+
+<ng-template #eins><h1>Dir</h1></ng-template>
+<ng-template #zwei><div>Feile</div></ng-template>

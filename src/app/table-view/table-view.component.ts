@@ -1,6 +1,13 @@
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as Columns } from '../columns/columns.component'
+
+
+interface Item {
+    isDirectory: boolean
+    name: string
+    ext?: string
+}
 
 @Component({
   selector: 'app-table-view',
@@ -12,6 +19,21 @@ export class TableViewComponent implements AfterViewInit {
     @ViewChild("table") table: ElementRef
     @ViewChild(Scrollbar) scrollbar: Scrollbar
     @ViewChild(Columns) columns: Columns
+
+    @ViewChild('eins') 
+    private tmpl1: TemplateRef<object>
+    
+    @ViewChild('zwei') 
+    private tmpl2: TemplateRef<object>
+
+    items: Item[] = [ 
+        { isDirectory: true, name: "Erstes" },
+        { isDirectory: true, name: "Zweites" },
+        { isDirectory: true, name: "3." },
+        { isDirectory: false, name: "File 1", ext: "txt" },
+        { isDirectory: false, name: "File 2", ext: "doc" },
+        { isDirectory: false, name: "3. Feile", ext: "www" }
+    ]
 
     ngAfterViewInit() {
         this.table.nativeElement.tabIndex = 1
