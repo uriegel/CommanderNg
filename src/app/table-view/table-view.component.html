@@ -3,7 +3,8 @@
     <tbody>
         <tr *ngFor="let item of items">
             <td>
-                <ng-container *ngTemplateOutlet="zwei"></ng-container>
+                <ng-template [ngTemplateOutlet]="zwei2"></ng-template>
+                <!-- <ng-container *ngTemplateOutlet="{{zwei2}}"></ng-container> -->
                 <!-- {{item.name}} -->
             </td>
         </tr>
