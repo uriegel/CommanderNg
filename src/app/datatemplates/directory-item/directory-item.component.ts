@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Item } from '../table-view/table-view.component'
+import { Item } from '../../table-view/table-view.component'
 
 @Component({
     selector: '[app-directory-item]',
