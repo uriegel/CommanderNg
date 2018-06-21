@@ -5,9 +5,12 @@
             "sources": [
                 "addon.cpp",
                 "IconExtractor.cpp",
+                "FileSystem.cpp",
                 "MemoryStream.cpp",
+                "Worker.cpp",
                 "utf8.cpp",
-                "worker.cpp"
+                "Helpers.cpp",
+                "ExifReader.cpp"       
             ],
             "include_dirs" : [
                 "<!(node -e \"require('nan')\")"

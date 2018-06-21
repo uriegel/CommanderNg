@@ -19,25 +19,9 @@ export class TableViewComponent implements AfterViewInit {
     @ViewChild(Scrollbar) scrollbar: Scrollbar
     @ViewChild(Columns) columns: Columns
 
-    @ViewChild('eins') 
-    private tmpl1: TemplateRef<object>
-    
-    @ViewChild('zwei') 
-    private tmpl2: TemplateRef<object>
-
-    zwei2
-
-    items: Item[] = [ 
-        { isDirectory: true, name: "Erstes" },
-        { isDirectory: true, name: "Zweites" },
-        { isDirectory: true, name: "3." },
-        { isDirectory: false, name: "File 1", ext: "txt" },
-        { isDirectory: false, name: "File 2", ext: "doc" },
-        { isDirectory: false, name: "3. Feile", ext: "www" }
-    ]
+    items: Item[]
 
     ngAfterViewInit() {
-        this.zwei2 = this.tmpl2
         this.table.nativeElement.tabIndex = 1
 
         window.addEventListener('resize', () => this.resizeChecking())
