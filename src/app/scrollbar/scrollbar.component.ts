@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-scrollbar',
@@ -8,6 +8,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef, Input, Renderer2 } fro
 export class ScrollbarComponent implements AfterViewInit {
     @ViewChild("scrollbar") scrollbar: ElementRef
     @ViewChild("grip") grip: ElementRef
+    @Output() positionChanged: EventEmitter<number> = new EventEmitter()    
 
     // @Input()
     // set capacity(capacity: string) {
@@ -111,7 +112,7 @@ export class ScrollbarComponent implements AfterViewInit {
             var currentPosition = Math.floor((top - 15) / this.step + 0.5)
             if (currentPosition != this.position) {
                 this.position = currentPosition
-//                    positionChanged(this.position)
+                    this.positionChanged.emit(this.position)
             }
         }
 
@@ -160,7 +161,7 @@ export class ScrollbarComponent implements AfterViewInit {
         }
 
         this.positionGrip()
-//        this.positionChanged(this.position)
+        this.positionChanged.emit(this.position)
     }
 
     private mouseDown() {
@@ -172,7 +173,7 @@ export class ScrollbarComponent implements AfterViewInit {
             return
         }
         this.positionGrip()
-//        this.positionChanged(this.position)
+        this.positionChanged.emit(this.position)
     }
 
     private pageUp() {
@@ -190,12 +191,12 @@ export class ScrollbarComponent implements AfterViewInit {
             clearInterval(this.interval)
             if (lastTime) {
                 this.positionGrip()
-    //            this.positionChanged(this.position)
+                this.positionChanged.emit(this.position)
             }
             return
         }
         this.positionGrip()
-//        this.positionChanged(this.position)
+        this.positionChanged.emit(this.position)
     }
 
     private pageDown() {
@@ -213,13 +214,13 @@ export class ScrollbarComponent implements AfterViewInit {
             clearInterval(this.interval)
             if (lastTime) {
                 this.positionGrip()
-  //              this.positionChanged(this.position)
+                this.positionChanged.emit(this.position)
             }
             return
         }
 
         this.positionGrip()
-//        this.positionChanged(this.position)
+        this.positionChanged.emit(this.position)
     }
 
     private positionGrip() {

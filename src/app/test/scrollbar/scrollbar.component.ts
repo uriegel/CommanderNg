@@ -59,6 +59,10 @@ export class ScrollbarComponent implements OnInit {
         }
         resizeChecking()
     }
+
+    private onScroll(pos) {
+        console.log(pos)
+    }
     
     private initializeItemHeight() {
         const div = document.createElement("div")

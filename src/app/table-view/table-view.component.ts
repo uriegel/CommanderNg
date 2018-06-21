@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, TemplateRef, Renderer2 } from '@angular/core'
-import { Observable } from 'rxjs'
+import { Observable, Subscriber } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as Columns } from '../columns/columns.component'
 
@@ -22,7 +22,42 @@ export class TableViewComponent implements AfterViewInit {
     @ViewChild(Scrollbar) scrollbar: Scrollbar
     @ViewChild(Columns) columns: Columns
 
-    items: Observable<Item[]>
+    private scrollPos = 0
+
+    private getDisplayItems() {
+        return this.fileItems.filter((n, i) => i >= this.scrollPos && i < 52 + this.scrollPos)
+    }
+
+    get displayItems(): Observable<Item[]> {
+        console.log("New DisplayItems")
+        return new Observable<Item[]>(displayObserver => {
+            this.displayObserver = displayObserver
+            if (this.fileItems) 
+                this.displayObserver.next(this.getDisplayItems())
+        })
+    }
+    get items(): Observable<Item[]> {
+        return this._items
+    }
+    set items(value: Observable<Item[]>) {
+        this._items = value
+        this._items.subscribe({
+            next: x => {
+                console.log('Observer got a next value: ' + x)
+                this.fileItems = x
+                this.displayObserver.next(this.getDisplayItems())
+            },
+            error: err => console.error('Observer got an error: ' + err),
+            complete: () => {
+                console.log('Observer got a complete notification')
+            },
+        })
+    }
+    _items: Observable<Item[]>
+
+    fileItems: Item[]
+
+    private displayObserver: Subscriber<Item[]>
 
     constructor(private renderer: Renderer2) {}
 
@@ -43,6 +78,10 @@ export class TableViewComponent implements AfterViewInit {
         }
 
         this.resizeChecking()
+
+
+        // HACK:
+        this.scrollbar.itemsChanged(4000, 100)
     }
 
     resizeChecking() {
@@ -69,6 +108,11 @@ export class TableViewComponent implements AfterViewInit {
             if (isFocused)
                 focus()
         }
+    }
+
+    private onScroll(pos) {
+        this.scrollPos = pos
+        this.displayObserver.next(this.getDisplayItems())
     }
 
     private onSort(ascending: boolean) { alert(ascending) }

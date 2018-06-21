@@ -30,7 +30,7 @@ export class TableViewComponent implements AfterViewInit {
         this.tableView.items = this.readDirectory1()
     }
 
-    private readDirectory1 = this.getReadDirectory("c:\\windows\\")
+    private readDirectory1 = this.getReadDirectory("c:\\windows\\system32\\")
     private readDirectory2 = this.getReadDirectory("c:\\")
 
     private onNeu() {
@@ -46,10 +46,8 @@ export class TableViewComponent implements AfterViewInit {
 
         const readDirectoryPromise = (): Promise<FileItem[]> => {
             return new Promise((res, rej) => {
-                if (fileItems) {
+                if (fileItems) 
                     res(fileItems)
-                    fileItems.splice(0, 1)       
-                }
                 else
                     this.addon.readDirectory(path, (err, result) => {
                         fileItems = result

@@ -1,11 +1,11 @@
 <table #table>
     <thead app-columns></thead>
     <tbody>
-        <ng-container *ngFor="let item of items | async">
+        <ng-container *ngFor="let item of displayItems | async">
             <tr app-directory-item *ngIf="item.isDirectory" [Item]=item></tr>
             <tr app-file-item *ngIf="!item.isDirectory" [Item]=item></tr>
         </ng-container>   
     </tbody>
 </table>    
-<app-scrollbar></app-scrollbar>
+<app-scrollbar (positionChanged)="onScroll($event)"></app-scrollbar>
 

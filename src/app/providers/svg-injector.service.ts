@@ -22,8 +22,11 @@ export class SvgInjectorService {
         const newSvg = svg.childNodes[1] as HTMLElement
         const classes = Array.from(svgImg.classList)
         classes.forEach(n => renderer.addClass(newSvg, n))
-        if (svgImg.parentElement)
-            svgImg.parentElement.replaceChild(newSvg, svgImg)
+        if (svgImg.parentElement) {
+            renderer.insertBefore(svgImg.parentElement, newSvg, svgImg)
+            renderer.removeChild(svgImg.parentElement, svgImg)
+//            svgImg.parentElement.replaceChild(newSvg, svgImg)
+        }
     }
 
     injectSvgs(renderer: Renderer2) {
