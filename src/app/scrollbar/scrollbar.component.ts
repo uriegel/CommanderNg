@@ -1,21 +1,15 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, Output, EventEmitter } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, Output, EventEmitter } from '@angular/core'
 
 @Component({
-  selector: 'app-scrollbar',
-  templateUrl: './scrollbar.component.html',
-  styleUrls: ['./scrollbar.component.css']
+    selector: 'app-scrollbar',
+    templateUrl: './scrollbar.component.html',
+    styleUrls: ['./scrollbar.component.css']
 })
 export class ScrollbarComponent implements AfterViewInit {
     @ViewChild("scrollbar") scrollbar: ElementRef
     @ViewChild("grip") grip: ElementRef
     @Output() positionChanged: EventEmitter<number> = new EventEmitter()    
 
-    // @Input()
-    // set capacity(capacity: string) {
-    //     this._capacity = capacity
-    // }
-    // get capacity() { return this._capacity }
-    // private _capacity: string
     constructor(private renderer: Renderer2) {}
 
     ngAfterViewInit() {
@@ -235,13 +229,7 @@ export class ScrollbarComponent implements AfterViewInit {
     private parentHeight = 0
     private offsetTop = 0
 
-    /**
-     * Ein einmaliges Timeout-Intervall
-     */
     private timer: any
-    /**
-     * Ein zyklischer Timer
-     */
     private interval: any
     private pageMousePosition = 0
     private step = 0

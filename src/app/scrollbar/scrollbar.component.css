@@ -10,7 +10,6 @@
     border-style: solid;
     border-color: var(--scrollbar-border-color);
     border-width: 1px;
-    -webkit-user-select: none;
     user-select: none;
     transition: width 0.4s, height 0.4s, opacity 0.4s;
 }

@@ -1,4 +1,4 @@
-<tr class="columns">
+<tr #columnsRow (mousemove)="onMouseMove($event)">
     <th #th *ngFor="let column of columns.columns" [class.column-selectable]="column.onSort">
         {{column.name}}
     </th>

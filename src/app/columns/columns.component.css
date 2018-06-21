@@ -1,4 +1,4 @@
-.columns th {
+tr th {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -15,7 +15,7 @@
     transition: background-color 0.3s;
 }
 
-.columns th.column-selectable:hover {
+tr th.column-selectable:hover {
     background-color: var(--selected-bg-hover-color);
 }
 
