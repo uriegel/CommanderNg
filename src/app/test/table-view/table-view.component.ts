@@ -26,9 +26,11 @@ export class TableViewComponent implements AfterViewInit {
 
     @ViewChild(TableView) tableView: TableView
 
-    constructor() { }
-
     ngAfterViewInit() {
+        this.tableView.items = this.readDirectory("c:\\")
+    }
+
+    private onNeu() {
         this.tableView.items = this.readDirectory("c:\\windows\\")
     }
 
@@ -37,7 +39,7 @@ export class TableViewComponent implements AfterViewInit {
     }
 
     private readDirectoryPromise(path: string): Promise<FileItem[]> {
-        return new Promise((res, rej) => this.addon.readDirectory("c:\\windows\\", (err, result) => res(result)))
+        return new Promise((res, rej) => this.addon.readDirectory(path, (err, result) => res(result)))
     }
 
     private readonly addon: Addon = (<any>window).require('addon')

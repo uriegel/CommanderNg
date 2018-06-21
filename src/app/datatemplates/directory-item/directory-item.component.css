@@ -1,4 +1,29 @@
 td {
-    font-weight: bold;
     color: blue;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.svg-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.svg-icon path {
+    /* fill: var(--color); */
+    fill: chartreuse;
+}
+
+.iconName {
+    display: flex;
+}
+
+.nameValue {
+    overflow: hidden;
+    margin-top: 1px;
+    margin-left: 3px;
+    text-overflow: ellipsis;
 }

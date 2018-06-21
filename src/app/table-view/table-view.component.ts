@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, TemplateRef } from '@angular/core'
+import { Component, AfterViewInit, ViewChild, ElementRef, TemplateRef, Renderer2 } from '@angular/core'
 import { Observable } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as Columns } from '../columns/columns.component'
@@ -7,6 +7,8 @@ export interface Item {
     isDirectory: boolean
     name: string
     ext?: string
+    time?: Date
+    size?: number
 }
 
 @Component({
@@ -21,6 +23,8 @@ export class TableViewComponent implements AfterViewInit {
     @ViewChild(Columns) columns: Columns
 
     items: Observable<Item[]>
+
+    constructor(private renderer: Renderer2) {}
 
     ngAfterViewInit() {
         this.table.nativeElement.tabIndex = 1
@@ -60,7 +64,7 @@ export class TableViewComponent implements AfterViewInit {
             //     }
 
             // this.scrollbar.itemsChanged(this.items.length, this.tableCapacity)
-//            this.table.style.clip = `rect(0px, auto, ${this.recentHeight}px, 0px)`
+            this.renderer.setStyle(this.table.nativeElement, "clip", `rect(0px, auto, ${this.recentHeight}px, 0px)`)
 
             if (isFocused)
                 focus()

@@ -66,6 +66,10 @@ npm run electron
 ## Create Angular
 ### Component
 ``` ng g c <ComponentName>``` 
+### Provider (service)
+``` ng g s <ProviderName>``` 
+### Component in sub folder 
+``` ng g c <subfolder/<ComponentName>``` 
 
 ## Test scenarios
 ### Include scrollbar.html in main.ts

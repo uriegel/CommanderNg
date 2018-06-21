@@ -8,22 +8,15 @@ table {
     position: absolute;
 }
 
-table tr {
+tr {
     transition: background-color 0.3s;
-}
-
-table td {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    user-select: none;
 }
 
 .highlight {
     background-color: lightgreen;
 }
 
-table tr:focus {
+tr:focus {
     outline-color: red;
     outline-width: 1px;
     outline-style: solid;

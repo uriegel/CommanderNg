@@ -1,4 +1,14 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
 .tableContainer {
     position: relative;
     margin: 30px;
+    flex-grow: 1;
+}
+
+button {
+    margin: 10px;
 }
