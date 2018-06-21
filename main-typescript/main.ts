@@ -23,7 +23,7 @@ app.on('ready', () => {
     })
     console.log("Creating Window")
     win.loadURL(url.format({
-        pathname: path.join(__dirname, 'CommanderNg\\index.html'),
+        pathname: path.join(__dirname, 'Commander\\index.html'),
         protocol: 'file:',
         slashes: true
       }))
