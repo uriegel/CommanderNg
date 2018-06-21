@@ -1,4 +1,5 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, TemplateRef } from '@angular/core'
+import { Observable } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as Columns } from '../columns/columns.component'
 
@@ -19,7 +20,7 @@ export class TableViewComponent implements AfterViewInit {
     @ViewChild(Scrollbar) scrollbar: Scrollbar
     @ViewChild(Columns) columns: Columns
 
-    items: Item[]
+    items: Observable<Item[]>
 
     ngAfterViewInit() {
         this.table.nativeElement.tabIndex = 1

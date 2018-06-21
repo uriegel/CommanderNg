@@ -1,4 +1,5 @@
 import { Component, AfterViewInit, ViewChild } from '@angular/core'
+import { from } from 'rxjs'
 import { TableViewComponent as TableView, Item } from '../../table-view/table-view.component'
 
 interface FileItem {
@@ -28,9 +29,16 @@ export class TableViewComponent implements AfterViewInit {
     constructor() { }
 
     ngAfterViewInit() {
-        const addon: Addon = (<any>window).require('addon')
-        addon.readDirectory("c:\\windows\\", (err, result) => {
-            this.tableView.items = result
-        })
+        this.tableView.items = this.readDirectory("c:\\windows\\")
     }
+
+    private readDirectory(path: string) {
+        return from(this.readDirectoryPromise(path))
+    }
+
+    private readDirectoryPromise(path: string): Promise<FileItem[]> {
+        return new Promise((res, rej) => this.addon.readDirectory("c:\\windows\\", (err, result) => res(result)))
+    }
+
+    private readonly addon: Addon = (<any>window).require('addon')
 }
