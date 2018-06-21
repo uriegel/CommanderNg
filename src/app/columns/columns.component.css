@@ -3,7 +3,6 @@ tr th {
     text-overflow: ellipsis;
     white-space: nowrap;
     user-select: none;
-    cursor: default;
     padding-left: 5px;
     text-align: left;
     font-weight: normal;
@@ -13,6 +12,10 @@ tr th {
     border-left-style: solid;
     border-left-width: 1px;
     transition: background-color 0.3s;
+}
+
+.pointer-ew {
+    cursor: ew-resize;
 }
 
 tr th.column-selectable:hover {
