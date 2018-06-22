@@ -39,7 +39,7 @@ export class TableViewComponent implements AfterViewInit {
         this._items.subscribe({
             next: x => {
                 this.tableViewItems = x
-                this.setScrollbar(true)
+                this.setScrollbar(0)
                 this.displayObserver.next(this.getItemsView())
             },
             error: err => console.error('Observer got an error: ' + err),
@@ -55,9 +55,6 @@ export class TableViewComponent implements AfterViewInit {
         this.setColumnsInControl()
         window.addEventListener('resize', () => this.resizeChecking())
         this.resizeChecking()
-
-        console.log(`ItemsHeight: ${this.itemsHeight}`)
-
         this.setScrollbar()
     }
 
@@ -67,24 +64,17 @@ export class TableViewComponent implements AfterViewInit {
             this.recentHeight = this.table.nativeElement.parentElement.clientHeight
             const tableCapacityOld = this.tableCapacity
             this.calculateViewItemsCount()
-            // const itemsCountOld = Math.min(tableCapacityOld + 1, this.items.length - this.startPosition)
-            // const itemsCountNew = Math.min(this.tableCapacity + 1, this.items.length - this.startPosition)
-            // if (itemsCountNew < itemsCountOld) {
-            //     for (i = itemsCountOld - 1; i >= itemsCountNew; i--)
-            //         this.tbody.children[i].remove()
-            // }
-            // else
-            //     for (var i = itemsCountOld; i < itemsCountNew; i++) {
-            //         const node = this.itemsControl.createItem(this.items[i + this.startPosition])
-            //         this.tbody.appendChild(node)
-            //     }
-
             this.setScrollbar()
             this.renderer.setStyle(this.table.nativeElement, "clip", `rect(0px, auto, ${this.recentHeight}px, 0px)`)
 
             if (isFocused)
                 focus()
         }
+    }
+
+    private onMouseWheel(evt: WheelEvent) {
+        var delta = evt.wheelDelta / Math.abs(evt.wheelDelta) * 3
+        this.setScrollbar(this.scrollPos - delta)
     }
 
     private onScroll(pos) {
@@ -110,9 +100,9 @@ export class TableViewComponent implements AfterViewInit {
             this.tableCapacity = -1
     }
 
-    private setScrollbar(reset?: boolean) {
+    private setScrollbar(newPos?: number) {
         if (this.tableCapacity >= 0)
-            this.scrollbar.itemsChanged(this.tableViewItems.length, this.tableCapacity, reset ? 0 : undefined)
+            this.scrollbar.itemsChanged(this.tableViewItems.length, this.tableCapacity, newPos)
     }
 
     private setColumnsInControl() {

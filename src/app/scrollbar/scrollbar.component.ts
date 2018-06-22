@@ -23,9 +23,9 @@ export class ScrollbarComponent implements AfterViewInit {
      * Has to be called when scrollableContent has changed item count
      * @param numberOfItems new complete number of items
      * @param numberOfItemsDisplayed number of Items which can be displayed without scrolling
-     * @param newStartIndex first item displayed
+     * @param newScrollPos first item displayed
      */
-    itemsChanged(numberOfItems: number, numberOfItemsDisplayed: number, newStartIndex?: number) {
+    itemsChanged(numberOfItems: number, numberOfItemsDisplayed: number, newScrollPos?: number) {
         this.parentHeight = this.scrollbar.nativeElement.parentElement.parentElement.clientHeight - this.offsetTop
         if (numberOfItems)
             this.itemsCountAbsolute = numberOfItems
@@ -34,8 +34,11 @@ export class ScrollbarComponent implements AfterViewInit {
 
         if (!this.itemsCountAbsolute)
             return
-        if (this.itemsCountAbsolute <= this.itemsCountVisible)
+        if (this.itemsCountAbsolute <= this.itemsCountVisible) {
             this.renderer.addClass(this.scrollbar.nativeElement, "scrollbarHidden")
+            this.position = 0
+            this.positionChanged.emit(this.position)
+        }
         else {
             this.renderer.removeClass(this.scrollbar.nativeElement, "scrollbarHidden")
             var gripHeight = (this.parentHeight - 32) * (this.itemsCountVisible / this.itemsCountAbsolute)
@@ -49,8 +52,12 @@ export class ScrollbarComponent implements AfterViewInit {
                 this.positionChanged.emit(this.position)
             }
         }
-        if (newStartIndex != undefined) {
-            this.position = newStartIndex
+        if (newScrollPos != undefined) {
+            this.position = newScrollPos
+            if (this.position < 0)
+                this.position = 0
+            else if (this.position >= numberOfItems - numberOfItemsDisplayed)
+                this.position = numberOfItems - numberOfItemsDisplayed
             this.positionChanged.emit(this.position)
         }
         this.positionGrip()
