@@ -1,7 +1,7 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, TemplateRef, Renderer2 } from '@angular/core'
+import { Component, AfterViewInit, ViewChild, ElementRef, TemplateRef, Renderer2, Output, EventEmitter, Input } from '@angular/core'
 import { Observable, Subscriber } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
-import { ColumnsComponent as Columns } from '../columns/columns.component'
+import { ColumnsComponent as Columns, IColumns, IColumnSortEvent } from '../columns/columns.component'
 
 export interface Item {
     isDirectory: boolean
@@ -18,18 +18,20 @@ export interface Item {
 })
 export class TableViewComponent implements AfterViewInit {
 
+    @Input() id: string 
+    @Output() onSort: EventEmitter<IColumnSortEvent> = new EventEmitter()    
     @ViewChild("table") table: ElementRef
     @ViewChild(Scrollbar) scrollbar: Scrollbar
-    @ViewChild(Columns) columns: Columns
+    @ViewChild(Columns) columnsControl: Columns
 
-    private scrollPos = 0
-
-    private getDisplayItems() {
-        return this.fileItems.filter((n, i) => i >= this.scrollPos && i < 52 + this.scrollPos)
+    get columns() { return this._columns }
+    set columns(value: IColumns) {
+        this._columns = value
+        this.setColumnsInControl()
     }
+    private _columns: IColumns
 
     get displayItems(): Observable<Item[]> {
-        console.log("New DisplayItems")
         return new Observable<Item[]>(displayObserver => {
             this.displayObserver = displayObserver
             if (this.fileItems) 
@@ -43,40 +45,24 @@ export class TableViewComponent implements AfterViewInit {
         this._items = value
         this._items.subscribe({
             next: x => {
-                console.log('Observer got a next value: ' + x)
                 this.fileItems = x
                 this.displayObserver.next(this.getDisplayItems())
             },
             error: err => console.error('Observer got an error: ' + err),
-            complete: () => {
-                console.log('Observer got a complete notification')
-            },
+            complete: () => {},
         })
     }
     _items: Observable<Item[]>
 
     fileItems: Item[]
 
-    private displayObserver: Subscriber<Item[]>
-
     constructor(private renderer: Renderer2) {}
 
     ngAfterViewInit() {
         this.table.nativeElement.tabIndex = 1
-
+        console.log(`Ein die: ${this.id}`)
+        this.setColumnsInControl()
         window.addEventListener('resize', () => this.resizeChecking())
-
-        this.columns.columns = {
-            name: "Columns",
-            columns: [
-                { name: "Name", isSortable: true },
-                { name: "Erw.", isSortable: true },
-                { name: "Datum", isSortable: true },
-                { name: "Größe" },
-                { name: "Version", isSortable: true }
-            ]            
-        }
-
         this.resizeChecking()
 
 
@@ -115,11 +101,30 @@ export class TableViewComponent implements AfterViewInit {
         this.displayObserver.next(this.getDisplayItems())
     }
 
-    private onSort(ascending: boolean) { alert(ascending) }
+    private onColumnSort(sortEvent: IColumnSortEvent) {
+        this.onSort.emit(sortEvent)
+    }
+
+    private getDisplayItems() {
+        return this.fileItems.filter((n, i) => i >= this.scrollPos && i < 52 + this.scrollPos)
+    }
+
+
+    private setColumnsInControl() {
+        if (this.columnsControl && this.columns) {
+            const columns = {
+                name: `${this.id}-${this.columns.name}`,
+                columns: this.columns.columns
+            }
+            this.columnsControl.columns = columns
+        }
+    }
 
     /**
     * Die Anzahl der Einträge, die dieses TableView in der momentanen Größe tatsächlich auf dem Bildschirm anzeigen kann
     */
-   private tableCapacity = -1
-   private recentHeight = 0
+    private tableCapacity = -1
+    private displayObserver: Subscriber<Item[]>
+    private recentHeight = 0
+    private scrollPos = 0
 }

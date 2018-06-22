@@ -1,5 +1,5 @@
 <table #table>
-    <thead app-columns></thead>
+    <thead app-columns (onSort)="onColumnSort($event)"></thead>
     <tbody>
         <ng-container *ngFor="let item of displayItems | async">
             <tr app-directory-item *ngIf="item.isDirectory" [Item]=item></tr>

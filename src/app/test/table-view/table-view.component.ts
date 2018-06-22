@@ -1,6 +1,7 @@
 import { Component, AfterViewInit, ViewChild } from '@angular/core'
 import { from } from 'rxjs'
 import { TableViewComponent as TableView, Item } from '../../table-view/table-view.component'
+import { IColumnSortEvent } from '../../columns/columns.component';
 
 interface FileItem {
     name: string
@@ -27,6 +28,17 @@ export class TableViewComponent implements AfterViewInit {
     @ViewChild(TableView) tableView: TableView
 
     ngAfterViewInit() {
+        this.tableView.columns = {
+            name: "Columns",
+            columns: [
+                { name: "Name", isSortable: true },
+                { name: "Erw.", isSortable: true },
+                { name: "Datum", isSortable: true },
+                { name: "Größe" },
+                { name: "Version", isSortable: true }
+            ]            
+        }
+
         this.tableView.items = this.readDirectory1()
     }
 
@@ -60,7 +72,9 @@ export class TableViewComponent implements AfterViewInit {
         return readDirectory
     }
 
-
+    private onSort(sortEvent: IColumnSortEvent) {
+        console.log(`Sorting: ${sortEvent.index} ascending: ${sortEvent.ascending}`)
+    }
 
     private readonly addon: Addon = (<any>window).require('addon')
 }
