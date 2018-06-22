@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ColumnsComponent as Columns } from '../../columns/columns.component'
+import { ColumnsComponent as Columns, IColumnSortEvent } from '../../columns/columns.component'
 
 @Component({
     selector: 'app-test-columns',
@@ -16,28 +16,30 @@ export class ColumnsComponent implements OnInit {
         this.columns.columns = {
             name: "Columns",
             columns: [
-                { name: "Name", onSort: a => this.onSort(a) },
-                { name: "Erw.", onSort: a => this.onSort(a) },
+                { name: "Name", isSortable: true },
+                { name: "Erw.", isSortable: true },
                 { name: "Datum" },
-                { name: "Größe", onSort: a => this.onSort(a) },
-                { name: "Version", onSort: a => this.onSort(a) }
+                { name: "Größe", isSortable: true },
+                { name: "Version", isSortable: true },
             ]            
         }
+    }
+
+    private onSort(sortEvent: IColumnSortEvent) {
+        console.log(`Sorting: ${sortEvent.index} ascending: ${sortEvent.ascending}`)
     }
 
     private onOther() {
         this.columns.columns = {
             name: "Columns2",
             columns: [
-                { name: "Datei", onSort: a => this.onSort(a) },
-                { name: "Erweiterung", onSort: a => this.onSort(a) },
+                { name: "Datei", isSortable: true },
+                { name: "Erweiterung", isSortable: true },
                 { name: "Zeit" },
-                { name: "Bytes", onSort: a => this.onSort(a) },
-                { name: "Version", onSort: a => this.onSort(a) },
-                { name: "Leerspalte", onSort: a => this.onSort(a) }
+                { name: "Bytes", isSortable: true },
+                { name: "Version" },
+                { name: "Leerspalte" }
             ]            
         }
     }
-
-    private onSort(ascending: boolean) { alert(ascending) }
 }

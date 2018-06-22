@@ -1,6 +1,6 @@
 <div id="container">
     <table id="table">
-        <thead app-columns></thead>
+        <thead app-columns (onSort)="onSort($event)"></thead>
         <tbody>
             <tr>
                 <td>Test</td>

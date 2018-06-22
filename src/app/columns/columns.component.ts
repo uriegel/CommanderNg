@@ -1,4 +1,4 @@
-import { Component, ViewChildren, ViewChild, ElementRef, QueryList, Renderer2 } from '@angular/core'
+import { Component, ViewChildren, ViewChild, ElementRef, QueryList, Renderer2, Output, EventEmitter } from '@angular/core'
 
 export interface IColumns {
     name: string
@@ -7,7 +7,12 @@ export interface IColumns {
 
 export interface IColumn {
     name: string
-    onSort?: (ascending: boolean)=>void
+    isSortable?: boolean
+}
+
+export interface IColumnSortEvent {
+    index: number,
+    ascending: boolean
 }
 
 @Component({
@@ -18,6 +23,7 @@ export interface IColumn {
 export class ColumnsComponent {
     constructor(private renderer: Renderer2) {}
 
+    @Output() onSort: EventEmitter<IColumnSortEvent> = new EventEmitter()    
     @ViewChild("columnsRow") columnsRow: ElementRef
     @ViewChildren("th") 
     get ths() { return this._ths }
@@ -50,15 +56,17 @@ export class ColumnsComponent {
     private onClick(evt: Event) {
         if (!this.grippingReady) {
             const th = evt.target as HTMLElement
-            const column = this.columns.columns.find(n => n.name == th.innerText.trim())
-            if (column && column.onSort) {
+            const columnResult = this.columns
+                .columns.map((n, i) => { return { column: n, index: i }})
+                .find(n => n.column.name == th.innerText.trim())
+            if (columnResult && columnResult.column.isSortable) {
                 const ascending = th.classList.contains("sortAscending")
-                column.onSort!(!ascending)
                 this.ths.forEach(th => {
                     this.renderer.removeClass(th.nativeElement, "sortAscending")
                     this.renderer.removeClass(th.nativeElement, "sortDescending")
                 })
                 this.renderer.addClass(th, ascending ? "sortDescending" : "sortAscending")
+                this.onSort.emit({ascending: !ascending, index: columnResult.index })
             }
         }
     }

@@ -69,11 +69,11 @@ export class TableViewComponent implements AfterViewInit {
         this.columns.columns = {
             name: "Columns",
             columns: [
-                { name: "Name", onSort: a => this.onSort(a) },
-                { name: "Erw.", onSort: a => this.onSort(a) },
-                { name: "Datum" },
-                { name: "Größe", onSort: a => this.onSort(a) },
-                { name: "Version", onSort: a => this.onSort(a) }
+                { name: "Name", isSortable: true },
+                { name: "Erw.", isSortable: true },
+                { name: "Datum", isSortable: true },
+                { name: "Größe" },
+                { name: "Version", isSortable: true }
             ]            
         }
 
