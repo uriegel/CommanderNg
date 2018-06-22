@@ -38,6 +38,8 @@ export class ColumnsComponent {
         columns: []            
     }
 
+    get height() { return this.columnsRow.nativeElement.offsetHeight }
+
     private onMouseMove(evt: MouseEvent) {
         const th = <HTMLElement>evt.target
         if (th.localName == "th" && (th.offsetLeft > 0 || evt.pageX - th.getBoundingClientRect().left > 10)

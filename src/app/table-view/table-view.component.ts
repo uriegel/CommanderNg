@@ -27,7 +27,7 @@ export class TableViewComponent implements AfterViewInit {
     get itemsView(): Observable<any[]> {
         return new Observable<any[]>(displayObserver => {
             this.displayObserver = displayObserver
-            if (this.fileItems) 
+            if (this.tableViewItems) 
                 this.displayObserver.next(this.getItemsView())
         })
     }
@@ -38,7 +38,8 @@ export class TableViewComponent implements AfterViewInit {
         this._items = value
         this._items.subscribe({
             next: x => {
-                this.fileItems = x
+                this.tableViewItems = x
+                this.setScrollbar()
                 this.displayObserver.next(this.getItemsView())
             },
             error: err => console.error('Observer got an error: ' + err),
@@ -46,8 +47,6 @@ export class TableViewComponent implements AfterViewInit {
         })
     }
     _items: Observable<any[]>
-
-    fileItems: any[]
 
     constructor(private renderer: Renderer2) {}
 
@@ -59,8 +58,7 @@ export class TableViewComponent implements AfterViewInit {
 
         console.log(`ItemsHeight: ${this.itemsHeight}`)
 
-        // HACK:
-        this.scrollbar.itemsChanged(4000, 100)
+        this.setScrollbar()
     }
 
     resizeChecking() {
@@ -68,7 +66,7 @@ export class TableViewComponent implements AfterViewInit {
             const isFocused = this.table.nativeElement.contains(document.activeElement)
             this.recentHeight = this.table.nativeElement.parentElement.clientHeight
             const tableCapacityOld = this.tableCapacity
-  //          this.calculateTableHeight()
+            this.calculateViewItemsCount()
             // const itemsCountOld = Math.min(tableCapacityOld + 1, this.items.length - this.startPosition)
             // const itemsCountNew = Math.min(this.tableCapacity + 1, this.items.length - this.startPosition)
             // if (itemsCountNew < itemsCountOld) {
@@ -81,7 +79,7 @@ export class TableViewComponent implements AfterViewInit {
             //         this.tbody.appendChild(node)
             //     }
 
-            // this.scrollbar.itemsChanged(this.items.length, this.tableCapacity)
+            this.setScrollbar()
             this.renderer.setStyle(this.table.nativeElement, "clip", `rect(0px, auto, ${this.recentHeight}px, 0px)`)
 
             if (isFocused)
@@ -99,9 +97,23 @@ export class TableViewComponent implements AfterViewInit {
     }
 
     private getItemsView() {
-        return this.fileItems.filter((n, i) => i >= this.scrollPos && i < 52 + this.scrollPos)
+        return this.tableViewItems.filter((n, i) => i >= this.scrollPos && i < this.tableCapacity + this.scrollPos)
     }
 
+    private calculateViewItemsCount() {
+        if (this.itemsHeight && this.columnsControl) {
+            this.tableCapacity = Math.floor((this.table.nativeElement.parentElement.offsetHeight - this.columnsControl.height) / this.itemsHeight) 
+            if (this.tableCapacity < 0)
+                this.tableCapacity = 0
+        }
+        else
+            this.tableCapacity = -1
+    }
+
+    private setScrollbar() {
+        if (this.tableCapacity >= 0)
+            this.scrollbar.itemsChanged(this.tableViewItems.length, this.tableCapacity)
+    }
 
     private setColumnsInControl() {
         if (this.columnsControl && this.columns) {
@@ -113,6 +125,9 @@ export class TableViewComponent implements AfterViewInit {
         }
     }
 
+    // TODO: Wennn man das Fenster größer macht, und es wurde gescrollt, verschwindet die Scrollbar, obwohl noch Elemente unsichtbar sind
+
+    private tableViewItems: any[]
     /**
     * Die Anzahl der Einträge, die dieses TableView in der momentanen Größe tatsächlich auf dem Bildschirm anzeigen kann
     */
