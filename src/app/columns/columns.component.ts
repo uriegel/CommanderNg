@@ -21,15 +21,18 @@ export class ColumnsComponent implements AfterViewInit {
     @ViewChild("columnsRow") columnsRow: ElementRef
     @ViewChildren("th") ths: QueryList<ElementRef>
 
-    columns: IColumns = {
+    get columns() { return this._columns }
+    set columns(value: IColumns) {
+        this._columns = value
+        this.restoreWidths() 
+    }
+    private _columns: IColumns = {
         name: "Nil",
         columns: []            
     }
 
     ngAfterViewInit() {
-        // this.ths.forEach((th, i) => {
-        //     this.renderer.setStyle(th.nativeElement, "width", `${(i * 10)}%`)
-        // })
+        this.restoreWidths()
     }
 
     private onMouseMove(evt: MouseEvent) {
@@ -96,13 +99,12 @@ export class ColumnsComponent implements AfterViewInit {
 
             currentHeader.style.width = leftWidth + '%'
             nextHeader.style.width = rightWidth + '%'
-            const columnsWidths = this.getWidths()
-            //localStorage[this.id] = JSON.stringify(columnsWidths)
-
             evt.preventDefault()
         }
 
         const onup = (evt: MouseEvent) => {
+            const columnsWidths = this.getWidths()
+            localStorage[this.columns.name] = JSON.stringify(columnsWidths)
             document.body.style.cursor = null
             window.removeEventListener('mousemove', onmove)
             window.removeEventListener('mouseup', onup)
@@ -121,7 +123,19 @@ export class ColumnsComponent implements AfterViewInit {
         })
         return widths
     }
+
+    private setWidths(widths: string[]) {
+        this.ths.forEach((th, i) => this.renderer.setStyle(th.nativeElement, "width", widths[i]))
+    }
     
+    private restoreWidths() {
+        const json = localStorage[this.columns.name]
+        if (json && this.ths) {
+            const columnWidth = JSON.parse(json)
+            this.setWidths(columnWidth)
+        }
+    }
+
     private getCombinedWidth(column: HTMLElement, nextColumn: HTMLElement) {
         const firstWidth = column.style.width
             ? parseFloat(column.style.width.substr(0, column.style.width.length - 1))
