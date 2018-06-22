@@ -39,7 +39,7 @@ export class TableViewComponent implements AfterViewInit {
         this._items.subscribe({
             next: x => {
                 this.tableViewItems = x
-                this.setScrollbar()
+                this.setScrollbar(true)
                 this.displayObserver.next(this.getItemsView())
             },
             error: err => console.error('Observer got an error: ' + err),
@@ -110,9 +110,9 @@ export class TableViewComponent implements AfterViewInit {
             this.tableCapacity = -1
     }
 
-    private setScrollbar() {
+    private setScrollbar(reset?: boolean) {
         if (this.tableCapacity >= 0)
-            this.scrollbar.itemsChanged(this.tableViewItems.length, this.tableCapacity)
+            this.scrollbar.itemsChanged(this.tableViewItems.length, this.tableCapacity, reset ? 0 : undefined)
     }
 
     private setColumnsInControl() {
@@ -124,8 +124,6 @@ export class TableViewComponent implements AfterViewInit {
             this.columnsControl.columns = columns
         }
     }
-
-    // TODO: Wennn man das Fenster größer macht, und es wurde gescrollt, verschwindet die Scrollbar, obwohl noch Elemente unsichtbar sind
 
     private tableViewItems: any[]
     /**
