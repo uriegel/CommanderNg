@@ -24,10 +24,6 @@ in package.json:
 * electron: 
 ```npm run build-electron && .\\node_modules\\.bin\\electron dist\\```
 
-### Change polyfills.ts
-```
-import 'zone.js/dist/zone-mix';  // Included with Angular CLI. 
-```
 ## Build and Run
 ### Starting point
 ```
