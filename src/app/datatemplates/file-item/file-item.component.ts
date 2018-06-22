@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { DomSanitizer } from '@angular/platform-browser'
-import { Item } from '../../table-view/table-view.component'
 import { FileHelperService } from '../../providers/file-helper.service'
 
 @Component({

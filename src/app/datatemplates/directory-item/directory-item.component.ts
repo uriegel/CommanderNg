@@ -1,5 +1,4 @@
 import { Component, AfterViewInit, Input, ViewChild, ElementRef, Renderer2 } from '@angular/core';
-import { Item } from '../../table-view/table-view.component'
 import { SvgInjectorService } from '../../providers/svg-injector.service'
 
 @Component({

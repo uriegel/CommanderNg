@@ -3,14 +3,6 @@ import { Observable, Subscriber } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as Columns, IColumns, IColumnSortEvent } from '../columns/columns.component'
 
-export interface Item {
-    isDirectory: boolean
-    name: string
-    ext?: string
-    time?: Date
-    size?: number
-}
-
 @Component({
   selector: 'app-table-view',
   templateUrl: './table-view.component.html',
@@ -19,6 +11,7 @@ export interface Item {
 export class TableViewComponent implements AfterViewInit {
 
     @Input() id: string 
+    @Input() itemsHeight: number
     @Output() onSort: EventEmitter<IColumnSortEvent> = new EventEmitter()    
     @ViewChild("table") table: ElementRef
     @ViewChild(Scrollbar) scrollbar: Scrollbar
@@ -31,40 +24,40 @@ export class TableViewComponent implements AfterViewInit {
     }
     private _columns: IColumns
 
-    get displayItems(): Observable<Item[]> {
-        return new Observable<Item[]>(displayObserver => {
+    get itemsView(): Observable<any[]> {
+        return new Observable<any[]>(displayObserver => {
             this.displayObserver = displayObserver
             if (this.fileItems) 
-                this.displayObserver.next(this.getDisplayItems())
+                this.displayObserver.next(this.getItemsView())
         })
     }
-    get items(): Observable<Item[]> {
+    get items(): Observable<any[]> {
         return this._items
     }
-    set items(value: Observable<Item[]>) {
+    set items(value: Observable<any[]>) {
         this._items = value
         this._items.subscribe({
             next: x => {
                 this.fileItems = x
-                this.displayObserver.next(this.getDisplayItems())
+                this.displayObserver.next(this.getItemsView())
             },
             error: err => console.error('Observer got an error: ' + err),
             complete: () => {},
         })
     }
-    _items: Observable<Item[]>
+    _items: Observable<any[]>
 
-    fileItems: Item[]
+    fileItems: any[]
 
     constructor(private renderer: Renderer2) {}
 
     ngAfterViewInit() {
         this.table.nativeElement.tabIndex = 1
-        console.log(`Ein die: ${this.id}`)
         this.setColumnsInControl()
         window.addEventListener('resize', () => this.resizeChecking())
         this.resizeChecking()
 
+        console.log(`ItemsHeight: ${this.itemsHeight}`)
 
         // HACK:
         this.scrollbar.itemsChanged(4000, 100)
@@ -98,14 +91,14 @@ export class TableViewComponent implements AfterViewInit {
 
     private onScroll(pos) {
         this.scrollPos = pos
-        this.displayObserver.next(this.getDisplayItems())
+        this.displayObserver.next(this.getItemsView())
     }
 
     private onColumnSort(sortEvent: IColumnSortEvent) {
         this.onSort.emit(sortEvent)
     }
 
-    private getDisplayItems() {
+    private getItemsView() {
         return this.fileItems.filter((n, i) => i >= this.scrollPos && i < 52 + this.scrollPos)
     }
 
