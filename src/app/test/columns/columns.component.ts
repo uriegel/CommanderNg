@@ -25,5 +25,19 @@ export class ColumnsComponent implements OnInit {
         }
     }
 
+    private onOther() {
+        this.columns.columns = {
+            name: "Columns2",
+            columns: [
+                { name: "Datei", onSort: a => this.onSort(a) },
+                { name: "Erweiterung", onSort: a => this.onSort(a) },
+                { name: "Zeit" },
+                { name: "Bytes", onSort: a => this.onSort(a) },
+                { name: "Version", onSort: a => this.onSort(a) },
+                { name: "Leerspalte", onSort: a => this.onSort(a) }
+            ]            
+        }
+    }
+
     private onSort(ascending: boolean) { alert(ascending) }
 }

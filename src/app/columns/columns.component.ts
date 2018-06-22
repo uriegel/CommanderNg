@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChildren, ViewChild, ElementRef, QueryList, Renderer2 } from '@angular/core'
+import { Component, ViewChildren, ViewChild, ElementRef, QueryList, Renderer2 } from '@angular/core'
 
 export interface IColumns {
     name: string
@@ -15,24 +15,21 @@ export interface IColumn {
   templateUrl: './columns.component.html',
   styleUrls: ['./columns.component.css']
 })
-export class ColumnsComponent implements AfterViewInit {
-
+export class ColumnsComponent {
     constructor(private renderer: Renderer2) {}
-    @ViewChild("columnsRow") columnsRow: ElementRef
-    @ViewChildren("th") ths: QueryList<ElementRef>
 
-    get columns() { return this._columns }
-    set columns(value: IColumns) {
-        this._columns = value
-        this.restoreWidths() 
+    @ViewChild("columnsRow") columnsRow: ElementRef
+    @ViewChildren("th") 
+    get ths() { return this._ths }
+    set ths(value) {
+        this._ths = value
+        this.restoreWidths()
     }
-    private _columns: IColumns = {
+    private _ths: QueryList<ElementRef>
+
+    columns: IColumns = {
         name: "Nil",
         columns: []            
-    }
-
-    ngAfterViewInit() {
-        this.restoreWidths()
     }
 
     private onMouseMove(evt: MouseEvent) {
