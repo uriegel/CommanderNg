@@ -46,26 +46,30 @@ export class ColumnsComponent {
             this.grippingReady = false
         }
     }
-    
+
+    private onClick(evt: Event) {
+        if (!this.grippingReady) {
+            const th = evt.target as HTMLElement
+            const column = this.columns.columns.find(n => n.name == th.innerText.trim())
+            if (column && column.onSort) {
+                const ascending = th.classList.contains("sortAscending")
+                column.onSort!(!ascending)
+                this.ths.forEach(th => {
+                    this.renderer.removeClass(th.nativeElement, "sortAscending")
+                    this.renderer.removeClass(th.nativeElement, "sortDescending")
+                })
+                this.renderer.addClass(th, ascending ? "sortDescending" : "sortAscending")
+            }
+        }
+    }
+
     private onMouseDown(evt: MouseEvent) {
         const column = <HTMLElement>evt.target
-        if (!this.grippingReady) {
-            // if (this.columns[columnIndex].onSort) {
-            //     const ascending = column.classList.contains("sortAscending")
-            //     this.columns[columnIndex].onSort!(!ascending)
-            //     for (let i = 0; i < ths.length; i++) {
-            //         ths[i].classList.remove("sortAscending")
-            //         ths[i].classList.remove("sortDescending")
-            //     }
-
-            //     column.classList.add(ascending ? "sortDescending" : "sortAscending")
-            // }
-        }
-        else
+        if (this.grippingReady) 
             this.beginColumnDragging(evt.pageX, column)
     }
 
-    beginColumnDragging(startGripPosition: number, targetColumn: HTMLElement) {
+    private beginColumnDragging(startGripPosition: number, targetColumn: HTMLElement) {
         document.body.style.cursor = 'ew-resize'
 
         let currentHeader: HTMLElement
