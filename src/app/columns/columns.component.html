@@ -1,5 +1,7 @@
 <tr #columnsRow (mousemove)="onMouseMove($event)">
-    <th #th (click)="onClick($event)" (mousedown)="onMouseDown($event)" *ngFor="let column of columns.columns" [class.column-selectable]="column.onSort">
+    <th #th *ngFor="let column of columns.columns" [class.column-selectable]="column.onSort" 
+        (click)="onClick($event)" (mousedown)="onMouseDown($event)"
+        class="pointer-def">
         {{column.name}}
     </th>
 </tr>

@@ -14,7 +14,11 @@ tr th {
     transition: background-color 0.3s;
 }
 
-.pointer-ew {
+.pointer-def {
+    cursor: default;
+}
+
+th.pointer-ew {
     cursor: ew-resize;
 }
 
