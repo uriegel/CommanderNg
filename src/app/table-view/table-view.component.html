@@ -1,4 +1,4 @@
-<table #table tabindex="1" (keydown)="onKeyDown($event)">
+<table #table tabindex="1" (keydown)="onKeyDown($event)" (mousedown)="onMouseDown($event)">
     <thead app-columns (onSort)="onColumnSort($event)"></thead>
     <tbody (mousewheel)="onMouseWheel($event)">
         <ng-container *ngFor="let item of itemsView | async" [ngSwitch]="item.isDirectory">

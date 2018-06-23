@@ -8,7 +8,6 @@ export interface IItem {
     isCurrent?: boolean
 }
 
-// TODO: MouseDown selects current item
 @Component({
   selector: 'app-table-view',
   templateUrl: './table-view.component.html',
@@ -102,6 +101,13 @@ export class TableViewComponent implements AfterViewInit {
                 return // exit this handler for other keys
         }
         evt.preventDefault() // prevent the default action (scroll / move caret)
+    }
+
+    private onMouseDown(evt: MouseEvent) {
+        const tr = <HTMLTableRowElement>(<HTMLElement>evt.target).closest("tr")
+        const currentIndex = Array.from(this.table.nativeElement.querySelectorAll("tr"))
+            .findIndex(n => n == tr) + this.scrollPos - 1
+        this.setCurrentIndex(currentIndex)
     }
 
     private onMouseWheel(evt: WheelEvent) {
