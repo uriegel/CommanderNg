@@ -14,6 +14,7 @@ import { FileItemComponent } from './datatemplates/file-item/file-item.component
 import { DirectoryItemComponent } from './datatemplates/directory-item/directory-item.component'
 import { CommanderViewComponent } from './commander-view/commander-view.component'
 import { CommanderViewComponent as TestCommanderViewComponent } from './test/commander-view/commander-view.component'
+import { ItemProcesserFactoryService } from './processors/item-processer-factory.service';
 
 @NgModule({
     declarations: [
@@ -34,7 +35,7 @@ import { CommanderViewComponent as TestCommanderViewComponent } from './test/com
     imports: [
         BrowserModule
     ],
-    providers: [],
+    providers: [ItemProcesserFactoryService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

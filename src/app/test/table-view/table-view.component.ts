@@ -1,22 +1,8 @@
 import { Component, AfterViewInit, ViewChild } from '@angular/core'
 import { from } from 'rxjs'
 import { TableViewComponent as TableView, IItem } from '../../table-view/table-view.component'
-import { IColumnSortEvent } from '../../columns/columns.component';
-
-interface FileItem extends IItem {
-    name: string
-	isDirectory: boolean
-	isHidden: boolean
-	size: number
-	time: Date
-}
-
-interface Addon {
-    readDirectory(path: string, callback: (error: any, result: FileItem[]) => void): void
-	//getDrives(callback: (error: any, result: DriveInfo[]) => void): void
-	getFileVersion(path: string, callback: (error: any, result: string) => void): void
-	getExifDate(path: string, callback: (error: any, result: Date) => void): void
-}
+import { IColumnSortEvent } from '../../columns/columns.component'
+import { Addon, FileItem } from '../../providers/addon'
 
 @Component({
   selector: 'app-test-table-view',
@@ -24,6 +10,8 @@ interface Addon {
   styleUrls: ['./table-view.component.css']
 })
 export class TableViewComponent implements AfterViewInit {
+
+    // TODO: map FileItems to Items, with ItemType
 
     @ViewChild(TableView) tableView: TableView
 
@@ -62,7 +50,6 @@ export class TableViewComponent implements AfterViewInit {
                     res(fileItems)
                 else
                     this.addon.readDirectory(path, (err, result) => {
-                        fileItems = result
                         res(result)
                     })
             })
