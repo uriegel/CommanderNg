@@ -1,9 +1,9 @@
-<table #table>
+<table #table tabindex="1">
     <thead app-columns (onSort)="onColumnSort($event)"></thead>
     <tbody (mousewheel)="onMouseWheel($event)">
         <ng-container *ngFor="let item of itemsView | async" [ngSwitch]="item.isDirectory">
-            <tr app-directory-item *ngSwitchCase="true" [Item]=item></tr>
-            <tr app-file-item *ngSwitchCase="false" [Item]=item></tr>
+            <tr app-directory-item *ngSwitchCase="true" [Item]=item [class.isSelected]="item.isSelected" ></tr>
+            <tr app-file-item *ngSwitchCase="false" [Item]=item [class.isSelected]="item.isSelected"></tr>
         </ng-container>   
     </tbody>
 </table>    

@@ -3,6 +3,10 @@ import { Observable, Subscriber } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as Columns, IColumns, IColumnSortEvent } from '../columns/columns.component'
 
+// TODO: Adapting TableView's size to border, apadting scrollbar within tableview and under columnscontrol
+// TODO: tr: add invisible border which can be set to isSelected
+// TODO: upOne, downOne changes selected ros, then call checkViewable which scroll the view if neccessary
+
 @Component({
   selector: 'app-table-view',
   templateUrl: './table-view.component.html',
@@ -39,6 +43,7 @@ export class TableViewComponent implements AfterViewInit {
         this._items.subscribe({
             next: x => {
                 this.tableViewItems = x
+                this.tableViewItems[1].isSelected = true
                 this.setScrollbar(0)
                 this.displayObserver.next(this.getItemsView())
             },
@@ -51,7 +56,6 @@ export class TableViewComponent implements AfterViewInit {
     constructor(private renderer: Renderer2) {}
 
     ngAfterViewInit() {
-        this.table.nativeElement.tabIndex = 1
         this.setColumnsInControl()
         window.addEventListener('resize', () => this.resizeChecking())
         this.resizeChecking()

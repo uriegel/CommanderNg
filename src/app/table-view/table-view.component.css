@@ -6,6 +6,21 @@ table {
     table-layout: fixed;
     border-spacing: 0px;
     position: absolute;
+    border-color: lightgrey;
+    border-width: 1px;
+    border-style: solid;
+}
+
+table:focus {
+    border-color: red;
+}
+
+tr.isSelected {
+    background-color: lightgrey;
+}
+
+table:focus tr.isSelected {
+    background-color: aqua;
 }
 
 tr {
