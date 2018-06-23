@@ -3,10 +3,12 @@ import { Observable, Subscriber } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as Columns, IColumns, IColumnSortEvent } from '../columns/columns.component'
 
-// TODO: instead of Items: any[] Items: IItem: isSelected isCurrent
-// TODO: downOne: isCurrent + 1
-// TODO: upOne: isCurrent - 1
-// TODO: upOne, downOne changes selected ros, then call checkViewable which scroll the view if neccessary
+export interface IItem {
+    isSelected?: boolean
+    isCurrent?: boolean
+}
+
+// TODO: MouseDown selects current item
 @Component({
   selector: 'app-table-view',
   templateUrl: './table-view.component.html',
@@ -28,22 +30,22 @@ export class TableViewComponent implements AfterViewInit {
     }
     private _columns: IColumns
 
-    get itemsView(): Observable<any[]> {
-        return new Observable<any[]>(displayObserver => {
+    get itemsView(): Observable<IItem[]> {
+        return new Observable<IItem[]>(displayObserver => {
             this.displayObserver = displayObserver
             if (this.tableViewItems) 
                 this.displayObserver.next(this.getItemsView())
         })
     }
-    get items(): Observable<any[]> {
+    get items(): Observable<IItem[]> {
         return this._items
     }
-    set items(value: Observable<any[]>) {
+    set items(value: Observable<IItem[]>) {
         this._items = value
         this._items.subscribe({
             next: x => {
                 this.tableViewItems = x
-                this.tableViewItems[1].isSelected = true
+                this.tableViewItems[0].isCurrent = true
                 this.setScrollbar(0)
                 this.displayObserver.next(this.getItemsView())
             },
@@ -51,7 +53,7 @@ export class TableViewComponent implements AfterViewInit {
             complete: () => {},
         })
     }
-    _items: Observable<any[]>
+    _items: Observable<IItem[]>
 
     constructor(private renderer: Renderer2) {}
 
@@ -74,6 +76,34 @@ export class TableViewComponent implements AfterViewInit {
         }
     }
 
+    private onKeyDown(evt: KeyboardEvent) {
+        switch (evt.which) {
+            case 33:
+                this.pageUp()
+                break
+            case 34:
+                this.pageDown()
+                break
+            case 35: // End
+                if (!evt.shiftKey)
+                    this.end()
+                break
+            case 36: //Pos1
+                if (!evt.shiftKey)
+                    this.pos1()
+                break
+            case 38:
+                this.upOne()
+                break
+            case 40:
+                this.downOne()
+                break
+            default:
+                return // exit this handler for other keys
+        }
+        evt.preventDefault() // prevent the default action (scroll / move caret)
+    }
+
     private onMouseWheel(evt: WheelEvent) {
         var delta = evt.wheelDelta / Math.abs(evt.wheelDelta) * 3
         this.setScrollbar(this.scrollPos - delta)
@@ -88,6 +118,53 @@ export class TableViewComponent implements AfterViewInit {
         this.onSort.emit(sortEvent)
     }
 
+    private getCurrentIndex(defaultValue?: number) { 
+        const index = this.tableViewItems.findIndex(n => n.isCurrent) 
+        if (index != -1 || defaultValue == null)
+            return index
+        else
+            return defaultValue
+    }
+    private setCurrentIndex(index: number, lastIndex?: number) {
+        if (lastIndex == null) 
+            lastIndex = this.getCurrentIndex(0)
+        this.tableViewItems[lastIndex].isCurrent = false
+        this.tableViewItems[index].isCurrent = true
+
+        if (index < this.scrollPos)
+            this.setScrollbar(index)
+        if (index > this.scrollPos + this.tableCapacity - 1)
+            this.setScrollbar(index - this.tableCapacity + 1)
+    }
+
+    private downOne() {
+        const index = this.getCurrentIndex(0)
+        const nextIndex = index < this.tableViewItems.length - 1 ? index + 1 : index
+        this.setCurrentIndex(nextIndex, index)
+    }
+
+    private upOne() {
+        const index = this.getCurrentIndex(0)
+        const nextIndex = index > 0 ? index - 1 : index
+        this.setCurrentIndex(nextIndex, index)
+    }
+
+    private pageDown() {
+        const index = this.getCurrentIndex(0)
+        const nextIndex = index < this.tableViewItems.length - this.tableCapacity + 1 ? index + this.tableCapacity - 1: this.tableViewItems.length - 1
+        this.setCurrentIndex(nextIndex, index)
+    }
+
+    private pageUp() {
+        const index = this.getCurrentIndex(0)
+        const nextIndex = index > this.tableCapacity - 1? index - this.tableCapacity + 1: 0
+        this.setCurrentIndex(nextIndex, index)
+    }
+
+    private end() { this.setCurrentIndex(this.tableViewItems.length - 1) } 
+    
+    private pos1() { this.setCurrentIndex(0) } 
+
     private getItemsView() {
         return this.tableViewItems.filter((n, i) => i >= this.scrollPos && i < this.tableCapacity + 1 + this.scrollPos)
     }
@@ -100,8 +177,6 @@ export class TableViewComponent implements AfterViewInit {
         }
         else
             this.tableCapacity = -1
-
-        console.log(`die Eitemshöhe: ${this.tableCapacity}`)
     }
 
     private setScrollbar(newPos?: number) {
@@ -119,12 +194,12 @@ export class TableViewComponent implements AfterViewInit {
         }
     }
 
-    private tableViewItems: any[]
+    private tableViewItems: IItem[]
     /**
     * Die Anzahl der Einträge, die dieses TableView in der momentanen Größe tatsächlich auf dem Bildschirm anzeigen kann
     */
     private tableCapacity = -1
-    private displayObserver: Subscriber<Item[]>
+    private displayObserver: Subscriber<IItem[]>
     private recentHeight = 0
     private scrollPos = 0
 }

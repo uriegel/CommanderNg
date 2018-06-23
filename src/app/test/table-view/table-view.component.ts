@@ -1,9 +1,9 @@
 import { Component, AfterViewInit, ViewChild } from '@angular/core'
 import { from } from 'rxjs'
-import { TableViewComponent as TableView } from '../../table-view/table-view.component'
+import { TableViewComponent as TableView, IItem } from '../../table-view/table-view.component'
 import { IColumnSortEvent } from '../../columns/columns.component';
 
-interface FileItem {
+interface FileItem extends IItem {
     name: string
 	isDirectory: boolean
 	isHidden: boolean
