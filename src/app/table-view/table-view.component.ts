@@ -3,9 +3,10 @@ import { Observable, Subscriber } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as Columns, IColumns, IColumnSortEvent } from '../columns/columns.component'
 
-// TODO: tr: add invisible border which can be set to isSelected
+// TODO: instead of Items: any[] Items: IItem: isSelected isCurrent
+// TODO: downOne: isCurrent + 1
+// TODO: upOne: isCurrent - 1
 // TODO: upOne, downOne changes selected ros, then call checkViewable which scroll the view if neccessary
-
 @Component({
   selector: 'app-table-view',
   templateUrl: './table-view.component.html',

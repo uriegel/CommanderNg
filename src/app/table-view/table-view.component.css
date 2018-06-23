@@ -9,11 +9,17 @@ table {
 }
 
 tr.isSelected {
-    background-color: lightgrey;
+    outline-color: lightgray;
+    outline-width: 1px;
+    outline-style: solid;
+    outline-offset: -1px;
 }
 
 table:focus tr.isSelected {
-    background-color: aqua;
+    outline-color: red;
+    outline-width: 1px;
+    outline-style: solid;
+    outline-offset: -1px;
 }
 
 tr {
