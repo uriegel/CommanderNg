@@ -3,7 +3,6 @@ import { Observable, Subscriber } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as Columns, IColumns, IColumnSortEvent } from '../columns/columns.component'
 
-// TODO: TableCapacity initially to large
 // TODO: tr: add invisible border which can be set to isSelected
 // TODO: upOne, downOne changes selected ros, then call checkViewable which scroll the view if neccessary
 

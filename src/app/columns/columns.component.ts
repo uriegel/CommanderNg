@@ -38,7 +38,7 @@ export class ColumnsComponent {
         columns: []            
     }
 
-    get height() { return this.columnsRow.nativeElement.offsetHeight }
+    readonly height = 16
 
     private onMouseMove(evt: MouseEvent) {
         const th = <HTMLElement>evt.target
