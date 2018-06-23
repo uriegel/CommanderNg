@@ -41,11 +41,11 @@ export class ScrollbarComponent implements AfterViewInit {
         }
         else {
             this.renderer.removeClass(this.scrollbar.nativeElement, "scrollbarHidden")
-            var gripHeight = (this.parentHeight - 32) * (this.itemsCountVisible / this.itemsCountAbsolute)
+            var gripHeight = (this.parentHeight - 32 - this.columnsHeight) * (this.itemsCountVisible / this.itemsCountAbsolute)
             if (gripHeight < 5)
                 gripHeight = 5
             this.steps = this.itemsCountAbsolute - this.itemsCountVisible
-            this.step = (this.parentHeight - 32 - gripHeight) / this.steps
+            this.step = (this.parentHeight - 32 - this.columnsHeight - gripHeight) / this.steps
             this.renderer.setStyle(this.grip.nativeElement, "height", gripHeight + 'px')
             if (this.position > this.steps) {
                 this.position = this.steps
@@ -110,8 +110,8 @@ export class ScrollbarComponent implements AfterViewInit {
             var top = evt.pageY + this.gripTopDelta - this.scrollbar.nativeElement.offsetTop
             if (top < 15)
                 top = 15
-            else if (top + this.grip.nativeElement.offsetHeight - 15 > (this.parentHeight - 32))
-                top = this.parentHeight - 32 - this.grip.nativeElement.offsetHeight + 15
+            else if (top + this.grip.nativeElement.offsetHeight - 15 > (this.parentHeight - 32 - this.columnsHeight))
+                top = this.parentHeight - 32 - this.columnsHeight - this.grip.nativeElement.offsetHeight + 15
             this.renderer.setStyle(this.grip.nativeElement, "top", top + 'px')
 
             var currentPosition = Math.floor((top - 15) / this.step + 0.5)
@@ -233,6 +233,7 @@ export class ScrollbarComponent implements AfterViewInit {
         this.renderer.setStyle(this.grip.nativeElement, "top", top + 'px')
     }
 
+    private readonly columnsHeight = 16
     private position = 0
     private setFocus = () => { }
     private gripTopDelta = -1

@@ -3,7 +3,7 @@ import { Observable, Subscriber } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as Columns, IColumns, IColumnSortEvent } from '../columns/columns.component'
 
-// TODO: Adapting TableView's size to border, apadting scrollbar within tableview and under columnscontrol
+// TODO: TableCapacity initially to large
 // TODO: tr: add invisible border which can be set to isSelected
 // TODO: upOne, downOne changes selected ros, then call checkViewable which scroll the view if neccessary
 
@@ -66,11 +66,9 @@ export class TableViewComponent implements AfterViewInit {
         if (this.table.nativeElement.parentElement.clientHeight != this.recentHeight) {
             const isFocused = this.table.nativeElement.contains(document.activeElement)
             this.recentHeight = this.table.nativeElement.parentElement.clientHeight
-            const tableCapacityOld = this.tableCapacity
             this.calculateViewItemsCount()
             this.setScrollbar()
             this.renderer.setStyle(this.table.nativeElement, "clip", `rect(0px, auto, ${this.recentHeight}px, 0px)`)
-
             if (isFocused)
                 focus()
         }
@@ -91,7 +89,7 @@ export class TableViewComponent implements AfterViewInit {
     }
 
     private getItemsView() {
-        return this.tableViewItems.filter((n, i) => i >= this.scrollPos && i < this.tableCapacity + this.scrollPos)
+        return this.tableViewItems.filter((n, i) => i >= this.scrollPos && i < this.tableCapacity + 1 + this.scrollPos)
     }
 
     private calculateViewItemsCount() {
@@ -102,11 +100,13 @@ export class TableViewComponent implements AfterViewInit {
         }
         else
             this.tableCapacity = -1
+
+        console.log(`die Eitemshöhe: ${this.tableCapacity}`)
     }
 
     private setScrollbar(newPos?: number) {
         if (this.tableCapacity >= 0)
-            this.scrollbar.itemsChanged(this.tableViewItems.length, this.tableCapacity, newPos)
+            this.scrollbar.itemsChanged(this.tableViewItems ? this.tableViewItems.length : 0, this.tableCapacity, newPos)
     }
 
     private setColumnsInControl() {
