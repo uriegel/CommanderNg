@@ -1,9 +1,10 @@
 <table #table tabindex="1" (keydown)="onKeyDown($event)" (mousedown)="onMouseDown($event)">
     <thead app-columns (onSort)="onColumnSort($event)"></thead>
     <tbody (mousewheel)="onMouseWheel($event)">
-        <ng-container *ngFor="let item of itemsView | async" [ngSwitch]="item.isDirectory">
-            <tr app-directory-item *ngSwitchCase="true" [Item]=item [class.isSelected]="item.isCurrent" ></tr>
-            <tr app-file-item *ngSwitchCase="false" [Item]=item [class.isSelected]="item.isCurrent"></tr>
+        <ng-container *ngFor="let item of itemsView | async" [ngSwitch]="item.type">
+            <tr app-file-item *ngSwitchCase="0" [Item]=item [class.isSelected]="item.isCurrent"></tr>
+            <tr app-directory-item *ngSwitchCase="1" [Item]=item [class.isSelected]="item.isCurrent" ></tr>
+            <tr app-drive-item *ngSwitchCase="2" [Item]=item [class.isSelected]="item.isCurrent"></tr>
         </ng-container>   
     </tbody>
 </table>    

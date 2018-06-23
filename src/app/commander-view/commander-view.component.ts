@@ -2,6 +2,10 @@ import { Component, AfterViewInit, ViewChild } from '@angular/core'
 import { TableViewComponent as TableView, IItem } from '../table-view/table-view.component'
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
+import { Addon } from '../providers/addon';
+import { from } from 'rxjs';
+
+// TODO: Scrollbar too large, scrolling totally broken
 
 @Component({
     selector: 'app-commander-view',
@@ -27,8 +31,10 @@ export class CommanderViewComponent implements AfterViewInit {
             this.itemProcessor = itemProcessor
             this.tableView.columns = this.itemProcessor.columns
         }
-        //this.tableView.items = 
+        this.tableView.items = from(new Promise((res, rej) => 
+            this.addon.getDrives((err, result) => res(result))))
     }
 
+    private readonly addon: Addon = (<any>window).require('addon')
     private itemProcessor: ItemProcessor
 }

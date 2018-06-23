@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { DomSanitizer } from '@angular/platform-browser'
 import { FileHelperService } from '../../providers/file-helper.service'
+import { Item } from '../item'
 
 @Component({
     selector: '[app-file-item]',

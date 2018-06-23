@@ -11,8 +11,6 @@ import { Addon, FileItem } from '../../providers/addon'
 })
 export class TableViewComponent implements AfterViewInit {
 
-    // TODO: map FileItems to Items, with ItemType
-
     @ViewChild(TableView) tableView: TableView
 
     ngAfterViewInit() {

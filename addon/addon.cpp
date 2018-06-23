@@ -49,6 +49,7 @@ NAN_METHOD(ReadDirectory) {
 				result->Set(New<String>("size").ToLocalChecked(), New<Number>(static_cast<double>(item.size)));
 				result->Set(New<String>("time").ToLocalChecked(),
 					New<Date>(static_cast<double>(item.time)).ToLocalChecked());
+				result->Set(New<String>("type").ToLocalChecked(), New<Number>(item.isDirectory ? 1 : 0));
 				result->Set(New<String>("isDirectory").ToLocalChecked(), New<Boolean>(item.isDirectory));
 				result->Set(New<String>("isHidden").ToLocalChecked(), New<Boolean>(item.isHidden));
 				resultList->Set(i++, result);
@@ -74,10 +75,11 @@ NAN_METHOD(GetDrives) {
 
 				result->Set(New<String>("name").ToLocalChecked(),
 					New<String>(driveInfo.Name).ToLocalChecked());
+                result->Set(New<String>("type").ToLocalChecked(), New<Number>(2));                    
 				result->Set(New<String>("label").ToLocalChecked(),
 					New<String>(driveInfo.VolumeLabel).ToLocalChecked());
 				result->Set(New<String>("size").ToLocalChecked(), New<Number>(static_cast<double>(driveInfo.TotalSize.QuadPart)));
-				result->Set(New<String>("type").ToLocalChecked(), New<Number>(driveInfo.Type));
+				result->Set(New<String>("driveType").ToLocalChecked(), New<Number>(driveInfo.Type));
 				result->Set(New<String>("isReady").ToLocalChecked(), New<Boolean>(driveInfo.IsReady));
 	 			resultList->Set(i++, result);
 			}		

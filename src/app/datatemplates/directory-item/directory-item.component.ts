@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, Input, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { SvgInjectorService } from '../../providers/svg-injector.service'
+import { Item } from '../item'
 
 @Component({
     selector: '[app-directory-item]',

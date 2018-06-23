@@ -10,15 +10,9 @@ export enum DriveType {
     Ram
 }    
 
-export enum ItemType {
-    file,
-    directory,
-    drive
-}
-
 export interface FileItem extends IItem {
     name: string
-	type: ItemType
+    type: number
 	isHidden: boolean
 	size: number
 	time: Date
@@ -26,12 +20,12 @@ export interface FileItem extends IItem {
 
 export interface DriveInfo extends IItem {
     name: string
-    isDirectory: boolean
+    type: number
     isHidden: boolean
     size: number
     time: Date
     label: string
-    type: DriveType
+    driveType: DriveType
 }
 
 export interface Addon {

@@ -15,6 +15,7 @@ import { DirectoryItemComponent } from './datatemplates/directory-item/directory
 import { CommanderViewComponent } from './commander-view/commander-view.component'
 import { CommanderViewComponent as TestCommanderViewComponent } from './test/commander-view/commander-view.component'
 import { ItemProcesserFactoryService } from './processors/item-processer-factory.service';
+import { DriveItemComponent } from './datatemplates/drive-item/drive-item.component';
 
 @NgModule({
     declarations: [
@@ -30,7 +31,8 @@ import { ItemProcesserFactoryService } from './processors/item-processer-factory
         FileItemComponent,
         DirectoryItemComponent,
         CommanderViewComponent,
-        TestCommanderViewComponent
+        TestCommanderViewComponent,
+        DriveItemComponent
     ],
     imports: [
         BrowserModule
