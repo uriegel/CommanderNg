@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;    
+}
+
+.tableContainer {
+    flex-grow: 1;
+}
+
+input {
+    box-sizing: border-box;
+    margin-left: 3px;
+    margin-right: 3px;
+    border-style: none;
+    width: calc(100% - 6px);
+    outline-width: 0px;
+}
