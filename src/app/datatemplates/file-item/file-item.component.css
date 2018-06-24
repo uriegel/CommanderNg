@@ -20,3 +20,7 @@ img {
     text-overflow: ellipsis;
 }
 
+.size {
+    padding-right: 10px;
+    text-align: right;
+}

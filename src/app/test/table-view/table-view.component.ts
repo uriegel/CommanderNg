@@ -2,7 +2,7 @@ import { Component, AfterViewInit, ViewChild } from '@angular/core'
 import { from } from 'rxjs'
 import { TableViewComponent as TableView, IItem } from '../../table-view/table-view.component'
 import { IColumnSortEvent } from '../../columns/columns.component'
-import { Addon, FileItem } from '../../providers/addon'
+import { Addon, FileItem } from '../../addon'
 
 @Component({
   selector: 'app-test-table-view',

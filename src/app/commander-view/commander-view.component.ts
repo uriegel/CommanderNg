@@ -2,7 +2,7 @@ import { Component, AfterViewInit, ViewChild } from '@angular/core'
 import { TableViewComponent as TableView, IItem } from '../table-view/table-view.component'
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
-import { Addon } from '../providers/addon';
+import { Addon } from '../addon';
 import { from } from 'rxjs';
 
 @Component({

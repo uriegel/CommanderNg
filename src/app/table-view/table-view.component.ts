@@ -22,6 +22,9 @@ export class TableViewComponent implements AfterViewInit {
     @ViewChild(Scrollbar) scrollbar: Scrollbar
     @ViewChild(Columns) columnsControl: Columns
 
+    // TODO: delete path, bind and set to columns.path
+    path: string = "c:\\windows\\system32"
+
     get columns() { return this._columns }
     set columns(value: IColumns) {
         this._columns = value

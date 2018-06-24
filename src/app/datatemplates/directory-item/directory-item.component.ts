@@ -13,7 +13,7 @@ export class DirectoryItemComponent implements AfterViewInit {
     img: ElementRef
 
     @Input()
-    Item: Item
+    item: Item
     
     constructor(private svgInjector: SvgInjectorService, private renderer: Renderer2) { 
         if (!DirectoryItemComponent.folderIcon)

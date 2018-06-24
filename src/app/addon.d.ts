@@ -1,4 +1,4 @@
-import { IItem } from "../table-view/table-view.component"
+import { IItem } from "./table-view/table-view.component"
 
 export enum DriveType {
     Unknown,

@@ -1,11 +1,11 @@
 <td>
     <div class="iconName">
-        <img class="e2e-trusted-url" [src]=Icon alt="" >
-        <span class="nameValue">{{Name}}</span>
+        <img [attr.src]="item.name | fileIcon: item.name : basePath" alt="" >
+        <span class="nameValue">{{item.name | noFileExtension}}</span>
     </div>
 </td>
-<td>{{Ext}}</td>
-<td>{{Date}}</td>
-<td>{{Size}}</td>
+<td>{{item.name | fileExtension }}</td>
+<td>{{item.time | date}}</td>
+<td class="size" >{{item.size | fileSize}}</td>
 <td></td>
 

@@ -14,9 +14,13 @@ import { FileItemComponent } from './datatemplates/file-item/file-item.component
 import { DirectoryItemComponent } from './datatemplates/directory-item/directory-item.component'
 import { CommanderViewComponent } from './commander-view/commander-view.component'
 import { CommanderViewComponent as TestCommanderViewComponent } from './test/commander-view/commander-view.component'
-import { ItemProcesserFactoryService } from './processors/item-processer-factory.service';
-import { DriveItemComponent } from './datatemplates/drive-item/drive-item.component';
-
+import { ItemProcesserFactoryService } from './processors/item-processer-factory.service'
+import { DriveItemComponent } from './datatemplates/drive-item/drive-item.component'
+import { FileSizePipe } from './pipes/file-size.pipe'
+import { DatePipe } from './pipes/date.pipe'
+import { FileExtensionPipe } from './pipes/file-extension.pipe'
+import { NoFileExtensionPipe } from './pipes/no-file-extension.pipe';
+import { FileIconPipe } from './pipes/file-icon.pipe'
 @NgModule({
     declarations: [
         AppComponent,
@@ -32,7 +36,12 @@ import { DriveItemComponent } from './datatemplates/drive-item/drive-item.compon
         DirectoryItemComponent,
         CommanderViewComponent,
         TestCommanderViewComponent,
-        DriveItemComponent
+        DriveItemComponent,
+        FileSizePipe,
+        DatePipe,
+        FileExtensionPipe,
+        NoFileExtensionPipe,
+        FileIconPipe
     ],
     imports: [
         BrowserModule

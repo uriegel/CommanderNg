@@ -1,0 +1,11 @@
+td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.size {
+    padding-right: 10px;
+    text-align: right;
+}
