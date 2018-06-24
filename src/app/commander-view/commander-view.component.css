@@ -4,8 +4,9 @@
     flex-grow: 1;    
 }
 
-.tableContainer {
+.tableView {
     flex-grow: 1;
+    position: relative;
 }
 
 input {

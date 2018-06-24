@@ -5,8 +5,6 @@ import { ItemProcessor } from '../processors/item-processor'
 import { Addon } from '../providers/addon';
 import { from } from 'rxjs';
 
-// TODO: Scrollbar too large, scrolling totally broken
-
 @Component({
     selector: 'app-commander-view',
     templateUrl: './commander-view.component.html',
