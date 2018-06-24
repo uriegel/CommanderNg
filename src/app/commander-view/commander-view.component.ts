@@ -2,7 +2,10 @@ import { Component, AfterViewInit, ViewChild } from '@angular/core'
 import { TableViewComponent as TableView, IItem } from '../table-view/table-view.component'
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
-import { from } from 'rxjs';
+
+// TODO: set path from directoryInput
+// TODO: When scrollbar not visible: pos is incorrect
+// TODO: FileProcessor: Sorting: ParentComponent, then Dirs, then files
 
 @Component({
     selector: 'app-commander-view',
