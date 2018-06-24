@@ -3,6 +3,8 @@
         <div class="icon" [ngSwitch]="item.driveType">
             <app-drive *ngSwitchCase="3"></app-drive>
             <app-networkdrive *ngSwitchCase="4"></app-networkdrive>
+            <app-cdrom *ngSwitchCase="5"></app-cdrom>
+            <app-usb *ngSwitchCase="2"></app-usb>
         </div>
         <span class="nameValue">{{item.name}}</span>
     </div>

@@ -23,7 +23,9 @@ import { NoFileExtensionPipe } from './pipes/no-file-extension.pipe';
 import { FileIconPipe } from './pipes/file-icon.pipe';
 import { FolderComponent } from './svgs/folder/folder.component';
 import { DriveComponent } from './svgs/drive/drive.component';
-import { NetworkdriveComponent } from './svgs/networkdrive/networkdrive.component'
+import { NetworkdriveComponent } from './svgs/networkdrive/networkdrive.component';
+import { CdromComponent } from './svgs/cdrom/cdrom.component';
+import { UsbComponent } from './svgs/usb/usb.component'
 @NgModule({
     declarations: [
         AppComponent,
@@ -47,7 +49,9 @@ import { NetworkdriveComponent } from './svgs/networkdrive/networkdrive.componen
         FileIconPipe,
         FolderComponent,
         DriveComponent,
-        NetworkdriveComponent
+        NetworkdriveComponent,
+        CdromComponent,
+        UsbComponent
     ],
     imports: [
         BrowserModule
