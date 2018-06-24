@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { ItemProcessor, ProcessorType } from './item-processor'
-import { DrivesProcessor } from './drives-processor';
+import { DrivesProcessor } from './drives-processor'
+import { FileProcessor } from './file-processor'
 
 @Injectable({
     providedIn: 'root'
@@ -16,5 +17,11 @@ export class ItemProcesserFactoryService {
             else
                 return new DrivesProcessor()
         }   
+        else {
+            if (itemProcessor && itemProcessor.type == ProcessorType.file)
+                return null
+            else
+                return new FileProcessor()
+        }
     }
 }

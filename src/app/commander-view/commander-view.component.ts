@@ -2,7 +2,6 @@ import { Component, AfterViewInit, ViewChild } from '@angular/core'
 import { TableViewComponent as TableView, IItem } from '../table-view/table-view.component'
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
-import { Addon } from '../addon';
 import { from } from 'rxjs';
 
 @Component({
@@ -24,15 +23,15 @@ export class CommanderViewComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         this.path = "drives"
+        this.path = "c:\\windows"
         const itemProcessor = this.processorFactory.get(this.itemProcessor, this.path)
         if (itemProcessor) {
             this.itemProcessor = itemProcessor
             this.tableView.columns = this.itemProcessor.columns
         }
-        this.tableView.items = from(new Promise((res, rej) => 
-            this.addon.getDrives((err, result) => res(result))))
+        this.tableView.path = this.path
+        this.tableView.items = this.itemProcessor.get(this.path)
     }
 
-    private readonly addon: Addon = (<any>window).require('addon')
     private itemProcessor: ItemProcessor
 }

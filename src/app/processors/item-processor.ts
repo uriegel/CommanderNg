@@ -1,8 +1,11 @@
-import { IColumns } from "../columns/columns.component";
-import { Observable } from "rxjs";
+import { IColumns } from "../columns/columns.component"
+import { Observable } from "rxjs"
+import { IItem } from "../table-view/table-view.component"
+import { Addon } from "../addon"
 
 export enum ProcessorType {
-    root
+    root,
+    file
 }
 
 export abstract class ItemProcessor  {
@@ -10,5 +13,7 @@ export abstract class ItemProcessor  {
 
     abstract get columns(): IColumns
 
-    //abstract get get(): Observable<>
+    abstract get(path: string): Observable<IItem[]>
+
+    protected readonly addon: Addon = (<any>window).require('addon')
 }
