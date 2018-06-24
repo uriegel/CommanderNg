@@ -1,5 +1,4 @@
-import { Component, AfterViewInit, Input, ViewChild, ElementRef, Renderer2 } from '@angular/core';
-import { SvgInjectorService } from '../../providers/svg-injector.service'
+import { Component, Input } from '@angular/core';
 import { Item } from '../item'
 
 @Component({
@@ -7,22 +6,7 @@ import { Item } from '../item'
     templateUrl: './directory-item.component.html',
     styleUrls: ['./directory-item.component.css']
 })
-export class DirectoryItemComponent implements AfterViewInit {
-
-    @ViewChild("img") 
-    img: ElementRef
-
+export class DirectoryItemComponent {
     @Input()
     item: Item
-    
-    constructor(private svgInjector: SvgInjectorService, private renderer: Renderer2) { 
-        if (!DirectoryItemComponent.folderIcon)
-            DirectoryItemComponent.folderIcon = this.svgInjector.getIcon("assets/images/folder.svg")
-    }
-
-    ngAfterViewInit() {
-        this.svgInjector.replace(this.renderer, this.img.nativeElement, DirectoryItemComponent.folderIcon)
-    }
-
-    private static folderIcon 
 }

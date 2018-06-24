@@ -31,16 +31,3 @@ input {
     color: var(--color);
 }
 
-.hidden {
-    display: none !important;
-}
-
-.svg-icon {
-    width: 16px;
-    height: 16px;
-}
-
-.svg-icon path {
-    /* fill: var(--color); */
-    fill: chartreuse;
-}

@@ -20,7 +20,8 @@ import { FileSizePipe } from './pipes/file-size.pipe'
 import { DatePipe } from './pipes/date.pipe'
 import { FileExtensionPipe } from './pipes/file-extension.pipe'
 import { NoFileExtensionPipe } from './pipes/no-file-extension.pipe';
-import { FileIconPipe } from './pipes/file-icon.pipe'
+import { FileIconPipe } from './pipes/file-icon.pipe';
+import { FolderComponent } from './svgs/folder/folder.component'
 @NgModule({
     declarations: [
         AppComponent,
@@ -41,7 +42,8 @@ import { FileIconPipe } from './pipes/file-icon.pipe'
         DatePipe,
         FileExtensionPipe,
         NoFileExtensionPipe,
-        FileIconPipe
+        FileIconPipe,
+        FolderComponent
     ],
     imports: [
         BrowserModule
