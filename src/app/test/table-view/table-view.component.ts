@@ -25,6 +25,7 @@ export class TableViewComponent implements AfterViewInit {
             ]            
         }
 
+        this.tableView.path = "c:\\windows\\system32"
         this.tableView.items = this.readDirectory1()
     }
 
@@ -32,10 +33,12 @@ export class TableViewComponent implements AfterViewInit {
     private readDirectory2 = this.getReadDirectory("c:\\")
 
     private onNeu() {
+        this.tableView.path = "c:\\windows\\system32"
         this.tableView.items = this.readDirectory1()
     }
 
     private onChange() {
+        this.tableView.path = "c:"
         this.tableView.items = this.readDirectory2()
     }
 
