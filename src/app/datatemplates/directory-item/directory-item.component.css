@@ -11,6 +11,10 @@ td {
     display: flex;
 }
 
+.icon {
+    height: 16px;
+}
+
 .nameValue {
     overflow: hidden;
     margin-top: 1px;
