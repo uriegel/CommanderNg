@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { Item } from '../item'
 
 @Component({
@@ -6,14 +6,7 @@ import { Item } from '../item'
     templateUrl: './drive-item.component.html',
     styleUrls: ['./drive-item.component.css']
 })
-export class DriveItemComponent implements OnInit {
-
+export class DriveItemComponent {
     @Input()
     item: Item
-
-    constructor() { }
-
-    ngOnInit() {
-    }
-
 }

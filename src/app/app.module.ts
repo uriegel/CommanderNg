@@ -21,7 +21,9 @@ import { DatePipe } from './pipes/date.pipe'
 import { FileExtensionPipe } from './pipes/file-extension.pipe'
 import { NoFileExtensionPipe } from './pipes/no-file-extension.pipe';
 import { FileIconPipe } from './pipes/file-icon.pipe';
-import { FolderComponent } from './svgs/folder/folder.component'
+import { FolderComponent } from './svgs/folder/folder.component';
+import { DriveComponent } from './svgs/drive/drive.component';
+import { NetworkdriveComponent } from './svgs/networkdrive/networkdrive.component'
 @NgModule({
     declarations: [
         AppComponent,
@@ -43,7 +45,9 @@ import { FolderComponent } from './svgs/folder/folder.component'
         FileExtensionPipe,
         NoFileExtensionPipe,
         FileIconPipe,
-        FolderComponent
+        FolderComponent,
+        DriveComponent,
+        NetworkdriveComponent
     ],
     imports: [
         BrowserModule
