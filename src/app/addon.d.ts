@@ -13,9 +13,9 @@ export enum DriveType {
 export interface FileItem extends IItem {
     name: string
     type: number
-	isHidden: boolean
-	size: number
-	time: Date
+	isHidden?: boolean
+	size?: number
+	time?: Date
 }
 
 export interface DriveInfo extends IItem {

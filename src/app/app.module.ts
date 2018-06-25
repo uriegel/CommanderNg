@@ -25,7 +25,8 @@ import { FolderComponent } from './svgs/folder/folder.component';
 import { DriveComponent } from './svgs/drive/drive.component';
 import { NetworkdriveComponent } from './svgs/networkdrive/networkdrive.component';
 import { CdromComponent } from './svgs/cdrom/cdrom.component';
-import { UsbComponent } from './svgs/usb/usb.component'
+import { UsbComponent } from './svgs/usb/usb.component';
+import { ParentItemComponent } from './datatemplates/parent-item/parent-item.component'
 @NgModule({
     declarations: [
         AppComponent,
@@ -51,7 +52,8 @@ import { UsbComponent } from './svgs/usb/usb.component'
         DriveComponent,
         NetworkdriveComponent,
         CdromComponent,
-        UsbComponent
+        UsbComponent,
+        ParentItemComponent
     ],
     imports: [
         BrowserModule

@@ -89,9 +89,6 @@ export class TableViewComponent implements AfterViewInit {
 
     private onKeyDown(evt: KeyboardEvent) {
         switch (evt.which) {
-            // case 13:
-            //     this.processItem()
-            //     break;
             case 33:
                 this.pageUp()
                 break

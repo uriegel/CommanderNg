@@ -5,6 +5,7 @@
             <tr app-file-item *ngSwitchCase="0" [item]=item [basePath]="path" [class.isSelected]="item.isCurrent"></tr>
             <tr app-directory-item *ngSwitchCase="1" [item]=item [class.isSelected]="item.isCurrent" ></tr>
             <tr app-drive-item *ngSwitchCase="2" [item]=item [class.isSelected]="item.isCurrent"></tr>
+            <tr app-parent-item *ngSwitchCase="3" [class.isSelected]="item.isCurrent"></tr>
         </ng-container>   
     </tbody>
 </table>    
