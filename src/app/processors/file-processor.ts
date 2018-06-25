@@ -33,8 +33,22 @@ export class FileProcessor extends ItemProcessor {
 
     process(item: IItem) {
         const fileItem = item as FileItem
-        if (fileItem.type == 1) {
-            this.commanderView.path = `${this.commanderView.path}\\${fileItem.name}`
+        switch (fileItem.type) {
+            case 1:
+                this.commanderView.path = `${this.commanderView.path}\\${fileItem.name}`
+                break;
+            case 3:
+                const parent = this.getParent()
+                this.commanderView.path = parent
+                break;
         }
     } 
+
+    private getParent() {
+        const index = this.commanderView.path.lastIndexOf("\\")
+        if (index != -1) 
+            return this.commanderView.path.substr(0, index)
+        else
+            return "drives"
+    }
 }

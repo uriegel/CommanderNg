@@ -1,8 +1,8 @@
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core'
+import { Component, AfterViewInit, ViewChild, ElementRef, Input } from '@angular/core'
 import { TableViewComponent as TableView, IItem } from '../table-view/table-view.component'
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
-
+// TODO: SwitchToParent: select old folder
 // TODO: FileProcessor: Sorting by selected column
 
 @Component({
@@ -14,6 +14,7 @@ export class CommanderViewComponent implements AfterViewInit {
 
     @ViewChild(TableView) private tableView: TableView
     @ViewChild("input") private input: ElementRef
+    @Input() id: string
 
     get path() { return this._path }
     set path(value: string) {
@@ -33,6 +34,8 @@ export class CommanderViewComponent implements AfterViewInit {
     constructor(private processorFactory: ItemProcesserFactoryService) { }
 
     ngAfterViewInit() { this.path = "drives" }
+
+    focus() { this.tableView.focus() }
 
     private onInputKeydown(evt: KeyboardEvent) {
         if (evt.which == 13) { // Return
