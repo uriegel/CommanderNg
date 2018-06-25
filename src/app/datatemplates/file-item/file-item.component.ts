@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { Item } from '../item'
 
 @Component({
@@ -6,14 +6,9 @@ import { Item } from '../item'
     templateUrl: './file-item.component.html',
     styleUrls: ['./file-item.component.css']
 })
-export class FileItemComponent implements OnInit {
-
+export class FileItemComponent {
     @Input()
     item: Item
     @Input()
     basePath: string
-
-    constructor() {}
-
-    ngOnInit() { }
 }

@@ -41,5 +41,12 @@ export class CommanderViewComponent implements AfterViewInit {
         }
     }
 
+    // private processItem() {
+    //     const index = this.getCurrentIndex()
+    //     if (index == -1)
+    //         return
+    // }
+
+
     private itemProcessor: ItemProcessor
 }
