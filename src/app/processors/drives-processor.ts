@@ -1,9 +1,12 @@
-import { ItemProcessor } from "./item-processor"
+import { ItemProcessor, ProcessorType } from "./item-processor"
 import { Observable, from } from "rxjs"
 import { IItem } from "../table-view/table-view.component"
 import { DriveInfo } from "../addon";
 
 export class DrivesProcessor extends ItemProcessor {
+
+    type: ProcessorType = ProcessorType.root
+
     get columns() {
         return {
             name: "drives",

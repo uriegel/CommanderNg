@@ -1,9 +1,11 @@
-import { ItemProcessor } from "./item-processor"
+import { ItemProcessor, ProcessorType } from "./item-processor"
 import { Observable, from } from "rxjs"
 import { IItem } from "../table-view/table-view.component"
 import { FileItem } from "../addon";
 
 export class FileProcessor extends ItemProcessor {
+    type: ProcessorType = ProcessorType.file
+    
     get columns() {
         return {
             name: "file",
@@ -17,7 +19,9 @@ export class FileProcessor extends ItemProcessor {
         }
     }
 
-    get(path: string, recentPath?: string): Observable<IItem[]> { return from(new Promise(
+    get(path: string, recentPath?: string): Observable<IItem[]> { 
+        this.requestId = ++FileProcessor.requestId
+        return from(new Promise(
         (res, rej) => this.addon.readDirectory(path, 
             (err, result) => {
                 var parentItem: FileItem[] = [ {
@@ -40,6 +44,20 @@ export class FileProcessor extends ItemProcessor {
                 if (currentItem)
                     currentItem.isCurrent = true
                 res(items)
+
+                const versionFiles = files.filter(n => n.name.toLowerCase().endsWith(".dll") || n.name.toLowerCase().endsWith(".exe"))
+
+                let id = this.requestId
+                let inBackground = async () => {
+                    for (let i = 0; i < versionFiles.length; i++) {
+                        if (id < this.requestId)
+                            break
+                        var version = await this.getFileVersion(`${path}\\${versionFiles[i].name}`)
+                        if (version)
+                            versionFiles[i].version = version
+                    }
+                }
+                inBackground()
             })
         ))
     }
@@ -57,6 +75,10 @@ export class FileProcessor extends ItemProcessor {
         }
     } 
 
+    close() {
+        this.requestId = ++FileProcessor.requestId
+    }
+
     private getParent() {
         const index = this.commanderView.path.lastIndexOf("\\")
         if (index != -1) 
@@ -64,4 +86,13 @@ export class FileProcessor extends ItemProcessor {
         else
             return "drives"
     }
+
+    private async getFileVersion(path: string) {
+        return new Promise<string>((res, rej) => {
+            this.addon.getFileVersion(path, (err, result) => res(result))
+        })
+    }
+
+    requestId = 0
+    static requestId = 0
 }

@@ -15,14 +15,20 @@ export class ItemProcesserFactoryService {
         if (path == "drives") {
             if (itemProcessor && itemProcessor.type == ProcessorType.root)
                 return null
-            else
+            else {
+                if (itemProcessor)
+                    itemProcessor.close()
                 return new DrivesProcessor(commanderView)
+            }
         }   
         else {
             if (itemProcessor && itemProcessor.type == ProcessorType.file)
                 return null
-            else
+            else {
+                if (itemProcessor)
+                    itemProcessor.close()
                 return new FileProcessor(commanderView)
+            }
         }
     }
 }

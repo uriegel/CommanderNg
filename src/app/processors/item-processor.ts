@@ -12,13 +12,15 @@ export enum ProcessorType {
 export abstract class ItemProcessor  {
     constructor (protected commanderView: CommanderViewComponent) {}
 
-    type: ProcessorType
+    abstract type: ProcessorType
 
     abstract get columns(): IColumns
 
     abstract get(path: string, recentPath?: string): Observable<IItem[]>
 
     abstract process(item: IItem) 
+
+    close() {}
 
     protected readonly addon: Addon = (<any>window).require('addon')
 }

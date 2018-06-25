@@ -2,7 +2,8 @@ import { Component, AfterViewInit, ViewChild, ElementRef, Input } from '@angular
 import { TableViewComponent as TableView, IItem } from '../table-view/table-view.component'
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
-// TODO: FileProcessor: Version and Exif
+// TODO: FileProcessor: Update view, when inBackground has finished, or several times (every 100)
+// TODO: FileProcessor: Exif
 // TODO: FileProcessor: Sorting by selected column
 
 @Component({

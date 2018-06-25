@@ -15,7 +15,8 @@ export interface FileItem extends IItem {
     type: number
 	isHidden?: boolean
 	size?: number
-	time?: Date
+    time?: Date
+    version?: string
 }
 
 export interface DriveInfo extends IItem {
