@@ -1,4 +1,4 @@
 <div class="container">
-    <input>
+    <input #input value="{{path}}" (keydown)="onInputKeydown($event)" (click)="onInputClick()">
     <app-table-view class="tableView" [id]="'commander'" [itemsHeight]="18"></app-table-view>
 </div>

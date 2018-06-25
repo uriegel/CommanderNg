@@ -65,6 +65,8 @@ export class TableViewComponent implements AfterViewInit {
         this.setScrollbar()
     }
 
+    focus() { this.table.nativeElement.focus() }
+
     resizeChecking() {
         if (this.table.nativeElement.parentElement.clientHeight != this.recentHeight) {
             const isFocused = this.table.nativeElement.contains(document.activeElement)
