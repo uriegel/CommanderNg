@@ -1,6 +1,4 @@
 td {
-    color: blue;
-
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
