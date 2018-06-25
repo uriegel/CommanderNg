@@ -8,7 +8,7 @@ export class FileIconPipe implements PipeTransform {
 
     constructor(private sanitizer: DomSanitizer) { }
 
-    transform(value: any, name?: string, basePath?: string): any {
+    transform(name?: string, basePath?: string): any {
         var pos = name.lastIndexOf('.')
         var ext = pos != -1 ? name.substring(pos) : null
         if (ext) {
