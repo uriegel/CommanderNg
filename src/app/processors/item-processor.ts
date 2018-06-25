@@ -16,7 +16,7 @@ export abstract class ItemProcessor  {
 
     abstract get columns(): IColumns
 
-    abstract get(path: string): Observable<IItem[]>
+    abstract get(path: string, recentPath?: string): Observable<IItem[]>
 
     abstract process(item: IItem) 
 

@@ -46,8 +46,8 @@ export class TableViewComponent implements AfterViewInit {
         this._items.subscribe({
             next: x => {
                 this.tableViewItems = x
-                this.tableViewItems[0].isCurrent = true
-                this.setScrollbar(0)
+                const index = this.getCurrentIndex(0)
+                this.setScrollbar(index)
                 this.displayObserver.next(this.getItemsView())
             },
             error: err => console.error('Observer got an error: ' + err),

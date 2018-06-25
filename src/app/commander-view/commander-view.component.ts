@@ -2,7 +2,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef, Input } from '@angular
 import { TableViewComponent as TableView, IItem } from '../table-view/table-view.component'
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
-// TODO: SwitchToParent: select old folder
+// TODO: FileProcessor: Version and Exif
 // TODO: FileProcessor: Sorting by selected column
 
 @Component({
@@ -26,7 +26,7 @@ export class CommanderViewComponent implements AfterViewInit {
             this.tableView.columns = this.itemProcessor.columns
         }
         this.tableView.path = value
-        this.tableView.items = this.itemProcessor.get(value)
+        this.tableView.items = this.itemProcessor.get(value, this.path)
         this._path = value
     }
     private _path: string

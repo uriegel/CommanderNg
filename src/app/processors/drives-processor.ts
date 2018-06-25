@@ -15,8 +15,20 @@ export class DrivesProcessor extends ItemProcessor {
         }
     }
 
-    get(_: string): Observable<IItem[]> { return from(new Promise(
-        (res, rej) => this.addon.getDrives((err, result) => res(result)))) }
+    get(_: string, recentPath?: string): Observable<IItem[]> { return from(new Promise(
+        (res, rej) => this.addon.getDrives(
+            (err, result) => {
+                let currentItem: IItem = null
+                if (recentPath) 
+                    currentItem = result.find(n => n.name.startsWith(recentPath))
+                if (!currentItem)
+                    currentItem = result[0]
+                if (currentItem)
+                    currentItem.isCurrent = true
+                res(result)
+            }
+        ))) 
+    }
 
     process(item: IItem) {
         const driveItem = item as DriveInfo
