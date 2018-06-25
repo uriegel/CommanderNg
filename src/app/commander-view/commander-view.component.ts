@@ -3,9 +3,7 @@ import { TableViewComponent as TableView, IItem } from '../table-view/table-view
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
 
-// TODO: set path from directoryInput
-// TODO: When scrollbar not visible: pos is incorrect
-// TODO: FileProcessor: Sorting: ParentComponent, then Dirs, then files
+// TODO: FileProcessor: Sorting by selected column
 
 @Component({
     selector: 'app-commander-view',
@@ -19,6 +17,8 @@ export class CommanderViewComponent implements AfterViewInit {
 
     get path() { return this._path }
     set path(value: string) {
+        if (value.endsWith('\\'))
+            value = value.substr(0, value.length - 1)
         const itemProcessor = this.processorFactory.get(this.itemProcessor, value)
         if (itemProcessor) {
             this.itemProcessor = itemProcessor
@@ -40,8 +40,6 @@ export class CommanderViewComponent implements AfterViewInit {
             this.tableView.focus()
         }
     }
-
-    private onInputClick() {  }
 
     private itemProcessor: ItemProcessor
 }

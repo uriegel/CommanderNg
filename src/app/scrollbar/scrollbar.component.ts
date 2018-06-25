@@ -26,6 +26,8 @@ export class ScrollbarComponent implements AfterViewInit {
      * @param newScrollPos first item displayed
      */
     itemsChanged(numberOfItems: number, numberOfItemsDisplayed: number, newScrollPos?: number) {
+        if (numberOfItemsDisplayed > numberOfItems)
+            numberOfItemsDisplayed = numberOfItems
         this.parentHeight = this.scrollbar.nativeElement.parentElement.parentElement.clientHeight - this.offsetTop
         if (numberOfItems)
             this.itemsCountAbsolute = numberOfItems

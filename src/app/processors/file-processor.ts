@@ -17,5 +17,10 @@ export class FileProcessor extends ItemProcessor {
     }
 
     get(path: string): Observable<IItem[]> { return from(new Promise(
-        (res, rej) => this.addon.readDirectory(path, (err, result) => res(result)))) }
+        (res, rej) => this.addon.readDirectory(path, (err, result) => {
+            var dirs = result.filter(n => n.type == 1)
+            var files = result.filter(n => n.type == 0)
+            res(dirs.concat(files))
+        })
+    )) }
 }
