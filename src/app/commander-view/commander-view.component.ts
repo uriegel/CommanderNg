@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, Input } from '@angular/core'
+import { Component, AfterViewInit, ViewChild, ElementRef, Input, ChangeDetectorRef } from '@angular/core'
 import { TableViewComponent as TableView, IItem } from '../table-view/table-view.component'
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
@@ -31,7 +31,9 @@ export class CommanderViewComponent implements AfterViewInit {
     }
     private _path: string
 
-    constructor(private processorFactory: ItemProcesserFactoryService) { }
+    constructor(private processorFactory: ItemProcesserFactoryService, private ref: ChangeDetectorRef) { 
+        setInterval(() => ref.markForCheck(), 500) 
+    }
 
     ngAfterViewInit() { this.path = "drives" }
 

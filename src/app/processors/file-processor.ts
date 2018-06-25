@@ -63,7 +63,6 @@ export class FileProcessor extends ItemProcessor {
                         if (exif) {
                             imgFiles[i].time = exif
                             imgFiles[i].isExif = true
-                            console.log(imgFiles[i].time)
                         }
                     }
                 }
