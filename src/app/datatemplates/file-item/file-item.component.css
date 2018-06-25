@@ -24,3 +24,7 @@ img {
     padding-right: 10px;
     text-align: right;
 }
+
+.isExif {
+    color: darkblue;
+}

@@ -46,7 +46,7 @@ export class FileProcessor extends ItemProcessor {
                 res(items)
 
                 const versionFiles = files.filter(n => n.name.toLowerCase().endsWith(".dll") || n.name.toLowerCase().endsWith(".exe"))
-
+                const imgFiles = files.filter(n => n.name.toLowerCase().endsWith(".jpg"))
                 let id = this.requestId
                 let inBackground = async () => {
                     for (let i = 0; i < versionFiles.length; i++) {
@@ -55,6 +55,16 @@ export class FileProcessor extends ItemProcessor {
                         var version = await this.getFileVersion(`${path}\\${versionFiles[i].name}`)
                         if (version)
                             versionFiles[i].version = version
+                    }
+                    for (let i = 0; i < imgFiles.length; i++) {
+                        if (id < this.requestId)
+                            break
+                        var exif = await this.getExifDate(`${path}\\${imgFiles[i].name}`)
+                        if (exif) {
+                            imgFiles[i].time = exif
+                            imgFiles[i].isExif = true
+                            console.log(imgFiles[i].time)
+                        }
                     }
                 }
                 inBackground()
@@ -90,6 +100,12 @@ export class FileProcessor extends ItemProcessor {
     private async getFileVersion(path: string) {
         return new Promise<string>((res, rej) => {
             this.addon.getFileVersion(path, (err, result) => res(result))
+        })
+    }
+
+    private async getExifDate(path: string) {
+        return new Promise<Date>((res, rej) => {
+            this.addon.getExifDate(path, (err, result) => res(result))
         })
     }
 

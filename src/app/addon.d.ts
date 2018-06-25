@@ -17,6 +17,7 @@ export interface FileItem extends IItem {
 	size?: number
     time?: Date
     version?: string
+    isExif?: boolean
 }
 
 export interface DriveInfo extends IItem {
