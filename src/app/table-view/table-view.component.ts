@@ -67,7 +67,15 @@ export class TableViewComponent implements AfterViewInit {
 
     focus() { this.table.nativeElement.focus() }
 
-    resizeChecking() {
+    getCurrentItem() {
+        const index = this.getCurrentIndex()
+        if (index != -1)
+            return this.tableViewItems[index]
+        else
+            return null
+    }
+
+    private resizeChecking() {
         if (this.table.nativeElement.parentElement.clientHeight != this.recentHeight) {
             const isFocused = this.table.nativeElement.contains(document.activeElement)
             this.recentHeight = this.table.nativeElement.parentElement.clientHeight
@@ -138,6 +146,7 @@ export class TableViewComponent implements AfterViewInit {
         else
             return defaultValue
     }
+
     private setCurrentIndex(index: number, lastIndex?: number) {
         if (lastIndex == null) 
             lastIndex = this.getCurrentIndex(0)

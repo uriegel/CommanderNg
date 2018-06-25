@@ -19,7 +19,7 @@ export class CommanderViewComponent implements AfterViewInit {
     set path(value: string) {
         if (value.endsWith('\\'))
             value = value.substr(0, value.length - 1)
-        const itemProcessor = this.processorFactory.get(this.itemProcessor, value)
+        const itemProcessor = this.processorFactory.get(this.itemProcessor, this, value)
         if (itemProcessor) {
             this.itemProcessor = itemProcessor
             this.tableView.columns = this.itemProcessor.columns
@@ -41,12 +41,18 @@ export class CommanderViewComponent implements AfterViewInit {
         }
     }
 
-    // private processItem() {
-    //     const index = this.getCurrentIndex()
-    //     if (index == -1)
-    //         return
-    // }
+    private onTableKeydown(evt: KeyboardEvent) {
+        if (evt.which == 13) // Return
+            this.processItem()
+    }
 
+    private onDblClick() { this.processItem() }
+
+    private processItem() {
+        const item = this.tableView.getCurrentItem()
+        if (item)
+            this.itemProcessor.process(item)
+    }
 
     private itemProcessor: ItemProcessor
 }

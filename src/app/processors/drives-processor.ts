@@ -16,4 +16,6 @@ export class DrivesProcessor extends ItemProcessor {
 
     get(_: string): Observable<IItem[]> { return from(new Promise(
         (res, rej) => this.addon.getDrives((err, result) => res(result)))) }
+
+    process(item: IItem) { } 
 }

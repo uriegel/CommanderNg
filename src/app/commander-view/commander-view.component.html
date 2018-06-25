@@ -1,4 +1,5 @@
 <div class="container">
     <input #input value="{{path}}" (keydown)="onInputKeydown($event)" (click)="$event.target.select()">
-    <app-table-view class="tableView" [id]="'commander'" [itemsHeight]="18"></app-table-view>
+    <app-table-view class="tableView" [id]="'commander'" [itemsHeight]="18" 
+        (keydown)="onTableKeydown($event)" (dblclick)="onDblClick()"></app-table-view>
 </div>
