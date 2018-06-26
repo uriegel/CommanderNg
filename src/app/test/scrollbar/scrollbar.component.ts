@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core'
-import { ScrollbarComponent as Scrollbar } from '../../scrollbar/scrollbar.component'
-import { Observable, Subscriber } from 'rxjs'
+import { Observable, Subscriber, from } from 'rxjs'
 import { map } from 'rxjs/operators'
+import { Addon } from "../../addon"
 
 // TODO: items(get and set): subscribe to get item[], set: on click get filenames from addon via Observable
 // TODO: keyboard-control currentItem: scrollIntoView
@@ -21,9 +21,6 @@ import { map } from 'rxjs/operators'
 })
 export class ScrollbarComponent implements OnInit {
 
-    @ViewChild("ul") ul: ElementRef
-    @ViewChild(Scrollbar) scrollbar: Scrollbar
-
     items: Observable<string[]>
 
     ngOnInit() {
@@ -36,15 +33,30 @@ export class ScrollbarComponent implements OnInit {
     private itemValues: string[]
 
     private seed = 0
+    private dirs = [ " c:\\", "c:\windows", "c:\windows\\system32 "]
 
     private onNew() {
 
         const count = Math.floor((Math.random() * 10)) + 15
         const itemsArray = Array.from(Array(count).keys()).map(n => `Item #${n} - ${n + this.seed}`)
         this.seed += count
-        this.scrollbar.itemsChanged(itemsArray.length)
+
+
+        // const index = this.seed++ % 3
+        // const dir = this.dirs[index]
+        // const result = this.get(dir)
         this.displayObserver.next(itemsArray)
     }
 
+    get(path: string): Observable<string[]> { 
+        return from(new Promise(
+        (res, rej) => this.addon.readDirectory(path, 
+            (err, result) => {
+                const items = result.map(i => i.name)
+                res(items)
+            })
+        ))
+    }
+    private addon: Addon = (<any>window).require('addon')
     private displayObserver: Subscriber<string[]>
 }
