@@ -2,6 +2,18 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
 import { ScrollbarComponent as Scrollbar } from '../../scrollbar/scrollbar.component'
 import { Observable, Subscriber } from 'rxjs';
 
+// TODO: items(get and set): subscribe to get item[], set: on click get filenames from addon via Observable
+// TODO: bind ul.nativeElement.clientHeight
+// TODO: keyboard-control currentItem: scrollIntoView
+// TODO: getDirectory and select scrolled item
+//
+// TODO:
+// TableViewComponent:
+// <ng-container *ngFor="let item of items | virtualList: scrollbar |async" [ngSwitch]="item.type">
+
+// items: Observable<IItem[]> 
+
+
 @Component({
   selector: 'app-test-scrollbar',
   templateUrl: './scrollbar.component.html',
@@ -19,23 +31,7 @@ export class ScrollbarComponent implements OnInit {
         }) 
     }
 
-    ngOnInit() {
-        // this.list = document.getElementById("list") as HTMLUListElement
-        // this.itemHeight = this.initializeItemHeight()
-        // const capacity = this.calculateCapacity()
-
-        // const lis = [...Array(Math.min(capacity + 1, this.itemsCount)).keys()].map(n => {
-        //     const li = document.createElement("li")
-        //     li.innerText = `Eintrag #${n}`
-        //     return li
-        // })
-        
-
-
-        // lis.forEach(n => this.list.appendChild(n))
-
-        this.startResizeChecking()
-    }
+    ngOnInit() { this.startResizeChecking() }
 
     private seed = 0
 
