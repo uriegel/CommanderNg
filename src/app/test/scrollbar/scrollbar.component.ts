@@ -33,19 +33,13 @@ export class ScrollbarComponent implements OnInit {
     private itemValues: string[]
 
     private seed = 0
-    private dirs = [ " c:\\", "c:\windows", "c:\windows\\system32 "]
+    private dirs = [ "c:\\", "c:\\windows", "c:\\windows\\system32"]
 
     private onNew() {
-
-        const count = Math.floor((Math.random() * 10)) + 15
-        const itemsArray = Array.from(Array(count).keys()).map(n => `Item #${n} - ${n + this.seed}`)
-        this.seed += count
-
-
-        // const index = this.seed++ % 3
-        // const dir = this.dirs[index]
-        // const result = this.get(dir)
-        this.displayObserver.next(itemsArray)
+        const index = this.seed++ % 3
+        const dir = this.dirs[index]
+        const result = this.get(dir)
+        result.subscribe(value => this.displayObserver.next(value))
     }
 
     get(path: string): Observable<string[]> { 
