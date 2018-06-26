@@ -3,7 +3,7 @@ import { Observable, Subscriber, from } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { Addon } from "../../addon"
 
-// TODO: items(get and set): subscribe to get item[], set: on click get filenames from addon via Observable
+// TODO: Resize: scrollitems not showing
 // TODO: keyboard-control currentItem: scrollIntoView
 // TODO: getDirectory and select scrolled item
 //
