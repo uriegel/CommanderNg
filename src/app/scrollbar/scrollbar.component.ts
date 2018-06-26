@@ -57,10 +57,9 @@ export class ScrollbarComponent implements AfterViewInit {
             this.steps = this.itemsCountAbsolute - this.maxItemsToDisplay        
             this.step = (this.parentHeight - 32 - this.columnsHeight - gripHeight) / this.steps
             this.renderer.setStyle(this.grip.nativeElement, "height", gripHeight + 'px')
-            if (this.position > this.steps) {
+            if (this.position > this.steps) 
                 this.position = this.steps
-                this.positionChanged.emit(this.position)
-            }
+            this.positionChanged.emit(this.position)
         }
         if (newScrollPos != undefined) {
             this.position = newScrollPos
