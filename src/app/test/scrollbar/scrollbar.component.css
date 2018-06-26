@@ -12,8 +12,8 @@
 
 ul {
     position: absolute;
-    list-style-type: none;
-    padding-left: 5px;
+    padding: 0px;
+    margin: 0px;
     height: 100%;
     width: 100%;
     clip: rect(0px, auto, auto, 0px);
@@ -22,15 +22,3 @@ ul {
 button {
     margin: 10px;
 }
-/*
-#ulContainer {
-    margin: 40px;
-    position: relative; 
-    width: 200px;
-    height: calc(100vh - 80px);
-    border-color: gray;
-    border-width: 1px;
-    border-style: solid;
-}
-*/
-

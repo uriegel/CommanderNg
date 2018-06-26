@@ -4,9 +4,7 @@
     overflow: hidden;
     box-sizing: border-box;
     background-color: var(--background-color);
-    top: 16px;
     right: 0px;
-    height: calc(100% - 16px);
     width: 16px;
     border-style: solid;
     border-color: var(--scrollbar-border-color);

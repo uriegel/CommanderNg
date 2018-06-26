@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, Output, EventEmitter } from '@angular/core'
+import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, Output, EventEmitter, Input } from '@angular/core'
 
 @Component({
     selector: 'app-scrollbar',
@@ -8,6 +8,9 @@ import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, Output, Eve
 export class ScrollbarComponent implements AfterViewInit {
     @ViewChild("scrollbar") scrollbar: ElementRef
     @ViewChild("grip") grip: ElementRef
+    @Input() list: HTMLElement
+    @Input() columnsHeight = 0
+    @Input() itemHeight: number
     @Output() positionChanged: EventEmitter<number> = new EventEmitter()    
 
     maxItemsToDisplay = 0
@@ -16,10 +19,8 @@ export class ScrollbarComponent implements AfterViewInit {
     constructor(private renderer: Renderer2) {}
 
     ngAfterViewInit() {
-        this.timer = setTimeout(() => {}, -1)
-        clearTimeout(this.timer)
-        this.interval = setTimeout(() => {}, -1)
-        clearTimeout(this.interval)
+        this.scrollbar.nativeElement.style.height = `calc(100% - ${this.columnsHeight}px`
+        this.onResize()
     }
 
     /**
@@ -83,6 +84,24 @@ export class ScrollbarComponent implements AfterViewInit {
         if (this.position < 0)
             this.position = 0
         this.positionGrip()
+    }
+
+    private onResize() {
+        if (this.list.parentElement.clientHeight != this.recentHeight) {
+            this.recentHeight = this.list.parentElement.clientHeight
+            let recentCapacity = this.itemsCapacity
+            this.itemsCapacity = this.calculateCapacity()
+            this.itemsChanged(this.itemsCountAbsolute, this.itemsCapacity)
+        }
+    }
+
+    private calculateCapacity() {
+        let capacity = Math.floor((this.list.parentElement.clientHeight - this.columnsHeight) / this.itemHeight)
+        if (capacity < 0)
+            capacity = 0
+    
+        console.log(`Kapazität: ${capacity}`)
+        return capacity
     }
 
     private scrollbarMouseDown(evt: MouseEvent) {
@@ -242,11 +261,11 @@ export class ScrollbarComponent implements AfterViewInit {
         this.renderer.setStyle(this.grip.nativeElement, "top", top + 'px')
     }
 
-    private readonly columnsHeight = 16
     private itemsCapacity = 0
     private setFocus = () => { }
     private gripTopDelta = -1
     private gripping = false
+    private recentHeight = 0
     private parentHeight = 0
     private offsetTop = 0
 

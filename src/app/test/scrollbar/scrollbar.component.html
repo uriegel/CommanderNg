@@ -4,6 +4,6 @@
             <li>{{item}}</li>
         </ng-container> 
     </ul>
-    <app-scrollbar #scrollbar></app-scrollbar>
+    <app-scrollbar #scrollbar [list]=ul [itemHeight]=14></app-scrollbar>
 </div>
 <button (click)="onNew()">Einträge</button>

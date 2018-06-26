@@ -200,7 +200,7 @@ export class TableViewComponent implements AfterViewInit {
 
     private setScrollbar(newPos?: number) {
         if (this.tableCapacity >= 0)
-            this.scrollbar.itemsChanged(this.tableViewItems ? this.tableViewItems.length : 0, this.tableCapacity, newPos)
+            this.scrollbar.itemsChanged(this.tableViewItems ? this.tableViewItems.length : 0)
     }
 
     private setColumnsInControl() {
