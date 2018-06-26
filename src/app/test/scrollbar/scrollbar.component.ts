@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
 import { ScrollbarComponent as Scrollbar } from '../../scrollbar/scrollbar.component'
+import { Observable, Subscriber } from 'rxjs';
 
 @Component({
   selector: 'app-test-scrollbar',
@@ -8,10 +9,15 @@ import { ScrollbarComponent as Scrollbar } from '../../scrollbar/scrollbar.compo
 })
 export class ScrollbarComponent implements OnInit {
 
-    constructor() { }
-
     @ViewChild("ul") ul: ElementRef
     @ViewChild(Scrollbar) scrollbar: Scrollbar
+
+    get items(): Observable<string[]> { 
+        return new Observable<string[]>(displayObserver => {
+            this.displayObserver = displayObserver
+            this.displayObserver.next(this.itemsArray)
+        }) 
+    }
 
     ngOnInit() {
         // this.list = document.getElementById("list") as HTMLUListElement
@@ -24,12 +30,23 @@ export class ScrollbarComponent implements OnInit {
         //     return li
         // })
         
+
+
         // lis.forEach(n => this.list.appendChild(n))
 
         this.startResizeChecking()
     }
 
-    startResizeChecking() {
+    private seed = 0
+
+    private onNew() {
+        const count = Math.floor((Math.random() * 10)) + 15
+        this.itemsArray = Array.from(Array(count).keys()).map(n => `Item #${n} - ${n + this.seed}`)
+        this.seed += count
+        this.displayObserver.next(this.itemsArray)
+    }
+
+    private startResizeChecking() {
         let recentHeight = 0
     
         window.addEventListener('resize', () => resizeChecking())
@@ -41,7 +58,7 @@ export class ScrollbarComponent implements OnInit {
                 recentHeight = this.ul.nativeElement.clientHeight
                 let recentCapacity = capacity
                 capacity = this.calculateCapacity()
-                this.scrollbar.itemsChanged(this.itemsCount, capacity)
+                this.scrollbar.itemsChanged(this.itemsArray.length, capacity)
             }
         }
         resizeChecking()
@@ -60,7 +77,9 @@ export class ScrollbarComponent implements OnInit {
         return capacity
     }
 
-    private itemsCount = 15
+    private displayObserver: Subscriber<string[]>
+    private itemsArray: string[] = []
+
     // TODO: measure
     private readonly itemHeight = 14
     private startPosition = 0

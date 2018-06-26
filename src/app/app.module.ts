@@ -27,6 +27,7 @@ import { NetworkdriveComponent } from './svgs/networkdrive/networkdrive.componen
 import { CdromComponent } from './svgs/cdrom/cdrom.component'
 import { UsbComponent } from './svgs/usb/usb.component'
 import { ParentItemComponent } from './datatemplates/parent-item/parent-item.component'
+import { VirtualListPipe } from './pipes/virtual-list.pipe'
 @NgModule({
     declarations: [
         AppComponent,
@@ -53,7 +54,8 @@ import { ParentItemComponent } from './datatemplates/parent-item/parent-item.com
         NetworkdriveComponent,
         CdromComponent,
         UsbComponent,
-        ParentItemComponent
+        ParentItemComponent,
+        VirtualListPipe
     ],
     imports: [
         BrowserModule

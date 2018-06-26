@@ -10,6 +10,9 @@ export class ScrollbarComponent implements AfterViewInit {
     @ViewChild("grip") grip: ElementRef
     @Output() positionChanged: EventEmitter<number> = new EventEmitter()    
 
+    maxItemsToDisplay = 0
+    position = 0
+    
     constructor(private renderer: Renderer2) {}
 
     ngAfterViewInit() {
@@ -25,28 +28,32 @@ export class ScrollbarComponent implements AfterViewInit {
      * @param numberOfItemsDisplayed number of Items which can be displayed without scrolling
      * @param newScrollPos first item displayed
      */
-    itemsChanged(numberOfItems: number, numberOfItemsDisplayed: number, newScrollPos?: number) {
-        if (numberOfItemsDisplayed > numberOfItems)
-            numberOfItemsDisplayed = numberOfItems
+    itemsChanged(numberOfItems: number, itemsCapacity?: number, newScrollPos?: number) {
+        if (itemsCapacity)
+            this.itemsCapacity = itemsCapacity
+        else
+            itemsCapacity = this.itemsCapacity
+        if (itemsCapacity > numberOfItems)
+            itemsCapacity = numberOfItems
         this.parentHeight = this.scrollbar.nativeElement.parentElement.parentElement.clientHeight - this.offsetTop
         if (numberOfItems)
             this.itemsCountAbsolute = numberOfItems
-        if (numberOfItemsDisplayed)
-            this.itemsCountVisible = numberOfItemsDisplayed
+        if (itemsCapacity)
+            this.maxItemsToDisplay = itemsCapacity
 
         if (!this.itemsCountAbsolute)
             return
-        if (this.itemsCountAbsolute <= this.itemsCountVisible) {
+        if (this.itemsCountAbsolute <= this.maxItemsToDisplay) {
             this.renderer.addClass(this.scrollbar.nativeElement, "scrollbarHidden")
             this.position = 0
             this.positionChanged.emit(this.position)
         }
         else {
             this.renderer.removeClass(this.scrollbar.nativeElement, "scrollbarHidden")
-            var gripHeight = (this.parentHeight - 32 - this.columnsHeight) * (this.itemsCountVisible / this.itemsCountAbsolute)
+            var gripHeight = (this.parentHeight - 32 - this.columnsHeight) * (this.maxItemsToDisplay / this.itemsCountAbsolute)
             if (gripHeight < 5)
                 gripHeight = 5
-            this.steps = this.itemsCountAbsolute - this.itemsCountVisible
+            this.steps = this.itemsCountAbsolute - this.maxItemsToDisplay        
             this.step = (this.parentHeight - 32 - this.columnsHeight - gripHeight) / this.steps
             this.renderer.setStyle(this.grip.nativeElement, "height", gripHeight + 'px')
             if (this.position > this.steps) {
@@ -58,8 +65,8 @@ export class ScrollbarComponent implements AfterViewInit {
             this.position = newScrollPos
             if (this.position < 0)
                 this.position = 0
-            else if (this.position >= numberOfItems - numberOfItemsDisplayed)
-                this.position = numberOfItems - numberOfItemsDisplayed
+            else if (this.position >= numberOfItems - itemsCapacity)
+                this.position = numberOfItems - itemsCapacity
             this.positionChanged.emit(this.position)
         }
         this.positionGrip()
@@ -190,7 +197,7 @@ export class ScrollbarComponent implements AfterViewInit {
             return
         }
 
-        this.position -= this.itemsCountVisible - 1
+        this.position -= this.maxItemsToDisplay - 1
         if (this.position < 0) {
             const lastTime = this.position != 0
             this.position = 0
@@ -213,7 +220,7 @@ export class ScrollbarComponent implements AfterViewInit {
             return
         }
 
-        this.position += this.itemsCountVisible - 1
+        this.position += this.maxItemsToDisplay - 1
         if (this.position > this.steps) {
             const lastTime = this.position != 0
             this.position = this.steps
@@ -236,7 +243,7 @@ export class ScrollbarComponent implements AfterViewInit {
     }
 
     private readonly columnsHeight = 16
-    private position = 0
+    private itemsCapacity = 0
     private setFocus = () => { }
     private gripTopDelta = -1
     private gripping = false
@@ -249,5 +256,4 @@ export class ScrollbarComponent implements AfterViewInit {
     private step = 0
     private steps = 0
     private itemsCountAbsolute = 0
-    private itemsCountVisible = 0
 }

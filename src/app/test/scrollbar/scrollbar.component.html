@@ -1,21 +1,9 @@
 <div id="listBox">
-    <ul #ul>
-        <li>Afdfe</li>
-        <li>Afdfe</li>
-        <li>Afdfe</li>
-        <li>Afdfe</li>
-        <li>Afdfe</li>
-        <li>Afdfe</li>
-        <li>Afdfe</li>
-        <li>Afdfe</li>
-        <li>Afdfe</li>
-        <li>Afdfe</li>
-        <li>Afdfe</li>
-        <li>Afdfe</li>
-        <li>Afdfe</li>
-        <li>Afdfe</li>
-        <li>Afdfe</li>
+    <ul #ul >
+        <ng-container *ngFor="let item of items | virtualList: scrollbar | async" >
+            <li>{{item}}</li>
+        </ng-container> 
     </ul>
-    <app-scrollbar (positionChanged)="onScroll($event)"></app-scrollbar>
+    <app-scrollbar #scrollbar (positionChanged)="onScroll($event)"></app-scrollbar>
 </div>
-<button>Einträge</button>
+<button (click)="onNew()">Einträge</button>
