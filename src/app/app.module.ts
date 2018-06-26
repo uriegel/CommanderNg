@@ -19,13 +19,13 @@ import { DriveItemComponent } from './datatemplates/drive-item/drive-item.compon
 import { FileSizePipe } from './pipes/file-size.pipe'
 import { DatePipe } from './pipes/date.pipe'
 import { FileExtensionPipe } from './pipes/file-extension.pipe'
-import { NoFileExtensionPipe } from './pipes/no-file-extension.pipe';
-import { FileIconPipe } from './pipes/file-icon.pipe';
-import { FolderComponent } from './svgs/folder/folder.component';
-import { DriveComponent } from './svgs/drive/drive.component';
-import { NetworkdriveComponent } from './svgs/networkdrive/networkdrive.component';
-import { CdromComponent } from './svgs/cdrom/cdrom.component';
-import { UsbComponent } from './svgs/usb/usb.component';
+import { NoFileExtensionPipe } from './pipes/no-file-extension.pipe'
+import { FileIconPipe } from './pipes/file-icon.pipe'
+import { FolderComponent } from './svgs/folder/folder.component'
+import { DriveComponent } from './svgs/drive/drive.component'
+import { NetworkdriveComponent } from './svgs/networkdrive/networkdrive.component'
+import { CdromComponent } from './svgs/cdrom/cdrom.component'
+import { UsbComponent } from './svgs/usb/usb.component'
 import { ParentItemComponent } from './datatemplates/parent-item/parent-item.component'
 @NgModule({
     declarations: [

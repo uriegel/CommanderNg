@@ -25,7 +25,7 @@ export class ScrollbarComponent implements OnInit {
         
         lis.forEach(n => this.list.appendChild(n))
 
-        this.startResizeChecking()
+        // this.startResizeChecking()
     }
 
     startResizeChecking() {

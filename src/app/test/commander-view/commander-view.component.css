@@ -1,13 +1,17 @@
-.container {
+:host {
+    width: 100vw;
     display: flex;
     flex-direction: column;
     height: calc(100vh - 60px);
-    margin: 30px;
+    margin: 30px; 
 }
 
-.commanderView {
+app-commander-view {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     position: relative;
+    border-color: lightgrey;
+    border-style: solid;
+    border-width: 1px;
 }
