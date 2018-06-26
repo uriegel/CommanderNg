@@ -38,7 +38,7 @@ export class FileProcessor extends ItemProcessor {
                     }
                 }
                 var files = result.filter(n => n.type == 0)
-                const items = parentItem.concat(dirs.concat(files))
+                const items = [...parentItem, ...dirs, ...files]
                 if (!currentItem)
                     currentItem = items[0]
                 if (currentItem)
