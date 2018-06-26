@@ -21,7 +21,8 @@ export class VirtualListPipe implements PipeTransform {
             this.displayObserver = displayObserver
             this.source.subscribe(value => {
                 this.items = value
-                scrollbar.itemsChanged(this.items.length)
+                this.scrollbar.position = 0
+                this.scrollbar.itemsChanged(this.items.length)
                 console.log(`Items changed: ${this.items.length}`)        
                 this.displayObserver.next(this.getViewItems(this.scrollbar.position))
             })

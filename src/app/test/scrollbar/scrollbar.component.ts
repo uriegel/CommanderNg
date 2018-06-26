@@ -1,9 +1,9 @@
-import { Component, ViewChild, ElementRef } from '@angular/core'
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core'
 import { ScrollbarComponent as Scrollbar } from '../../scrollbar/scrollbar.component'
-import { Observable, Subscriber } from 'rxjs';
+import { Observable, Subscriber } from 'rxjs'
+import { map } from 'rxjs/operators'
 
 // TODO: items(get and set): subscribe to get item[], set: on click get filenames from addon via Observable
-// TODO: bind ul.nativeElement.clientHeight
 // TODO: keyboard-control currentItem: scrollIntoView
 // TODO: getDirectory and select scrolled item
 //
@@ -19,28 +19,32 @@ import { Observable, Subscriber } from 'rxjs';
   templateUrl: './scrollbar.component.html',
   styleUrls: ['./scrollbar.component.css']
 })
-export class ScrollbarComponent {
+export class ScrollbarComponent implements OnInit {
 
     @ViewChild("ul") ul: ElementRef
     @ViewChild(Scrollbar) scrollbar: Scrollbar
 
-    get items(): Observable<string[]> { 
-        return new Observable<string[]>(displayObserver => {
-            this.displayObserver = displayObserver
-            this.displayObserver.next(this.itemsArray)
-        }) 
+    items: Observable<string[]>
+
+    ngOnInit() {
+        this.items = new Observable<string[]>(displayObserver => this.displayObserver = displayObserver ).pipe(map(t => {
+            this.itemValues = t
+            return t
+        }))
     }
+
+    private itemValues: string[]
 
     private seed = 0
 
     private onNew() {
+
         const count = Math.floor((Math.random() * 10)) + 15
-        this.itemsArray = Array.from(Array(count).keys()).map(n => `Item #${n} - ${n + this.seed}`)
+        const itemsArray = Array.from(Array(count).keys()).map(n => `Item #${n} - ${n + this.seed}`)
         this.seed += count
-        this.scrollbar.itemsChanged(this.itemsArray.length)
-        this.displayObserver.next(this.itemsArray)
+        this.scrollbar.itemsChanged(itemsArray.length)
+        this.displayObserver.next(itemsArray)
     }
 
     private displayObserver: Subscriber<string[]>
-    private itemsArray: string[] = []
 }
