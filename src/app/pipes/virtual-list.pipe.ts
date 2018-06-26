@@ -2,7 +2,6 @@ import { Pipe, PipeTransform } from '@angular/core'
 import { Observable, Subscriber } from 'rxjs'
 import { ScrollbarComponent } from '../scrollbar/scrollbar.component'
 
-// TODO: Anpassung bei ItemsChanged
 // TODO: ensureVisible
 @Pipe({
     name: 'virtualList'
@@ -30,7 +29,7 @@ export class VirtualListPipe implements PipeTransform {
     }
 
     private getViewItems(position: number) {        
-        console.log(`this.scrollbar.itemsCapacity: ${this.scrollbar.maxItemsToDisplay}`)
+        console.log(`from ${position} to this.scrollbar.itemsCapacity: ${this.scrollbar.maxItemsToDisplay}`)
         return this.items.filter((_, i) => i >= position && i < this.scrollbar.maxItemsToDisplay + 1 + position)
     }
 

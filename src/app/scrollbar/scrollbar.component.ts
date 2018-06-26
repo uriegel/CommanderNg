@@ -13,14 +13,17 @@ export class ScrollbarComponent implements AfterViewInit {
     @Input() itemHeight: number
     @Output() positionChanged: EventEmitter<number> = new EventEmitter()    
 
-    maxItemsToDisplay = 0
-    position = 0
-    
     constructor(private renderer: Renderer2) {}
+
+    get maxItemsToDisplay() { return this._maxItemsToDisplay }
+    private _maxItemsToDisplay = 0
+    
+    position = 0
 
     ngAfterViewInit() {
         this.scrollbar.nativeElement.style.height = `calc(100% - ${this.columnsHeight}px`
         this.onResize()
+        this.list.onmousewheel = evt => this.onMouseWheel(evt)
     }
 
     /**
@@ -40,7 +43,7 @@ export class ScrollbarComponent implements AfterViewInit {
         if (numberOfItems)
             this.itemsCountAbsolute = numberOfItems
         if (itemsCapacity)
-            this.maxItemsToDisplay = itemsCapacity
+            this._maxItemsToDisplay = itemsCapacity
 
         if (!this.itemsCountAbsolute)
             return
@@ -83,6 +86,11 @@ export class ScrollbarComponent implements AfterViewInit {
         if (this.position < 0)
             this.position = 0
         this.positionGrip()
+    }
+
+    private onMouseWheel(evt: WheelEvent) {
+        var delta = evt.wheelDelta / Math.abs(evt.wheelDelta) * 3
+        this.itemsChanged(this.itemsCountAbsolute, this.itemsCapacity, this.position - delta)
     }
 
     private onResize() {
