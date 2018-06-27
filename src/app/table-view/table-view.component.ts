@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, TemplateRef, Renderer2, Output, EventEmitter, Input } from '@angular/core'
+import { Component, AfterViewInit, ViewChild, ElementRef, TemplateRef, Renderer2, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core'
 import { Observable, Subscriber } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as Columns, IColumns, IColumnSortEvent } from '../columns/columns.component'
@@ -56,13 +56,14 @@ export class TableViewComponent implements AfterViewInit {
     }
     _items: Observable<IItem[]>
 
-    constructor(private renderer: Renderer2) {}
+    constructor(private renderer: Renderer2, private ref: ChangeDetectorRef) {}
 
     ngAfterViewInit() {
         this.setColumnsInControl()
         window.addEventListener('resize', () => this.resizeChecking())
         this.resizeChecking()
         this.setScrollbar()
+        this.ref.detectChanges()
     }
 
     focus() { this.table.nativeElement.focus() }
