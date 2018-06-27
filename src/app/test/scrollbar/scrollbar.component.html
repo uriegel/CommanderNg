@@ -1,7 +1,7 @@
 <div id="listBox">
     <ul #ul (mousewheel)=scrollbar.onMouseWheel($event)>
         <ng-container *ngFor="let item of items | virtualList: scrollbar | async" >
-            <li>{{item}}</li>
+            <li (class.isCurrent)="item.isCurrent">{{item.text}}</li>
         </ng-container> 
     </ul>
     <app-scrollbar #scrollbar [list]=ul [itemHeight]=14></app-scrollbar>

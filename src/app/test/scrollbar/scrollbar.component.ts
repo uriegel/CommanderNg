@@ -12,6 +12,10 @@ import { Addon } from "../../addon"
 
 // items: Observable<IItem[]> 
 
+interface Item {
+    text: string
+    isCurrent: boolean
+}
 
 @Component({
   selector: 'app-test-scrollbar',
@@ -20,16 +24,16 @@ import { Addon } from "../../addon"
 })
 export class ScrollbarComponent implements OnInit {
 
-    items: Observable<string[]>
+    items: Observable<Item[]>
 
     ngOnInit() {
-        this.items = new Observable<string[]>(displayObserver => this.displayObserver = displayObserver ).pipe(map(t => {
+        this.items = new Observable<Item[]>(displayObserver => this.displayObserver = displayObserver ).pipe(map(t => {
             this.itemValues = t
             return t
         }))
     }
 
-    private itemValues: string[]
+    private itemValues: Item[]
 
     private seed = 0
     private dirs = [ "c:\\", "c:\\windows", "c:\\windows\\system32"]
@@ -38,7 +42,10 @@ export class ScrollbarComponent implements OnInit {
         const index = this.seed++ % 3
         const dir = this.dirs[index]
         const result = this.get(dir)
-        result.subscribe(value => this.displayObserver.next(value))
+        result.subscribe(value => this.displayObserver.next(value.map((n, i) => { return {
+            text: n,
+            isCurrent: i == 0
+        }})))
     }
 
     get(path: string): Observable<string[]> { 
@@ -51,5 +58,5 @@ export class ScrollbarComponent implements OnInit {
         ))
     }
     private addon: Addon = (<any>window).require('addon')
-    private displayObserver: Subscriber<string[]>
+    private displayObserver: Subscriber<Item[]>
 }
