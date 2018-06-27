@@ -23,7 +23,6 @@ export class ScrollbarComponent implements AfterViewInit {
     ngAfterViewInit() {
         this.scrollbar.nativeElement.style.height = `calc(100% - ${this.columnsHeight}px`
         this.onResize()
-        this.list.onmousewheel = evt => this.onMouseWheel(evt)
     }
 
     /**
@@ -75,22 +74,19 @@ export class ScrollbarComponent implements AfterViewInit {
         this.positionGrip()
     }
 
-    /**
-     * Sets the scroll
-     * @param position
-     */
-    setPosition(position: number) {
+    private onMouseWheel(evt: WheelEvent) {
+        var delta = evt.wheelDelta / Math.abs(evt.wheelDelta) * 3
+        this.itemsChanged(this.itemsCountAbsolute, this.itemsCapacity, this.position - delta)
+    }
+
+    // TODO: besser als position = 
+    private setPosition(position: number) {
         this.position = position
         if (this.position > this.steps)
             this.position = this.steps
         if (this.position < 0)
             this.position = 0
         this.positionGrip()
-    }
-
-    private onMouseWheel(evt: WheelEvent) {
-        var delta = evt.wheelDelta / Math.abs(evt.wheelDelta) * 3
-        this.itemsChanged(this.itemsCountAbsolute, this.itemsCapacity, this.position - delta)
     }
 
     private onResize() {

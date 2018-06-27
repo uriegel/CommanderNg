@@ -3,7 +3,6 @@ import { Observable, Subscriber, from } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { Addon } from "../../addon"
 
-// TODO: MouseWheel in ScrollBar
 // TODO: keyboard-control currentItem: scrollIntoView
 // TODO: getDirectory and select scrolled item
 //
