@@ -16,7 +16,7 @@ export interface IItem {
 export class TableViewComponent implements AfterViewInit {
 
     @Input() id: string 
-    @Input() itemsHeight: number
+    @Input() itemHeight: number
     @Output() onSort: EventEmitter<IColumnSortEvent> = new EventEmitter()    
     @ViewChild("table") table: ElementRef
     @ViewChild(Scrollbar) scrollbar: Scrollbar
@@ -190,8 +190,8 @@ export class TableViewComponent implements AfterViewInit {
     }
 
     private calculateViewItemsCount() {
-        if (this.itemsHeight && this.columnsControl) {
-            this.tableCapacity = Math.floor((this.table.nativeElement.parentElement.offsetHeight - this.columnsControl.height) / this.itemsHeight) 
+        if (this.itemHeight && this.columnsControl) {
+            this.tableCapacity = Math.floor((this.table.nativeElement.parentElement.offsetHeight - this.columnsControl.height) / this.itemHeight) 
             if (this.tableCapacity < 0)
                 this.tableCapacity = 0
         }
