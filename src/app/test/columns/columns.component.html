@@ -1,22 +1,20 @@
-<div id="container">
-    <table id="table">
-        <thead app-columns (onSort)="onSort($event)"></thead>
-        <tbody>
-            <tr>
-                <td>Test</td>
-                <td>txt</td>
-                <td>25.02.1999 14:23</td>
-                <td>123.567</td>
-            </tr>
-            <tr>
-                <td>Bild</td>
-                <td>jpg</td>
-                <td>15.12.2009 12:39</td>
-                <td>678.435</td>
-            </tr>
-        </tbody>
-    </table>
-        <div>
+<table id="table">
+    <thead app-columns (onSort)="onSort($event)"></thead>
+    <tbody>
+        <tr>
+            <td>Test</td>
+            <td>txt</td>
+            <td>25.02.1999 14:23</td>
+            <td>123.567</td>
+        </tr>
+        <tr>
+            <td>Bild</td>
+            <td>jpg</td>
+            <td>15.12.2009 12:39</td>
+            <td>678.435</td>
+        </tr>
+    </tbody>
+</table>
+<div>
     <button (click)="onOther()">Andere</button>
-  </div>
 </div>

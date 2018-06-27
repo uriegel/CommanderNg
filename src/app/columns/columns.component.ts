@@ -16,9 +16,9 @@ export interface IColumnSortEvent {
 }
 
 @Component({
-  selector: '[app-columns]',
-  templateUrl: './columns.component.html',
-  styleUrls: ['./columns.component.css']
+    selector: '[app-columns]',
+    templateUrl: './columns.component.html',
+    styleUrls: ['./columns.component.css']
 })
 export class ColumnsComponent {
     constructor(private renderer: Renderer2) {}
