@@ -4,8 +4,6 @@ import { map } from 'rxjs/operators'
 import { Addon } from "../../addon"
 import { ScrollbarComponent as ScrollBar  } from "../../scrollbar/scrollbar.component"
 
-// TODO: getDirectory and select scrolled item
-//
 // TODO:
 // TableViewComponent:
 // <ng-container *ngFor="let item of items | virtualList: scrollbar |async" [ngSwitch]="item.type">
@@ -38,10 +36,15 @@ export class ScrollbarComponent implements OnInit {
         const index = this.seed++ % 3
         const dir = this.dirs[index]
         const result = this.get(dir)
+
         result.subscribe(value => this.displayObserver.next(value.map((n, i) => { return {
             text: n,
             isCurrent: i == 0
-        }})))
+        }})), e => {}, () => {
+            var sys32 = this.itemValues.findIndex(n => n.text.toLowerCase() == "system32")
+            if (sys32 > 0)
+                this.setCurrentIndex(sys32)
+        })
     }
 
     get(path: string): Observable<string[]> { 
