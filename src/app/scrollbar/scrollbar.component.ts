@@ -15,10 +15,13 @@ export class ScrollbarComponent implements AfterViewInit {
 
     constructor(private renderer: Renderer2) {}
 
+    getPosition() { return this.position}
+    setPosition(value: number) { this.position = value }
+
     get maxItemsToDisplay() { return this._maxItemsToDisplay }
     private _maxItemsToDisplay = 0
     
-    position = 0
+    get itemsCapacity() { return this._itemsCapacity }
 
     ngAfterViewInit() {
         this.scrollbar.nativeElement.style.height = `calc(100% - ${this.columnsHeight}px`
@@ -33,9 +36,9 @@ export class ScrollbarComponent implements AfterViewInit {
      */
     itemsChanged(numberOfItems: number, itemsCapacity?: number, newScrollPos?: number) {
         if (itemsCapacity)
-            this.itemsCapacity = itemsCapacity
+            this._itemsCapacity = itemsCapacity
         else
-            itemsCapacity = this.itemsCapacity
+            itemsCapacity = this._itemsCapacity
         if (itemsCapacity > numberOfItems)
             itemsCapacity = numberOfItems
         this.parentHeight = this.scrollbar.nativeElement.parentElement.parentElement.clientHeight - this.offsetTop
@@ -74,27 +77,24 @@ export class ScrollbarComponent implements AfterViewInit {
         this.positionGrip()
     }
 
-    private onMouseWheel(evt: WheelEvent) {
-        var delta = evt.wheelDelta / Math.abs(evt.wheelDelta) * 3
-        this.itemsChanged(this.itemsCountAbsolute, this.itemsCapacity, this.position - delta)
+    scrollIntoView(index: number) {
+        if (index < this.position)
+            this.itemsChanged(this.itemsCountAbsolute, this._itemsCapacity, index)
+        if (index > this.position + this._itemsCapacity - 1)
+            this.itemsChanged(this.itemsCountAbsolute, this._itemsCapacity, index - this._itemsCapacity + 1)
     }
 
-    // TODO: besser als position = 
-    private setPosition(position: number) {
-        this.position = position
-        if (this.position > this.steps)
-            this.position = this.steps
-        if (this.position < 0)
-            this.position = 0
-        this.positionGrip()
+    private onMouseWheel(evt: WheelEvent) {
+        var delta = evt.wheelDelta / Math.abs(evt.wheelDelta) * 3
+        this.itemsChanged(this.itemsCountAbsolute, this._itemsCapacity, this.position - delta)
     }
 
     private onResize() {
         if (this.list.parentElement.clientHeight != this.recentHeight) {
             this.recentHeight = this.list.parentElement.clientHeight
-            let recentCapacity = this.itemsCapacity
-            this.itemsCapacity = this.calculateCapacity()
-            this.itemsChanged(this.itemsCountAbsolute, this.itemsCapacity)
+            let recentCapacity = this._itemsCapacity
+            this._itemsCapacity = this.calculateCapacity()
+            this.itemsChanged(this.itemsCountAbsolute, this._itemsCapacity)
         }
     }
 
@@ -264,7 +264,8 @@ export class ScrollbarComponent implements AfterViewInit {
         this.renderer.setStyle(this.grip.nativeElement, "top", top + 'px')
     }
 
-    private itemsCapacity = 0
+    private _itemsCapacity = 0
+    private position = 0
     private setFocus = () => { }
     private gripTopDelta = -1
     private gripping = false

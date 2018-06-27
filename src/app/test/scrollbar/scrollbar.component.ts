@@ -2,8 +2,8 @@ import { Component, ViewChild, ElementRef, OnInit } from '@angular/core'
 import { Observable, Subscriber, from } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { Addon } from "../../addon"
+import { ScrollbarComponent as ScrollBar  } from "../../scrollbar/scrollbar.component"
 
-// TODO: keyboard-control currentItem: scrollIntoView
 // TODO: getDirectory and select scrolled item
 //
 // TODO:
@@ -24,6 +24,7 @@ interface Item {
 })
 export class ScrollbarComponent implements OnInit {
 
+    @ViewChild(ScrollBar) private scrollBar: ScrollBar
     items: Observable<Item[]>
 
     ngOnInit() {
@@ -56,18 +57,16 @@ export class ScrollbarComponent implements OnInit {
     private onKeyDown(evt: KeyboardEvent) {
         switch (evt.which) {
             case 33:
-                //this.pageUp()
+                this.pageUp()
                 break
             case 34:
-                //this.pageDown()
+                this.pageDown()
                 break
             case 35: // End
-                // if (!evt.shiftKey)
-                //     this.end()
+                this.end()
                 break
             case 36: //Pos1
-                // if (!evt.shiftKey)
-                //     this.pos1()
+                this.pos1()
                 break
             case 38:
                 this.upOne()
@@ -94,11 +93,7 @@ export class ScrollbarComponent implements OnInit {
             lastIndex = this.getCurrentIndex(0)
         this.itemValues[lastIndex].isCurrent = false
         this.itemValues[index].isCurrent = true
-
-        // if (index < this.scrollPos)
-        //     this.setScrollbar(index)
-        // if (index > this.scrollPos + this.tableCapacity - 1)
-        //     this.setScrollbar(index - this.tableCapacity + 1)
+        this.scrollBar.scrollIntoView(index)
     }
 
     private downOne() {
@@ -112,6 +107,22 @@ export class ScrollbarComponent implements OnInit {
         const nextIndex = index > 0 ? index - 1 : index
         this.setCurrentIndex(nextIndex, index)
     }    
+
+    private pageDown() {
+        const index = this.getCurrentIndex(0)
+        const nextIndex = index < this.itemValues.length - this.scrollBar.itemsCapacity + 1 ? index + this.scrollBar.itemsCapacity - 1: this.itemValues.length - 1
+        this.setCurrentIndex(nextIndex, index)
+    }
+
+    private pageUp() {
+        const index = this.getCurrentIndex(0)
+        const nextIndex = index > this.scrollBar.itemsCapacity - 1? index - this.scrollBar.itemsCapacity + 1: 0
+        this.setCurrentIndex(nextIndex, index)
+    }
+
+    private end() { this.setCurrentIndex(this.itemValues.length - 1) } 
+    
+    private pos1() { this.setCurrentIndex(0) } 
 
     private itemValues: Item[]
     private seed = 0

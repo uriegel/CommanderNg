@@ -2,7 +2,6 @@ import { Pipe, PipeTransform } from '@angular/core'
 import { Observable, Subscriber } from 'rxjs'
 import { ScrollbarComponent } from '../scrollbar/scrollbar.component'
 
-// TODO: ensureVisible
 @Pipe({
     name: 'virtualList'
 })
@@ -20,10 +19,10 @@ export class VirtualListPipe implements PipeTransform {
             this.displayObserver = displayObserver
             this.source.subscribe(value => {
                 this.items = value
-                this.scrollbar.position = 0
+                this.scrollbar.setPosition(0)
                 this.scrollbar.itemsChanged(this.items.length)
                 console.log(`Items changed: ${this.items.length}`)        
-                this.displayObserver.next(this.getViewItems(this.scrollbar.position))
+                this.displayObserver.next(this.getViewItems(this.scrollbar.getPosition()))
             })
         })
     }
