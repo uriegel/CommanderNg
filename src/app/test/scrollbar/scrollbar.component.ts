@@ -33,11 +33,6 @@ export class ScrollbarComponent implements OnInit {
         }))
     }
 
-    private itemValues: Item[]
-
-    private seed = 0
-    private dirs = [ "c:\\", "c:\\windows", "c:\\windows\\system32"]
-
     private onNew() {
         const index = this.seed++ % 3
         const dir = this.dirs[index]
@@ -57,6 +52,70 @@ export class ScrollbarComponent implements OnInit {
             })
         ))
     }
+
+    private onKeyDown(evt: KeyboardEvent) {
+        switch (evt.which) {
+            case 33:
+                //this.pageUp()
+                break
+            case 34:
+                //this.pageDown()
+                break
+            case 35: // End
+                // if (!evt.shiftKey)
+                //     this.end()
+                break
+            case 36: //Pos1
+                // if (!evt.shiftKey)
+                //     this.pos1()
+                break
+            case 38:
+                this.upOne()
+                break
+            case 40:
+                this.downOne()
+                break
+            default:
+                return // exit this handler for other keys
+        }
+        evt.preventDefault() // prevent the default action (scroll / move caret)
+    }
+
+    private getCurrentIndex(defaultValue?: number) { 
+        const index = this.itemValues.findIndex(n => n.isCurrent) 
+        if (index != -1 || defaultValue == null)
+            return index
+        else
+            return defaultValue
+    }
+
+    private setCurrentIndex(index: number, lastIndex?: number) {
+        if (lastIndex == null) 
+            lastIndex = this.getCurrentIndex(0)
+        this.itemValues[lastIndex].isCurrent = false
+        this.itemValues[index].isCurrent = true
+
+        // if (index < this.scrollPos)
+        //     this.setScrollbar(index)
+        // if (index > this.scrollPos + this.tableCapacity - 1)
+        //     this.setScrollbar(index - this.tableCapacity + 1)
+    }
+
+    private downOne() {
+        const index = this.getCurrentIndex(0)
+        const nextIndex = index < this.itemValues.length - 1 ? index + 1 : index
+        this.setCurrentIndex(nextIndex, index)
+    }
+
+    private upOne() {
+        const index = this.getCurrentIndex(0)
+        const nextIndex = index > 0 ? index - 1 : index
+        this.setCurrentIndex(nextIndex, index)
+    }    
+
+    private itemValues: Item[]
+    private seed = 0
+    private dirs = [ "c:\\", "c:\\windows", "c:\\windows\\system32"]
     private addon: Addon = (<any>window).require('addon')
     private displayObserver: Subscriber<Item[]>
 }
