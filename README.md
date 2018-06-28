@@ -9,26 +9,16 @@ npm i -g @angular/cli
 ng new CommanderNg
 cd CommanderNg
 ```
-### Update index.html
-```
-<base href="./">
-```
 ### Install electron
 ```
 npm i electron --save-dev
 ```
 in package.json:
 * build-electron: 
-```ng build --base-href .```
-
+```"ng build --base-href . && copy main-typescript\\package.json dist\\package.json"``` 
 * electron: 
-```npm run build-electron && .\\node_modules\\.bin\\electron dist\\```
+```"npm run build-electron && .\\node_modules\\.bin\\electron --inspect=5858 dist\\"```
 
-## Build and Run
-### Starting point
-```
-npm i
-```
 ## To build C++ Addon
 ```
 npm install node-gyp -g 
@@ -40,6 +30,12 @@ npm install --global --production windows-build-tools
 in power shell mit Admin-Rechten:
 ```
 npm install (to build node addon) 
+```
+
+## Build and Run
+### Starting point
+```
+npm i
 ```
 to rebuild electron addon:
 ```
