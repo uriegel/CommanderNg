@@ -1,5 +1,7 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, Output, EventEmitter, Input } from '@angular/core'
 
+// TODO: Animation not for height
+
 @Component({
     selector: 'app-scrollbar',
     templateUrl: './scrollbar.component.html',
