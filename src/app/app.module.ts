@@ -28,6 +28,7 @@ import { CdromComponent } from './svgs/cdrom/cdrom.component'
 import { UsbComponent } from './svgs/usb/usb.component'
 import { ParentItemComponent } from './datatemplates/parent-item/parent-item.component'
 import { VirtualListPipe } from './pipes/virtual-list.pipe'
+import { ClipHeightPipe } from './pipes/clip-height.pipe'
 @NgModule({
     declarations: [
         AppComponent,
@@ -55,7 +56,8 @@ import { VirtualListPipe } from './pipes/virtual-list.pipe'
         CdromComponent,
         UsbComponent,
         ParentItemComponent,
-        VirtualListPipe
+        VirtualListPipe,
+        ClipHeightPipe
     ],
     imports: [
         BrowserModule
