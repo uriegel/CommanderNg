@@ -8,8 +8,6 @@ export interface IItem {
     isCurrent?: boolean
 }
 
-// TODO: onCalc not set
-
 @Component({
   selector: 'app-table-view',
   templateUrl: './table-view.component.html',

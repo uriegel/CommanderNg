@@ -1,5 +1,5 @@
 <table #table tabindex="1" [style.clip]="table.parentElement.clientHeight | clipHeight"
-     (keydown)="onKeyDown($event)" (mousedown)="scrollbar.onMouseDown($event)">
+     (keydown)="onKeyDown($event)" (mousewheel)=scrollbar.onMouseWheel($event) (mousedown)="onMouseDown($event)">
     <thead app-columns (onSort)="onColumnSort($event)"></thead>
     <tbody>
         <ng-container *ngFor="let item of viewItems | virtualList: scrollbar | async" [ngSwitch]="item.type">
