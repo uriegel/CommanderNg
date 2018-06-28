@@ -27,15 +27,14 @@ export class TableViewComponent implements AfterViewInit {
     get items() { return this._items }
     set items(value: Observable<IItem[]>) {
         this._items = value
-        this._items.subscribe({ 
+        const subscription = this._items.subscribe({ 
             next: value => {
                 this.tableViewItems = value
-                this.tableViewItems[2].isCurrent = true
+                subscription.unsubscribe()
             }
-         })
+        })
     }
     private _items: Observable<IItem[]>
-
 
     path: string
 
@@ -46,33 +45,6 @@ export class TableViewComponent implements AfterViewInit {
     }
     private _columns: IColumns
 
-//     /**
-//      * This Observable represents the call to get the fileItems from addon
-//      */
-//     get items(): Observable<IItem[]> {
-//         return this._items
-//     }
-//     set items(value: Observable<IItem[]>) {
-//         this._items = value
-
-//         this._items.subscribe({
-//             next: value => {
-//                 this.tableViewItems = value
-//                 this.displayObserver.next(value)
-//             },
-//             complete: () => {
-//                 // TODO: select last directory
-//             //var sys32 = this.tableViewItems.findIndex(n => n.na.toLowerCase() == "system32")
-//             //if (sys32 > 0)
-// //                this.setCurrentIndex(sys32)
-//                 this.setCurrentIndex(0)
-//             }
-//         })
-//     }
-//     _items: Observable<IItem[]>
-
-     //ngOnInit() { this.viewItems = new Observable<IItem[]>(displayObserver => this.displayObserver = displayObserver) }
-         
     ngAfterViewInit() { this.setColumnsInControl() }
 
     focus() { this.table.nativeElement.focus() }

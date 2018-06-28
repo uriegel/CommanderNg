@@ -35,6 +35,16 @@ export class TableViewComponent implements AfterViewInit {
     private onNeu() {
         this.tableView.path = "c:\\windows\\system32"
         this.tableView.items = this.readDirectory1()
+        const subscription = this.tableView.items.subscribe({ 
+            next: value => {
+                const index = value.findIndex(n=> (n as FileItem).name.toLowerCase() == "recovery")
+                if (index != -1) {
+                    value[0].isCurrent = false 
+                    value[index].isCurrent = true
+                }
+                subscription.unsubscribe()
+            }
+        })
     }
 
     private onChange() {

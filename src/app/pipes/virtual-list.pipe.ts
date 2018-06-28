@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core'
 import { Observable, Subscriber } from 'rxjs'
 import { ScrollbarComponent } from '../scrollbar/scrollbar.component'
+import { IItem } from '../table-view/table-view.component';
 
 @Pipe({
     name: 'virtualList'
@@ -16,12 +17,17 @@ export class VirtualListPipe implements PipeTransform {
         }
         return new Observable<any[]>(displayObserver => {
             this.displayObserver = displayObserver
-            this.source.subscribe(value => {
-                this.items = value
-                this.scrollbar.setPosition(0)
-                this.scrollbar.itemsChanged(this.items.length)
-                this.displayObserver.next(this.getViewItems(this.scrollbar.getPosition()))
-            })
+            if (this.source) {
+                this.source.subscribe(value => {
+                    this.items = value
+                    let index = this.items.findIndex(n => (<IItem>n).isCurrent) 
+                    if (index == -1)
+                        index = 0
+                    this.scrollbar.setPosition(index)
+                    this.scrollbar.itemsChanged(this.items.length, null, index)
+                    this.displayObserver.next(this.getViewItems(this.scrollbar.getPosition()))
+                })
+            }
         })
     }
 
