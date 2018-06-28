@@ -29,7 +29,7 @@ export class TableViewComponent implements AfterViewInit {
         this.tableView.items = this.readDirectory1()
     }
 
-    private readDirectory1 = this.getReadDirectory("c:\\windows\\system32\\")
+    private readDirectory1 = this.getReadDirectory("c:\\windows\\system32")
     private readDirectory2 = this.getReadDirectory("c:\\")
 
     private onNeu() {
