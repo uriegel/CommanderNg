@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, OnInit, Output, EventEmitter, Input } from '@angular/core'
+import { Component, AfterViewInit, ViewChild, ElementRef, Output, EventEmitter, Input } from '@angular/core'
 import { Observable, Subscriber } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as Columns, IColumns, IColumnSortEvent } from '../columns/columns.component'
@@ -13,7 +13,7 @@ export interface IItem {
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.css']
 })
-export class TableViewComponent implements OnInit, AfterViewInit {
+export class TableViewComponent implements AfterViewInit {
 
     @Input() private id: string 
     @Input() itemHeight = 0
@@ -24,7 +24,19 @@ export class TableViewComponent implements OnInit, AfterViewInit {
     /**
      * tbody is binded on this Observable
      */
-    viewItems: Observable<IItem[]>
+    get items() { return this._items }
+    set items(value: Observable<IItem[]>) {
+        this._items = value
+        this._items.subscribe({ 
+            next: value => {
+                this.tableViewItems = value
+                this.tableViewItems[2].isCurrent = true
+            }
+         })
+    }
+    private _items: Observable<IItem[]>
+
+
     path: string
 
     get columns() { return this._columns }
@@ -34,33 +46,33 @@ export class TableViewComponent implements OnInit, AfterViewInit {
     }
     private _columns: IColumns
 
-    /**
-     * This Observable represents the call to get the fileItems from addon
-     */
-    get items(): Observable<IItem[]> {
-        return this._items
-    }
-    set items(value: Observable<IItem[]>) {
-        this._items = value
+//     /**
+//      * This Observable represents the call to get the fileItems from addon
+//      */
+//     get items(): Observable<IItem[]> {
+//         return this._items
+//     }
+//     set items(value: Observable<IItem[]>) {
+//         this._items = value
 
-        this._items.subscribe({
-            next: value => {
-                this.tableViewItems = value
-                this.displayObserver.next(value)
-            },
-            complete: () => {
-                // TODO: select last directory
-            //var sys32 = this.tableViewItems.findIndex(n => n.na.toLowerCase() == "system32")
-            //if (sys32 > 0)
-//                this.setCurrentIndex(sys32)
-                this.setCurrentIndex(0)
-            }
-        })
-    }
-    _items: Observable<IItem[]>
+//         this._items.subscribe({
+//             next: value => {
+//                 this.tableViewItems = value
+//                 this.displayObserver.next(value)
+//             },
+//             complete: () => {
+//                 // TODO: select last directory
+//             //var sys32 = this.tableViewItems.findIndex(n => n.na.toLowerCase() == "system32")
+//             //if (sys32 > 0)
+// //                this.setCurrentIndex(sys32)
+//                 this.setCurrentIndex(0)
+//             }
+//         })
+//     }
+//     _items: Observable<IItem[]>
 
-    ngOnInit() { this.viewItems = new Observable<IItem[]>(displayObserver => this.displayObserver = displayObserver) }
-    
+     //ngOnInit() { this.viewItems = new Observable<IItem[]>(displayObserver => this.displayObserver = displayObserver) }
+         
     ngAfterViewInit() { this.setColumnsInControl() }
 
     focus() { this.table.nativeElement.focus() }
@@ -166,9 +178,5 @@ export class TableViewComponent implements OnInit, AfterViewInit {
         }
     }
 
-    /**
-     * The array of FileItems
-     */
     private tableViewItems: IItem[]
-    private displayObserver: Subscriber<IItem[]>
 }

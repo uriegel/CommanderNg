@@ -19,13 +19,7 @@ export class ScrollbarComponent implements OnInit {
     @ViewChild(ScrollBar) private scrollBar: ScrollBar
     items: Observable<Item[]>
     
-    ngOnInit() {
-        this.items = this.get(this.dirs[1])
-        // this.items = new Observable<Item[]>(displayObserver => this.displayObserver = displayObserver ).pipe(map(t => {
-        //     this.itemValues = t
-        //     return t
-        // }))
-    }
+    ngOnInit() { this.items = this.get(this.dirs[1]) }
 
     private onNew() {
         const index = this.seed++ % 3
@@ -34,16 +28,6 @@ export class ScrollbarComponent implements OnInit {
         this.items.subscribe({
             next: o => this.itemValues = o
         })
-        //const result = this.get(dir)
-
-        // result.subscribe(value => this.displayObserver.next(value.map((n, i) => { return {
-        //     text: n,
-        //     isCurrent: i == 0
-        // }})), e => {}, () => {
-        //     var sys32 = this.itemValues.findIndex(n => n.text.toLowerCase() == "system32")
-        //     if (sys32 > 0)
-        //         this.setCurrentIndex(sys32)
-        // })
     }
 
     get(path: string): Observable<Item[]> { 

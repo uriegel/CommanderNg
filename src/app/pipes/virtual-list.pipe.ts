@@ -11,7 +11,6 @@ export class VirtualListPipe implements PipeTransform {
         if (!this.scrollbar) {
             this.scrollbar = scrollbar
             this.scrollbar.positionChanged.subscribe((position, _) => {
-                console.log(`Position changed: ${this.scrollbar.maxItemsToDisplay}`)        
                 this.displayObserver.next(this.getViewItems(position))
             })
         }
@@ -21,14 +20,12 @@ export class VirtualListPipe implements PipeTransform {
                 this.items = value
                 this.scrollbar.setPosition(0)
                 this.scrollbar.itemsChanged(this.items.length)
-                console.log(`Items changed: ${this.items.length}`)        
                 this.displayObserver.next(this.getViewItems(this.scrollbar.getPosition()))
             })
         })
     }
 
     private getViewItems(position: number) {        
-        console.log(`from ${position} to this.scrollbar.itemsCapacity: ${this.scrollbar.maxItemsToDisplay}`)
         return this.items.filter((_, i) => i >= position && i < this.scrollbar.maxItemsToDisplay + 1 + position)
     }
 
