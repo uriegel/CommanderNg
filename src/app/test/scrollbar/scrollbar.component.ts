@@ -1,14 +1,8 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core'
+import { Component, ViewChild, OnInit } from '@angular/core'
 import { Observable, Subscriber, from } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { Addon } from "../../addon"
 import { ScrollbarComponent as ScrollBar  } from "../../scrollbar/scrollbar.component"
-
-// TODO:
-// TableViewComponent:
-// <ng-container *ngFor="let item of items | virtualList: scrollbar |async" [ngSwitch]="item.type">
-
-// items: Observable<IItem[]> 
 
 interface Item {
     text: string
@@ -24,7 +18,7 @@ export class ScrollbarComponent implements OnInit {
 
     @ViewChild(ScrollBar) private scrollBar: ScrollBar
     items: Observable<Item[]>
-
+    
     ngOnInit() {
         this.items = new Observable<Item[]>(displayObserver => this.displayObserver = displayObserver ).pipe(map(t => {
             this.itemValues = t

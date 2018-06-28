@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, TemplateRef, Renderer2, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core'
+import { Component, AfterViewInit, ViewChild, ElementRef, OnInit, Output, EventEmitter, Input } from '@angular/core'
 import { Observable, Subscriber } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as Columns, IColumns, IColumnSortEvent } from '../columns/columns.component'
@@ -8,20 +8,25 @@ export interface IItem {
     isCurrent?: boolean
 }
 
+// TODO: onCalc not set
+
 @Component({
   selector: 'app-table-view',
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.css']
 })
-export class TableViewComponent implements AfterViewInit {
+export class TableViewComponent implements OnInit, AfterViewInit {
 
-    @Input() id: string 
-    @Input() itemHeight: number
-    @Output() onSort: EventEmitter<IColumnSortEvent> = new EventEmitter()    
-    @ViewChild("table") table: ElementRef
-    @ViewChild(Scrollbar) scrollbar: Scrollbar
-    @ViewChild(Columns) columnsControl: Columns
-
+    @Input() private id: string 
+    @Input() itemHeight = 0
+    @Output() private onSort: EventEmitter<IColumnSortEvent> = new EventEmitter()    
+    @ViewChild("table") private table: ElementRef
+    @ViewChild(Scrollbar) private scrollbar: Scrollbar
+    @ViewChild(Columns) private columnsControl: Columns
+    /**
+     * tbody is binded on this Observable
+     */
+    viewItems: Observable<IItem[]>
     path: string
 
     get columns() { return this._columns }
@@ -31,40 +36,34 @@ export class TableViewComponent implements AfterViewInit {
     }
     private _columns: IColumns
 
-    get itemsView(): Observable<IItem[]> {
-        return new Observable<IItem[]>(displayObserver => {
-            this.displayObserver = displayObserver
-            if (this.tableViewItems) 
-                this.displayObserver.next(this.getItemsView())
-        })
-    }
+    /**
+     * This Observable represents the call to get the fileItems from addon
+     */
     get items(): Observable<IItem[]> {
         return this._items
     }
     set items(value: Observable<IItem[]>) {
         this._items = value
+
         this._items.subscribe({
-            next: x => {
-                this.tableViewItems = x
-                const index = this.getCurrentIndex(0)
-                this.setScrollbar(index)
-                this.displayObserver.next(this.getItemsView())
+            next: value => {
+                this.tableViewItems = value
+                this.displayObserver.next(value)
             },
-            error: err => console.error('Observer got an error: ' + err),
-            complete: () => {},
+            complete: () => {
+                // TODO: select last directory
+            //var sys32 = this.tableViewItems.findIndex(n => n.na.toLowerCase() == "system32")
+            //if (sys32 > 0)
+//                this.setCurrentIndex(sys32)
+                this.setCurrentIndex(0)
+            }
         })
     }
     _items: Observable<IItem[]>
 
-    constructor(private renderer: Renderer2, private ref: ChangeDetectorRef) {}
-
-    ngAfterViewInit() {
-        this.setColumnsInControl()
-        window.addEventListener('resize', () => this.resizeChecking())
-        this.resizeChecking()
-        this.setScrollbar()
-        this.ref.detectChanges()
-    }
+    ngOnInit() { this.viewItems = new Observable<IItem[]>(displayObserver => this.displayObserver = displayObserver) }
+    
+    ngAfterViewInit() { this.setColumnsInControl() }
 
     focus() { this.table.nativeElement.focus() }
 
@@ -74,18 +73,6 @@ export class TableViewComponent implements AfterViewInit {
             return this.tableViewItems[index]
         else
             return null
-    }
-
-    private resizeChecking() {
-        if (this.table.nativeElement.parentElement.clientHeight != this.recentHeight) {
-            const isFocused = this.table.nativeElement.contains(document.activeElement)
-            this.recentHeight = this.table.nativeElement.parentElement.clientHeight
-            this.calculateViewItemsCount()
-            this.setScrollbar()
-            this.renderer.setStyle(this.table.nativeElement, "clip", `rect(0px, auto, ${this.recentHeight}px, 0px)`)
-            if (isFocused)
-                focus()
-        }
     }
 
     private onKeyDown(evt: KeyboardEvent) {
@@ -119,18 +106,8 @@ export class TableViewComponent implements AfterViewInit {
     private onMouseDown(evt: MouseEvent) {
         const tr = <HTMLTableRowElement>(<HTMLElement>evt.target).closest("tr")
         const currentIndex = Array.from(this.table.nativeElement.querySelectorAll("tr"))
-            .findIndex(n => n == tr) + this.scrollPos - 1
+            .findIndex(n => n == tr) + this.scrollbar.getPosition() - 1
         this.setCurrentIndex(currentIndex)
-    }
-
-    private onMouseWheel(evt: WheelEvent) {
-        var delta = evt.wheelDelta / Math.abs(evt.wheelDelta) * 3
-        this.setScrollbar(this.scrollPos - delta)
-    }
-
-    private onScroll(pos) {
-        this.scrollPos = pos
-        this.displayObserver.next(this.getItemsView())
     }
 
     private onColumnSort(sortEvent: IColumnSortEvent) {
@@ -150,11 +127,7 @@ export class TableViewComponent implements AfterViewInit {
             lastIndex = this.getCurrentIndex(0)
         this.tableViewItems[lastIndex].isCurrent = false
         this.tableViewItems[index].isCurrent = true
-
-        if (index < this.scrollPos)
-            this.setScrollbar(index)
-        if (index > this.scrollPos + this.tableCapacity - 1)
-            this.setScrollbar(index - this.tableCapacity + 1)
+        this.scrollbar.scrollIntoView(index)
     }
 
     private downOne() {
@@ -171,38 +144,19 @@ export class TableViewComponent implements AfterViewInit {
 
     private pageDown() {
         const index = this.getCurrentIndex(0)
-        const nextIndex = index < this.tableViewItems.length - this.tableCapacity + 1 ? index + this.tableCapacity - 1: this.tableViewItems.length - 1
+        const nextIndex = index < this.tableViewItems.length - this.scrollbar.itemsCapacity + 1 ? index + this.scrollbar.itemsCapacity - 1: this.tableViewItems.length - 1
         this.setCurrentIndex(nextIndex, index)
     }
 
     private pageUp() {
         const index = this.getCurrentIndex(0)
-        const nextIndex = index > this.tableCapacity - 1? index - this.tableCapacity + 1: 0
+        const nextIndex = index > this.scrollbar.itemsCapacity - 1? index - this.scrollbar.itemsCapacity + 1: 0
         this.setCurrentIndex(nextIndex, index)
     }
 
     private end() { this.setCurrentIndex(this.tableViewItems.length - 1) } 
     
     private pos1() { this.setCurrentIndex(0) } 
-
-    private getItemsView() {
-        return this.tableViewItems.filter((n, i) => i >= this.scrollPos && i < this.tableCapacity + 1 + this.scrollPos)
-    }
-
-    private calculateViewItemsCount() {
-        if (this.itemHeight && this.columnsControl) {
-            this.tableCapacity = Math.floor((this.table.nativeElement.parentElement.offsetHeight - this.columnsControl.height) / this.itemHeight) 
-            if (this.tableCapacity < 0)
-                this.tableCapacity = 0
-        }
-        else
-            this.tableCapacity = -1
-    }
-
-    private setScrollbar(newPos?: number) {
-        if (this.tableCapacity >= 0)
-            this.scrollbar.itemsChanged(this.tableViewItems ? this.tableViewItems.length : 0)
-    }
 
     private setColumnsInControl() {
         if (this.columnsControl && this.columns) {
@@ -214,12 +168,9 @@ export class TableViewComponent implements AfterViewInit {
         }
     }
 
-    private tableViewItems: IItem[]
     /**
-    * Die Anzahl der Einträge, die dieses TableView in der momentanen Größe tatsächlich auf dem Bildschirm anzeigen kann
-    */
-    private tableCapacity = -1
+     * The array of FileItems
+     */
+    private tableViewItems: IItem[]
     private displayObserver: Subscriber<IItem[]>
-    private recentHeight = 0
-    private scrollPos = 0
 }
