@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, Output, EventEmitter, Input } from '@angular/core'
 
-// TODO: Animation not for height
+// TODO: State transition isHidden/isVisible with Angular
 
 @Component({
     selector: 'app-scrollbar',
@@ -53,11 +53,13 @@ export class ScrollbarComponent implements AfterViewInit {
             return
         if (this.itemsCountAbsolute <= this.maxItemsToDisplay) {
             this.renderer.addClass(this.scrollbar.nativeElement, "scrollbarHidden")
+            this.scrollbar.nativeElement.style.height = `0px`
             this.position = 0
             this.positionChanged.emit(this.position)
         }
         else {
             this.renderer.removeClass(this.scrollbar.nativeElement, "scrollbarHidden")
+            this.scrollbar.nativeElement.style.height = `calc(100% - ${this.columnsHeight}px`
             var gripHeight = (this.parentHeight - 32 - this.columnsHeight) * (this.maxItemsToDisplay / this.itemsCountAbsolute)
             if (gripHeight < 5)
                 gripHeight = 5
