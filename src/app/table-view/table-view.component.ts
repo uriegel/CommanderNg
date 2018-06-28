@@ -89,7 +89,8 @@ export class TableViewComponent implements AfterViewInit {
         const tr = <HTMLTableRowElement>(<HTMLElement>evt.target).closest("tr")
         const currentIndex = Array.from(this.table.nativeElement.querySelectorAll("tr"))
             .findIndex(n => n == tr) + this.scrollbar.getPosition() - 1
-        this.setCurrentIndex(currentIndex)
+        if (currentIndex != -1)
+            this.setCurrentIndex(currentIndex)
     }
 
     private onColumnSort(sortEvent: IColumnSortEvent) {

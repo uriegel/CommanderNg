@@ -107,7 +107,6 @@ export class ScrollbarComponent implements AfterViewInit {
         if (capacity < 0)
             capacity = 0
     
-        console.log(`Kapazität: ${capacity}`)
         return capacity
     }
 

@@ -2,6 +2,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef, Input, ChangeDetectorR
 import { TableViewComponent as TableView, IItem } from '../table-view/table-view.component'
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
+import { IColumnSortEvent } from '../columns/columns.component';
 // TODO: FileProcessor: Sorting by selected column
 // TODO: Don't use nativeElement input, use binding
 // TODO: Selecting with Mouse anf Keyboard
@@ -54,6 +55,14 @@ export class CommanderViewComponent implements AfterViewInit {
     }
 
     private onDblClick() { this.processItem() }
+
+    private onColumnSort(evt: IColumnSortEvent) {
+        console.log(evt)
+        const subscription = this.tableView.items.subscribe({next: o => {
+            console.log("o", o.length)
+            subscription.unsubscribe()
+        }})
+    }
 
     private processItem() {
         const item = this.tableView.getCurrentItem()
