@@ -3,7 +3,8 @@ import { TableViewComponent as TableView, IItem } from '../table-view/table-view
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
 // TODO: FileProcessor: Sorting by selected column
-// TODO: Don't use nativeElement, use binding
+// TODO: Don't use nativeElement input, use binding
+// TODO: Selecting with Mouse anf Keyboard
 
 @Component({
     selector: 'app-commander-view',
