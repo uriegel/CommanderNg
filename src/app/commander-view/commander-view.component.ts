@@ -33,10 +33,7 @@ export class CommanderViewComponent implements AfterViewInit {
     }
     private _path: string
 
-    // TODO: with Observables per viewitem
-    constructor(private processorFactory: ItemProcesserFactoryService, private ref: ChangeDetectorRef) { 
-        setInterval(() => ref.markForCheck(), 500) 
-    }
+    constructor(private processorFactory: ItemProcesserFactoryService) { }
 
     ngAfterViewInit() { this.path = "drives" }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, NgZone } from '@angular/core'
 import { ItemProcessor, ProcessorType } from './item-processor'
 import { DrivesProcessor } from './drives-processor'
 import { FileProcessor } from './file-processor'
@@ -9,7 +9,7 @@ import { CommanderViewComponent } from '../commander-view/commander-view.compone
 })
 export class ItemProcesserFactoryService {
 
-    constructor() { }
+    constructor(private zone: NgZone) { }
 
     get(itemProcessor: ItemProcessor, commanderView: CommanderViewComponent, path: string) {
         if (path == "drives") {
@@ -27,7 +27,7 @@ export class ItemProcesserFactoryService {
             else {
                 if (itemProcessor)
                     itemProcessor.close()
-                return new FileProcessor(commanderView)
+                return new FileProcessor(commanderView, this.zone)
             }
         }
     }

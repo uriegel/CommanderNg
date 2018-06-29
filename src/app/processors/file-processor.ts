@@ -2,10 +2,16 @@ import { ItemProcessor, ProcessorType } from "./item-processor"
 import { Observable, from } from "rxjs"
 import { IItem } from "../table-view/table-view.component"
 import { FileItem } from "../addon";
+import { NgZone } from "@angular/core";
+import { CommanderViewComponent } from "../commander-view/commander-view.component";
 
 export class FileProcessor extends ItemProcessor {
     type: ProcessorType = ProcessorType.file
     
+    constructor(commanderView: CommanderViewComponent, private zone: NgZone) {
+        super(commanderView)
+    }
+
     get columns() {
         return {
             name: "file",
@@ -53,16 +59,18 @@ export class FileProcessor extends ItemProcessor {
                         if (id < this.requestId)
                             break
                         var version = await this.getFileVersion(`${path}\\${versionFiles[i].name}`)
-                        if (version)
-                            versionFiles[i].version = version
+                        if (version) 
+                            this.zone.run(() => versionFiles[i].version = version)
                     }
                     for (let i = 0; i < imgFiles.length; i++) {
                         if (id < this.requestId)
                             break
                         var exif = await this.getExifDate(`${path}\\${imgFiles[i].name}`)
                         if (exif) {
-                            imgFiles[i].time = exif
-                            imgFiles[i].isExif = true
+                            this.zone.run(() => {
+                                imgFiles[i].time = exif
+                                imgFiles[i].isExif = true
+                            })
                         }
                     }
                 }
