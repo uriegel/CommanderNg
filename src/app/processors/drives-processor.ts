@@ -11,9 +11,9 @@ export class DrivesProcessor extends ItemProcessor {
         return {
             name: "drives",
             columns: [
-                { name: "Name", isSortable: true },
-                { name: "Bezeichnung", isSortable: true },
-                { name: "Größe", isSortable: true }
+                { name: "Name" },
+                { name: "Bezeichnung" },
+                { name: "Größe" }
             ]            
         }
     }

@@ -20,6 +20,8 @@ export abstract class ItemProcessor  {
 
     abstract process(item: IItem) 
 
+    sort(items: IItem[], columnIndex: number, isAscending: boolean): IItem[] { return [] }
+
     close() {}
 
     protected readonly addon: Addon = (<any>window).require('addon')

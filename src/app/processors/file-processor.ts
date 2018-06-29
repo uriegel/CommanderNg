@@ -4,6 +4,7 @@ import { IItem } from "../table-view/table-view.component"
 import { FileItem } from "../addon";
 import { NgZone } from "@angular/core";
 import { CommanderViewComponent } from "../commander-view/commander-view.component";
+import { FileExtensionPipe } from "../pipes/file-extension.pipe"
 
 export class FileProcessor extends ItemProcessor {
     type: ProcessorType = ProcessorType.file
@@ -30,12 +31,12 @@ export class FileProcessor extends ItemProcessor {
         return from(new Promise(
         (res, rej) => this.addon.readDirectory(path, 
             (err, result) => {
-                var parentItem: FileItem[] = [ {
+                const parentItem: FileItem[] = [ {
                     name: "..",
                     type: 3
                 }]
                 let currentItem: IItem = null
-                var dirs = result.filter(n => n.type == 1)
+                const dirs = result.filter(n => n.type == 1)
                 if (recentPath) {
                     const index = recentPath.lastIndexOf('\\')
                     if (index != -1) {
@@ -43,7 +44,7 @@ export class FileProcessor extends ItemProcessor {
                         currentItem = dirs.find(n => n.name == pathName)
                     }
                 }
-                var files = result.filter(n => n.type == 0)
+                const files = result.filter(n => n.type == 0)
                 const items = [...parentItem, ...dirs, ...files]
                 if (!currentItem)
                     currentItem = items[0]
@@ -96,6 +97,28 @@ export class FileProcessor extends ItemProcessor {
         this.requestId = ++FileProcessor.requestId
     }
 
+    sort(items: FileItem[], columnIndex: number, isAscending: boolean): IItem[] { 
+        const dirs = items.filter(n => n.type == 1 || n.type == 3)
+        let files = items.filter(n => n.type == 0)
+        let predicate: (a: FileItem, b: FileItem)=>number
+        switch (columnIndex) {
+            case 0:
+                predicate = (a, b) => a.name.localeCompare(b.name)
+                break
+            case 1:
+                predicate = (a, b) => this.fileExtensionPipe.transform(a.name).localeCompare(this.fileExtensionPipe.transform(b.name))
+                break
+        }
+        files = files.sort((a, b) => this.sortItem(a, b, isAscending, predicate))
+        
+        return [...dirs, ...files]
+    }
+
+    private sortItem(a: FileItem, b: FileItem, isAscending: boolean, predicate: (a: FileItem, b: FileItem)=>number): number {
+        const result = predicate(a, b)
+        return isAscending ? result : -result
+    }
+
     private getParent() {
         const index = this.commanderView.path.lastIndexOf("\\")
         if (index != -1) 
@@ -116,6 +139,7 @@ export class FileProcessor extends ItemProcessor {
         })
     }
 
+    fileExtensionPipe = new FileExtensionPipe()
     requestId = 0
     static requestId = 0
 }

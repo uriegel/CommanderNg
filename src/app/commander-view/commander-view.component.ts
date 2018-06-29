@@ -6,6 +6,7 @@ import { Observable, Subject, from } from 'rxjs'
 import { IItem, TableViewComponent } from '../table-view/table-view.component'
 // TODO: FileProcessor: Sorting by selected column
 // TODO: Don't use nativeElement input, use binding
+// Restricting items
 // TODO: Selecting with Mouse anf Keyboard
 
 @Component({
@@ -63,7 +64,7 @@ export class CommanderViewComponent implements OnInit {
     private onColumnSort(evt: IColumnSortEvent) {
         const subscription = (this.items as Observable<IItem[]>).subscribe({next: value => {
             subscription.unsubscribe()
-            this.items = from(new Promise<IItem[]>(res => res(value.reverse())))
+            this.items = from(new Promise<IItem[]>(res => res(this.itemProcessor.sort(value, evt.index, evt.ascending))))
         }})
     }
 
