@@ -6,6 +6,10 @@ import * as addon from 'addon'
 
 app.on('ready', () => {
 
+    const auguryPath = 'C:\\Users\\uwe.CASERIS\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\elgalmkoelokbchhkhacckoklkejnhcd\\1.19.1_0'
+
+    BrowserWindow.addDevToolsExtension(auguryPath)
+
     protocol.registerBufferProtocol('icon', (request, callback) => {
             const ext = decodeURI(request.url).substr(7)
             addon.getIcon(ext, (error, result) => callback(result))
