@@ -1,4 +1,4 @@
-<div #scrollbar class="scrollbar scrollbarHidden" (window:resize)="onResize()" (mousedown)="scrollbarMouseDown($event)" (mouseup)="mouseup()" 
+<div #scrollbar [@visibility]="{value: visibility, params:{offset: columnsHeight}}" class="scrollbar" (window:resize)="onResize()" (mousedown)="scrollbarMouseDown($event)" (mouseup)="mouseup()" 
     (click)="onClick($event)" (onmouseleave)="onMouseLeave()" [style.top.px]="columnsHeight">
     <div class="scrollbarUp" (mousedown)="upMouseDown()" (mouseup)="mouseup()">
         <div class="scrollbarUpImg"></div>

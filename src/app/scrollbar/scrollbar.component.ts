@@ -1,11 +1,29 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, Output, EventEmitter, Input } from '@angular/core'
-
-// TODO: State transition isHidden/isVisible with Angular
+import { trigger, state, style, transition, animate } from '@angular/animations'
 
 @Component({
     selector: 'app-scrollbar',
     templateUrl: './scrollbar.component.html',
-    styleUrls: ['./scrollbar.component.css']
+    styleUrls: ['./scrollbar.component.css'],
+    animations: [
+        trigger('visibility', [
+            state('invisible', style({
+                width: '0px',
+                height: '0px',
+                opacity: '0',
+            })),
+            state('visible', style({
+                width: '16px',
+                height: 'calc(100% - {{offset}}px)',
+                opacity: '1',
+            }),
+        {
+            params: {offset: 20}
+        }),
+            transition('invisible => visible', animate('500ms ease-in')),
+            transition('visible => invisible', animate('500ms ease-out'))
+        ])
+    ]    
 })
 export class ScrollbarComponent implements AfterViewInit {
     @ViewChild("scrollbar") scrollbar: ElementRef
@@ -15,7 +33,7 @@ export class ScrollbarComponent implements AfterViewInit {
     @Input() itemHeight: number
     @Output() positionChanged: EventEmitter<number> = new EventEmitter()    
 
-    constructor(private renderer: Renderer2) {}
+    visibility = 'invisible'
 
     getPosition() { return this.position}
     setPosition(value: number) { this.position = value }
@@ -25,8 +43,9 @@ export class ScrollbarComponent implements AfterViewInit {
     
     get itemsCapacity() { return this._itemsCapacity }
 
+    constructor(private renderer: Renderer2) {}
+
     ngAfterViewInit() {
-        this.scrollbar.nativeElement.style.height = `calc(100% - ${this.columnsHeight}px`
         this.onResize()
     }
 
@@ -52,14 +71,12 @@ export class ScrollbarComponent implements AfterViewInit {
         if (!this.itemsCountAbsolute)
             return
         if (this.itemsCountAbsolute <= this.maxItemsToDisplay) {
-            this.renderer.addClass(this.scrollbar.nativeElement, "scrollbarHidden")
-            this.scrollbar.nativeElement.style.height = `0px`
+            this.visibility = 'invisible'
             this.position = 0
             this.positionChanged.emit(this.position)
         }
         else {
-            this.renderer.removeClass(this.scrollbar.nativeElement, "scrollbarHidden")
-            this.scrollbar.nativeElement.style.height = `calc(100% - ${this.columnsHeight}px`
+            this.visibility = 'visible'
             var gripHeight = (this.parentHeight - 32 - this.columnsHeight) * (this.maxItemsToDisplay / this.itemsCountAbsolute)
             if (gripHeight < 5)
                 gripHeight = 5

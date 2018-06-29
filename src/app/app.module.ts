@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { NgModule } from '@angular/core'
 
 import { AppComponent } from './app.component'
@@ -60,7 +61,8 @@ import { ClipHeightPipe } from './pipes/clip-height.pipe'
         ClipHeightPipe
     ],
     imports: [
-        BrowserModule
+        BrowserModule,
+        BrowserAnimationsModule
     ],
     providers: [ItemProcesserFactoryService],
     bootstrap: [AppComponent]
