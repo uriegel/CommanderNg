@@ -18,6 +18,6 @@ export class FileIconPipe implements PipeTransform {
                 return this.sanitizer.bypassSecurityTrustUrl(`icon://${ext}`)                
         }
         else
-            return null
+            return "assets/images/fault.png"
     }
 }

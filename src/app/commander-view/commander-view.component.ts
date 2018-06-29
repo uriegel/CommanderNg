@@ -54,7 +54,10 @@ export class CommanderViewComponent implements AfterViewInit {
             this.processItem()
     }
 
-    private onDblClick() { this.processItem() }
+    private onDblClick(evt: MouseEvent) { 
+        if ((evt.target as HTMLElement).closest("td")) 
+            this.processItem() 
+    }
 
     private onColumnSort(evt: IColumnSortEvent) {
         console.log(evt)

@@ -31,3 +31,8 @@ input {
     color: var(--color);
 }
 
+.pointer-def {
+    cursor: default;
+}
+
+

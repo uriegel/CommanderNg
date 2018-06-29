@@ -18,10 +18,6 @@ tr th:first-child {
     border-left-width: 0px;
 }
 
-.pointer-def {
-    cursor: default;
-}
-
 th.pointer-ew {
     cursor: ew-resize;
 }
