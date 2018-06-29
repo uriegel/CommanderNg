@@ -1,41 +1,41 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core'
-import { from } from 'rxjs'
-import { TableViewComponent as TableView, IItem } from '../../table-view/table-view.component'
-import { IColumnSortEvent } from '../../columns/columns.component'
+import { Component, OnInit } from '@angular/core'
+import { from, Observable } from 'rxjs'
+import { IColumnSortEvent, IColumns } from '../../columns/columns.component'
+import { IItem } from '../../table-view/table-view.component'
 import { Addon, FileItem } from '../../addon'
+
 
 @Component({
   selector: 'app-test-table-view',
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.css']
 })
-export class TableViewComponent implements AfterViewInit {
+export class TableViewComponent implements OnInit {
 
-    @ViewChild(TableView) tableView: TableView
+    columns: IColumns = {
+        name: "Columns",
+        columns: [
+            { name: "Name", isSortable: true },
+            { name: "Erw.", isSortable: true },
+            { name: "Datum", isSortable: true },
+            { name: "Größe" },
+            { name: "Version", isSortable: true }
+        ]            
+    }
+    path = "c:\\windows\\system32"
+    items: Observable<IItem[]> 
 
-    ngAfterViewInit() {
-        this.tableView.columns = {
-            name: "Columns",
-            columns: [
-                { name: "Name", isSortable: true },
-                { name: "Erw.", isSortable: true },
-                { name: "Datum", isSortable: true },
-                { name: "Größe" },
-                { name: "Version", isSortable: true }
-            ]            
-        }
-
-        this.tableView.path = "c:\\windows\\system32"
-        this.tableView.items = this.readDirectory1()
+    ngOnInit() {
+        this.items = this.readDirectory1()
     }
 
     private readDirectory1 = this.getReadDirectory("c:\\windows\\system32")
     private readDirectory2 = this.getReadDirectory("c:\\")
 
     private onNeu() {
-        this.tableView.path = "c:\\windows\\system32"
-        this.tableView.items = this.readDirectory1()
-        const subscription = this.tableView.items.subscribe({ 
+        this.path = "c:\\windows\\system32"
+        this.items = this.readDirectory1()
+        const subscription = this.items.subscribe({ 
             next: value => {
                 const index = value.findIndex(n=> (n as FileItem).name.toLowerCase() == "recovery")
                 if (index != -1) {
@@ -48,8 +48,8 @@ export class TableViewComponent implements AfterViewInit {
     }
 
     private onChange() {
-        this.tableView.path = "c:"
-        this.tableView.items = this.readDirectory2()
+        this.path = "c:"
+        this.items = this.readDirectory2()
     }
 
     private getReadDirectory(path: string) {

@@ -1,8 +1,9 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, Input, ChangeDetectorRef } from '@angular/core'
-import { TableViewComponent as TableView, IItem } from '../table-view/table-view.component'
+import { Component, ViewChild, ElementRef, Input, OnInit } from '@angular/core'
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
-import { IColumnSortEvent } from '../columns/columns.component';
+import { IColumnSortEvent, IColumns } from '../columns/columns.component'
+import { Observable } from 'rxjs'
+import { IItem } from '../table-view/table-view.component'
 // TODO: FileProcessor: Sorting by selected column
 // TODO: Don't use nativeElement input, use binding
 // TODO: Selecting with Mouse anf Keyboard
@@ -12,12 +13,12 @@ import { IColumnSortEvent } from '../columns/columns.component';
     templateUrl: './commander-view.component.html',
     styleUrls: ['./commander-view.component.css']
 })
-export class CommanderViewComponent implements AfterViewInit {
+export class CommanderViewComponent implements OnInit {
 
-    @ViewChild(TableView) private tableView: TableView
     @ViewChild("input") private input: ElementRef
     @Input() id: string
-
+    @Input() columns: IColumns = { name: "nil", columns: []}
+    @Input()
     get path() { return this._path }
     set path(value: string) {
         if (value.endsWith('\\'))
@@ -25,24 +26,28 @@ export class CommanderViewComponent implements AfterViewInit {
         const itemProcessor = this.processorFactory.get(this.itemProcessor, this, value)
         if (itemProcessor) {
             this.itemProcessor = itemProcessor
-            this.tableView.columns = this.itemProcessor.columns
+            this.columns = this.itemProcessor.columns
         }
-        this.tableView.path = value
-        this.tableView.items = this.itemProcessor.get(value, this.path)
+        this.items = this.itemProcessor.get(value, this.path)
         this._path = value
     }
     private _path: string
+    items: Observable<IItem[]>     
+
+    ngOnInit() {
+        this.path = "drives"
+    }
 
     constructor(private processorFactory: ItemProcesserFactoryService) { }
 
-    ngAfterViewInit() { this.path = "drives" }
-
-    focus() { this.tableView.focus() }
+    // TODO: how is focus implemented in Angular?
+    focus() { /*this.tableView.focus()*/ }
 
     private onInputKeydown(evt: KeyboardEvent) {
         if (evt.which == 13) { // Return
             this.path = this.input.nativeElement.value
-            this.tableView.focus()
+            // TODO:
+            //this.tableView.focus()
         }
     }
 
@@ -58,16 +63,17 @@ export class CommanderViewComponent implements AfterViewInit {
 
     private onColumnSort(evt: IColumnSortEvent) {
         console.log(evt)
-        const subscription = this.tableView.items.subscribe({next: o => {
-            console.log("o", o.length)
-            subscription.unsubscribe()
-        }})
+        // const subscription = this.tableView.items.subscribe({next: o => {
+        //     console.log("o", o.length)
+        //     subscription.unsubscribe()
+        // }})
     }
 
     private processItem() {
-        const item = this.tableView.getCurrentItem()
-        if (item)
-            this.itemProcessor.process(item)
+        // TODO:
+        // const item = this.tableView.getCurrentItem()
+        // if (item)
+        //     this.itemProcessor.process(item)
     }
 
     private itemProcessor: ItemProcessor

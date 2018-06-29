@@ -1,5 +1,5 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, Output, EventEmitter, Input } from '@angular/core'
-import { Observable, Subscriber } from 'rxjs'
+import { Component, ViewChild, ElementRef, Output, EventEmitter, Input } from '@angular/core'
+import { Observable } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as Columns, IColumns, IColumnSortEvent } from '../columns/columns.component'
 
@@ -13,7 +13,7 @@ export interface IItem {
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.css']
 })
-export class TableViewComponent implements AfterViewInit {
+export class TableViewComponent {
 
     @Input() private id: string 
     @Input() itemHeight = 0
@@ -21,31 +21,28 @@ export class TableViewComponent implements AfterViewInit {
     @ViewChild("table") private table: ElementRef
     @ViewChild(Scrollbar) private scrollbar: Scrollbar
     @ViewChild(Columns) private columnsControl: Columns
-    /**
-     * tbody is binded on this Observable
-     */
-    get items() { return this._items }
-    set items(value: Observable<IItem[]>) {
-        this._items = value
-        const subscription = this._items.subscribe({ 
-            next: value => {
-                this.tableViewItems = value
-                subscription.unsubscribe()
-            }
-        })
-    }
-    private _items: Observable<IItem[]>
-
-    path: string
-
+    @Input() path: string
+    @Input() 
     get columns() { return this._columns }
     set columns(value: IColumns) {
         this._columns = value
         this.setColumnsInControl()
     }
     private _columns: IColumns
-
-    ngAfterViewInit() { this.setColumnsInControl() }
+    @Input() 
+    get items() : object { return this._items }
+    set items(value: object) {
+        this._items = value as Observable<IItem[]>
+        if (this._items) {
+            const subscription = this._items.subscribe({ 
+                next: value => {
+                    this.tableViewItems = value
+                    subscription.unsubscribe()
+                }
+            })
+        }
+    }
+    private _items: Observable<IItem[]>
 
     focus() { this.table.nativeElement.focus() }
 

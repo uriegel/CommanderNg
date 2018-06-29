@@ -1,5 +1,6 @@
 <div class="container">
     <input #input value="{{path}}" (keydown)="onInputKeydown($event)" (click)="$event.target.select()">
-    <app-table-view class="tableView" [id]="id" [itemHeight]=18 (onSort)="onColumnSort($event)"
-        (keydown)="onTableKeydown($event)" (dblclick)="onDblClick($event)"></app-table-view>
+    <app-table-view class="tableView" [id]="id" [itemHeight]=18 [columns]="columns" [path]="path" [items]="items"
+        (onSort)="onColumnSort($event)" (keydown)="onTableKeydown($event)" (dblclick)="onDblClick($event)">
+    </app-table-view>
 </div>
