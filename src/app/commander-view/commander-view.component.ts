@@ -2,7 +2,7 @@ import { Component, ViewChild, ElementRef, Input, OnInit } from '@angular/core'
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
 import { IColumnSortEvent, IColumns } from '../columns/columns.component'
-import { Observable } from 'rxjs'
+import { Observable, Subject, from } from 'rxjs'
 import { IItem, TableViewComponent } from '../table-view/table-view.component'
 // TODO: FileProcessor: Sorting by selected column
 // TODO: Don't use nativeElement input, use binding
@@ -61,10 +61,9 @@ export class CommanderViewComponent implements OnInit {
     }
 
     private onColumnSort(evt: IColumnSortEvent) {
-        console.log(evt)
-            const subscription = (this.tableView.items as Observable<IItem[]>).subscribe({next: o => {
-            console.log("o", o.length)
+        const subscription = (this.items as Observable<IItem[]>).subscribe({next: value => {
             subscription.unsubscribe()
+            this.items = from(new Promise<IItem[]>(res => res(value.reverse())))
         }})
     }
 

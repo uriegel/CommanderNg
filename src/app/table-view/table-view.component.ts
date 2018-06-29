@@ -83,11 +83,13 @@ export class TableViewComponent {
     }
 
     private onMouseDown(evt: MouseEvent) {
-        const tr = <HTMLTableRowElement>(<HTMLElement>evt.target).closest("tr")
-        const currentIndex = Array.from(this.table.nativeElement.querySelectorAll("tr"))
-            .findIndex(n => n == tr) + this.scrollbar.getPosition() - 1
-        if (currentIndex != -1)
-            this.setCurrentIndex(currentIndex)
+        const tr = <HTMLTableRowElement>(<HTMLElement>evt.target).closest("tbody tr")
+        if (tr) {
+            const currentIndex = Array.from(this.table.nativeElement.querySelectorAll("tr"))
+                .findIndex(n => n == tr) + this.scrollbar.getPosition() - 1
+            if (currentIndex != -1)
+                this.setCurrentIndex(currentIndex)
+        }
     }
 
     private onColumnSort(sortEvent: IColumnSortEvent) {
