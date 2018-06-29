@@ -3,7 +3,7 @@ import { ItemProcesserFactoryService } from '../processors/item-processer-factor
 import { ItemProcessor } from '../processors/item-processor'
 import { IColumnSortEvent, IColumns } from '../columns/columns.component'
 import { Observable } from 'rxjs'
-import { IItem } from '../table-view/table-view.component'
+import { IItem, TableViewComponent } from '../table-view/table-view.component'
 // TODO: FileProcessor: Sorting by selected column
 // TODO: Don't use nativeElement input, use binding
 // TODO: Selecting with Mouse anf Keyboard
@@ -15,6 +15,7 @@ import { IItem } from '../table-view/table-view.component'
 })
 export class CommanderViewComponent implements OnInit {
 
+    @ViewChild(TableViewComponent) private tableView: TableViewComponent
     @ViewChild("input") private input: ElementRef
     @Input() id: string
     @Input() columns: IColumns = { name: "nil", columns: []}
@@ -40,14 +41,12 @@ export class CommanderViewComponent implements OnInit {
 
     constructor(private processorFactory: ItemProcesserFactoryService) { }
 
-    // TODO: how is focus implemented in Angular?
-    focus() { /*this.tableView.focus()*/ }
+    focus() { this.tableView.focus() }
 
     private onInputKeydown(evt: KeyboardEvent) {
         if (evt.which == 13) { // Return
             this.path = this.input.nativeElement.value
-            // TODO:
-            //this.tableView.focus()
+            this.tableView.focus()
         }
     }
 
@@ -63,17 +62,16 @@ export class CommanderViewComponent implements OnInit {
 
     private onColumnSort(evt: IColumnSortEvent) {
         console.log(evt)
-        // const subscription = this.tableView.items.subscribe({next: o => {
-        //     console.log("o", o.length)
-        //     subscription.unsubscribe()
-        // }})
+            const subscription = (this.tableView.items as Observable<IItem[]>).subscribe({next: o => {
+            console.log("o", o.length)
+            subscription.unsubscribe()
+        }})
     }
 
     private processItem() {
-        // TODO:
-        // const item = this.tableView.getCurrentItem()
-        // if (item)
-        //     this.itemProcessor.process(item)
+        const item = this.tableView.getCurrentItem()
+        if (item)
+            this.itemProcessor.process(item)
     }
 
     private itemProcessor: ItemProcessor
