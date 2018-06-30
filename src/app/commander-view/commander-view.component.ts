@@ -4,10 +4,12 @@ import { ItemProcessor } from '../processors/item-processor'
 import { IColumnSortEvent, IColumns } from '../columns/columns.component'
 import { Observable, Subject, from } from 'rxjs'
 import { IItem, TableViewComponent } from '../table-view/table-view.component'
-// TODO: FileProcessor: Sorting by selected column
+// TODO: Restricting items
+// TODO: RestricterComponent, ngIf restricterActive, when first char typed
+// TODO: RestricterComponent: Animation
+// TODO: RestricterComponent: onkeyboard, binding to commanderview
+// TODO: Selecting with mouse and keyboard
 // TODO: Don't use nativeElement input, use binding
-// Restricting items
-// TODO: Selecting with Mouse anf Keyboard
 
 @Component({
     selector: 'app-commander-view',
