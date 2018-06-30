@@ -1,3 +1,6 @@
-<ul (keydown)="onKeyDown($event)" tabindex="1">
-    <li *ngFor="let item of items">Eintrag Nummer {{item}}</li>
-</ul>
+<div>
+    <ul (keydown)="onKeyDown($event)" tabindex="1">
+        <li *ngFor="let item of items">Eintrag Nummer {{item}}</li>
+    </ul>
+    <input class="restricter" @flyInOut *ngIf="restrictMode" value="Affe">
+</div>
