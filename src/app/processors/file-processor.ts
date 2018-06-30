@@ -108,6 +108,15 @@ export class FileProcessor extends ItemProcessor {
             case 1:
                 predicate = (a, b) => this.fileExtensionPipe.transform(a.name).localeCompare(this.fileExtensionPipe.transform(b.name))
                 break
+            case 2:
+                predicate = (a, b) => a.time.getTime() - b.time.getTime()
+                break
+            case 3:
+                predicate = (a, b) => a.size - b.size
+                break
+            case 4:
+                predicate = (a, b) => this.compareVersion(a.version, b.version)
+                break
         }
         files = files.sort((a, b) => this.sortItem(a, b, isAscending, predicate))
         
@@ -137,6 +146,26 @@ export class FileProcessor extends ItemProcessor {
         return new Promise<Date>((res, rej) => {
             this.addon.getExifDate(path, (err, result) => res(result))
         })
+    }
+
+    private compareVersion(versionLeft?: string, versionRight?: string): number {
+        if (!versionLeft)
+            return -1
+        else if (!versionRight)
+            return 1
+        else {
+            var leftParts = <number[]><any>versionLeft.split('.')
+            var rightParts = <number[]><any>versionRight.split('.')
+            if (leftParts[0] != rightParts[0])
+                return <number>leftParts[0] - rightParts[0]
+            else if (leftParts[1] != rightParts[1])
+                return leftParts[1] - rightParts[1]
+            else if (leftParts[2] != rightParts[2])
+                return leftParts[2] - rightParts[2]
+            else if (leftParts[3] != rightParts[3])
+                return leftParts[3] - rightParts[3]
+            else return 0
+        }
     }
 
     fileExtensionPipe = new FileExtensionPipe()
