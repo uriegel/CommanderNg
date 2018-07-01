@@ -4,6 +4,7 @@ import { ItemProcessor } from '../processors/item-processor'
 import { IColumnSortEvent, IColumns } from '../columns/columns.component'
 import { Observable, Subject, from } from 'rxjs'
 import { IItem, TableViewComponent } from '../table-view/table-view.component'
+import { trigger, state, style, transition, animate } from '@angular/animations';
 // TODO: Restricting items
 // TODO: RestricterComponent, ngIf restricterActive, when first char typed
 // TODO: RestricterComponent: Animation
@@ -14,7 +15,35 @@ import { IItem, TableViewComponent } from '../table-view/table-view.component'
 @Component({
     selector: 'app-commander-view',
     templateUrl: './commander-view.component.html',
-    styleUrls: ['./commander-view.component.css']
+    styleUrls: ['./commander-view.component.css'],
+    animations: [
+        trigger('flyInOut', [
+            state('in', style({
+                opacity: 0,
+                width: '0%',
+                height: '0px'    
+            })),
+            transition(":enter", [
+                style({
+                    opacity: 0,
+                    width: '0%',
+                    height: '0px'    
+                }),
+                animate("0.3s ease-out", style({
+                    opacity: 1,
+                    width: '70%',
+                    height: '15px'
+                }))
+            ]),
+            transition(':leave', [
+                animate("0.3s ease-in", style({
+                    opacity: 0,
+                    width: '0%',
+                    height: '0px'    
+                }))
+            ])
+        ])    
+    ]
 })
 export class CommanderViewComponent implements OnInit {
 
