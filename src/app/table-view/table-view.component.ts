@@ -4,6 +4,7 @@ import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.componen
 import { ColumnsComponent as Columns, IColumns, IColumnSortEvent } from '../columns/columns.component'
 
 export interface IItem {
+    name: string
     isSelected?: boolean
     isCurrent?: boolean
 }

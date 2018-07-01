@@ -4,7 +4,8 @@ import { ItemProcessor } from '../processors/item-processor'
 import { IColumnSortEvent, IColumns } from '../columns/columns.component'
 import { Observable, Subject, from } from 'rxjs'
 import { IItem, TableViewComponent } from '../table-view/table-view.component'
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import { trigger, state, style, transition, animate } from '@angular/animations'
+import { Restricter } from '../restricter'
 // TODO: Restricting items
 // TODO: RestricterComponent, ngIf restricterActive, when first char typed
 // TODO: RestricterComponent: Animation
@@ -90,14 +91,19 @@ export class CommanderViewComponent implements OnInit {
 
     private onTableKeydown(evt: KeyboardEvent) {
         switch (evt.which) {
-            case 13: // Return
-                this.processItem()
-                break
             case 8: // BACKSPACE
                 if (this.restrictValue.length > 0) {
                     this.restrictValue = this.restrictValue.substring(0, this.restrictValue.length - 1)
                 }
                 break
+            case 13: // Return
+                this.processItem()
+                break
+            case 27: // ESC
+                if (this.restricter) {
+                    this.restricter = null
+                }
+                break                
         }
     }
 
@@ -107,13 +113,18 @@ export class CommanderViewComponent implements OnInit {
     }
 
     private onKeyPress(evt: KeyboardEvent) {
-        this.restrictValue += String.fromCharCode(evt.charCode).toLowerCase()
+        const restrictValue = this.restrictValue + String.fromCharCode(evt.charCode).toLowerCase()
         
-        // const [items] = this.tableView.getItemsToSort()
-        // if (this.restrict(items, restrict))
-        //     this.checkRestrict(restrict)
-        // if (!this.tableView.focus())
-        //     this.tableView.pos1()
+        if (!this.restricter && Restricter.check(restrictValue)) 
+            this.restricter = new Restricter(this.items)
+        const restrictedItems = this.restricter.restrict(restrictValue)
+        if (!restrictedItems && restrictValue.length < 2) {
+            this.restricter = null
+            return
+        }
+        if (restrictedItems) {
+            this.restrictValue = restrictValue
+        }
     }
 
     private onColumnSort(evt: IColumnSortEvent) {
@@ -129,5 +140,6 @@ export class CommanderViewComponent implements OnInit {
             this.itemProcessor.process(item)
     }
 
+    private restricter: Restricter = null
     private itemProcessor: ItemProcessor
 }
