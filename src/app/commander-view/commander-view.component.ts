@@ -38,6 +38,8 @@ export class CommanderViewComponent implements OnInit {
     private _path: string
     items: Observable<IItem[]>     
 
+    restrictValue = ""
+
     ngOnInit() {
         this.path = "drives"
     }
@@ -45,6 +47,10 @@ export class CommanderViewComponent implements OnInit {
     constructor(private processorFactory: ItemProcesserFactoryService) { }
 
     focus() { this.tableView.focus() }
+
+    private onFocus() {
+        this.focus()
+    }
 
     private onInputKeydown(evt: KeyboardEvent) {
         if (evt.which == 13) { // Return
@@ -54,13 +60,31 @@ export class CommanderViewComponent implements OnInit {
     }
 
     private onTableKeydown(evt: KeyboardEvent) {
-        if (evt.which == 13) // Return
-            this.processItem()
+        switch (evt.which) {
+            case 13: // Return
+                this.processItem()
+                break
+            case 8: // BACKSPACE
+                if (this.restrictValue.length > 0) {
+                    this.restrictValue = this.restrictValue.substring(0, this.restrictValue.length - 1)
+                }
+                break
+        }
     }
 
     private onDblClick(evt: MouseEvent) { 
         if ((evt.target as HTMLElement).closest("td")) 
             this.processItem() 
+    }
+
+    private onKeyPress(evt: KeyboardEvent) {
+        this.restrictValue += String.fromCharCode(evt.charCode).toLowerCase()
+        
+        // const [items] = this.tableView.getItemsToSort()
+        // if (this.restrict(items, restrict))
+        //     this.checkRestrict(restrict)
+        // if (!this.tableView.focus())
+        //     this.tableView.pos1()
     }
 
     private onColumnSort(evt: IColumnSortEvent) {

@@ -29,7 +29,7 @@ import { CdromComponent } from './svgs/cdrom/cdrom.component'
 import { UsbComponent } from './svgs/usb/usb.component'
 import { ParentItemComponent } from './datatemplates/parent-item/parent-item.component'
 import { VirtualListPipe } from './pipes/virtual-list.pipe'
-import { ClipHeightPipe } from './pipes/clip-height.pipe';
+import { ClipHeightPipe } from './pipes/clip-height.pipe'
 import { RestricterComponent as TestRestrictor} from './test/restricter/restricter.component'
 @NgModule({
     declarations: [
