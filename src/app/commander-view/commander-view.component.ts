@@ -7,10 +7,10 @@ import { ItemProcessor } from '../processors/item-processor'
 import { IColumnSortEvent, IColumns } from '../columns/columns.component'
 import { IItem, TableViewComponent } from '../table-view/table-view.component'
 
-// TODO: Restricting items
-// TODO: RestricterComponent, ngIf restricterActive, when first char typed
-// TODO: RestricterComponent: Animation
-// TODO: RestricterComponent: onkeyboard, binding to commanderview
+// TODO: SortOrder: switch off order or order while changing path
+// TODO: Restricting items after escape: sortOrder!
+// TODO: new Items: like esc
+
 // TODO: Selecting with mouse and keyboard
 // TODO: Don't use nativeElement input, use binding
 
@@ -74,6 +74,8 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     ngOnInit() { this.path = "drives" }
     ngAfterViewInit() { 
         this.keyDownEvents = fromEvent(this.tableView.table.nativeElement, "keydown") 
+        this.returns = this.keyDownEvents.pipe(filter(n => n.which == 13))
+        this.returns.subscribe(() => this.processItem())
         this.initializeRestrict() 
     }
 
@@ -89,19 +91,6 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         if (evt.which == 13) { // Return
             this.path = this.input.nativeElement.value
             this.tableView.focus()
-        }
-    }
-
-    private onTableKeydown(evt: KeyboardEvent) {
-        switch (evt.which) {
-            case 8: // BACKSPACE
-                if (this.restrictValue.length > 0) {
-                    this.restrictValue = this.restrictValue.substring(0, this.restrictValue.length - 1)
-                }
-                break
-            case 13: // Return
-                this.processItem()
-                break
         }
     }
 
@@ -126,16 +115,42 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     private initializeRestrict() {
         const inputChars = this.keyDownEvents.pipe(filter(n => n.key.length > 0 && n.key.length < 2))
         const backSpaces = this.keyDownEvents.pipe(filter(n => n.which == 8))
+        const escapes = this.keyDownEvents.pipe(filter(n => n.which == 27))
         const items = new Subject<IItem[]>()
+        const backItems = new Subject<IItem[]>()
         let originalItems: Observable<IItem[]>
         
-        inputChars.subscribe(n => this.items.subscribe(n => items.next(n)))
+        inputChars.subscribe(n => {
+            const subscription = this.items.subscribe(n => {
+                items.next(n)
+                subscription.unsubscribe()
+            })
+        })
+        backSpaces.subscribe(n => {
+            const subscription = originalItems.subscribe(n => {
+                backItems.next(n)
+                subscription.unsubscribe()
+            })
+        })
+
+        const undoRestriction = () => {
+            if (originalItems) {
+                this.items = originalItems
+                originalItems = null
+                this.restrictValue = ""
+            }
+        }
 
         const restictedValue = zip(inputChars, items, (char, itemArray) => {
-            return {
+            const result = {
                 char: char.key,
                 items: itemArray.filter(n => n.name.toLowerCase().startsWith(this.restrictValue + char.key))
             }
+            if (result.items.length > 0 && !result.items.find(n => n.isCurrent)) {
+                itemArray.forEach(n => n.isCurrent = false)
+                result.items[0].isCurrent = true
+            }
+            return result
         })
         restictedValue.subscribe(n => {
             if (n.items.length > 0) {
@@ -145,9 +160,24 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
                 this.items = from(new Promise<IItem[]>(res => res(n.items)))
             }
         })
+
+        const back = zip(backSpaces, backItems, (char, itemArray) => {
+            if (this.restrictValue.length > 0) {
+                this.restrictValue = this.restrictValue.substr(0, this.restrictValue.length - 1)
+                return itemArray.filter(n => n.name.toLowerCase().startsWith(this.restrictValue))
+            }
+        })
+        back.subscribe(n => {
+            if (this.restrictValue.length == 0)
+                undoRestriction()
+            else if (n.length > 0) 
+                this.items = from(new Promise<IItem[]>(res => res(n)))
+        })
+
+        escapes.subscribe(() => undoRestriction())
     }
 
     private keyDownEvents: Observable<KeyboardEvent>
-    //private restricter: Restricter
+    private returns: Observable<{}>
     private itemProcessor: ItemProcessor
 }
