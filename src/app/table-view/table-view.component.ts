@@ -19,7 +19,7 @@ export class TableViewComponent {
     @Input() private id: string 
     @Input() itemHeight = 0
     @Output() private onSort: EventEmitter<IColumnSortEvent> = new EventEmitter()    
-    @ViewChild("table") private table: ElementRef
+    @ViewChild("table") table: ElementRef
     @ViewChild(Scrollbar) private scrollbar: Scrollbar
     @ViewChild(Columns) private columnsControl: Columns
     @Input() path: string

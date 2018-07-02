@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, Input, OnInit } from '@angular/core'
+import { Component, ViewChild, ElementRef, Input, OnInit, AfterViewInit } from '@angular/core'
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
 import { IColumnSortEvent, IColumns } from '../columns/columns.component'
@@ -46,7 +46,7 @@ import { Restricter } from '../restricter'
         ])    
     ]
 })
-export class CommanderViewComponent implements OnInit {
+export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
     @ViewChild("input") private input: ElementRef
@@ -72,6 +72,10 @@ export class CommanderViewComponent implements OnInit {
 
     ngOnInit() {
         this.path = "drives"
+    }
+
+    ngAfterViewInit() {
+        this.restricter = new Restricter(this.tableView)        
     }
 
     constructor(private processorFactory: ItemProcesserFactoryService) { }
@@ -115,16 +119,16 @@ export class CommanderViewComponent implements OnInit {
     private onKeyPress(evt: KeyboardEvent) {
         const restrictValue = this.restrictValue + String.fromCharCode(evt.charCode).toLowerCase()
         
-        if (!this.restricter && Restricter.check(restrictValue)) 
-            this.restricter = new Restricter(this.items)
-        const restrictedItems = this.restricter.restrict(restrictValue)
-        if (!restrictedItems && restrictValue.length < 2) {
-            this.restricter = null
-            return
-        }
-        if (restrictedItems) {
-            this.restrictValue = restrictValue
-        }
+        // if (!this.restricter && Restricter.check(restrictValue)) 
+        //     this.restricter = new Restricter(this.items)
+        // const restrictedItems = this.restricter.restrict(restrictValue)
+        // if (!restrictedItems && restrictValue.length < 2) {
+        //     this.restricter = null
+        //     return
+        // }
+        // if (restrictedItems) {
+        //     this.restrictValue = restrictValue
+        // }
     }
 
     private onColumnSort(evt: IColumnSortEvent) {
@@ -140,6 +144,6 @@ export class CommanderViewComponent implements OnInit {
             this.itemProcessor.process(item)
     }
 
-    private restricter: Restricter = null
+    private restricter: Restricter
     private itemProcessor: ItemProcessor
 }
