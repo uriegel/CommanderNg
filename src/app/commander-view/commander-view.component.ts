@@ -7,12 +7,9 @@ import { ItemProcessor } from '../processors/item-processor'
 import { IColumnSortEvent, IColumns } from '../columns/columns.component'
 import { IItem, TableViewComponent } from '../table-view/table-view.component'
 
-// TODO: SortOrder: switch off order or order while changing path
-// TODO: Restricting items after escape: sortOrder!
-// TODO: new Items: like esc
-
 // TODO: Selecting with mouse and keyboard
 // TODO: Don't use nativeElement input, use binding
+// TODO: SortOrder: switch off when name ascending
 
 @Component({
     selector: 'app-commander-view',
@@ -56,14 +53,16 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     @Input()
     get path() { return this._path }
     set path(value: string) {
+        this.restrictingOffs.next()
         if (value.endsWith('\\'))
             value = value.substr(0, value.length - 1)
         const itemProcessor = this.processorFactory.get(this.itemProcessor, this, value)
         if (itemProcessor) {
             this.itemProcessor = itemProcessor
             this.columns = this.itemProcessor.columns
+            this.columnSort = null
         }
-        this.items = this.itemProcessor.get(value, this.path)
+        this.setItems(this.itemProcessor.get(value, this.path))
         this._path = value
     }
     private _path: string
@@ -100,16 +99,25 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     }
 
     private onColumnSort(evt: IColumnSortEvent) {
-        const subscription = (this.items as Observable<IItem[]>).subscribe({next: value => {
-            subscription.unsubscribe()
-            this.items = from(new Promise<IItem[]>(res => res(this.itemProcessor.sort(value, evt.index, evt.ascending))))
-        }})
+        this.columnSort = evt
+        this.setItems(this.items)
     }
 
     private processItem() {
         const item = this.tableView.getCurrentItem()
         if (item)
             this.itemProcessor.process(item)
+    }
+
+    private setItems(items: Observable<IItem[]>) {
+        if (!this.columnSort)
+            this.items = items
+        else {
+            const subscription = (items as Observable<IItem[]>).subscribe({next: value => {
+                subscription.unsubscribe()
+                this.items = from(new Promise<IItem[]>(res => res(this.itemProcessor.sort(value, this.columnSort.index, this.columnSort.ascending))))
+            }})
+        }
     }
 
     private initializeRestrict() {
@@ -135,7 +143,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
         const undoRestriction = () => {
             if (originalItems) {
-                this.items = originalItems
+                this.setItems(originalItems)
                 originalItems = null
                 this.restrictValue = ""
             }
@@ -171,12 +179,15 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
             if (this.restrictValue.length == 0)
                 undoRestriction()
             else if (n.length > 0) 
-                this.items = from(new Promise<IItem[]>(res => res(n)))
+                this.setItems(from(new Promise<IItem[]>(res => res(n))))
         })
 
+        this.restrictingOffs.subscribe(() => undoRestriction())
         escapes.subscribe(() => undoRestriction())
     }
 
+    private readonly restrictingOffs = new Subject()
+    private columnSort: IColumnSortEvent = null
     private keyDownEvents: Observable<KeyboardEvent>
     private returns: Observable<{}>
     private itemProcessor: ItemProcessor
