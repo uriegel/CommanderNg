@@ -1,11 +1,12 @@
 import { Component, ViewChild, ElementRef, Input, OnInit, AfterViewInit } from '@angular/core'
+import { trigger, state, style, transition, animate } from '@angular/animations'
+import { Observable, Subject, from, fromEvent, zip } from 'rxjs'
+import { filter } from 'rxjs/operators'
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
 import { IColumnSortEvent, IColumns } from '../columns/columns.component'
-import { Observable, Subject, from } from 'rxjs'
 import { IItem, TableViewComponent } from '../table-view/table-view.component'
-import { trigger, state, style, transition, animate } from '@angular/animations'
-import { Restricter } from '../restricter'
+
 // TODO: Restricting items
 // TODO: RestricterComponent, ngIf restricterActive, when first char typed
 // TODO: RestricterComponent: Animation
@@ -70,12 +71,10 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     restrictValue = ""
 
-    ngOnInit() {
-        this.path = "drives"
-    }
-
-    ngAfterViewInit() {
-        this.restricter = new Restricter(this.tableView)        
+    ngOnInit() { this.path = "drives" }
+    ngAfterViewInit() { 
+        this.keyDownEvents = fromEvent(this.tableView.table.nativeElement, "keydown") 
+        this.initializeRestrict() 
     }
 
     constructor(private processorFactory: ItemProcesserFactoryService) { }
@@ -103,32 +102,12 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
             case 13: // Return
                 this.processItem()
                 break
-            case 27: // ESC
-                if (this.restricter) {
-                    this.restricter = null
-                }
-                break                
         }
     }
 
     private onDblClick(evt: MouseEvent) { 
         if ((evt.target as HTMLElement).closest("td")) 
             this.processItem() 
-    }
-
-    private onKeyPress(evt: KeyboardEvent) {
-        const restrictValue = this.restrictValue + String.fromCharCode(evt.charCode).toLowerCase()
-        
-        // if (!this.restricter && Restricter.check(restrictValue)) 
-        //     this.restricter = new Restricter(this.items)
-        // const restrictedItems = this.restricter.restrict(restrictValue)
-        // if (!restrictedItems && restrictValue.length < 2) {
-        //     this.restricter = null
-        //     return
-        // }
-        // if (restrictedItems) {
-        //     this.restrictValue = restrictValue
-        // }
     }
 
     private onColumnSort(evt: IColumnSortEvent) {
@@ -144,6 +123,31 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
             this.itemProcessor.process(item)
     }
 
-    private restricter: Restricter
+    private initializeRestrict() {
+        const inputChars = this.keyDownEvents.pipe(filter(n => n.key.length > 0 && n.key.length < 2))
+        const backSpaces = this.keyDownEvents.pipe(filter(n => n.which == 8))
+        const items = new Subject<IItem[]>()
+        let originalItems: Observable<IItem[]>
+        
+        inputChars.subscribe(n => this.items.subscribe(n => items.next(n)))
+
+        const restictedValue = zip(inputChars, items, (char, itemArray) => {
+            return {
+                char: char.key,
+                items: itemArray.filter(n => n.name.toLowerCase().startsWith(this.restrictValue + char.key))
+            }
+        })
+        restictedValue.subscribe(n => {
+            if (n.items.length > 0) {
+                this.restrictValue += n.char
+                if (!originalItems)
+                    originalItems = this.items
+                this.items = from(new Promise<IItem[]>(res => res(n.items)))
+            }
+        })
+    }
+
+    private keyDownEvents: Observable<KeyboardEvent>
+    //private restricter: Restricter
     private itemProcessor: ItemProcessor
 }
