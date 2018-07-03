@@ -7,6 +7,7 @@ export interface IItem {
     name: string
     isSelected?: boolean
     isCurrent?: boolean
+    type: number
 }
 
 @Component({
@@ -47,12 +48,22 @@ export class TableViewComponent {
 
     focus() { this.table.nativeElement.focus() }
 
+    getCurrentItemIndex() { return this.getCurrentIndex() }
+
     getCurrentItem() {
         const index = this.getCurrentIndex()
         if (index != -1)
             return this.tableViewItems[index]
         else
             return null
+    }
+
+    getAllItems() { return this.tableViewItems }
+
+    downOne() {
+        const index = this.getCurrentIndex(0)
+        const nextIndex = index < this.tableViewItems.length - 1 ? index + 1 : index
+        this.setCurrentIndex(nextIndex, index)
     }
 
     private onKeyDown(evt: KeyboardEvent) {
@@ -111,12 +122,6 @@ export class TableViewComponent {
         this.tableViewItems[lastIndex].isCurrent = false
         this.tableViewItems[index].isCurrent = true
         this.scrollbar.scrollIntoView(index)
-    }
-
-    private downOne() {
-        const index = this.getCurrentIndex(0)
-        const nextIndex = index < this.tableViewItems.length - 1 ? index + 1 : index
-        this.setCurrentIndex(nextIndex, index)
     }
 
     private upOne() {

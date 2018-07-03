@@ -7,7 +7,6 @@ import { ItemProcessor } from '../processors/item-processor'
 import { IColumnSortEvent, IColumns } from '../columns/columns.component'
 import { IItem, TableViewComponent } from '../table-view/table-view.component'
 
-// TODO: Selecting with mouse and keyboard
 // TODO: Don't use nativeElement input, use binding
 // TODO: SortOrder: switch off when name ascending
 
@@ -73,8 +72,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     ngOnInit() { this.path = "drives" }
     ngAfterViewInit() { 
         this.keyDownEvents = fromEvent(this.tableView.table.nativeElement, "keydown") 
-        this.returns = this.keyDownEvents.pipe(filter(n => n.which == 13))
-        this.returns.subscribe(() => this.processItem())
+        this.keyDownEvents.subscribe(evt => this.onInputKeydown(evt))
         this.initializeRestrict() 
     }
 
@@ -82,15 +80,71 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     focus() { this.tableView.focus() }
 
-    private onFocus() {
-        this.focus()
-    }
+    private refresh() { this.path = this.path }
+
+    private onFocus() { this.focus() }
 
     private onInputKeydown(evt: KeyboardEvent) {
-        if (evt.which == 13) { // Return
-            this.path = this.input.nativeElement.value
-            this.tableView.focus()
+        switch (evt.which) {
+            case 13: // Return
+                this.processItem()
+                break
+            case 32: // _                
+                this.toggleSelection(this.tableView.getCurrentItem())
+                break
+            case 35: // End
+                if (evt.shiftKey) 
+                    this.selectAllItems(this.tableView.getCurrentItemIndex(), false)
+                break
+            case 36: // Pos1
+                if (evt.shiftKey) 
+                    this.selectAllItems(this.tableView.getCurrentItemIndex(), true)
+                break                
+            case 45: // Einfg
+                if (this.toggleSelection(this.tableView.getCurrentItem()))
+                    this.tableView.downOne()
+                break;
+            case 82: // r
+                if (evt.ctrlKey) 
+                    this.refresh()
+                break;
+            case 107: // NUM +
+                this.selectAllItems(0, false)
+                break
+            case 109: // NUM -
+                this.selectAllItems(0, true)
+                break                
         }
+    }
+
+    private selectAllItems(currentItemIndex: number, above: boolean) {
+        this.tableView.getAllItems().forEach((item, index) => {
+            item.isSelected = above ? index <= currentItemIndex : index >= currentItemIndex ? this.isItemSelectable(item) : false
+        })
+    }
+
+    private toggleSelection(item: IItem) {
+        if (this.isItemSelectable(item)) {
+            item.isSelected = !item.isSelected
+            return true
+        }
+        else
+            return false
+    }
+
+    private isItemSelectable(item: IItem) {
+        switch (item.type) {
+            case 0:
+            case 1:
+                return true
+            default:
+                return false
+        }
+    }
+
+    private onClick(evt: MouseEvent) { 
+        if (evt.ctrlKey && (evt.target as HTMLElement).closest("td"))  
+            this.toggleSelection(this.tableView.getCurrentItem())
     }
 
     private onDblClick(evt: MouseEvent) { 
@@ -121,7 +175,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     }
 
     private initializeRestrict() {
-        const inputChars = this.keyDownEvents.pipe(filter(n => n.key.length > 0 && n.key.length < 2))
+        const inputChars = this.keyDownEvents.pipe(filter(n => !n.altKey && !n.ctrlKey && !n.shiftKey && n.key.length > 0 && n.key.length < 2))
         const backSpaces = this.keyDownEvents.pipe(filter(n => n.which == 8))
         const escapes = this.keyDownEvents.pipe(filter(n => n.which == 27))
         const items = new Subject<IItem[]>()
@@ -189,6 +243,5 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     private readonly restrictingOffs = new Subject()
     private columnSort: IColumnSortEvent = null
     private keyDownEvents: Observable<KeyboardEvent>
-    private returns: Observable<{}>
     private itemProcessor: ItemProcessor
 }

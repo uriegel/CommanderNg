@@ -15,6 +15,11 @@ tr.isCurrent {
     outline-offset: -1px;
 }
 
+tr.isSelected {
+    color: white;
+    background-color: blue;
+}
+
 table:focus tr.isCurrent {
     outline-color: red;
     outline-width: 1px;

@@ -1,7 +1,7 @@
 <div class="container">
     <input #input value="{{path}}" (keydown)="onInputKeydown($event)" (click)="$event.target.select()">
     <app-table-view class="tableView" [id]="id" [itemHeight]=18 [columns]="columns" [path]="path" [items]="items" tabindex="1"
-        (onSort)="onColumnSort($event)" (focus)="onFocus()" (dblclick)="onDblClick($event)">
+        (onSort)="onColumnSort($event)" (focus)="onFocus()" (click)="onClick($event)" (dblclick)="onDblClick($event)">
     </app-table-view>
     <input class="restricter" *ngIf="restrictValue.length" @flyInOut value="{{restrictValue}}" disabled>
 </div>

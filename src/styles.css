@@ -35,4 +35,10 @@ input {
     cursor: default;
 }
 
+svg .path {
+    fill: darkgray;
+}
 
+tr.isSelected svg .path {
+    fill: white;
+}
