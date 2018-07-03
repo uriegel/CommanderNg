@@ -31,6 +31,8 @@ import { ParentItemComponent } from './datatemplates/parent-item/parent-item.com
 import { VirtualListPipe } from './pipes/virtual-list.pipe'
 import { ClipHeightPipe } from './pipes/clip-height.pipe'
 import { RestricterComponent as TestRestrictor} from './test/restricter/restricter.component'
+import { GridComponent } from './test/grid/grid.component'
+import { GridSplitterComponent } from './grid-splitter/grid-splitter.component'
 @NgModule({
     declarations: [
         AppComponent,
@@ -60,7 +62,9 @@ import { RestricterComponent as TestRestrictor} from './test/restricter/restrict
         ParentItemComponent,
         VirtualListPipe,
         ClipHeightPipe,
-        TestRestrictor
+        TestRestrictor,
+        GridComponent,
+        GridSplitterComponent
     ],
     imports: [
         BrowserModule,

@@ -1,0 +1,28 @@
+:host {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+:host.isVertical {
+    flex-direction: column;
+}
+
+.splitter {
+    background-color: var(--grip-color);
+    transition: background-color 0.4s;
+    flex: 0 0 6px;
+    cursor: ew-resize;
+}
+
+:host.isVertical .splitter {
+    cursor: ns-resize;
+}
+
+.splitter:hover {
+    background-color: darkgray;
+}
+
+.splitter:active {
+    background-color: #6b6969;
+}
