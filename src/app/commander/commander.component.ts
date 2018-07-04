@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core'
 
+// TODO: event control vertical size changes to commanderViews
+// TODO: replace button with menu command
+// TODO: status bar with binding to current item in current list
+
 @Component({
   selector: 'app-commander',
   templateUrl: './commander.component.html',
@@ -7,13 +11,13 @@ import { Component, OnInit } from '@angular/core'
 })
 export class CommanderComponent implements OnInit {
 
-    isLastVisible = true
+    isViewVisible = false
 
     constructor() { }
 
     ngOnInit() { }
 
     private onClick() {
-        this.isLastVisible = !this.isLastVisible
+        this.isViewVisible = !this.isViewVisible
     }
 }

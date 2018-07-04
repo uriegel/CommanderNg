@@ -6,9 +6,7 @@
 }
 
 .tableContainer {
-    position: relative;
     margin: 30px;
-    flex-grow: 1;
     border-color: darkgray;
     border-width: 1px;
     border-style: solid;

@@ -4,29 +4,18 @@
     height: 100vh;
     width: 100vw;
 }
-app-grid-splitter {
+app-grid-splitter.first {
     display: flex;
     flex-grow: 2;
 }
-app-grid-splitter.first {
+app-commander-view, .green {
     flex-grow: 1;
 }
-.red, .blue, .green {
-    flex-grow: 1;
-}
-.red {
-    background-color: palevioletred;
-    flex-grow: 1;        
-}
-.blue {
-    background-color: powderblue;
-    flex-grow: 1;
-}
+
 .green {
-    background-color: green;
+    background-color: white;
     flex-grow: 1;
 }
 button {
     margin: 10px;
 }
-
