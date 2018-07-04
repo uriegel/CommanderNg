@@ -14,4 +14,8 @@ export class CommanderComponent {
     isViewVisible = false
 
     private onClick() { this.isViewVisible = !this.isViewVisible }
+
+    private onRatioChanged() {
+        console.log("onRatioChanged")
+    }
 }

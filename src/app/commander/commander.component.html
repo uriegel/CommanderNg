@@ -1,7 +1,7 @@
-<app-grid-splitter [isVertical]="true" [isLastVisible]="isViewVisible">
+<app-grid-splitter [isVertical]="true" [isLastVisible]="isViewVisible" (onRatioChanged)="onRatioChanged()">
     <app-grid-splitter class="first">
-        <app-commander-view class="first"></app-commander-view>
-        <app-commander-view class="last"></app-commander-view>
+        <app-commander-view #leftView class="first"></app-commander-view>
+        <app-commander-view #rightView class="last"></app-commander-view>
     </app-grid-splitter>
     <div class="green last"></div>
 </app-grid-splitter>
