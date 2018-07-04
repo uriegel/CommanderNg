@@ -8,10 +8,7 @@ app-grid-splitter {
     display: flex;
     flex-grow: 1;
 }
-app-grid-splitter.first {
-    flex-grow: 1;
-}
-.red, .blue, .green {
+.red, .blue, .yellow, .green {
     flex-grow: 1;
 }
 .red {
@@ -21,6 +18,10 @@ app-grid-splitter.first {
 .blue {
     background-color: powderblue;
     flex-grow: 1;
+}
+.yellow {
+    background-color: yellow;
+    flex-grow: 2;
 }
 .green {
     background-color: green;
