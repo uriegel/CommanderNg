@@ -8,14 +8,15 @@ app-grid-splitter.first {
     display: flex;
     flex-grow: 2;
 }
-app-commander-view, .green {
+app-commander-view, .viewer {
     flex-grow: 1;
 }
 
-.green {
+.viewer {
     background-color: white;
     flex-grow: 1;
 }
-button {
-    margin: 10px;
+.status {
+    background-color: blue;
+    height: 18px;
 }

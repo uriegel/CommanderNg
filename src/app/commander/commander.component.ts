@@ -1,22 +1,27 @@
-import { Component, Output, EventEmitter, ViewChild } from '@angular/core'
+import { Component, Output, EventEmitter, ViewChild, OnInit, NgZone } from '@angular/core'
 import { CommanderViewComponent } from '../commander-view/commander-view.component';
+const { ipcRenderer } = (<any>window).require('electron')
 
-// TODO: replace button with menu command
 // TODO: status bar with binding to current item in current list
+// TODO: Tab control
 
 @Component({
   selector: 'app-commander',
   templateUrl: './commander.component.html',
   styleUrls: ['./commander.component.css']
 })
-export class CommanderComponent {
+export class CommanderComponent implements OnInit {
 
     @ViewChild("leftView") leftView: CommanderViewComponent
     @ViewChild("rightView") rightView: CommanderViewComponent
 
     isViewVisible = false
 
-    private onClick() { this.isViewVisible = !this.isViewVisible }
+    constructor(private zone: NgZone) {}
+
+    ngOnInit() {
+        ipcRenderer.on("viewer", (_: any, on: boolean) => this.zone.run(() => this.isViewVisible = on))
+    }
 
     private onRatioChanged() {
         this.leftView.onResize()
