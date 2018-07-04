@@ -1,9 +1,9 @@
-<app-grid-splitter>
+<app-grid-splitter [isLastVisible]="isLastVisible">
     <div class="blue first"></div>
-    <div class="red last"></div>
+    <div class="red last" ></div>
 </app-grid-splitter>
-<app-grid-splitter [isVertical]="true">
+<app-grid-splitter [isVertical]="true" [isLastVisible]="isLastVisible">
     <div class="yellow first"></div>
     <div class="green last"></div>
 </app-grid-splitter>
-<button>Weg</button>
+<button (click)="onClick()">Weg</button>

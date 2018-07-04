@@ -7,19 +7,33 @@ import { Component, OnInit, Input, HostBinding, AfterViewInit, ElementRef, ViewC
 })
 export class GridSplitterComponent implements OnInit, AfterViewInit {
 
-    @HostBinding('class.isVertical') isVertical = true
-    @Input("isVertical") isVerticalValue
     @ViewChild("splitter") splitter: ElementRef
+    @Input() isVertical
+    @Input() 
+    get isLastVisible() { return this._isLastVisible }
+    set isLastVisible(value: boolean) { 
+        this._isLastVisible = value
+        if (this.view2) {
+            this.view2.hidden = !value
+            if (this.view2.hidden) {
+                this.hiddenGridValue = this.view1.style.flex
+                this.view1.style.flex = ""
+            }
+            else
+                this.view1.style.flex = this.hiddenGridValue
+        }
 
+    }
+    private _isLastVisible = true
     constructor(private elRef: ElementRef) { }
 
-    ngOnInit() { 
-        this.isVertical = this.isVerticalValue 
-    }
+    ngOnInit() { }
 
     ngAfterViewInit() {
         this.view1 = this.elRef.nativeElement.getElementsByClassName("first")[0]
         this.view2 = this.elRef.nativeElement.getElementsByClassName("last")[0]
+        if (this.view2)
+            this.view2.hidden = !this.isLastVisible
     }
 
     private onSplitterMouseDown(evt: MouseEvent) {
@@ -34,8 +48,8 @@ export class GridSplitterComponent implements OnInit, AfterViewInit {
             let delta = (this.isVertical ? evt.pageY : evt.pageX) - initialPosition
             if (delta < 10 - size1)
                 delta = 10 - size1
-            if (delta > (this.isVertical ? this.view1.parentElement.offsetHeight : this.view1.parentElement.offsetWidth) - 10 - size1)
-                delta = (this.isVertical ? this.view1.parentElement.offsetHeight : this.view1.parentElement.offsetWidth) - 10 - size1
+            if (delta > (this.isVertical ? this.view1.parentElement.offsetHeight : this.view1.parentElement.offsetWidth) - 10 - size1 - 6)
+                delta = (this.isVertical ? this.view1.parentElement.offsetHeight : this.view1.parentElement.offsetWidth) - 10 - size1 - 6
 
             const newSize1 = size1 + delta
             const newSize2 = size2 - delta
@@ -68,4 +82,5 @@ export class GridSplitterComponent implements OnInit, AfterViewInit {
 
     private view1: HTMLElement
     private view2: HTMLElement
+    private hiddenGridValue
 }

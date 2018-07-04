@@ -1,3 +1,5 @@
-<ng-content select=".first"></ng-content>
-<div #splitter class="splitter" (mousedown)="onSplitterMouseDown($event)"></div>
-<ng-content select=".last" #view2></ng-content>
+<div class="container" [class.isVertical]="isVertical">
+    <ng-content select=".first"></ng-content>
+    <div #splitter class="splitter" (mousedown)="onSplitterMouseDown($event)" [hidden]="!isLastVisible"></div>
+    <ng-content select=".last"></ng-content>
+</div>

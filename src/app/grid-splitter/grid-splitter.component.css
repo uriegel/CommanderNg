@@ -2,21 +2,24 @@
     display: flex;
 }
 
-:host.isVertical {
+.container.isVertical {
     flex-direction: column;
 }
 
+.container.isVertical .splitter {
+    cursor: ns-resize;
+}
+
+.container {
+    display: flex;
+    flex-grow: 1;
+}
 .splitter {
     background-color: var(--grip-color);
     transition: background-color 0.4s;
     flex: 0 0 6px;
     cursor: ew-resize;
 }
-
-:host.isVertical .splitter {
-    cursor: ns-resize;
-}
-
 .splitter:hover {
     background-color: darkgray;
 }
