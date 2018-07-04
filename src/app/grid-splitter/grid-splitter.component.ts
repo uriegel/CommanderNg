@@ -1,13 +1,14 @@
-import { Component, OnInit, Input, HostBinding, AfterViewInit, ElementRef, ViewChild } from '@angular/core'
+import { Component, Input, HostBinding, AfterViewInit, ElementRef, ViewChild, EventEmitter, Output } from '@angular/core'
 
 @Component({
     selector: 'app-grid-splitter',
     templateUrl: './grid-splitter.component.html',
     styleUrls: ['./grid-splitter.component.css']
 })
-export class GridSplitterComponent implements OnInit, AfterViewInit {
+export class GridSplitterComponent implements AfterViewInit {
 
     @ViewChild("splitter") splitter: ElementRef
+    @Output() onRatioChanged: EventEmitter<any> = new EventEmitter()    
     @Input() isVertical
     @Input() 
     get isLastVisible() { return this._isLastVisible }
@@ -22,12 +23,10 @@ export class GridSplitterComponent implements OnInit, AfterViewInit {
             else
                 this.view1.style.flex = this.hiddenGridValue
         }
-
+        this.onRatioChanged.emit()
     }
     private _isLastVisible = true
     constructor(private elRef: ElementRef) { }
-
-    ngOnInit() { }
 
     ngAfterViewInit() {
         this.view1 = this.elRef.nativeElement.firstChild.children[0]
@@ -57,7 +56,7 @@ export class GridSplitterComponent implements OnInit, AfterViewInit {
                 (this.isVertical ? this.splitter.nativeElement.offsetHeight : this.splitter.nativeElement.offsetWidth)) * 100
             this.view1.style.flex = `0 0 ${procent1}%`
             this.view2.style.flexGrow = `1`
-            //this.onChanged()
+            this.onRatioChanged.emit()
 
             evt.stopPropagation()
             evt.preventDefault()

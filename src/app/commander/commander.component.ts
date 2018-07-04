@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, Output, EventEmitter } from '@angular/core'
 
 // TODO: event control vertical size changes to commanderViews
 // TODO: replace button with menu command
@@ -9,15 +9,9 @@ import { Component, OnInit } from '@angular/core'
   templateUrl: './commander.component.html',
   styleUrls: ['./commander.component.css']
 })
-export class CommanderComponent implements OnInit {
+export class CommanderComponent {
 
     isViewVisible = false
 
-    constructor() { }
-
-    ngOnInit() { }
-
-    private onClick() {
-        this.isViewVisible = !this.isViewVisible
-    }
+    private onClick() { this.isViewVisible = !this.isViewVisible }
 }
