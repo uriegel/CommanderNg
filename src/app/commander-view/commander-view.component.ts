@@ -80,6 +80,8 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     focus() { this.tableView.focus() }
 
+    onResize() { this.tableView.onResize() }
+
     private refresh() { this.path = this.path }
 
     private onFocus() { this.focus() }

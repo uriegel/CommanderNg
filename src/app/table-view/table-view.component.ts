@@ -66,6 +66,8 @@ export class TableViewComponent {
         this.setCurrentIndex(nextIndex, index)
     }
 
+    onResize() { this.scrollbar.onResize() }
+
     private onKeyDown(evt: KeyboardEvent) {
         switch (evt.which) {
             case 33:

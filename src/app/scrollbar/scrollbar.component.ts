@@ -105,17 +105,17 @@ export class ScrollbarComponent implements AfterViewInit {
             this.itemsChanged(this.itemsCountAbsolute, this._itemsCapacity, index - this._itemsCapacity + 1)
     }
 
-    private onMouseWheel(evt: WheelEvent) {
-        var delta = evt.wheelDelta / Math.abs(evt.wheelDelta) * 3
-        this.itemsChanged(this.itemsCountAbsolute, this._itemsCapacity, this.position - delta)
-    }
-
-    private onResize() {
+    onResize() {
         if (this.list.parentElement.clientHeight != this.recentHeight) {
             this.recentHeight = this.list.parentElement.clientHeight
             this._itemsCapacity = this.calculateCapacity()
             this.itemsChanged(this.itemsCountAbsolute, this._itemsCapacity)
         }
+    }
+
+    private onMouseWheel(evt: WheelEvent) {
+        var delta = evt.wheelDelta / Math.abs(evt.wheelDelta) * 3
+        this.itemsChanged(this.itemsCountAbsolute, this._itemsCapacity, this.position - delta)
     }
 
     private calculateCapacity() {

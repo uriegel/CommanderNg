@@ -1,5 +1,4 @@
-import { Component, ViewChild } from '@angular/core'
-import { CommanderViewComponent } from '../../commander-view/commander-view.component';
+import { Component, } from '@angular/core'
 
 @Component({
   selector: 'test-grid',
@@ -7,9 +6,6 @@ import { CommanderViewComponent } from '../../commander-view/commander-view.comp
   styleUrls: ['./grid.component.css']
 })
 export class GridComponent {
-
-    @ViewChild("leftView") leftView: CommanderViewComponent
-    @ViewChild("rightView") rightView: CommanderViewComponent
 
     isLastVisible = true
 
