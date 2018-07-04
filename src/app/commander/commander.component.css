@@ -6,9 +6,12 @@
 }
 app-grid-splitter {
     display: flex;
+    flex-grow: 2;
+}
+app-grid-splitter.first {
     flex-grow: 1;
 }
-.red, .blue, .yellow, .green {
+.red, .blue, .green {
     flex-grow: 1;
 }
 .red {
@@ -19,10 +22,6 @@ app-grid-splitter {
     background-color: powderblue;
     flex-grow: 1;
 }
-.yellow {
-    background-color: yellow;
-    flex-grow: 2;
-}
 .green {
     background-color: green;
     flex-grow: 1;
@@ -30,3 +29,4 @@ app-grid-splitter {
 button {
     margin: 10px;
 }
+

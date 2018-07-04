@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
 
 @Component({
   selector: 'app-commander',
@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CommanderComponent implements OnInit {
 
-  constructor() { }
+    isLastVisible = true
 
-  ngOnInit() {
-  }
+    constructor() { }
 
+    ngOnInit() { }
+
+    private onClick() {
+        this.isLastVisible = !this.isLastVisible
+    }
 }

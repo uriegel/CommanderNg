@@ -6,7 +6,7 @@
     flex-direction: column;
 }
 
-.container.isVertical .splitter {
+.container.isVertical>.splitter {
     cursor: ns-resize;
 }
 
