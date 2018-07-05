@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, Input, OnInit, AfterViewInit } from '@angular/core'
+import { Component, ViewChild, ElementRef, Input, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core'
 import { trigger, state, style, transition, animate } from '@angular/animations'
 import { Observable, Subject, from, fromEvent, zip } from 'rxjs'
 import { filter } from 'rxjs/operators'
@@ -47,6 +47,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
     @ViewChild("input") private input: ElementRef
+    @Output() private gotFocus: EventEmitter<CommanderViewComponent> = new EventEmitter()    
     @Input() id: string
     @Input() columns: IColumns = { name: "nil", columns: []}
     @Input()
@@ -79,11 +80,18 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     focus() { this.tableView.focus() }
 
+    focusDirectoryInput() { 
+        this.input.nativeElement.focus() 
+        this.input.nativeElement.select()
+    }
+
     onResize() { this.tableView.onResize() }
 
     private refresh() { this.path = this.path }
 
     private onFocus() { this.focus() }
+
+    private onFocusIn(evt: Event) { this.gotFocus.emit(this) }
 
     private onInputChange() {
         this.path = this.input.nativeElement.value
