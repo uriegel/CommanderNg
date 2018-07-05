@@ -23,7 +23,7 @@ export class GridSplitterComponent implements AfterViewInit {
             else
                 this.view1.style.flex = this.hiddenGridValue
         }
-        this.onRatioChanged.emit()
+        setTimeout(() => this.onRatioChanged.emit(), 0)
     }
     private _isLastVisible = true
     constructor(private elRef: ElementRef) { }
