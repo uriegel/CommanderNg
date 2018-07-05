@@ -68,6 +68,8 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     private _path: string
     items: Observable<IItem[]>     
 
+    currentItem: IItem
+
     restrictValue = ""
 
     ngOnInit() { this.path = "drives" }
@@ -166,6 +168,10 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     private onDblClick(evt: MouseEvent) { 
         if ((evt.target as HTMLElement).closest("td")) 
             this.processItem() 
+    }
+
+    private onCurrentIndexChanged(index: number) {
+        this.currentItem = this.tableView.getCurrentItem()
     }
 
     private onColumnSort(evt: IColumnSortEvent) {

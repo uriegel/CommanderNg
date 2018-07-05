@@ -20,6 +20,7 @@ export class TableViewComponent {
     @Input() private id: string 
     @Input() itemHeight = 0
     @Output() private onSort: EventEmitter<IColumnSortEvent> = new EventEmitter()    
+    @Output() private onCurrentIndexChanged: EventEmitter<Number> = new EventEmitter()    
     @ViewChild("table") table: ElementRef
     @ViewChild(Scrollbar) private scrollbar: Scrollbar
     @ViewChild(Columns) private columnsControl: Columns
@@ -124,6 +125,7 @@ export class TableViewComponent {
         this.tableViewItems[lastIndex].isCurrent = false
         this.tableViewItems[index].isCurrent = true
         this.scrollbar.scrollIntoView(index)
+        this.onCurrentIndexChanged.emit(index)
     }
 
     private upOne() {

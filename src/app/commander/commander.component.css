@@ -17,6 +17,8 @@ app-commander-view, .viewer {
     flex-grow: 1;
 }
 .status {
+    color: white;
+    padding-left: 5px;
     background-color: blue;
     height: 18px;
 }

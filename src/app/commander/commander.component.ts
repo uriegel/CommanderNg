@@ -1,8 +1,11 @@
-import { Component, Output, EventEmitter, ViewChild, OnInit, NgZone, HostListener, AfterViewInit } from '@angular/core'
+import { Component, Output, EventEmitter, ViewChild, OnInit, NgZone, HostListener, AfterViewInit, Input } from '@angular/core'
 import { CommanderViewComponent } from '../commander-view/commander-view.component'
+import { IItem } from '../table-view/table-view.component';
 const { ipcRenderer } = (<any>window).require('electron')
 
-// TODO: status bar with binding to current item in current list
+// TODO: status bar: currentItem when filling list
+// TODO: status bar: fullpath
+// TODO: status bar: styling
 
 @Component({
   selector: 'app-commander',
