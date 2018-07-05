@@ -3,14 +3,24 @@
     flex-grow: 1;
 }
 
-.container.isVertical {
+.control {
+    display: flex;
+    flex-grow: 1;
+}
+
+
+.control.isVertical {
     flex-direction: column;
 }
 
-.container.isVertical>.splitter {
+.control.isVertical>.splitter {
     cursor: ns-resize;
 }
 
+.control {
+    display: flex;
+    flex-grow: 1;
+}
 .container {
     display: flex;
     flex-grow: 1;

@@ -35,6 +35,10 @@ input {
     cursor: default;
 }
 
+.hidden {
+    display: none !Important;
+}
+
 svg .path {
     fill: darkgray;
 }

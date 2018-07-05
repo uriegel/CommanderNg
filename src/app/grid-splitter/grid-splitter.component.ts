@@ -31,8 +31,6 @@ export class GridSplitterComponent implements AfterViewInit {
     ngAfterViewInit() {
         this.view1 = this.elRef.nativeElement.firstChild.children[0]
         this.view2 = this.elRef.nativeElement.firstChild.children[2]
-        if (this.view2)
-            this.view2.hidden = !this.isLastVisible
     }
 
     private onSplitterMouseDown(evt: MouseEvent) {

@@ -106,7 +106,7 @@ export class ScrollbarComponent implements AfterViewInit {
     }
 
     onResize() {
-        if (this.list.parentElement.clientHeight != this.recentHeight) {
+        if (this.list && this.list.parentElement.clientHeight != this.recentHeight) {
             this.recentHeight = this.list.parentElement.clientHeight
             this._itemsCapacity = this.calculateCapacity()
             this.itemsChanged(this.itemsCountAbsolute, this._itemsCapacity)
