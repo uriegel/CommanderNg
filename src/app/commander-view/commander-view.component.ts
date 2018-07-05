@@ -72,7 +72,6 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     ngOnInit() { this.path = "drives" }
     ngAfterViewInit() { 
         this.keyDownEvents = fromEvent(this.tableView.table.nativeElement, "keydown") 
-        this.keyDownEvents.subscribe(evt => this.onInputKeydown(evt))
         this.initializeRestrict() 
     }
 
@@ -86,10 +85,17 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     private onFocus() { this.focus() }
 
-    private onInputKeydown(evt: KeyboardEvent) {
+    private onInputChange() {
+        this.path = this.input.nativeElement.value
+        this.tableView.focus()
+        console.log("Input return")
+    }
+
+    private onKeydown(evt: KeyboardEvent) {
         switch (evt.which) {
             case 13: // Return
                 this.processItem()
+                console.log("return")
                 break
             case 32: // _                
                 this.toggleSelection(this.tableView.getCurrentItem())
