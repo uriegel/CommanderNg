@@ -18,6 +18,7 @@ app-commander-view, .viewer {
 }
 .status {
     color: white;
+    padding-top: 2px;
     padding-left: 5px;
     background-color: blue;
     height: 18px;

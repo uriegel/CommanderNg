@@ -43,6 +43,7 @@ export class TableViewComponent {
                     subscription.unsubscribe()
                 }
             })
+            setTimeout(() => this.onCurrentIndexChanged.emit(0), 200)
         }
     }
     private _items: Observable<IItem[]>

@@ -32,8 +32,9 @@ import { VirtualListPipe } from './pipes/virtual-list.pipe'
 import { ClipHeightPipe } from './pipes/clip-height.pipe'
 import { RestricterComponent as TestRestrictor} from './test/restricter/restricter.component'
 import { GridComponent } from './test/grid/grid.component'
-import { GridSplitterComponent } from './grid-splitter/grid-splitter.component';
+import { GridSplitterComponent } from './grid-splitter/grid-splitter.component'
 import { CommanderComponent } from './commander/commander.component'
+import { FullPathPipe } from './pipes/full-path.pipe'
 @NgModule({
     declarations: [
         AppComponent,
@@ -66,7 +67,8 @@ import { CommanderComponent } from './commander/commander.component'
         TestRestrictor,
         GridComponent,
         GridSplitterComponent,
-        CommanderComponent
+        CommanderComponent,
+        FullPathPipe
     ],
     imports: [
         BrowserModule,
