@@ -34,7 +34,10 @@ import { RestricterComponent as TestRestrictor} from './test/restricter/restrict
 import { GridComponent } from './test/grid/grid.component'
 import { GridSplitterComponent } from './grid-splitter/grid-splitter.component'
 import { CommanderComponent } from './commander/commander.component'
-import { FullPathPipe } from './pipes/full-path.pipe'
+import { FullPathPipe } from './pipes/full-path.pipe';
+import { DialogComponent as TestDialogComponent } from './test/dialog/dialog.component'
+import { DialogComponent } from './dialog/dialog.component'
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -68,7 +71,9 @@ import { FullPathPipe } from './pipes/full-path.pipe'
         GridComponent,
         GridSplitterComponent,
         CommanderComponent,
-        FullPathPipe
+        FullPathPipe,
+        TestDialogComponent,
+        DialogComponent,
     ],
     imports: [
         BrowserModule,

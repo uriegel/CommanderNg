@@ -1,11 +1,11 @@
-import { Component, Output, EventEmitter, ViewChild, OnInit, NgZone, HostListener, AfterViewInit, Input } from '@angular/core'
+import { Component, ViewChild, OnInit, NgZone, HostListener, AfterViewInit } from '@angular/core'
 import { CommanderViewComponent } from '../commander-view/commander-view.component'
 const { ipcRenderer } = (<any>window).require('electron')
 
 @Component({
-  selector: 'app-commander',
-  templateUrl: './commander.component.html',
-  styleUrls: ['./commander.component.css']
+    selector: 'app-commander',
+    templateUrl: './commander.component.html',
+    styleUrls: ['./commander.component.css']
 })
 export class CommanderComponent implements OnInit, AfterViewInit {
 
