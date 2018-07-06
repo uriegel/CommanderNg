@@ -1,12 +1,14 @@
 <div class="shader" *ngIf="isShowing" [@fadeInOut]></div>
-<div class="dialogContainer" *ngIf="isShowing" [@flyInOut]>
+<div class="dialogContainer" (keydown)="onKeyDown($event)" (document:focusin)="onFocusIn($event)" *ngIf="isShowing" [@flyInOut]>
     <div class="dialog">
         <div>{{text}}</div>
         <ul>
-            <li><div tabindex="0" class="dialogButton" *ngIf="buttons == 1">Ja</div></li>
-            <li><div tabindex="0" class="dialogButton" *ngIf="buttons == 0" (click)="okClick()">OK</div></li>
-            <li><div tabindex="0" class="dialogButton" *ngIf="buttons == 1">Abbrechen</div></li>
-            <li><div tabindex="0" class="dialogButton" *ngIf="buttons == 1">Nein</div></li>
+            <li><div #ok tabindex="1" class="dialogButton" *ngIf="buttons == 2"
+                (keydown)="onKeyDownOk($event)" (click)="okClick()">Ja</div></li>
+            <li><div #ok tabindex="1" class="dialogButton" *ngIf="buttons == 0 || buttons == 1"
+                 (keydown)="onKeyDownOk($event)" (click)="okClick()">OK</div></li>
+            <li><div tabindex="2" class="dialogButton" *ngIf="buttons == 1 || buttons == 2">Abbrechen</div></li>
+            <li><div tabindex="3" class="dialogButton" *ngIf="buttons == 2">Nein</div></li>
         </ul>
     </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
 import { trigger, transition, style, animate, state } from '../../../node_modules/@angular/animations'
 import { Buttons } from '../enums/buttons.enum'
 
@@ -38,6 +38,9 @@ import { Buttons } from '../enums/buttons.enum'
 })
 export class DialogComponent implements OnInit {
 
+    // TODO: Rückgabewerte
+    // TODO: Styling
+    @ViewChild("ok") ok: ElementRef
     text = ""
     buttons = Buttons.Ok
 
@@ -45,9 +48,32 @@ export class DialogComponent implements OnInit {
 
     ngOnInit() { }
 
-    show() { this.isShowing = true }
+    show() { 
+        this.isShowing = true 
+        setTimeout(() => this.ok.nativeElement.focus(), 0)
+    }
 
-    private okClick() { this.isShowing = false }
+    private onFocusIn(evt: Event) {
+        if (!(evt.target as HTMLElement).closest(".dialogContainer"))
+            this.ok.nativeElement.focus()
+    }
+
+    private onKeyDown(evt: KeyboardEvent) {
+        if (evt.which == 27) {// Esc
+            console.log("Esc")
+            this.isShowing = false
+        }
+    }    
+
+    private onKeyDownOk(evt: KeyboardEvent) {
+        if (evt.which == 13 || evt.which == 32) // Return || space
+            this.okClick()
+    }
+
+    private okClick() { 
+        console.log("Ok")
+        this.isShowing = false 
+    }
 
     private isShowing = false
 }
