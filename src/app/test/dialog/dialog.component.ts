@@ -19,15 +19,17 @@ export class DialogComponent implements OnInit {
         this.dialog.show()
     }
 
-    private onOkCancel() { 
+    private async onOkCancel() { 
         this.dialog.buttons = Buttons.OkCancel
         this.dialog.text = "Das ist der OK-Cancel-Dialog"
-        this.dialog.show()
+        const result = await this.dialog.show()
+        console.log(result)
     }
 
-    private onYesNoCancel() { 
+    private async onYesNoCancel() { 
         this.dialog.buttons = Buttons.YesNoCancel
         this.dialog.text = "Das ist der JaNeinCancel-Dialog"
-        this.dialog.show()
+        const result = await this.dialog.show()
+        console.log(result)
     }
 }

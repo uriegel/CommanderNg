@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
 import { trigger, transition, style, animate, state } from '../../../node_modules/@angular/animations'
 import { Buttons } from '../enums/buttons.enum'
+import { DialogResult } from '../enums/dialog-result.enum'
 
 @Component({
     selector: 'app-dialog',
@@ -38,8 +39,6 @@ import { Buttons } from '../enums/buttons.enum'
 })
 export class DialogComponent implements OnInit {
 
-    // TODO: Rückgabewerte
-    // TODO: Styling
     @ViewChild("ok") ok: ElementRef
     text = ""
     buttons = Buttons.Ok
@@ -49,8 +48,11 @@ export class DialogComponent implements OnInit {
     ngOnInit() { }
 
     show() { 
-        this.isShowing = true 
-        setTimeout(() => this.ok.nativeElement.focus(), 0)
+        return new Promise<DialogResult>((res, rej) => {
+            this.isShowing = true 
+            setTimeout(() => this.ok.nativeElement.focus(), 0)
+            this.dialogFinisher = res
+        })
     }
 
     private onFocusIn(evt: Event) {
@@ -60,8 +62,8 @@ export class DialogComponent implements OnInit {
 
     private onKeyDown(evt: KeyboardEvent) {
         if (evt.which == 27) {// Esc
-            console.log("Esc")
             this.isShowing = false
+            this.dialogFinisher(DialogResult.Cancelled)
         }
     }    
 
@@ -70,10 +72,31 @@ export class DialogComponent implements OnInit {
             this.okClick()
     }
 
-    private okClick() { 
-        console.log("Ok")
-        this.isShowing = false 
+    private onKeyDownCancel(evt: KeyboardEvent) {
+        if (evt.which == 13 || evt.which == 32) // Return || space
+            this.cancelClick()
+    }
+    
+    private onKeyDownNo(evt: KeyboardEvent) {
+        if (evt.which == 13 || evt.which == 32) // Return || space
+            this.noClick()
     }
 
+    private okClick() { 
+        this.isShowing = false 
+        this.dialogFinisher(DialogResult.Ok)
+    }
+
+    private cancelClick() { 
+        this.isShowing = false 
+        this.dialogFinisher(DialogResult.Cancelled)
+    }
+
+    private noClick() { 
+        this.isShowing = false 
+        this.dialogFinisher(DialogResult.No)
+    }
+
+    private dialogFinisher: (res: DialogResult) => void
     private isShowing = false
 }
