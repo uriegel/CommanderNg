@@ -7,7 +7,6 @@ import { ItemProcessor } from '../processors/item-processor'
 import { IColumnSortEvent, IColumns } from '../columns/columns.component'
 import { IItem, TableViewComponent } from '../table-view/table-view.component'
 
-// TODO: Don't use nativeElement input, use binding
 // TODO: SortOrder: switch off when name ascending
 
 @Component({

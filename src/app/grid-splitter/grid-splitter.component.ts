@@ -1,4 +1,4 @@
-import { Component, Input, HostBinding, AfterViewInit, ElementRef, ViewChild, EventEmitter, Output } from '@angular/core'
+import { Component, Input, AfterViewInit, ElementRef, ViewChild, EventEmitter, Output } from '@angular/core'
 
 @Component({
     selector: 'app-grid-splitter',

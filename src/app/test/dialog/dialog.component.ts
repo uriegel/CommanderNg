@@ -1,5 +1,5 @@
-import { Component, OnInit, NgZone } from '@angular/core'
-const { ipcRenderer } = (<any>window).require('electron')
+import { Component, OnInit, ViewChild } from '@angular/core'
+import { DialogComponent as Dialog } from '../../dialog/dialog.component'
 
 @Component({
     selector: 'test-dialog',
@@ -8,12 +8,12 @@ const { ipcRenderer } = (<any>window).require('electron')
 })
 export class DialogComponent implements OnInit {
 
-    constructor(private zone: NgZone) {}
+    @ViewChild(Dialog) dialog: Dialog
 
-    isDialog
+    ngOnInit() { }
 
-    ngOnInit() { 
-        ipcRenderer.on("viewer", (_: any, on: boolean) => this.zone.run(() => this.isDialog = on))
+    private onOk() { 
+        this.dialog.text = "Das ist der OK-Dialog"
+        this.dialog.show()
     }
-
 }

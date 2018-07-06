@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core'
-import { trigger, transition, style, animate, state } from '../../../node_modules/@angular/animations';
+import { trigger, transition, style, animate, state } from '../../../node_modules/@angular/animations'
+import { Buttons } from '../enums/buttons.enum'
 
 @Component({
     selector: 'app-dialog',
@@ -37,10 +38,16 @@ import { trigger, transition, style, animate, state } from '../../../node_module
 })
 export class DialogComponent implements OnInit {
 
-    @Input()
-    isShowing = false
-    
+    text = ""
+    buttons = Buttons.Ok
+
     constructor() { }
 
     ngOnInit() { }
+
+    show() { this.isShowing = true }
+
+    private okClick() { this.isShowing = false }
+
+    private isShowing = false
 }

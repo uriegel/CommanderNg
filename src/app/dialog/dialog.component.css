@@ -24,5 +24,40 @@
     box-shadow: 5px 4px 8px 2px rgba(0, 0, 0, 0.35), 0px 0px 20px 2px rgba(0, 0, 0, 0.25);
 }
 
+ul {
+    list-style-type: none;
+}
 
+ul>li {
+    display: inline;
+}
 
+.dialogButton {
+    display: inline-block;
+    background-color: blue;
+    user-select: none;
+    color: white;
+    text-align: center;
+    width: 80px;
+    height: 20px;
+    line-height: 20px;
+    transition: background-color 0.3s;
+    border-radius: 3px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.dialogButton:hover {
+    background-color: #7979ff;
+}
+
+.dialogButton:active, .buttonActive {
+    background-color: #01018e;
+}
+
+.dialogButton:focus {
+    outline-color: red;
+    outline-width: 1px;
+    outline-style: solid;
+    outline-offset: 1px;
+}
