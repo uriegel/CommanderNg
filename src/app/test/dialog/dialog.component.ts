@@ -38,7 +38,7 @@ export class DialogComponent implements OnInit {
         this.dialog.text = "Das ist der Input-JaNeinCancel-Dialog"
         this.dialog.withInput = true
         this.dialog.inputText = "Dateiname.ext"
-        this.dialog.noHasFocus = true
+        this.dialog.noIsDefault = true
         const result = await this.dialog.show()
         console.log(result)
     }

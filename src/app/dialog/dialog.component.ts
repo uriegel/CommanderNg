@@ -1,9 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, AfterViewInit } from '@angular/core'
 import { trigger, transition, style, animate, state } from '@angular/animations'
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResult } from '../enums/dialog-result.enum'
-
-// TODO: default button
 
 @Component({
     selector: 'app-dialog',
@@ -46,7 +44,7 @@ import { DialogResult } from '../enums/dialog-result.enum'
         ])            
     ]        
 })
-export class DialogComponent implements OnInit {
+export class DialogComponent {
 
     @ViewChild("ok") ok: ElementRef
     @ViewChild("no") no: ElementRef
@@ -54,26 +52,22 @@ export class DialogComponent implements OnInit {
     text = ""
     buttons = Buttons.Ok
     withInput = false
-    noHasFocus = false
     inputText = ""
     selectNameOnly = false
-
+    noIsDefault = false
+    
     jawoll = true
-
-
-    constructor() { }
-
-    ngOnInit() { }
 
     show() { 
         return new Promise<DialogResult>((res, rej) => {
             this.isShowing = true 
             setTimeout(() => {
+                this.defaultButton = this.noIsDefault ? this.no : this.ok
                 if (this.inputText)
                     this.input.nativeElement.value = this.inputText
                 this.withInput 
                 ? this.input.nativeElement.focus() 
-                : this.noHasFocus 
+                : this.noIsDefault
                     ? this.no.nativeElement.focus()
                     : this.ok.nativeElement.focus()
             }, 0)
@@ -116,10 +110,12 @@ export class DialogComponent implements OnInit {
         this.withInput = false
         this.inputText = ""
         this.selectNameOnly = false
+        this.noIsDefault = false
         this.isShowing = false 
         this.dialogFinisher(result)
     }
 
     private dialogFinisher: (res: DialogResult) => void
     private isShowing = false
+    private defaultButton: ElementRef
 }

@@ -37,7 +37,8 @@ import { CommanderComponent } from './commander/commander.component'
 import { FullPathPipe } from './pipes/full-path.pipe';
 import { DialogComponent as TestDialogComponent } from './test/dialog/dialog.component'
 import { DialogComponent } from './dialog/dialog.component';
-import { SelectAllDirective } from './directives/select-all.directive'
+import { SelectAllDirective } from './directives/select-all.directive';
+import { DefaultButtonDirective } from './directives/default-button.directive'
 
 @NgModule({
     declarations: [
@@ -76,6 +77,7 @@ import { SelectAllDirective } from './directives/select-all.directive'
         TestDialogComponent,
         DialogComponent,
         SelectAllDirective,
+        DefaultButtonDirective,
     ],
     imports: [
         BrowserModule,

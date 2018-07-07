@@ -73,6 +73,14 @@ input:focus {
     background-color: #7979ff;
 }
 
+.dialogButton.isDefaultButton{
+    outline-color: gray;
+    outline-width: 1px;
+    outline-style: solid;
+    outline-offset: 1px;
+}
+
+
 .dialogButton:active, .buttonActive {
     background-color: #01018e;
 }
