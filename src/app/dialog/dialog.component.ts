@@ -16,24 +16,31 @@ import { DialogResult } from '../enums/dialog-result.enum'
                 style({
                     opacity: 0
                 }), //style only for transition transition (after transiton it removes)
-                animate("600ms ease-out", style({
+                animate("1s ease-out", style({
                     opacity: 1
                 })) // the new state of the transition(after transiton it removes)
             ]),
             transition('* => void', [
-                animate("600ms ease-in", style({
+                animate("300ms ease-in", style({
                     opacity: 0
                 })) // the new state of the transition(after transiton it removes)
             ])
         ]),
         trigger('flyInOut', [
-            state('in', style({transform: 'translateX(0)'})),
+            state('in', style({
+                opacity: 1,
+                transform: 'translateX(0)'}
+            )),
             transition('void => *', [
-                style({transform: 'translateX(-50%)'}),
-                animate("300ms ease-out"),
+                style({
+                    opacity: 0,
+                    transform: 'translateX(-50%)'
+                }),
+                animate("200ms ease-out"),
             ]),
             transition('* => void', [
-                animate("300ms ease-in" , style({
+                animate("200ms ease-in" , style({
+                    opacity: 0,
                     transform: 'translateX(50%)'
                 }, ))
             ])
