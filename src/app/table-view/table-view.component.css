@@ -25,6 +25,10 @@ tr.isSelected {
     background-color: blue;
 }
 
+tr.isHidden {
+    opacity: 0.5;
+}
+
 table:focus tr.isCurrent {
     outline-color: red;
     outline-width: 1px;

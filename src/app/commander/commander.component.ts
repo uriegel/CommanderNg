@@ -2,6 +2,10 @@ import { Component, ViewChild, OnInit, NgZone, HostListener, AfterViewInit } fro
 import { CommanderViewComponent } from '../commander-view/commander-view.component'
 const { ipcRenderer } = (<any>window).require('electron')
 
+// TODO: Reresh
+// TODO: Hide hidden files (refresh)
+// TODO: Create Folder (copy file to folder, delete file)
+
 @Component({
     selector: 'app-commander',
     templateUrl: './commander.component.html',
