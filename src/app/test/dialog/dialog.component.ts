@@ -32,4 +32,20 @@ export class DialogComponent implements OnInit {
         const result = await this.dialog.show()
         console.log(result)
     }
+    
+    private async onInputYesNoCancel() { 
+        this.dialog.buttons = Buttons.YesNoCancel
+        this.dialog.text = "Das ist der Input-JaNeinCancel-Dialog"
+        this.dialog.withInput = true
+        const result = await this.dialog.show()
+        console.log(result)
+    }
+
+    private async onlongText() { 
+        this.dialog.buttons = Buttons.YesNoCancel
+        this.dialog.text = "Mitte des Jahres 1992 lernte Nas MC Serch von 3rd Bass kennen, der sein Manager wurde und ihm noch im selben Jahr einen Plattendeal bei Columbia Records verschaffen konnte. Nas machte sein Solodebüt mit der Single Halftime zum Soundtrack des Films Zebrahead."
+        this.dialog.withInput = true
+        const result = await this.dialog.show()
+        console.log(result)
+    }
 }

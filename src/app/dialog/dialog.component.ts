@@ -3,6 +3,9 @@ import { trigger, transition, style, animate, state } from '../../../node_module
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResult } from '../enums/dialog-result.enum'
 
+// TODO: select all (fileOnly) behavior
+// TODO: default button
+
 @Component({
     selector: 'app-dialog',
     templateUrl: './dialog.component.html',
@@ -42,6 +45,7 @@ export class DialogComponent implements OnInit {
     @ViewChild("ok") ok: ElementRef
     text = ""
     buttons = Buttons.Ok
+    withInput = false
 
     constructor() { }
 
@@ -61,10 +65,8 @@ export class DialogComponent implements OnInit {
     }
 
     private onKeyDown(evt: KeyboardEvent) {
-        if (evt.which == 27) {// Esc
-            this.isShowing = false
-            this.dialogFinisher(DialogResult.Cancelled)
-        }
+        if (evt.which == 27) // Esc
+            this.close(DialogResult.Cancelled)
     }    
 
     private onKeyDownOk(evt: KeyboardEvent) {
@@ -82,19 +84,16 @@ export class DialogComponent implements OnInit {
             this.noClick()
     }
 
-    private okClick() { 
-        this.isShowing = false 
-        this.dialogFinisher(DialogResult.Ok)
-    }
+    private okClick() { this.close(DialogResult.Ok) }
 
-    private cancelClick() { 
-        this.isShowing = false 
-        this.dialogFinisher(DialogResult.Cancelled)
-    }
+    private cancelClick() { this.close(DialogResult.Cancelled) }
 
-    private noClick() { 
+    private noClick() { this.close(DialogResult.No) }
+
+    private close(result: DialogResult) {
+        this.withInput = false
         this.isShowing = false 
-        this.dialogFinisher(DialogResult.No)
+        this.dialogFinisher(result)
     }
 
     private dialogFinisher: (res: DialogResult) => void
