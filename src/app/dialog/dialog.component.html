@@ -2,7 +2,7 @@
 <div class="dialogContainer" (keydown)="onKeyDown($event)" (document:focusin)="onFocusIn($event)" *ngIf="isShowing" [@flyInOut]>
     <div class="dialog">
         <div class="text">{{text}}</div>
-        <input #input tabindex="4" *ngIf="withInput">
+        <input #input tabindex="4" *ngIf="withInput" appSelectAll [selectNameOnly]="selectNameOnly">
         <div class="buttons">
             <div #ok tabindex="1" class="dialogButton" *ngIf="buttons == 2"
                 (keydown)="onKeyDownOk($event)" (click)="okClick()">Ja</div>

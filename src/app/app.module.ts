@@ -36,7 +36,8 @@ import { GridSplitterComponent } from './grid-splitter/grid-splitter.component'
 import { CommanderComponent } from './commander/commander.component'
 import { FullPathPipe } from './pipes/full-path.pipe';
 import { DialogComponent as TestDialogComponent } from './test/dialog/dialog.component'
-import { DialogComponent } from './dialog/dialog.component'
+import { DialogComponent } from './dialog/dialog.component';
+import { SelectAllDirective } from './directives/select-all.directive'
 
 @NgModule({
     declarations: [
@@ -74,6 +75,7 @@ import { DialogComponent } from './dialog/dialog.component'
         FullPathPipe,
         TestDialogComponent,
         DialogComponent,
+        SelectAllDirective,
     ],
     imports: [
         BrowserModule,

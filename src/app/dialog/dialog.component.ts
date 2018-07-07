@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
-import { trigger, transition, style, animate, state } from '../../../node_modules/@angular/animations'
+import { trigger, transition, style, animate, state } from '@angular/animations'
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResult } from '../enums/dialog-result.enum'
 
@@ -56,6 +56,11 @@ export class DialogComponent implements OnInit {
     buttons = Buttons.Ok
     withInput = false
     noHasFocus = false
+    inputText = ""
+    selectNameOnly = false
+
+    jawoll = true
+
 
     constructor() { }
 
@@ -64,13 +69,15 @@ export class DialogComponent implements OnInit {
     show() { 
         return new Promise<DialogResult>((res, rej) => {
             this.isShowing = true 
-            setTimeout(() => 
+            setTimeout(() => {
+                if (this.inputText)
+                    this.input.nativeElement.value = this.inputText
                 this.withInput 
                 ? this.input.nativeElement.focus() 
                 : this.noHasFocus 
                     ? this.no.nativeElement.focus()
-                    : this.ok.nativeElement.focus(),
-                0)
+                    : this.ok.nativeElement.focus()
+            }, 0)
             this.dialogFinisher = res
         })
     }
@@ -108,6 +115,8 @@ export class DialogComponent implements OnInit {
 
     private close(result: DialogResult) {
         this.withInput = false
+        this.inputText = ""
+        this.selectNameOnly = false
         this.isShowing = false 
         this.dialogFinisher(result)
     }

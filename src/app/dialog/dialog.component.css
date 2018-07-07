@@ -33,7 +33,18 @@ input {
     max-width: 300px;
     width: 100%;
     margin-top: 10px;
+    outline-style: solid;
+    outline-color: lightgray;
+    outline-offset: 0px;
+    border-width: 0px;
+    outline-width: thin;
+    transition: outline-color 400ms;     
 }
+
+input:focus {
+    outline-color: blue;
+}
+
 
 .buttons {
     display: flex;
@@ -49,7 +60,7 @@ input {
     width: 80px;
     height: 20px;
     line-height: 20px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, outline-color 400ms;
     border-radius: 3px;
     margin-left: 5px;
 }
@@ -67,7 +78,7 @@ input {
 }
 
 .dialogButton:focus {
-    outline-color: red;
+    outline-color: blue;
     outline-width: 1px;
     outline-style: solid;
     outline-offset: 1px;

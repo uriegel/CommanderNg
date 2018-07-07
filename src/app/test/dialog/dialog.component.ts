@@ -37,10 +37,22 @@ export class DialogComponent implements OnInit {
         this.dialog.buttons = Buttons.YesNoCancel
         this.dialog.text = "Das ist der Input-JaNeinCancel-Dialog"
         this.dialog.withInput = true
+        this.dialog.inputText = "Dateiname.ext"
         this.dialog.noHasFocus = true
         const result = await this.dialog.show()
         console.log(result)
     }
+
+    private async onRename() { 
+        this.dialog.buttons = Buttons.OkCancel
+        this.dialog.text = "Möchtest Du die Datei umbenennen?"
+        this.dialog.withInput = true
+        this.dialog.inputText = "Dateiname.ext"
+        this.dialog.selectNameOnly = true
+        const result = await this.dialog.show()
+        console.log(result)
+    }
+    
 
     private async onlongText() { 
         this.dialog.buttons = Buttons.YesNoCancel
