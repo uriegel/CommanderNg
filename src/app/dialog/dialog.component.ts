@@ -50,9 +50,12 @@ import { DialogResult } from '../enums/dialog-result.enum'
 export class DialogComponent implements OnInit {
 
     @ViewChild("ok") ok: ElementRef
+    @ViewChild("no") no: ElementRef
+    @ViewChild("input") input: ElementRef
     text = ""
     buttons = Buttons.Ok
     withInput = false
+    noHasFocus = false
 
     constructor() { }
 
@@ -61,7 +64,13 @@ export class DialogComponent implements OnInit {
     show() { 
         return new Promise<DialogResult>((res, rej) => {
             this.isShowing = true 
-            setTimeout(() => this.ok.nativeElement.focus(), 0)
+            setTimeout(() => 
+                this.withInput 
+                ? this.input.nativeElement.focus() 
+                : this.noHasFocus 
+                    ? this.no.nativeElement.focus()
+                    : this.ok.nativeElement.focus(),
+                0)
             this.dialogFinisher = res
         })
     }

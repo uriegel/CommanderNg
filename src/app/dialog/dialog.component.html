@@ -2,13 +2,13 @@
 <div class="dialogContainer" (keydown)="onKeyDown($event)" (document:focusin)="onFocusIn($event)" *ngIf="isShowing" [@flyInOut]>
     <div class="dialog">
         <div class="text">{{text}}</div>
-        <input tabindex="4" *ngIf="withInput">
+        <input #input tabindex="4" *ngIf="withInput">
         <div class="buttons">
             <div #ok tabindex="1" class="dialogButton" *ngIf="buttons == 2"
                 (keydown)="onKeyDownOk($event)" (click)="okClick()">Ja</div>
             <div #ok tabindex="1" class="dialogButton" *ngIf="buttons == 0 || buttons == 1"
                 (keydown)="onKeyDownOk($event)" (click)="okClick()">OK</div>
-            <div tabindex="2" class="dialogButton" *ngIf="buttons == 2"
+            <div #no tabindex="2" class="dialogButton" *ngIf="buttons == 2"
                 (keydown)="onKeyDownNo($event)" (click)="noClick()">Nein</div>
             <div tabindex="3" class="dialogButton" *ngIf="buttons == 1 || buttons == 2"
                 (keydown)="onKeyDownCancel($event)" (click)="cancelClick()">Abbrechen</div>

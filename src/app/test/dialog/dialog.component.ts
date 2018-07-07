@@ -37,6 +37,7 @@ export class DialogComponent implements OnInit {
         this.dialog.buttons = Buttons.YesNoCancel
         this.dialog.text = "Das ist der Input-JaNeinCancel-Dialog"
         this.dialog.withInput = true
+        this.dialog.noHasFocus = true
         const result = await this.dialog.show()
         console.log(result)
     }
