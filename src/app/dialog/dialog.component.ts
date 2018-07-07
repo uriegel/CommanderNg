@@ -3,7 +3,6 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResult } from '../enums/dialog-result.enum'
 
-// TODO: select all (fileOnly) behavior
 // TODO: default button
 
 @Component({
