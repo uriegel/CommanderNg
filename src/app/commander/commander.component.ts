@@ -2,8 +2,7 @@ import { Component, ViewChild, OnInit, NgZone, HostListener, AfterViewInit } fro
 import { CommanderViewComponent } from '../commander-view/commander-view.component'
 const { ipcRenderer } = (<any>window).require('electron')
 
-// TODO: Reresh
-// TODO: Hide hidden files (refresh)
+// TODO: Hide hidden files (refresh): with service global data: showHiden from Menu
 // TODO: Create Folder (copy file to folder, delete file)
 
 @Component({
@@ -24,6 +23,8 @@ export class CommanderComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         ipcRenderer.on("viewer", (_: any, on: boolean) => this.zone.run(() => this.isViewVisible = on))
+        ipcRenderer.on("refresh", (_: any) => this.zone.run(() => this.focusedView.refresh()))
+        //ipcRenderer.on("setShowHidden", (_: any, on: boolean) => this.zone.run(() => this.focusedView.refresh())
     }
 
     ngAfterViewInit() { this.leftView.focus() }

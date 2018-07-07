@@ -16,6 +16,8 @@ export abstract class ItemProcessor  {
 
     abstract get columns(): IColumns
 
+    showHidden = false
+
     abstract get(path: string, recentPath?: string): Observable<IItem[]>
 
     abstract process(item: IItem) 

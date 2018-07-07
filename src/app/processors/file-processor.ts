@@ -36,6 +36,8 @@ export class FileProcessor extends ItemProcessor {
                     type: 3
                 }]
                 let currentItem: IItem = null
+                if (!this.showHidden)
+                    result = result.filter(n => !n.isHidden)
                 const dirs = result.filter(n => n.type == 1)
                 if (recentPath) {
                     const index = recentPath.lastIndexOf('\\')

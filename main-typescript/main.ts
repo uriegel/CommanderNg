@@ -6,7 +6,7 @@ import * as addon from 'addon'
 
 app.on('ready', () => {
 
-    const auguryPath = 'C:\\Users\\uwe.CASERIS\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\elgalmkoelokbchhkhacckoklkejnhcd\\1.19.1_0'
+    const auguryPath = 'C:\\Users\\urieg\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\elgalmkoelokbchhkhacckoklkejnhcd\\1.19.1_0'
 
     BrowserWindow.addDevToolsExtension(auguryPath)
 
@@ -122,6 +122,11 @@ app.on('ready', () => {
                 type: "checkbox",
                 click: evt =>  mainWindow.webContents.send("setShowHidden", evt.checked)
             },
+            {
+                label: '&Aktualisieren',
+                accelerator: "Ctrl+R",
+                click: evt =>  mainWindow.webContents.send("refresh")
+            },            
             {
                 type: 'separator'
             },            
