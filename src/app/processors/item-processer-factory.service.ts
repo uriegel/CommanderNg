@@ -3,13 +3,14 @@ import { ItemProcessor, ProcessorType } from './item-processor'
 import { DrivesProcessor } from './drives-processor'
 import { FileProcessor } from './file-processor'
 import { CommanderViewComponent } from '../commander-view/commander-view.component'
+import { SettingsService } from '../services/settings.service'
 
 @Injectable({
     providedIn: 'root'
 })
 export class ItemProcesserFactoryService {
 
-    constructor(private zone: NgZone) { }
+    constructor(private zone: NgZone, private settings: SettingsService) { }
 
     get(itemProcessor: ItemProcessor, commanderView: CommanderViewComponent, path: string) {
         if (path == "drives") {
@@ -18,7 +19,7 @@ export class ItemProcesserFactoryService {
             else {
                 if (itemProcessor)
                     itemProcessor.close()
-                return new DrivesProcessor(commanderView)
+                return new DrivesProcessor(commanderView, this.settings)
             }
         }   
         else {
@@ -27,7 +28,7 @@ export class ItemProcesserFactoryService {
             else {
                 if (itemProcessor)
                     itemProcessor.close()
-                return new FileProcessor(commanderView, this.zone)
+                return new FileProcessor(commanderView, this.zone, this.settings)
             }
         }
     }

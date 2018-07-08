@@ -1,8 +1,8 @@
 import { Component, ViewChild, OnInit, NgZone, HostListener, AfterViewInit } from '@angular/core'
 import { CommanderViewComponent } from '../commander-view/commander-view.component'
+import { SettingsService } from '../services/settings.service'
 const { ipcRenderer } = (<any>window).require('electron')
 
-// TODO: Hide hidden files (refresh): with service global data: showHiden from Menu
 // TODO: Create Folder (copy file to folder, delete file)
 
 @Component({
@@ -19,12 +19,19 @@ export class CommanderComponent implements OnInit, AfterViewInit {
 
     isViewVisible = false
 
-    constructor(private zone: NgZone) {}
+    constructor(private zone: NgZone, private settings: SettingsService) {}
 
     ngOnInit() {
         ipcRenderer.on("viewer", (_: any, on: boolean) => this.zone.run(() => this.isViewVisible = on))
         ipcRenderer.on("refresh", (_: any) => this.zone.run(() => this.focusedView.refresh()))
-        //ipcRenderer.on("setShowHidden", (_: any, on: boolean) => this.zone.run(() => this.focusedView.refresh())
+        ipcRenderer.on("setShowHidden", (_: any, on: boolean) => {
+            this.settings.showHidden = on
+            this.zone.run(() => {
+                this.leftView.refresh()
+                this.rightView.refresh()
+            })
+        })
+        ipcRenderer.on("createFolder", (_: any) => this.zone.run(() => this.focusedView.createFolder()))
     }
 
     ngAfterViewInit() { this.leftView.focus() }

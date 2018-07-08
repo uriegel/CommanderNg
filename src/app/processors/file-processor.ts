@@ -1,16 +1,17 @@
 import { ItemProcessor, ProcessorType } from "./item-processor"
 import { Observable, from } from "rxjs"
 import { IItem } from "../table-view/table-view.component"
-import { FileItem } from "../addon";
-import { NgZone } from "@angular/core";
-import { CommanderViewComponent } from "../commander-view/commander-view.component";
+import { FileItem } from "../addon"
+import { NgZone } from "@angular/core"
+import { CommanderViewComponent } from "../commander-view/commander-view.component"
 import { FileExtensionPipe } from "../pipes/file-extension.pipe"
+import { SettingsService } from "../services/settings.service"
 
 export class FileProcessor extends ItemProcessor {
     type: ProcessorType = ProcessorType.file
     
-    constructor(commanderView: CommanderViewComponent, private zone: NgZone) {
-        super(commanderView)
+    constructor(commanderView: CommanderViewComponent, private zone: NgZone, protected settings: SettingsService) {
+        super(commanderView, settings)
     }
 
     get columns() {
@@ -36,7 +37,7 @@ export class FileProcessor extends ItemProcessor {
                     type: 3
                 }]
                 let currentItem: IItem = null
-                if (!this.showHidden)
+                if (!this.settings.showHidden)
                     result = result.filter(n => !n.isHidden)
                 const dirs = result.filter(n => n.type == 1)
                 if (recentPath) {

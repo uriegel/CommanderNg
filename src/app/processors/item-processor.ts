@@ -3,6 +3,7 @@ import { Observable } from "rxjs"
 import { IItem } from "../table-view/table-view.component"
 import { Addon } from "../addon"
 import { CommanderViewComponent } from "../commander-view/commander-view.component"
+import { SettingsService } from "../services/settings.service"
 
 export enum ProcessorType {
     root,
@@ -10,13 +11,11 @@ export enum ProcessorType {
 }
 
 export abstract class ItemProcessor  {
-    constructor (protected commanderView: CommanderViewComponent) {}
+    constructor (protected commanderView: CommanderViewComponent, protected settings: SettingsService) {}
 
     abstract type: ProcessorType
 
     abstract get columns(): IColumns
-
-    showHidden = false
 
     abstract get(path: string, recentPath?: string): Observable<IItem[]>
 
