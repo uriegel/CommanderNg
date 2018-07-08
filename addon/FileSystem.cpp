@@ -91,13 +91,13 @@ void GetFileVersion(const wstring& path, string& info) {
 int CreateDirectory(const wstring& path) {
     auto result = SHCreateDirectoryExW(GetForegroundWindow(), path.c_str(), nullptr);
     if (result == 5) {
-        SHFILEOPSTRUCT fo{ 0 };
+        SHFILEOPSTRUCTW fo{ 0 };
         fo.hwnd = GetForegroundWindow();
 		fo.fFlags = FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR;
 		fo.wFunc = FO_MOVE;
 		wchar_t temppath[MAX_PATH + 1000];
 		memset(temppath, 0, sizeof(temppath));
-        GetTempPath(MAX_PATH, temppath);
+        GetTempPathW(MAX_PATH, temppath);
         wcscat(temppath, L"commandernewfolder");
         SHCreateDirectoryExW(fo.hwnd, temppath, nullptr);
 
@@ -106,8 +106,8 @@ int CreateDirectory(const wstring& path) {
         memset(destpath, 0, sizeof(destpath));
         wcscpy(destpath, path.c_str());
 		fo.pTo = destpath;
-		result = SHFileOperation(&fo);
-        RemoveDirectory(temppath);
+		result = SHFileOperationW(&fo);
+        RemoveDirectoryW(temppath);
     }
     return result;
 }
