@@ -27,7 +27,7 @@ Install python 2.7
 ```
 npm install --global --production windows-build-tools  
 ```
-in power shell mit Admin-Rechten:
+in power shell:
 ```
 npm install (to build node addon) 
 ```
