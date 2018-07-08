@@ -1,7 +1,13 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, AfterViewInit } from '@angular/core'
+import { Component, ViewChild, ElementRef } from '@angular/core'
 import { trigger, transition, style, animate, state } from '@angular/animations'
 import { Buttons } from '../enums/buttons.enum'
-import { DialogResult } from '../enums/dialog-result.enum'
+import { DialogResultValue } from '../enums/dialog-result-value.enum'
+import { Subject, Observable } from '../../../node_modules/rxjs';
+
+export interface DialogResult {
+    result: DialogResultValue
+    text?: string
+}
 
 @Component({
     selector: 'app-dialog',
@@ -55,24 +61,22 @@ export class DialogComponent {
     inputText = ""
     selectNameOnly = false
     noIsDefault = false
-    
-    jawoll = true
 
-    show() { 
-        return new Promise<DialogResult>((res, rej) => {
-            this.isShowing = true 
-            setTimeout(() => {
-                this.defaultButton = this.noIsDefault ? this.no : this.ok
-                if (this.inputText)
-                    this.input.nativeElement.value = this.inputText
-                this.withInput 
-                ? this.input.nativeElement.focus() 
-                : this.noIsDefault
-                    ? this.no.nativeElement.focus()
-                    : this.ok.nativeElement.focus()
-            }, 0)
-            this.dialogFinisher = res
-        })
+    show(): Observable<DialogResult> { 
+        this.isShowing = true 
+        setTimeout(() => {
+            this.defaultButton = this.noIsDefault ? this.no : this.ok
+            if (this.inputText)
+                this.input.nativeElement.value = this.inputText
+            this.withInput 
+            ? this.input.nativeElement.focus() 
+            : this.noIsDefault
+                ? this.no.nativeElement.focus()
+                : this.ok.nativeElement.focus()
+        }, 0)
+
+        this.dialogFinisher = new Subject<DialogResult>()
+        return this.dialogFinisher
     }
 
     private onFocusIn(evt: Event) {
@@ -82,7 +86,7 @@ export class DialogComponent {
 
     private onKeyDown(evt: KeyboardEvent) {
         if (evt.which == 27) // Esc
-            this.close(DialogResult.Cancelled)
+            this.close(DialogResultValue.Cancelled)
     }    
 
     private onKeyDownOk(evt: KeyboardEvent) {
@@ -100,22 +104,30 @@ export class DialogComponent {
             this.noClick()
     }
 
-    private okClick() { this.close(DialogResult.Ok) }
+    private okClick() { this.close(DialogResultValue.Ok) }
 
-    private cancelClick() { this.close(DialogResult.Cancelled) }
+    private cancelClick() { this.close(DialogResultValue.Cancelled) }
 
-    private noClick() { this.close(DialogResult.No) }
+    private noClick() { this.close(DialogResultValue.No) }
 
-    private close(result: DialogResult) {
+    private close(resultValue: DialogResultValue) {
         this.withInput = false
+        this.text = ""
         this.inputText = ""
+        this.buttons = Buttons.Ok
         this.selectNameOnly = false
         this.noIsDefault = false
         this.isShowing = false 
-        this.dialogFinisher(result)
+        const result = { 
+            result: resultValue,
+            text: this.input ? this.input.nativeElement.value : null
+        }
+        setTimeout(() => {
+            this.dialogFinisher.next(result)
+        }, 150)
     }
 
-    private dialogFinisher: (res: DialogResult) => void
+    private dialogFinisher: Subject<DialogResult>
     private isShowing = false
     private defaultButton: ElementRef
 }

@@ -1,4 +1,4 @@
-export enum DialogResult {
+export enum DialogResultValue {
     Ok,
     Cancelled,
     No

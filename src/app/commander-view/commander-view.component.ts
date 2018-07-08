@@ -6,6 +6,9 @@ import { ItemProcesserFactoryService } from '../processors/item-processer-factor
 import { ItemProcessor } from '../processors/item-processor'
 import { IColumnSortEvent, IColumns } from '../columns/columns.component'
 import { IItem, TableViewComponent } from '../table-view/table-view.component'
+import { DialogComponent } from '../dialog/dialog.component'
+import { Buttons } from '../enums/buttons.enum'
+import { DialogResultValue } from '../enums/dialog-result-value.enum';
 
 // TODO: SortOrder: switch off when name ascending
 
@@ -89,6 +92,34 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     onResize() { this.tableView.onResize() }
 
     refresh() { this.path = this.path }
+
+    createFolder(dialog: DialogComponent) {
+        if (this.itemProcessor.canCreateFolder()) {
+            dialog.buttons = Buttons.OkCancel
+            dialog.text = "Möchtest Du einen neuen Ordner anlegen?"
+            dialog.withInput = true
+            dialog.inputText = this.currentItem.name != ".." ? this.currentItem.name : ""
+            const subscription = dialog.show().subscribe(result => {
+                subscription.unsubscribe()
+                if (result.result == DialogResultValue.Ok) {
+                    dialog.text = "Angelgter Odner: " + result.text
+                    const sunscription = dialog.show().subscribe(result => {
+                        subscription.unsubscribe()
+                        this.focus()
+                    })
+                }
+                else
+                    this.focus()
+            })
+        }
+        else {
+            dialog.text = "Du kannst hier keinen Ordner anlegen!"
+            const subscription = dialog.show().subscribe(() => {
+                subscription.unsubscribe()
+                this.focus()
+            })
+        }
+    }
 
     private onFocus() { this.focus() }
 

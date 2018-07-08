@@ -1,6 +1,7 @@
-import { Component, ViewChild, OnInit, NgZone, HostListener, AfterViewInit } from '@angular/core'
+import { Component, ViewChild, OnInit, NgZone, HostListener, AfterViewInit, Input } from '@angular/core'
 import { CommanderViewComponent } from '../commander-view/commander-view.component'
 import { SettingsService } from '../services/settings.service'
+import { DialogComponent } from '../dialog/dialog.component'
 const { ipcRenderer } = (<any>window).require('electron')
 
 // TODO: Create Folder (copy file to folder, delete file)
@@ -14,6 +15,9 @@ export class CommanderComponent implements OnInit, AfterViewInit {
 
     @ViewChild("leftView") leftView: CommanderViewComponent
     @ViewChild("rightView") rightView: CommanderViewComponent
+
+    @Input() 
+    dialog: DialogComponent
 
     focusedView: CommanderViewComponent
 
@@ -31,10 +35,10 @@ export class CommanderComponent implements OnInit, AfterViewInit {
                 this.rightView.refresh()
             })
         })
-        ipcRenderer.on("createFolder", (_: any) => this.zone.run(() => this.focusedView.createFolder()))
+        ipcRenderer.on("createFolder", (_: any) => this.zone.run(() => this.focusedView.createFolder(this.dialog)))
     }
 
-    ngAfterViewInit() { this.leftView.focus() }
+    ngAfterViewInit() { setTimeout(() => this.leftView.focus()) }
 
     @HostListener('keydown', ['$event']) 
     private onKeydown(evt: KeyboardEvent) {

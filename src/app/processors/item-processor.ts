@@ -21,6 +21,10 @@ export abstract class ItemProcessor  {
 
     abstract process(item: IItem) 
 
+    canCreateFolder() {
+        return false
+    }
+
     sort(items: IItem[], columnIndex: number, isAscending: boolean): IItem[] { return [] }
 
     close() {}
