@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core'
+import { Component, OnInit, Input } from '@angular/core'
 import { DialogComponent as Dialog } from '../../dialog/dialog.component'
-import { Buttons } from '../../enums/buttons.enum';
+import { Buttons } from '../../enums/buttons.enum'
 
 @Component({
     selector: 'test-dialog',
@@ -9,7 +9,8 @@ import { Buttons } from '../../enums/buttons.enum';
 })
 export class DialogComponent implements OnInit {
 
-    @ViewChild(Dialog) dialog: Dialog
+    @Input() 
+    dialog: Dialog
 
     ngOnInit() { }
 

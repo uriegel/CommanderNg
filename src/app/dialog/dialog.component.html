@@ -4,13 +4,13 @@
         <div class="text">{{text}}</div>
         <input #input tabindex="4" appDefaultButton [defaultButton]="defaultButton" *ngIf="withInput" appSelectAll [selectNameOnly]="selectNameOnly">
         <div class="buttons">
-            <div #ok tabindex="1" class="dialogButton" *ngIf="buttons == 2"
+            <div #ok tabindex="1" class="dialogButton pointer-def" *ngIf="buttons == 2"
                 (keydown)="onKeyDownOk($event)" (click)="okClick()">Ja</div>
-            <div #ok tabindex="1" class="dialogButton" *ngIf="buttons == 0 || buttons == 1"
+            <div #ok tabindex="1" class="dialogButton  pointer-def" *ngIf="buttons == 0 || buttons == 1"
                 (keydown)="onKeyDownOk($event)" (click)="okClick()">OK</div>
-            <div #no tabindex="2" class="dialogButton" *ngIf="buttons == 2"
+            <div #no tabindex="2" class="dialogButton  pointer-def" *ngIf="buttons == 2"
                 (keydown)="onKeyDownNo($event)" (click)="noClick()">Nein</div>
-            <div tabindex="3" class="dialogButton" *ngIf="buttons == 1 || buttons == 2"
+            <div tabindex="3" class="dialogButton  pointer-def" *ngIf="buttons == 1 || buttons == 2"
                 (keydown)="onKeyDownCancel($event)" (click)="cancelClick()">Abbrechen</div>
         </div>
     </div>
