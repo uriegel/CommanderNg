@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core'
 interface Addon {
     getTest(input: string): string
     getTestAsync(input: string, callback: (error: any, result: string) => void): void
+    createDirectory(input: string, callback: (error: any, result: number) => void): void
 }
 
 enum Service {
@@ -60,11 +61,19 @@ export class TestAddonComponent implements OnInit {
 
     }
 
-    onAddonAsync() {
+    onCreateDirectoryAsync() {
         const addon: Addon = (<any>window).require('addon')
-        addon.getTestAsync("Das erste Mal", (_, res) => {
+        addon.createDirectory("C:\\Users\\urieg\\Desktop\\VomCommander", (_, res) => {
             console.log(res)
-            this.addonAsyncText = res
+            this.addonAsyncText = `${res}`
+        })
+    }
+
+    onCreateDirectoryInWindowsAsync() {
+        const addon: Addon = (<any>window).require('addon')
+        addon.createDirectory("C:\\Windows\\VomCommander", (_, res) => {
+            console.log(res)
+            this.addonAsyncText = `${res}`
         })
     }
 
