@@ -11,6 +11,8 @@ using namespace std;
 using GetFileVersionInfoFunction = BOOL(__stdcall*)(const wchar_t* filename, DWORD nill, DWORD length, void* data);
 using VerQueryValueFunction = BOOL(__stdcall*)(void* block, const wchar_t* sub_block, void** buffer, UINT* length);
 
+const wchar_t* windowClass = L"CommanderChild";
+
 GetFileVersionInfoFunction CreateGetFileVersionInfo() {
 	auto module = LoadLibraryW(L"Api-ms-win-core-version-l1-1-0.dll");
 	return reinterpret_cast<GetFileVersionInfoFunction>(GetProcAddress(module, "GetFileVersionInfoW"));
@@ -88,11 +90,19 @@ void GetFileVersion(const wstring& path, string& info) {
 	info = move(result.str());
 }
 
+HWND CreateParent() 
+{
+    return CreateWindowW(windowClass, L"", WS_POPUP | WS_VISIBLE,
+        0, 20, 0, 20, GetForegroundWindow(), nullptr, GetModuleHandleW(L"addon.node"), nullptr);
+}
+
+
 int CreateDirectory(const wstring& path) {
     auto result = SHCreateDirectoryExW(GetForegroundWindow(), path.c_str(), nullptr);
-    if (result == 5) {
+    if (result == 5) 
+    {
         SHFILEOPSTRUCTW fo{ 0 };
-        fo.hwnd = GetForegroundWindow();
+        fo.hwnd = CreateParent();
 		fo.fFlags = FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR;
 		fo.wFunc = FO_MOVE;
 		wchar_t temppath[MAX_PATH + 1000];
@@ -107,7 +117,41 @@ int CreateDirectory(const wstring& path) {
         wcscpy(destpath, path.c_str());
 		fo.pTo = destpath;
 		result = SHFileOperationW(&fo);
+
+        DestroyWindow(fo.hwnd);
+
         RemoveDirectoryW(temppath);
     }
     return result;
+}
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)
+    {
+    default:
+        return DefWindowProc(hWnd, message, wParam, lParam);
+    }
+    return 0;
+}
+
+void RegisterClass()
+{
+    WNDCLASSEXW wcex;
+
+    wcex.cbSize = sizeof(WNDCLASSEX);
+
+    wcex.style          = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc    = WndProc;
+    wcex.cbClsExtra     = 0;
+    wcex.cbWndExtra     = 0;
+    wcex.hInstance      = GetModuleHandleW(L"addon.node");
+    wcex.hIcon          = 0;
+    wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
+    wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
+    wcex.lpszMenuName   = 0;
+    wcex.lpszClassName  = windowClass;
+    wcex.hIconSm        = 0;
+
+    RegisterClassExW(&wcex);
 }

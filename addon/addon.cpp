@@ -9,8 +9,6 @@ using namespace std;
 using namespace Nan;
 using namespace v8;
 
-// TODO: Create Window, make it a child to Electron, then call SHFileOperation with this window
-
 NAN_METHOD(GetIcon) {
 	Utf8String val(To<String>(info[0]).ToLocalChecked());
 	auto extension = Utf8Decode(*val);
@@ -126,27 +124,15 @@ NAN_METHOD(GetExifDate) {
 }
 
 NAN_METHOD(CreateDirectory) {
-
-    DWORD pwid;
-    auto wid = GetWindowThreadProcessId(GetForegroundWindow(), &pwid);
-
-
 	Utf8String val(To<String>(info[0]).ToLocalChecked());
 	auto path = Utf8Decode(*val);
     
     auto result = new int;
 	auto callback = new Callback(info[1].As<Function>());
     AsyncQueueWorker(new Worker(callback, 
-        [path, result, wid]()-> void { 
-            
-            auto tid = GetCurrentThreadId();
-            if (!AttachThreadInput(wid, tid, TRUE))
-            {
-            }
-                
-
+        [path, result]()-> void { 
             *result = CreateDirectory(path); 
-            },
+        },
         [result](Nan::Callback* callback)-> void {
             // TODO: Exception
             Local<Value> argv[] = { Nan::Null(), New<Number>(*result) };
@@ -187,6 +173,8 @@ NAN_MODULE_INIT(init) {
 
 	Nan::Set(target, New<String>("getTest").ToLocalChecked(), GetFunction(New<FunctionTemplate>(GetTest)).ToLocalChecked());
     Nan::Set(target, New<String>("getTestAsync").ToLocalChecked(), GetFunction(New<FunctionTemplate>(GetTestAsync)).ToLocalChecked());
+
+    RegisterClass();
 }
 
 NODE_MODULE(addon, init)
