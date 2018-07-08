@@ -1,4 +1,5 @@
 #include <Windows.h>
+#include <Shlobj.h>
 #include <string>
 #include <sstream>
 #include <vector>
@@ -85,5 +86,35 @@ void GetFileVersion(const wstring& path, string& info) {
 	stringstream result;
 	result << file_major << "." << file_minor << "." << file_private << "." << file_build;
 	info = move(result.str());
+}
+
+int CreateDirectory(const wstring& path) {
+    auto result = SHCreateDirectoryExW(GetForegroundWindow(), path.c_str(), nullptr);
+    if (result == 5) {
+        SHFILEOPSTRUCT fo{ 0 };
+        fo.hwnd = GetForegroundWindow();
+		fo.fFlags = FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR;
+		fo.wFunc = FO_MOVE;
+		wchar_t temppath[MAX_PATH + 1000];
+		memset(temppath, 0, sizeof(temppath));
+        GetTempPath(MAX_PATH, temppath);
+        wcscat(temppath, L"commandernewfolder");
+        SHCreateDirectoryExW(fo.hwnd, temppath, nullptr);
+
+		fo.pFrom = temppath;
+        wchar_t destpath[MAX_PATH + 1000];
+        memset(destpath, 0, sizeof(destpath));
+        wcscpy(destpath, path.c_str());
+		fo.pTo = destpath;
+		result = SHFileOperation(&fo);
+        RemoveDirectory(temppath);
+    }
+    return result;
+}
+
+
+
+    }
+
 }
 

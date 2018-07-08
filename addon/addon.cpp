@@ -116,11 +116,28 @@ NAN_METHOD(GetExifDate) {
 	AsyncQueueWorker(new Worker(callback,
 		[path, time]()-> void { *time = GetExifDate(path); },
 		[time](Nan::Callback* callback)-> void {
-		Local<Value> argv[] = { Nan::Null(), New<Date>(static_cast<double>(*time)).ToLocalChecked() };
-		delete time;
-		Call(*callback, 2, argv).ToLocalChecked();
-	}
+            Local<Value> argv[] = { Nan::Null(), New<Date>(static_cast<double>(*time)).ToLocalChecked() };
+            delete time;
+            Call(*callback, 2, argv).ToLocalChecked();
+        }
 	));
+}
+
+NAN_METHOD(CreateDirectory) {
+	Utf8String val(To<String>(info[0]).ToLocalChecked());
+	auto path = Utf8Decode(*val);
+    
+    auto result = new int;
+	auto callback = new Callback(info[1].As<Function>());
+    AsyncQueueWorker(new Worker(callback, 
+        [path, result]()-> void { *result = CreateDirectory(path); },
+        [result](Nan::Callback* callback)-> void {
+            // TODO: Exception
+            Local<Value> argv[] = { Nan::Null(), New<Number>(*result) };
+            delete result;
+            Call(*callback, 2, argv).ToLocalChecked();
+        }
+    ));
 }
 
 NAN_METHOD(GetTest) {
@@ -150,6 +167,7 @@ NAN_MODULE_INIT(init) {
 	Nan::Set(target, New<String>("getDrives").ToLocalChecked(), GetFunction(New<FunctionTemplate>(GetDrives)).ToLocalChecked());
 	Nan::Set(target, New<String>("getFileVersion").ToLocalChecked(), GetFunction(New<FunctionTemplate>(GetFileVersion)).ToLocalChecked());
 	Nan::Set(target, New<String>("getExifDate").ToLocalChecked(), GetFunction(New<FunctionTemplate>(GetExifDate)).ToLocalChecked());
+    Nan::Set(target, New<String>("createDirectory").ToLocalChecked(), GetFunction(New<FunctionTemplate>(CreateDirectory)).ToLocalChecked());
 
 	Nan::Set(target, New<String>("getTest").ToLocalChecked(), GetFunction(New<FunctionTemplate>(GetTest)).ToLocalChecked());
     Nan::Set(target, New<String>("getTestAsync").ToLocalChecked(), GetFunction(New<FunctionTemplate>(GetTestAsync)).ToLocalChecked());
