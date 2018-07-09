@@ -38,4 +38,10 @@ export class DrivesProcessor extends ItemProcessor {
         if (driveItem.type == 2) 
             this.commanderView.path = driveItem.name
     } 
+
+    createFolder(path: string) {
+        return from(new Promise((res, rej) => 
+            rej("Du kannst hier keinen Ordner anlegen!")
+        ))
+    }
 }

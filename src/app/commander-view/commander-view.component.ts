@@ -9,6 +9,8 @@ import { IItem, TableViewComponent } from '../table-view/table-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResultValue } from '../enums/dialog-result-value.enum';
+import { Addon } from '../addon';
+const addon: Addon = (<any>window).require('addon')
 
 // TODO: SortOrder: switch off when name ascending
 
@@ -102,11 +104,20 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
             const subscription = dialog.show().subscribe(result => {
                 subscription.unsubscribe()
                 if (result.result == DialogResultValue.Ok) {
-                    dialog.text = "Angelgter Odner: " + result.text
-                    const sunscription = dialog.show().subscribe(result => {
-                        subscription.unsubscribe()
-                        this.focus()
-                    })
+                    const subscription = this.itemProcessor.createFolder(`${this.path}\\${result.text}`)
+                        .subscribe(obs => {
+                            subscription.unsubscribe()
+                            this.refresh()
+                            this.focus()
+                        }, err => {
+                            subscription.unsubscribe()
+                            dialog.text = `Fehler: ${err}`
+                            const subscriptionDialog = dialog.show().subscribe(result => {
+                                subscriptionDialog.unsubscribe()
+                                this.focus()
+                            })
+
+                        })
                 }
                 else
                     this.focus()

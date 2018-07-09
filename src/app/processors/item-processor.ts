@@ -25,6 +25,8 @@ export abstract class ItemProcessor  {
         return false
     }
 
+    abstract createFolder(path: string): Observable<any>
+
     sort(items: IItem[], columnIndex: number, isAscending: boolean): IItem[] { return [] }
 
     close() {}

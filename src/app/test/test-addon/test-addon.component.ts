@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core'
+import { Addon } from '../../addon';
 
-interface Addon {
+interface AddonTest {
     getTest(input: string): string
-    getTestAsync(input: string, callback: (error: any, result: string) => void): void
-    createDirectory(input: string, callback: (error: any, result: number) => void): void
 }
 
 enum Service {
@@ -34,7 +33,8 @@ export class TestAddonComponent implements OnInit {
     eventText = ""
     httpText = ""
     addonText = "leer"
-    addonAsyncText = "leer"
+    createDirectoryText = ""
+    createDirectoryInWinText = ""
         
     ngOnInit() {
         setInterval(() => {
@@ -56,24 +56,30 @@ export class TestAddonComponent implements OnInit {
     }
 
     onAddon() {
-        const addon: Addon = (<any>window).require('addon')
+        const addon: AddonTest = (<any>window).require('addon')
         this.addonText = addon.getTest("Das erste Mal")
 
     }
 
     onCreateDirectoryAsync() {
         const addon: Addon = (<any>window).require('addon')
-        addon.createDirectory("C:\\Users\\urieg\\Desktop\\VomCommander", (_, res) => {
+        addon.createDirectory("C:\\Users\\uwe.caseris\\Desktop\\VomCommander", (res, _) => {
             console.log(res)
-            this.addonAsyncText = `${res}`
+            if (res)
+                this.createDirectoryText = `${res}`
+            else
+                this.createDirectoryText = "OK"
         })
     }
 
     onCreateDirectoryInWindowsAsync() {
         const addon: Addon = (<any>window).require('addon')
-        addon.createDirectory("C:\\Windows\\VomCommander", (_, res) => {
+        addon.createDirectory("C:\\Windows\\VomCommander", (res, _) => {
             console.log(res)
-            this.addonAsyncText = `${res}`
+            if (res)
+                this.createDirectoryInWinText = `${res}`
+            else
+            this.createDirectoryInWinText = "OK"
         })
     }
 

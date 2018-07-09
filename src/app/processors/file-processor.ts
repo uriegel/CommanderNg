@@ -33,9 +33,8 @@ export class FileProcessor extends ItemProcessor {
 
     get(path: string, recentPath?: string): Observable<IItem[]> { 
         this.requestId = ++FileProcessor.requestId
-        return from(new Promise(
-        (res, rej) => this.addon.readDirectory(path, 
-            (err, result) => {
+        return from(new Promise((res, rej) => 
+            this.addon.readDirectory(path, (err, result) => {
                 const parentItem: FileItem[] = [ {
                     name: "..",
                     type: 3
@@ -128,6 +127,17 @@ export class FileProcessor extends ItemProcessor {
         files = files.sort((a, b) => this.sortItem(a, b, isAscending, predicate))
         
         return [...dirs, ...files]
+    }
+
+    createFolder(path: string) {
+        return from(new Promise((res, rej) => 
+            this.addon.createDirectory(path, (err, _) => {
+                if (!err)
+                    res()
+                else
+                    rej(err)
+            })
+        ))
     }
 
     private sortItem(a: FileItem, b: FileItem, isAscending: boolean, predicate: (a: FileItem, b: FileItem)=>number): number {
