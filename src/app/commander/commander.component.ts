@@ -4,8 +4,6 @@ import { SettingsService } from '../services/settings.service'
 import { DialogComponent } from '../dialog/dialog.component'
 const { ipcRenderer } = (<any>window).require('electron')
 
-// TODO: Create Folder (copy file to folder, delete file)
-
 @Component({
     selector: 'app-commander',
     templateUrl: './commander.component.html',
