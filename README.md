@@ -19,6 +19,18 @@ in package.json:
 * electron: 
 ```"npm run build-electron && .\\node_modules\\.bin\\electron --inspect=5858 dist\\"```
 
+### header includes for intellisense:
+in c_cpp_properties.json:
+```
+"includePath": [
+    "${workspaceFolder}/**",
+    "${workspaceFolder}/node_modules/nan",
+    "${env:USERPROFILE}/.electron-gyp/.node-gyp/iojs-2.0.2/src",
+    "${env:USERPROFILE}/.electron-gyp/.node-gyp/iojs-2.0.2/deps/uv/include",
+    "${env:USERPROFILE}/.electron-gyp/.node-gyp/iojs-2.0.2/deps/v8/include"
+],
+```
+
 ## To build C++ Addon
 ```
 npm install node-gyp -g 
