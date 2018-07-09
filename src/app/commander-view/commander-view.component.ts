@@ -111,12 +111,25 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
                             this.focus()
                         }, err => {
                             subscription.unsubscribe()
-                            dialog.text = `Fehler: ${err}`
+                            switch (err) {
+                                case 183:
+                                    dialog.text = "Der Ordner existiert bereits!"
+                                    break
+                                case 123:
+                                    dialog.text = "Die Syntax für den Dateinamen, Verzeichnisnamen oder die Datenträgerbezeichnung ist falsch!"
+                                    break
+                                case 1223:
+                                    this.focus()    
+                                    return
+                                default:
+                                    dialog.text = `Fehler: ${err}`
+                                    break
+                            }
+                            
                             const subscriptionDialog = dialog.show().subscribe(result => {
                                 subscriptionDialog.unsubscribe()
                                 this.focus()
                             })
-
                         })
                 }
                 else
