@@ -21,9 +21,8 @@ export abstract class ItemProcessor  {
 
     abstract process(item: IItem) 
 
-    canCreateFolder() {
-        return false
-    }
+    canCreateFolder() { return false }
+    canDelete() { return false }
 
     abstract createFolder(path: string): Observable<any>
 

@@ -34,6 +34,7 @@ export class CommanderComponent implements OnInit, AfterViewInit {
             })
         })
         ipcRenderer.on("createFolder", (_: any) => this.zone.run(() => this.focusedView.createFolder(this.dialog)))
+        ipcRenderer.on("delete", (_: any) => this.zone.run(() => this.focusedView.delete(this.dialog)))
     }
 
     ngAfterViewInit() { setTimeout(() => this.leftView.focus()) }

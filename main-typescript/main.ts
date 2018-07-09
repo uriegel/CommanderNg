@@ -74,7 +74,8 @@ app.on('ready', () => {
             },
             {
                 label: '&Löschen',
-                accelerator: "F8"
+                accelerator: "Delete",
+                click: evt =>  mainWindow.webContents.send("delete")
             },
             {
                 type: 'separator'

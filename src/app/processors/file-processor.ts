@@ -27,9 +27,8 @@ export class FileProcessor extends ItemProcessor {
         }
     }
 
-    canCreateFolder() {
-        return true
-    }
+    canCreateFolder() { return true }
+    canDelete() { return true }
 
     get(path: string, recentPath?: string): Observable<IItem[]> { 
         this.requestId = ++FileProcessor.requestId
