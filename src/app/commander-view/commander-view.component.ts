@@ -162,8 +162,6 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
                 return
             dialog.buttons = Buttons.OkCancel
             dialog.text = "Möchtest Du die selektierten Elemente löschen?"
-            dialog.withInput = true
-            dialog.inputText = this.currentItem.name != ".." ? this.currentItem.name : ""
             const subscription = dialog.show().subscribe(result => {
                 subscription.unsubscribe()
                 if (result.result == DialogResultValue.Ok) {
@@ -175,15 +173,6 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
                         }, err => {
                             subscription.unsubscribe()
                             switch (err) {
-                                // case 183:
-                                //     dialog.text = "Der Ordner existiert bereits!"
-                                //     break
-                                // case 123:
-                                //     dialog.text = "Die Syntax für den Dateinamen, Verzeichnisnamen oder die Datenträgerbezeichnung ist falsch!"
-                                //     break
-                                // case 1223:
-                                //     this.focus()    
-                                //     return
                                 default:
                                     dialog.text = `Fehler: ${err}`
                                     break
