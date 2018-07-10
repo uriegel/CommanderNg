@@ -21,4 +21,5 @@ extern void GetFileItems(const wstring& directory, vector<FileItem>& results);
 extern void GetDriveInfo(vector<DriveInfo>& results);
 extern void GetFileVersion(const wstring& path, string& info);
 extern int CreateDirectory(const wstring& path);
+extern int DeleteFiles(const vector<wstring>& files);
 extern void RegisterClass();

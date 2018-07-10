@@ -141,6 +141,34 @@ NAN_METHOD(CreateDirectory) {
     ));
 }
 
+NAN_METHOD(DeleteFiles) {
+    Local<Array> array = Local<Array>::Cast(info[0]);
+
+    vector<wstring> files;
+    for (auto i = 0; i < array->Length(); i++ ) {
+        if (Nan::Has(array, i).FromJust()) {
+            auto value = Nan::Get(array, i);
+	        
+            Utf8String val(value.ToLocalChecked());
+	        auto path = Utf8Decode(*val);
+            files.push_back(path);
+        }            
+    }    
+
+    auto result = new int;
+	auto callback = new Callback(info[1].As<Function>());
+    AsyncQueueWorker(new Worker(callback, 
+        [files, result]()-> void { 
+            *result = DeleteFiles(files); 
+        },
+        [result](Nan::Callback* callback)-> void {
+            Local<Value> argv[] = { New<Number>(*result), Nan::Null() };
+            delete result;
+            Call(*callback, 2, argv).ToLocalChecked();
+        }
+    ));
+}
+
 NAN_METHOD(GetTest) {
 	Utf8String val(To<String>(info[0]).ToLocalChecked());
 	auto input = Utf8Decode(*val);
@@ -155,6 +183,7 @@ NAN_MODULE_INIT(init) {
 	Nan::Set(target, New<String>("getFileVersion").ToLocalChecked(), GetFunction(New<FunctionTemplate>(GetFileVersion)).ToLocalChecked());
 	Nan::Set(target, New<String>("getExifDate").ToLocalChecked(), GetFunction(New<FunctionTemplate>(GetExifDate)).ToLocalChecked());
     Nan::Set(target, New<String>("createDirectory").ToLocalChecked(), GetFunction(New<FunctionTemplate>(CreateDirectory)).ToLocalChecked());
+    Nan::Set(target, New<String>("deleteFiles").ToLocalChecked(), GetFunction(New<FunctionTemplate>(DeleteFiles)).ToLocalChecked());
 
 	Nan::Set(target, New<String>("getTest").ToLocalChecked(), GetFunction(New<FunctionTemplate>(GetTest)).ToLocalChecked());
 

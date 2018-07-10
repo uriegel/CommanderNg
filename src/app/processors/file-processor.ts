@@ -139,6 +139,17 @@ export class FileProcessor extends ItemProcessor {
         ))
     }
 
+    deleteItems(items: string[]) {
+        return from(new Promise((res, rej) => 
+            this.addon.deleteFiles(items, (err, _) => {
+                if (!err)
+                    res()
+                else
+                    rej(err)
+            })
+        ))
+    }
+
     private sortItem(a: FileItem, b: FileItem, isAscending: boolean, predicate: (a: FileItem, b: FileItem)=>number): number {
         const result = predicate(a, b)
         return isAscending ? result : -result

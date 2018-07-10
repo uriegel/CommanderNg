@@ -11,6 +11,8 @@ using namespace std;
 using GetFileVersionInfoFunction = BOOL(__stdcall*)(const wchar_t* filename, DWORD nill, DWORD length, void* data);
 using VerQueryValueFunction = BOOL(__stdcall*)(void* block, const wchar_t* sub_block, void** buffer, UINT* length);
 
+wchar_t* GetPaths(const vector<wstring>& paths);
+
 const wchar_t* windowClass = L"CommanderChild";
 
 GetFileVersionInfoFunction CreateGetFileVersionInfo() {
@@ -103,6 +105,7 @@ int CreateDirectory(const wstring& path) {
     {
         SHFILEOPSTRUCTW fo{ 0 };
         fo.hwnd = CreateParent();
+        fo.lpszProgressTitle = L"Captain Kirk";
 		fo.fFlags = FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR;
 		fo.wFunc = FO_MOVE;
 		wchar_t temppath[MAX_PATH + 1000];
@@ -125,14 +128,24 @@ int CreateDirectory(const wstring& path) {
     return result;
 }
 
+int DeleteFiles(const vector<wstring>& files)
+{
+	SHFILEOPSTRUCTW fileop;
+	fileop.wFunc = FO_DELETE;
+	fileop.hwnd = CreateParent();
+	fileop.lpszProgressTitle = L"Captain Kirk";
+	fileop.fFlags = FOF_NOCONFIRMATION | FOF_ALLOWUNDO;
+	fileop.pFrom = GetPaths(files);
+	fileop.pTo = nullptr;
+	int ret = SHFileOperationW(&fileop);
+    DestroyWindow(fileop.hwnd);
+	delete fileop.pFrom;
+    return ret;
+}
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    switch (message)
-    {
-    default:
-        return DefWindowProc(hWnd, message, wParam, lParam);
-    }
-    return 0;
+    return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
 void RegisterClass()
@@ -154,4 +167,20 @@ void RegisterClass()
     wcex.hIconSm        = 0;
 
     RegisterClassExW(&wcex);
+}
+
+wchar_t* GetPaths(const vector<wstring>& paths)
+{
+	int bytes = 1;
+	for (auto it = paths.cbegin(); it < paths.cend(); *it++)
+		bytes += (int)(*it).length() + 1;
+
+	auto result = new wchar_t[bytes] {0};
+	int index{ 0 };
+	for (auto it = paths.cbegin(); it < paths.cend(); *it++) {
+		wcscpy(result + index, (*it).c_str());
+		index += (int)(*it).length() + 1;
+	}
+
+	return result;
 }

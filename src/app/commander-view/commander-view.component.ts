@@ -5,7 +5,7 @@ import { filter } from 'rxjs/operators'
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
 import { IColumnSortEvent, IColumns } from '../columns/columns.component'
-import { IItem, TableViewComponent } from '../table-view/table-view.component'
+import { IItem, TableViewComponent, ItemType } from '../table-view/table-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResultValue } from '../enums/dialog-result-value.enum';
@@ -95,6 +95,16 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     refresh() { this.path = this.path }
 
+    getSelectedItems() {
+        const items = this.tableView.getAllItems().filter(n => n.isSelected)
+        if (items.length > 0)
+            return items;
+        if (this.currentItem.type != ItemType.Parent)
+            return [ this.currentItem ]
+        else
+            return []
+    }
+
     createFolder(dialog: DialogComponent) {
         if (this.itemProcessor.canCreateFolder()) {
             dialog.buttons = Buttons.OkCancel
@@ -147,6 +157,9 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     delete(dialog: DialogComponent) {
         if (this.itemProcessor.canDelete()) {
+            var items = this.getSelectedItems()
+            if (items.length == 0)
+                return
             dialog.buttons = Buttons.OkCancel
             dialog.text = "Möchtest Du die selektierten Elemente löschen?"
             dialog.withInput = true
@@ -154,33 +167,33 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
             const subscription = dialog.show().subscribe(result => {
                 subscription.unsubscribe()
                 if (result.result == DialogResultValue.Ok) {
-                    // const subscription = this.itemProcessor.createFolder(`${this.path}\\${result.text}`)
-                    //     .subscribe(obs => {
-                    //         subscription.unsubscribe()
-                    //         this.refresh()
-                    //         this.focus()
-                    //     }, err => {
-                    //         subscription.unsubscribe()
-                    //         switch (err) {
-                    //             case 183:
-                    //                 dialog.text = "Der Ordner existiert bereits!"
-                    //                 break
-                    //             case 123:
-                    //                 dialog.text = "Die Syntax für den Dateinamen, Verzeichnisnamen oder die Datenträgerbezeichnung ist falsch!"
-                    //                 break
-                    //             case 1223:
-                    //                 this.focus()    
-                    //                 return
-                    //             default:
-                    //                 dialog.text = `Fehler: ${err}`
-                    //                 break
-                    //         }
-                            
-                    //         const subscriptionDialog = dialog.show().subscribe(result => {
-                    //             subscriptionDialog.unsubscribe()
-                    //             this.focus()
-                    //         })
-                    //     })
+                    const subscription = this.itemProcessor.deleteItems(items.map(n => `${this.path}\\${n.name}`))
+                        .subscribe(obs => {
+                            subscription.unsubscribe()
+                            this.refresh()
+                            this.focus()
+                        }, err => {
+                            subscription.unsubscribe()
+                            switch (err) {
+                                // case 183:
+                                //     dialog.text = "Der Ordner existiert bereits!"
+                                //     break
+                                // case 123:
+                                //     dialog.text = "Die Syntax für den Dateinamen, Verzeichnisnamen oder die Datenträgerbezeichnung ist falsch!"
+                                //     break
+                                // case 1223:
+                                //     this.focus()    
+                                //     return
+                                default:
+                                    dialog.text = `Fehler: ${err}`
+                                    break
+                            }
+                        
+                            const subscriptionDialog = dialog.show().subscribe(result => {
+                                subscriptionDialog.unsubscribe()
+                                this.focus()
+                            })
+                        })
                 }
                 else
                     this.focus()

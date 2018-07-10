@@ -1,7 +1,7 @@
 import { ItemProcessor, ProcessorType } from "./item-processor"
 import { Observable, from } from "rxjs"
-import { IItem } from "../table-view/table-view.component"
-import { DriveInfo } from "../addon";
+import { IItem, ItemType } from "../table-view/table-view.component"
+import { DriveInfo } from "../addon"
 
 export class DrivesProcessor extends ItemProcessor {
 
@@ -35,13 +35,19 @@ export class DrivesProcessor extends ItemProcessor {
 
     process(item: IItem) {
         const driveItem = item as DriveInfo
-        if (driveItem.type == 2) 
+        if (driveItem.type == ItemType.Drive) 
             this.commanderView.path = driveItem.name
     } 
 
     createFolder(path: string) {
         return from(new Promise((res, rej) => 
             rej("Du kannst hier keinen Ordner anlegen!")
+        ))
+    }
+
+    deleteItems(path: string[]) {
+        return from(new Promise((res, rej) => 
+            rej("Du kannst hier keine Elemente löschen!")
         ))
     }
 }

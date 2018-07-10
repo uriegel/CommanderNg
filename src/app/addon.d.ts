@@ -11,8 +11,6 @@ export enum DriveType {
 }    
 
 export interface FileItem extends IItem {
-    name: string
-    type: number
 	isHidden?: boolean
 	size?: number
     time?: Date
@@ -21,8 +19,6 @@ export interface FileItem extends IItem {
 }
 
 export interface DriveInfo extends IItem {
-    name: string
-    type: number
     isHidden: boolean
     size: number
     time: Date
@@ -36,4 +32,5 @@ export interface Addon {
 	getFileVersion(path: string, callback: (error: any, result: string) => void): void
     getExifDate(path: string, callback: (error: any, result: Date) => void): void
     createDirectory(input: string, callback: (error: any, result: void) => void): void
+    deleteFiles(files: string[], callback: (error: any, result: void) => void): void
 }

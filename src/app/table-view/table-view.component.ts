@@ -3,11 +3,18 @@ import { Observable } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as Columns, IColumns, IColumnSortEvent } from '../columns/columns.component'
 
+export enum ItemType {
+    File,
+    Directory,
+    Drive,
+    Parent
+}
+
 export interface IItem {
     name: string
     isSelected?: boolean
     isCurrent?: boolean
-    type: number
+    type: ItemType
 }
 
 @Component({

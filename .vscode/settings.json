@@ -5,6 +5,7 @@
         "xstring": "cpp",
         "xutility": "cpp",
         "*.rh": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "string": "cpp"
     }
 }
