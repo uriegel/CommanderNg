@@ -5,6 +5,7 @@
         "name": "Debug Main Process",
         "type": "node",
         "request": "launch",
+        "outputCapture": "std",
         "cwd": "${workspaceRoot}/dist/",
         "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
         "windows": {

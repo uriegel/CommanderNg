@@ -2,10 +2,18 @@ import {app, BrowserWindow, protocol, Menu} from 'electron'
 import * as path from 'path'
 import * as url from 'url'
 import * as settings from 'electron-settings'
+import  { spawn } from 'child_process'
 
 app.on('ready', () => {
 
     //const auguryPath = 'C:\\Users\\urieg\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\elgalmkoelokbchhkhacckoklkejnhcd\\1.19.1_0'
+    const prc = spawn("dotnet", ["C:\\Users\\urieg\\source\\repos\\Commander\\Commander\\Commander\\bin\\Debug\\netcoreapp2.1\\Commander.dll"])
+    prc.stdout.on('data', data => {
+        var str = data.toString()
+        var lines = str.split(/(\r?\n)/g);
+        console.log(lines.join(""));
+    })
+    prc.on('close', code => console.log('process exit code', code))
 
     //BrowserWindow.addDevToolsExtension(auguryPath)
 
