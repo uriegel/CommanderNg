@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core'
-import { Addon } from '../../addon';
 
 interface AddonTest {
     getTest(input: string): string
@@ -62,25 +61,25 @@ export class TestAddonComponent implements OnInit {
     }
 
     onCreateDirectoryAsync() {
-        const addon: Addon = (<any>window).require('addon')
-        addon.createDirectory("C:\\Users\\uwe.caseris\\Desktop\\VomCommander", (res, _) => {
-            console.log(res)
-            if (res)
-                this.createDirectoryText = `${res}`
-            else
-                this.createDirectoryText = "OK"
-        })
+        // const addon: Addon = (<any>window).require('addon')
+        // addon.createDirectory("C:\\Users\\uwe.caseris\\Desktop\\VomCommander", (res, _) => {
+        //     console.log(res)
+        //     if (res)
+        //         this.createDirectoryText = `${res}`
+        //     else
+        //         this.createDirectoryText = "OK"
+        // })
     }
 
     onCreateDirectoryInWindowsAsync() {
-        const addon: Addon = (<any>window).require('addon')
-        addon.createDirectory("C:\\Windows\\VomCommander", (res, _) => {
-            console.log(res)
-            if (res)
-                this.createDirectoryInWinText = `${res}`
-            else
-            this.createDirectoryInWinText = "OK"
-        })
+        // const addon: Addon = (<any>window).require('addon')
+        // addon.createDirectory("C:\\Windows\\VomCommander", (res, _) => {
+        //     console.log(res)
+        //     if (res)
+        //         this.createDirectoryInWinText = `${res}`
+        //     else
+        //     this.createDirectoryInWinText = "OK"
+        // })
     }
 
     async onHttp() {

@@ -1,7 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core'
 import { Observable, Subscriber, from } from 'rxjs'
 import { map } from 'rxjs/operators'
-import { Addon } from "../../addon"
 import { ScrollbarComponent as ScrollBar  } from "../../scrollbar/scrollbar.component"
 
 interface Item {
@@ -32,14 +31,15 @@ export class ScrollbarComponent implements OnInit {
 
     get(path: string): Observable<Item[]> { 
         return from(new Promise(
-        (res, rej) => this.addon.readDirectory(path, 
-            (err, result) => {
-                const items = result.map(i => { return {
-                    text: i.name,
-                    isCurrent: false 
-                }}) 
-                res(items)
-            })
+        (res, rej) => {}
+            // this.addon.readDirectory(path, 
+            // (err, result) => {
+            //     const items = result.map(i => { return {
+            //         text: i.name,
+            //         isCurrent: false 
+            //     }}) 
+            //     res(items)
+            // })
         ))
     }
 
@@ -116,6 +116,5 @@ export class ScrollbarComponent implements OnInit {
     private itemValues: Item[]
     private seed = 0
     private dirs = [ "c:\\", "c:\\windows", "c:\\windows\\system32"]
-    private addon: Addon = (<any>window).require('addon')
     private displayObserver: Subscriber<Item[]>
 }

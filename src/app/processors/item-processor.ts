@@ -1,7 +1,6 @@
 import { IColumns } from "../columns/columns.component"
 import { Observable } from "rxjs"
 import { IItem } from "../table-view/table-view.component"
-import { Addon } from "../addon"
 import { CommanderViewComponent } from "../commander-view/commander-view.component"
 import { SettingsService } from "../services/settings.service"
 
@@ -31,6 +30,4 @@ export abstract class ItemProcessor  {
     sort(items: IItem[], columnIndex: number, isAscending: boolean): IItem[] { return [] }
 
     close() {}
-
-    protected readonly addon: Addon = (<any>window).require('addon')
 }

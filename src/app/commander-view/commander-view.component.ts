@@ -9,8 +9,6 @@ import { IItem, TableViewComponent, ItemType } from '../table-view/table-view.co
 import { DialogComponent } from '../dialog/dialog.component'
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResultValue } from '../enums/dialog-result-value.enum';
-import { Addon } from '../addon';
-const addon: Addon = (<any>window).require('addon')
 
 // TODO: SortOrder: switch off when name ascending
 

@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core'
 import { from, Observable } from 'rxjs'
 import { IColumnSortEvent, IColumns } from '../../columns/columns.component'
 import { IItem } from '../../table-view/table-view.component'
-import { Addon, FileItem } from '../../addon'
-
 
 @Component({
   selector: 'app-test-table-view',
@@ -37,12 +35,12 @@ export class TableViewComponent implements OnInit {
         this.items = this.readDirectory1()
         const subscription = this.items.subscribe({ 
             next: value => {
-                const index = value.findIndex(n=> (n as FileItem).name.toLowerCase() == "recovery")
-                if (index != -1) {
-                    value[0].isCurrent = false 
-                    value[index].isCurrent = true
-                }
-                subscription.unsubscribe()
+                // const index = value.findIndex(n=> (n as FileItem).name.toLowerCase() == "recovery")
+                // if (index != -1) {
+                //     value[0].isCurrent = false 
+                //     value[index].isCurrent = true
+                // }
+                // subscription.unsubscribe()
             }
         })
     }
@@ -53,26 +51,25 @@ export class TableViewComponent implements OnInit {
     }
 
     private getReadDirectory(path: string) {
-        let fileItems: FileItem[]
+        return null
+        // let fileItems: FileItem[]
 
-        const readDirectoryPromise = (): Promise<FileItem[]> => {
-            return new Promise((res, rej) => {
-                if (fileItems) 
-                    res(fileItems)
-                else
-                    this.addon.readDirectory(path, (err, result) => {
-                        res(result)
-                    })
-            })
-        }
+        // const readDirectoryPromise = (): Promise<FileItem[]> => {
+        //     return new Promise((res, rej) => {
+        //         if (fileItems) 
+        //             res(fileItems)
+        //         else
+        //             this.addon.readDirectory(path, (err, result) => {
+        //                 res(result)
+        //             })
+        //     })
+        // }
 
-        const readDirectory = () => from(readDirectoryPromise())
-        return readDirectory
+        // const readDirectory = () => from(readDirectoryPromise())
+        // return readDirectory
     }
 
     private onSort(sortEvent: IColumnSortEvent) {
         console.log(`Sorting: ${sortEvent.index} ascending: ${sortEvent.ascending}`)
     }
-
-    private readonly addon: Addon = (<any>window).require('addon')
 }
