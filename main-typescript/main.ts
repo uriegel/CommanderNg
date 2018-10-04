@@ -2,19 +2,12 @@ import {app, BrowserWindow, protocol, Menu} from 'electron'
 import * as path from 'path'
 import * as url from 'url'
 import * as settings from 'electron-settings'
-import * as addon from 'addon'
 
 app.on('ready', () => {
 
     //const auguryPath = 'C:\\Users\\urieg\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\elgalmkoelokbchhkhacckoklkejnhcd\\1.19.1_0'
 
     //BrowserWindow.addDevToolsExtension(auguryPath)
-
-    protocol.registerBufferProtocol('icon', (request, callback) => {
-            const ext = decodeURI(request.url).substr(7)
-            addon.getIcon(ext, (error, result) => callback(result))
-        }, (error) => {}
-    )
 
     const bounds = JSON.parse(settings.get("window-bounds", 
         JSON.stringify({ 
