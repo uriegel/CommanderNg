@@ -1,15 +1,27 @@
-﻿// Learn more about F# at http://fsharp.org
-
-open System
+﻿open System
 open System.Threading
+open WebServer
 
 [<EntryPoint>]
 let main argv =
     Console.OutputEncoding <- System.Text.Encoding.UTF8
-    printfn "%A" argv
+    printfn "Starting Commander Server"
 
-    printfn "Hello Wörld from F#!"
-    let evt = new ManualResetEvent false
-    evt.WaitOne 5000 |> ignore
+    try
 
-    0 // return an integer exit code
+        let configuration = {
+            Configuration.defaultConfiguration with
+                port = 20000
+        }
+        Server.Start configuration
+
+        printfn "Commander Server started"
+
+        let evt = new ManualResetEvent false
+        evt.WaitOne 15000 |> ignore
+
+        0 // return an integer exit code
+    with e -> 
+        printfn "Error: %A" e
+        1
+
