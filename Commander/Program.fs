@@ -1,6 +1,5 @@
 ﻿open System
 open System.Threading
-open WebServer
 
 [<EntryPoint>]
 let main argv =
@@ -8,17 +7,24 @@ let main argv =
     printfn "Starting Commander Server"
 
     try
+        let requestOK _ = true
 
         let configuration = {
-            Configuration.defaultConfiguration with
+            WebServer.Configuration.defaultConfiguration with
                 port = 20000
+                checkRequest = requestOK
+                request = Request.run
         }
-        Server.Start configuration
+        WebServer.Server.start configuration
 
         printfn "Commander Server started"
 
         let evt = new ManualResetEvent false
         evt.WaitOne 15000 |> ignore
+
+        WebServer.Server.stop ()
+
+        printfn "Commander Server stopped"
 
         0 // return an integer exit code
     with e -> 
