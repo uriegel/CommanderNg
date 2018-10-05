@@ -39,5 +39,6 @@ testem.log
 Thumbs.db
 addon/build/
 
-Commander/Commander/bin
-Commander/Commander/obj
+Commander/bin
+Commander/obj
+bin/Debug/netcoreapp2.1/Commander.dll

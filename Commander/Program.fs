@@ -5,8 +5,12 @@ open System.Threading
 
 [<EntryPoint>]
 let main argv =
-    printfn "Hello World from F#!"
+
+    Console.OutputEncoding <- System.Text.Encoding.UTF8
+    printfn "%A" argv
+
+    printfn "Hello Wörld from F#!"
     let evt = new ManualResetEvent false
-    evt.WaitOne () |> ignore
+    evt.WaitOne 5000 |> ignore
 
     0 // return an integer exit code
