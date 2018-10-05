@@ -5,7 +5,6 @@ open System.Threading
 
 [<EntryPoint>]
 let main argv =
-
     Console.OutputEncoding <- System.Text.Encoding.UTF8
     printfn "%A" argv
 
