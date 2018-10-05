@@ -1,6 +1,7 @@
 module Request
 open System.Runtime.Serialization
 open WebServer
+open Commander
 
 [<DataContract>]
 type Affe = {
@@ -13,7 +14,8 @@ type Affe = {
 }
 
 let run (request: Request) = 
-    match request with
+    match request.header.path with
+    | "/close" -> shutdown ()
     | _ -> failwith "Unknown command"
 
     let urlQuery = UrlQuery.create request.header.path

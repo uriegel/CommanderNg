@@ -16,17 +16,14 @@ let main argv =
                 request = Request.run
         }
         WebServer.Server.start configuration
-
         printfn "Commander Server started"
 
-        let evt = new ManualResetEvent false
-        evt.WaitOne 15000 |> ignore
+        Commander.run () |> ignore
 
         WebServer.Server.stop ()
-
         printfn "Commander Server stopped"
 
-        0 // return an integer exit code
+        0 
     with e -> 
         printfn "Error: %A" e
         1
