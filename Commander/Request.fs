@@ -13,16 +13,22 @@ type Affe = {
     nothing: string
 }
 
-let run (request: Request) = 
-    match request.header.path with
-    | "/close" -> shutdown ()
-    | _ -> failwith "Unknown command"
+let run request = 
+    async {
+        match request.header.path with
+        | "/close" -> 
+            // TODO: POST
+            do! Response.asyncSendJson request Seq.empty
+            shutdown ()
 
-    let urlQuery = UrlQuery.create request.header.path
-    let path = urlQuery.Query "path"
-    let isVisble = urlQuery.Query "isVisible"
-    Response.asyncSendJson request {
-         name = "Uwe"
-         email = "uriegel@hotmail.de"
-         nothing = null
-    }     
+        | _ -> failwith "Unknown command"
+
+        let urlQuery = UrlQuery.create request.header.path
+        let path = urlQuery.Query "path"
+        let isVisble = urlQuery.Query "isVisible"
+        do! Response.asyncSendJson request {
+             name = "Uwe"
+             email = "uriegel@hotmail.de"
+             nothing = null
+        }     
+    }
