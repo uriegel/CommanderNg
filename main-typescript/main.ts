@@ -33,11 +33,13 @@ app.on('ready', () => {
     if (settings.get("isMaximized"))
         mainWindow.maximize()
 
-    mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'Commander\\index.html'),
-        protocol: 'file:',
-        slashes: true
-    }))
+    mainWindow.loadURL("http://localhost:20000/Commander")
+
+    // mainWindow.loadURL(url.format({
+    //     pathname: path.join(__dirname, 'Commander\\index.html'),
+    //     protocol: 'file:',
+    //     slashes: true
+    // }))
       
     mainWindow.on('resize', () => saveBounds())
 

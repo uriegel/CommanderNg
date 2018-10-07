@@ -1,6 +1,4 @@
-import { Component, HostListener } from '@angular/core'
-import { ConnectionService } from './services/connection.service'
-import { remote } from 'electron';
+import { Component } from '@angular/core'
 
 @Component({
     selector: 'app-root',
@@ -8,12 +6,6 @@ import { remote } from 'electron';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-    constructor(private connection: ConnectionService) { }
-    
-    @HostListener('window:beforeunload', ['$event'])
-    onBeforeUnload(event) {
-        event.returnValue = true
-        this.connection.post("close")        
-        .then(() => remote.getCurrentWindow().destroy())
-    }
+    constructor() { }
+   
 }

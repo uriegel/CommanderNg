@@ -2,7 +2,6 @@ import { Component, ViewChild, OnInit, NgZone, HostListener, AfterViewInit, Inpu
 import { CommanderViewComponent } from '../commander-view/commander-view.component'
 import { SettingsService } from '../services/settings.service'
 import { DialogComponent } from '../dialog/dialog.component'
-const { ipcRenderer } = (<any>window).require('electron')
 
 @Component({
     selector: 'app-commander',
@@ -24,17 +23,17 @@ export class CommanderComponent implements OnInit, AfterViewInit {
     constructor(private zone: NgZone, private settings: SettingsService) {}
 
     ngOnInit() {
-        ipcRenderer.on("viewer", (_: any, on: boolean) => this.zone.run(() => this.isViewVisible = on))
-        ipcRenderer.on("refresh", (_: any) => this.zone.run(() => this.focusedView.refresh()))
-        ipcRenderer.on("setShowHidden", (_: any, on: boolean) => {
-            this.settings.showHidden = on
-            this.zone.run(() => {
-                this.leftView.refresh()
-                this.rightView.refresh()
-            })
-        })
-        ipcRenderer.on("createFolder", (_: any) => this.zone.run(() => this.focusedView.createFolder(this.dialog)))
-        ipcRenderer.on("delete", (_: any) => this.zone.run(() => this.focusedView.delete(this.dialog)))
+        // ipcRenderer.on("viewer", (_: any, on: boolean) => this.zone.run(() => this.isViewVisible = on))
+        // ipcRenderer.on("refresh", (_: any) => this.zone.run(() => this.focusedView.refresh()))
+        // ipcRenderer.on("setShowHidden", (_: any, on: boolean) => {
+        //     this.settings.showHidden = on
+        //     this.zone.run(() => {
+        //         this.leftView.refresh()
+        //         this.rightView.refresh()
+        //     })
+        // })
+        // ipcRenderer.on("createFolder", (_: any) => this.zone.run(() => this.focusedView.createFolder(this.dialog)))
+        // ipcRenderer.on("delete", (_: any) => this.zone.run(() => this.focusedView.delete(this.dialog)))
     }
 
     ngAfterViewInit() { setTimeout(() => this.leftView.focus()) }
