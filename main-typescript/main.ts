@@ -3,6 +3,7 @@ import * as path from 'path'
 import * as url from 'url'
 import * as settings from 'electron-settings'
 import  { spawn } from 'child_process'
+var XMLHttpRequest = require('xhr2')
 
 app.on('ready', () => {
 
@@ -77,8 +78,14 @@ app.on('ready', () => {
             },
             {
                 label: '&Löschen',
+
+                    
+
                 accelerator: "Delete",
-                click: evt =>  mainWindow.webContents.send("delete")
+                // click: evt =>  mainWindow.webContents.send("delete")
+                click: evt =>  post("close")
+
+
             },
             {
                 type: 'separator'
@@ -196,3 +203,15 @@ app.on('window-all-closed', () => {
     if (process.platform != 'darwin') 
         app.quit()
 })
+
+function post(method: string) {
+    return new Promise((res, rej) => {
+        const request = new XMLHttpRequest()
+        const encodedPath = encodeURI(method)
+        request.open('GET', `${baseUrl}/${encodedPath}`, true)
+        request.onload = (e:any) => res()
+        request.send()
+    })
+}
+
+const baseUrl = "http://localhost:20000"
