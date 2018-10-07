@@ -3,7 +3,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { NgModule } from '@angular/core'
 
 import { AppComponent } from './app.component'
-import { TestAddonComponent } from './test/test-addon/test-addon.component'
 import { ScrollbarComponent as TestScrollbarComponent } from './test/scrollbar/scrollbar.component'
 import { ScrollbarComponent } from './scrollbar/scrollbar.component'
 import { ColumnsComponent as TestColumnsComponent } from './test/columns/columns.component'
@@ -43,7 +42,6 @@ import { DefaultButtonDirective } from './directives/default-button.directive'
 @NgModule({
     declarations: [
         AppComponent,
-        TestAddonComponent,
         TestScrollbarComponent,
         TestColumnsComponent,
         ScrollbarComponent,

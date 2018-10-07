@@ -1,6 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core'
 import { Observable, Subscriber, from } from 'rxjs'
-import { map } from 'rxjs/operators'
 import { ScrollbarComponent as ScrollBar  } from "../../scrollbar/scrollbar.component"
 
 interface Item {

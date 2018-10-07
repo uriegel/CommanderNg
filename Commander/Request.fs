@@ -15,15 +15,16 @@ type Affe = {
 
 let run request = 
     async {
-        match request.header.path with
+        match request.data.header.path with
         | "/close" -> 
             // TODO: POST
+            do! Async.Sleep 5000
             do! Response.asyncSendJson request Seq.empty
             shutdown ()
 
         | _ -> failwith "Unknown command"
 
-        let urlQuery = UrlQuery.create request.header.path
+        let urlQuery = UrlQuery.create request.data.header.path
         let path = urlQuery.Query "path"
         let isVisble = urlQuery.Query "isVisible"
         do! Response.asyncSendJson request {

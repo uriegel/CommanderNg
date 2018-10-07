@@ -13,6 +13,10 @@ cd CommanderNg
 ```
 npm i electron --save-dev
 ```
+Letzte Version:
+```
+npm i -D electron@latest --save 
+```
 in package.json:
 * build-electron: 
 ```"ng build --base-href . && copy main-typescript\\package.json dist\\package.json"``` 
