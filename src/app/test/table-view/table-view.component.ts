@@ -30,7 +30,7 @@ export class TableViewComponent implements OnInit {
     private readDirectory1 = this.getReadDirectory("c:\\windows\\system32")
     private readDirectory2 = this.getReadDirectory("c:\\")
 
-    private onNeu() {
+    onNeu() {
         this.path = "c:\\windows\\system32"
         this.items = this.readDirectory1()
         const subscription = this.items.subscribe({ 
@@ -45,7 +45,7 @@ export class TableViewComponent implements OnInit {
         })
     }
 
-    private onChange() {
+    onChange() {
         this.path = "c:"
         this.items = this.readDirectory2()
     }
@@ -69,7 +69,7 @@ export class TableViewComponent implements OnInit {
         // return readDirectory
     }
 
-    private onSort(sortEvent: IColumnSortEvent) {
+    onSort(sortEvent: IColumnSortEvent) {
         console.log(`Sorting: ${sortEvent.index} ascending: ${sortEvent.ascending}`)
     }
 }

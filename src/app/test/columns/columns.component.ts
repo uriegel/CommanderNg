@@ -25,11 +25,11 @@ export class ColumnsComponent implements OnInit {
         }
     }
 
-    private onSort(sortEvent: IColumnSortEvent) {
+    onSort(sortEvent: IColumnSortEvent) {
         console.log(`Sorting: ${sortEvent.index} ascending: ${sortEvent.ascending}`)
     }
 
-    private onOther() {
+    onOther() {
         this.columns.columns = {
             name: "Columns2",
             columns: [

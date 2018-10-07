@@ -126,7 +126,7 @@ export class ScrollbarComponent implements AfterViewInit {
         return capacity
     }
 
-    private scrollbarMouseDown(evt: MouseEvent) {
+    scrollbarMouseDown(evt: MouseEvent) {
         if (!(<HTMLElement>evt.target).classList.contains("scrollbar"))
             return
 
@@ -144,7 +144,7 @@ export class ScrollbarComponent implements AfterViewInit {
             isPageUp ? () => this.pageUp() : () => this.pageDown()), 10), 600)
     }
 
-    private gripMouseDown(evt: MouseEvent) {
+    gripMouseDown(evt: MouseEvent) {
         if (evt.which != 1)
             return
         this.gripping = true
@@ -174,7 +174,7 @@ export class ScrollbarComponent implements AfterViewInit {
         window.addEventListener('mousemove', gripperMove)
     }
 
-    private upMouseDown() {
+    upMouseDown() {
         clearTimeout(this.timer)
         clearInterval(this.interval)
         this.mouseUp()
@@ -182,7 +182,7 @@ export class ScrollbarComponent implements AfterViewInit {
         this.timer = setTimeout(() => this.interval = setInterval(() => this.mouseUp(), 10), 600)
     }
 
-    private downMouseDown() {
+    downMouseDown() {
         clearTimeout(this.timer)
         clearInterval(this.interval)
         this.mouseDown()
@@ -190,23 +190,23 @@ export class ScrollbarComponent implements AfterViewInit {
         this.timer = setTimeout(() => this.interval = setInterval(() => this.mouseDown(), 10), 600)
     }
 
-    private mouseup() {
+    mouseup() {
         clearTimeout(this.timer)
         clearInterval(this.interval)
         this.gripping = false
         this.setFocus()
     }
 
-    private onClick(evt: Event) {
+    onClick(evt: Event) {
         evt.stopPropagation()
     }
 
-    private onMouseLeave() {
+    onMouseLeave() {
         clearTimeout(this.timer)
         clearInterval(this.interval)
     }
 
-    private mouseUp() {
+    mouseUp() {
         this.position -= 1
         if (this.position < 0) {
             this.position = 0
@@ -219,7 +219,7 @@ export class ScrollbarComponent implements AfterViewInit {
         this.positionChanged.emit(this.position)
     }
 
-    private mouseDown() {
+    mouseDown() {
         this.position += 1
         if (this.position > this.steps) {
             this.position = this.steps

@@ -14,7 +14,7 @@ export class DialogComponent implements OnInit {
 
     ngOnInit() { }
 
-    private onOk() { 
+    onOk() { 
         this.dialog.buttons = Buttons.Ok
         this.dialog.text = "Das ist der OK-Dialog"
         const obs = this.dialog.show()
@@ -25,21 +25,21 @@ export class DialogComponent implements OnInit {
         })
     }
 
-    private onOkCancel() { 
+    onOkCancel() { 
         this.dialog.buttons = Buttons.OkCancel
         this.dialog.text = "Das ist der OK-Cancel-Dialog"
         const obs = this.dialog.show()
         obs.subscribe(result => console.log(result))
     }
 
-    private onYesNoCancel() { 
+    onYesNoCancel() { 
         this.dialog.buttons = Buttons.YesNoCancel
         this.dialog.text = "Das ist der JaNeinCancel-Dialog"
         const obs = this.dialog.show()
         obs.subscribe(result => console.log(result))
     }
     
-    private onInputYesNoCancel() { 
+    onInputYesNoCancel() { 
         this.dialog.buttons = Buttons.YesNoCancel
         this.dialog.text = "Das ist der Input-JaNeinCancel-Dialog"
         this.dialog.withInput = true
@@ -49,7 +49,7 @@ export class DialogComponent implements OnInit {
         obs.subscribe(result => console.log(result))
     }
 
-    private onRename() { 
+    onRename() { 
         this.dialog.buttons = Buttons.OkCancel
         this.dialog.text = "Möchtest Du die Datei umbenennen?"
         this.dialog.withInput = true
@@ -60,7 +60,7 @@ export class DialogComponent implements OnInit {
     }
     
 
-    private onlongText() { 
+    onlongText() { 
         this.dialog.buttons = Buttons.YesNoCancel
         this.dialog.text = "Mitte des Jahres 1992 lernte Nas MC Serch von 3rd Bass kennen, der sein Manager wurde und ihm noch im selben Jahr einen Plattendeal bei Columbia Records verschaffen konnte. Nas machte sein Solodebüt mit der Single Halftime zum Soundtrack des Films Zebrahead."
         this.dialog.withInput = true

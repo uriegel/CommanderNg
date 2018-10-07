@@ -9,11 +9,11 @@ export class GridComponent {
 
     isLastVisible = true
 
-    private onClick() {
+    onClick() {
         this.isLastVisible = !this.isLastVisible
     }
 
-    private onRatioChanged() {
+    onRatioChanged() {
         console.log("onRatioChanged")
     }
 }

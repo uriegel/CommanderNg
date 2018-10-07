@@ -59,12 +59,12 @@ export class CommanderComponent implements OnInit, AfterViewInit {
         }
     }
 
-    private gotFocus(view: CommanderViewComponent) { 
+    gotFocus(view: CommanderViewComponent) { 
         this.focusedView = view 
         console.log(this.focusedView.id)
     }
 
-    private onRatioChanged() {
+    onRatioChanged() {
         this.leftView.onResize()
         this.rightView.onResize()
     }

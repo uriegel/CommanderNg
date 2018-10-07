@@ -77,7 +77,7 @@ export class TableViewComponent {
 
     onResize() { this.scrollbar.onResize() }
 
-    private onKeyDown(evt: KeyboardEvent) {
+    onKeyDown(evt: KeyboardEvent) {
         switch (evt.which) {
             case 33:
                 this.pageUp()
@@ -105,7 +105,7 @@ export class TableViewComponent {
         evt.preventDefault() // prevent the default action (scroll / move caret)
     }
 
-    private onMouseDown(evt: MouseEvent) {
+    onMouseDown(evt: MouseEvent) {
         const tr = <HTMLTableRowElement>(<HTMLElement>evt.target).closest("tbody tr")
         if (tr) {
             const currentIndex = Array.from(this.table.nativeElement.querySelectorAll("tr"))
@@ -115,7 +115,7 @@ export class TableViewComponent {
         }
     }
 
-    private onColumnSort(sortEvent: IColumnSortEvent) {
+    onColumnSort(sortEvent: IColumnSortEvent) {
         this.onSort.emit(sortEvent)
     }
 

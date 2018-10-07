@@ -40,7 +40,7 @@ export class ColumnsComponent {
 
     readonly height = 16
 
-    private onMouseMove(evt: MouseEvent) {
+    onMouseMove(evt: MouseEvent) {
         const th = <HTMLElement>evt.target
         if (th.localName == "th" && (th.offsetLeft > 0 || evt.pageX - th.getBoundingClientRect().left > 10)
             && (th.offsetLeft + th.offsetWidth < this.columnsRow.nativeElement.offsetWidth || evt.pageX - th.getBoundingClientRect().left < 4)

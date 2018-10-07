@@ -19,7 +19,7 @@ export class ScrollbarComponent implements OnInit {
     
     ngOnInit() { this.items = this.get(this.dirs[1]) }
 
-    private onNew() {
+    onNew() {
         const index = this.seed++ % 3
         const dir = this.dirs[index]
         this.items = this.get(dir)
@@ -42,7 +42,7 @@ export class ScrollbarComponent implements OnInit {
         ))
     }
 
-    private onKeyDown(evt: KeyboardEvent) {
+    onKeyDown(evt: KeyboardEvent) {
         switch (evt.which) {
             case 33:
                 this.pageUp()

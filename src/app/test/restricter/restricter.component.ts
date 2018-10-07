@@ -43,7 +43,7 @@ export class RestricterComponent implements OnInit {
 
     ngOnInit() {}
 
-    private onKeyDown(evt: KeyboardEvent) {
+    onKeyDown(evt: KeyboardEvent) {
         this.restrictMode = evt.which != 27
     }
 }

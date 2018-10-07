@@ -128,6 +128,6 @@ export class DialogComponent {
     }
 
     private dialogFinisher: Subject<DialogResult>
-    private isShowing = false
+    isShowing = false
     private defaultButton: ElementRef
 }

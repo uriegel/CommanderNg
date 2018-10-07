@@ -9,4 +9,8 @@ export interface Item {
     ext?: string
     time?: Date
     size?: number
+    isExif?: boolean
+    version?: string
+    label?: string
+    driveType?: any
 }

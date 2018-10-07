@@ -195,17 +195,17 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         }
     }
 
-    private onFocus() { this.focus() }
+    onFocus() { this.focus() }
 
-    private onFocusIn(evt: Event) { this.gotFocus.emit(this) }
+    onFocusIn(evt: Event) { this.gotFocus.emit(this) }
 
-    private onInputChange() {
+    onInputChange() {
         this.path = this.input.nativeElement.value
         this.tableView.focus()
         console.log("Input return")
     }
 
-    private onKeydown(evt: KeyboardEvent) {
+    onKeydown(evt: KeyboardEvent) {
         switch (evt.which) {
             case 13: // Return
                 this.processItem()
@@ -264,21 +264,21 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         }
     }
 
-    private onClick(evt: MouseEvent) { 
+    onClick(evt: MouseEvent) { 
         if (evt.ctrlKey && (evt.target as HTMLElement).closest("td"))  
             this.toggleSelection(this.tableView.getCurrentItem())
     }
 
-    private onDblClick(evt: MouseEvent) { 
+    onDblClick(evt: MouseEvent) { 
         if ((evt.target as HTMLElement).closest("td")) 
             this.processItem() 
     }
 
-    private onCurrentIndexChanged(index: number) {
+    onCurrentIndexChanged(index: number) {
         this.currentItem = this.tableView.getCurrentItem()
     }
 
-    private onColumnSort(evt: IColumnSortEvent) {
+    onColumnSort(evt: IColumnSortEvent) {
         this.columnSort = evt
         this.setItems(this.items)
     }

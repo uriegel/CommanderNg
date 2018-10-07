@@ -33,7 +33,7 @@ export class GridSplitterComponent implements AfterViewInit {
         this.view2 = this.elRef.nativeElement.firstChild.children[2]
     }
 
-    private onSplitterMouseDown(evt: MouseEvent) {
+    onSplitterMouseDown(evt: MouseEvent) {
         if (evt.which != 1)
             return
         const size1 = this.isVertical ? this.view1.offsetHeight : this.view1.offsetWidth
