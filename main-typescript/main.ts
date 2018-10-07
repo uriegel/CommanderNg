@@ -35,12 +35,16 @@ app.on('ready', () => {
 
     mainWindow.loadURL("http://localhost:20000/Commander")
 
-    // mainWindow.loadURL(url.format({
-    //     pathname: path.join(__dirname, 'Commander\\index.html'),
-    //     protocol: 'file:',
-    //     slashes: true
-    // }))
-      
+    let canClose = false
+    mainWindow.on('close', async e => {
+        if (canClose)
+            return
+        canClose = true
+        e.preventDefault()
+        await post("close")
+        mainWindow.close()
+    })
+
     mainWindow.on('resize', () => saveBounds())
 
     mainWindow.on('move', () => saveBounds())
@@ -52,6 +56,8 @@ app.on('ready', () => {
     mainWindow.on('unmaximize', () => {
         settings.set("isMaximized", false)
     })
+
+    mainWindow.on
 
     function saveBounds() {
         if (!mainWindow.isMaximized()) {
@@ -210,7 +216,7 @@ function post(method: string) {
     return new Promise((res, rej) => {
         const request = new XMLHttpRequest()
         const encodedPath = encodeURI(method)
-        request.open('GET', `${baseUrl}/${encodedPath}`, true)
+        request.open('GET', `${baseUrl}/Request/${encodedPath}`, true)
         request.onload = (e:any) => res()
         request.send()
     })

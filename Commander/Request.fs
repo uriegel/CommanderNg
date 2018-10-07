@@ -15,13 +15,11 @@ type Affe = {
 
 let run request = 
     async {
-        match request.data.header.path with
-        | "/close" -> 
-            // TODO: POST
-            do! Async.Sleep 5000
+        let urlQuery = UrlQuery.create request.data.header.path
+        match urlQuery.method with
+        | "close" -> 
             do! Response.asyncSendJson request Seq.empty
             shutdown ()
-
         | _ -> failwith "Unknown command"
 
         let urlQuery = UrlQuery.create request.data.header.path
