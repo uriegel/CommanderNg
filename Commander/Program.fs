@@ -2,14 +2,29 @@
 open Request
 open Commander
 
+type Affe = {
+    name: string
+    email: string
+    zahlen: int list option
+    nothing: string option
+    anzahl: int
+}
+
 [<EntryPoint>]
 let main argv =
     Console.OutputEncoding <- System.Text.Encoding.UTF8
     printfn "Starting Commander Server"
 
+    let affe = {
+        name = "AberHallo"
+        email = "a@a.a"
+        nothing = Some "Affe"
+        anzahl = 0
+        zahlen = Some [1;2;4]
+    }
 
-    let test = Json.serialize 4
-    let erg = Json.deserialize test
+    let test = Json.serialize affe
+    let erg = Json.deserialize<Affe> test
     
 
     try
