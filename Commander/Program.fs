@@ -7,6 +7,11 @@ let main argv =
     Console.OutputEncoding <- System.Text.Encoding.UTF8
     printfn "Starting Commander Server"
 
+
+    let test = Json.serialize 4
+    let erg = Json.deserialize test
+    
+
     try
         let configuration = {
             WebServer.Configuration.defaultConfiguration with

@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Str.fs" />
+    <Compile Include="Json.fs" />
     <Compile Include="Commander.fs" />
     <Compile Include="Request.fs" />
     <Compile Include="Program.fs" />
@@ -13,6 +14,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <Reference Include="WebServer">
       <HintPath>WebServer.dll</HintPath>
     </Reference>
