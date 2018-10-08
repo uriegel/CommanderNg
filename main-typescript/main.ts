@@ -59,8 +59,6 @@ app.on('ready', () => {
         settings.set("isMaximized", false)
     })
 
-    mainWindow.on
-
     function saveBounds() {
         if (!mainWindow.isMaximized()) {
             const bounds = mainWindow.getBounds()

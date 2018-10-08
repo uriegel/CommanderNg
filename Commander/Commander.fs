@@ -6,9 +6,12 @@ let private evt = new ManualResetEvent false
 
 let mutable private serverSentEvent: SseContext option = None
 
+let private commander = "commander"
+
 let sseInit context = 
     printfn "Initializing server sent events"
     serverSentEvent <- Some context
+    context.send commander "initialized"
         
 let run () = evt.WaitOne () |> ignore
 
