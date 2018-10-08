@@ -2,6 +2,11 @@
 open Request
 open Commander
 
+open System
+open Microsoft.FSharp.Reflection
+open Newtonsoft.Json
+open Newtonsoft.Json.Converters
+
 type Affe = {
     name: string
     email: string
@@ -18,7 +23,8 @@ let main argv =
     let affe = {
         name = "AberHallo"
         email = "a@a.a"
-        nothing = Some "Affe"
+        //nothing = Some "Affe"
+        nothing = None
         anzahl = 0
         zahlen = Some [1;2;4]
     }
