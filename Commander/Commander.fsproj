@@ -6,6 +6,9 @@
   <ItemGroup>
     <Compile Include="Str.fs" />
     <Compile Include="Json.fs" />
+    <Compile Include="Model.fs" />
+    <Compile Include="ModelTools.fs" />
+    <Compile Include="DirectoryProcessor.fs" />
     <Compile Include="Commander.fs" />
     <Compile Include="Request.fs" />
     <Compile Include="Program.fs" />

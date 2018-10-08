@@ -1,10 +1,7 @@
 module Json
 open System
 open Newtonsoft.Json
-open System.Xml
 open Microsoft.FSharp.Reflection
-open Newtonsoft.Json
-open Newtonsoft.Json.Converters
 
 type OptionConverter() =
     inherit JsonConverter()
