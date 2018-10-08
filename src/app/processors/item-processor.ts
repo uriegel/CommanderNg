@@ -1,8 +1,8 @@
 import { IColumns } from "../columns/columns.component"
 import { Observable } from "rxjs"
-import { IItem } from "../table-view/table-view.component"
 import { CommanderViewComponent } from "../commander-view/commander-view.component"
 import { SettingsService } from "../services/settings.service"
+import { Item } from "../model/model"
 
 export enum ProcessorType {
     root,
@@ -16,9 +16,9 @@ export abstract class ItemProcessor  {
 
     abstract get columns(): IColumns
 
-    abstract get(path: string, recentPath?: string): Observable<IItem[]>
+    abstract get(path: string, recentPath?: string): Observable<Item[]>
 
-    abstract process(item: IItem) 
+    abstract process(item: Item) 
 
     canCreateFolder() { return false }
     canDelete() { return false }
@@ -27,7 +27,7 @@ export abstract class ItemProcessor  {
 
     abstract deleteItems(path: string[]): Observable<any>
 
-    sort(items: IItem[], columnIndex: number, isAscending: boolean): IItem[] { return [] }
+    sort(items: Item[], columnIndex: number, isAscending: boolean): Item[] { return [] }
 
     close() {}
 }

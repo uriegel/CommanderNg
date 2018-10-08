@@ -2,20 +2,7 @@ import { Component, ViewChild, ElementRef, Output, EventEmitter, Input } from '@
 import { Observable } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as Columns, IColumns, IColumnSortEvent } from '../columns/columns.component'
-
-export enum ItemType {
-    File,
-    Directory,
-    Drive,
-    Parent
-}
-
-export interface IItem {
-    name: string
-    isSelected?: boolean
-    isCurrent?: boolean
-    type: ItemType
-}
+import { Item } from '../model/model'
 
 @Component({
   selector: 'app-table-view',
@@ -42,7 +29,7 @@ export class TableViewComponent {
     @Input() 
     get items() : object { return this._items }
     set items(value: object) {
-        this._items = value as Observable<IItem[]>
+        this._items = value as Observable<Item[]>
         if (this._items) {
             const subscription = this._items.subscribe({ 
                 next: value => {
@@ -53,7 +40,7 @@ export class TableViewComponent {
             setTimeout(() => this.onCurrentIndexChanged.emit(0), 200)
         }
     }
-    private _items: Observable<IItem[]>
+    private _items: Observable<Item[]>
 
     focus() { this.table.nativeElement.focus() }
 
@@ -168,5 +155,5 @@ export class TableViewComponent {
         }
     }
 
-    private tableViewItems: IItem[]
+    private tableViewItems: Item[]
 }

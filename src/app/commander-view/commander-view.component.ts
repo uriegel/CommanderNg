@@ -5,10 +5,11 @@ import { filter } from 'rxjs/operators'
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
 import { IColumnSortEvent, IColumns } from '../columns/columns.component'
-import { IItem, TableViewComponent, ItemType } from '../table-view/table-view.component'
+import { TableViewComponent } from '../table-view/table-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
 import { Buttons } from '../enums/buttons.enum'
-import { DialogResultValue } from '../enums/dialog-result-value.enum';
+import { DialogResultValue } from '../enums/dialog-result-value.enum'
+import { Item, ItemType } from '../model/model'
 
 // TODO: SortOrder: switch off when name ascending
 
@@ -68,9 +69,9 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         this._path = value
     }
     private _path: string
-    items: Observable<IItem[]>     
+    items: Observable<Item[]>     
 
-    currentItem: IItem
+    currentItem: Item
 
     restrictValue = ""
 
@@ -245,7 +246,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         })
     }
 
-    private toggleSelection(item: IItem) {
+    private toggleSelection(item: Item) {
         if (this.isItemSelectable(item)) {
             item.isSelected = !item.isSelected
             return true
@@ -254,7 +255,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
             return false
     }
 
-    private isItemSelectable(item: IItem) {
+    private isItemSelectable(item: Item) {
         switch (item.type) {
             case 0:
             case 1:
@@ -289,13 +290,13 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
             this.itemProcessor.process(item)
     }
 
-    private setItems(items: Observable<IItem[]>) {
+    private setItems(items: Observable<Item[]>) {
         if (!this.columnSort)
             this.items = items
         else {
-            const subscription = (items as Observable<IItem[]>).subscribe({next: value => {
+            const subscription = (items as Observable<Item[]>).subscribe({next: value => {
                 subscription.unsubscribe()
-                this.items = from(new Promise<IItem[]>(res => res(this.itemProcessor.sort(value, this.columnSort.index, this.columnSort.ascending))))
+                this.items = from(new Promise<Item[]>(res => res(this.itemProcessor.sort(value, this.columnSort.index, this.columnSort.ascending))))
             }})
         }
     }
@@ -304,9 +305,9 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         const inputChars = this.keyDownEvents.pipe(filter(n => !n.altKey && !n.ctrlKey && !n.shiftKey && n.key.length > 0 && n.key.length < 2))
         const backSpaces = this.keyDownEvents.pipe(filter(n => n.which == 8))
         const escapes = this.keyDownEvents.pipe(filter(n => n.which == 27))
-        const items = new Subject<IItem[]>()
-        const backItems = new Subject<IItem[]>()
-        let originalItems: Observable<IItem[]>
+        const items = new Subject<Item[]>()
+        const backItems = new Subject<Item[]>()
+        let originalItems: Observable<Item[]>
         
         inputChars.subscribe(n => {
             const subscription = this.items.subscribe(n => {
@@ -345,7 +346,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
                 this.restrictValue += n.char
                 if (!originalItems)
                     originalItems = this.items
-                this.items = from(new Promise<IItem[]>(res => res(n.items)))
+                this.items = from(new Promise<Item[]>(res => res(n.items)))
             }
         })
 
@@ -359,7 +360,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
             if (this.restrictValue.length == 0)
                 undoRestriction()
             else if (n.length > 0) 
-                this.setItems(from(new Promise<IItem[]>(res => res(n))))
+                this.setItems(from(new Promise<Item[]>(res => res(n))))
         })
 
         this.restrictingOffs.subscribe(() => undoRestriction())

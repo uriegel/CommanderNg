@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core'
 import { Observable, Subscriber } from 'rxjs'
 import { ScrollbarComponent } from '../scrollbar/scrollbar.component'
-import { IItem } from '../table-view/table-view.component';
+import { Item } from '../model/model'
 
 @Pipe({
     name: 'virtualList'
@@ -20,7 +20,7 @@ export class VirtualListPipe implements PipeTransform {
             if (this.source) {
                 this.source.subscribe(value => {
                     this.items = value
-                    let index = this.items.findIndex(n => (<IItem>n).isCurrent) 
+                    let index = this.items.findIndex(n => (<Item>n).isCurrent) 
                     if (index == -1)
                         index = 0
                     this.scrollbar.setPosition(index)

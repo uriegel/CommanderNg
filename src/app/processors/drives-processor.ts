@@ -1,6 +1,6 @@
 import { ItemProcessor, ProcessorType } from "./item-processor"
 import { Observable, from } from "rxjs"
-import { IItem, ItemType } from "../table-view/table-view.component"
+import { Item } from "../model/model"
 
 export class DrivesProcessor extends ItemProcessor {
 
@@ -17,7 +17,7 @@ export class DrivesProcessor extends ItemProcessor {
         }
     }
 
-    get(_: string, recentPath?: string): Observable<IItem[]> { return from(new Promise(
+    get(_: string, recentPath?: string): Observable<Item[]> { return from(new Promise(
         (res, rej) => {}
         // this.addon.getDrives(
         //     (err, result) => {
@@ -33,7 +33,7 @@ export class DrivesProcessor extends ItemProcessor {
         )) 
     }
 
-    process(item: IItem) {
+    process(item: Item) {
         // const driveItem = item as DriveInfo
         // if (driveItem.type == ItemType.Drive) 
         //     this.commanderView.path = driveItem.name

@@ -1,5 +1,6 @@
 ﻿open System
-open System.Threading
+open Request
+open Commander
 
 [<EntryPoint>]
 let main argv =
@@ -7,28 +8,19 @@ let main argv =
     printfn "Starting Commander Server"
 
     try
-        let requestOK (headers: WebServer.RequestHeaders) = 
-            headers.path.StartsWith "/Request"
-
         let configuration = {
             WebServer.Configuration.defaultConfiguration with
                 port = 20000
                 checkRequest = requestOK
                 request = Request.run
-
-
                 webroot = System.IO.Directory.GetCurrentDirectory ()
+                serverSentEvent = Some sseInit
         }
         WebServer.Server.start configuration
         printfn "Commander Server started"
-
-        printfn "Curr: %s" (System.IO.Directory.GetCurrentDirectory ())
-
         Commander.run () |> ignore
-
         WebServer.Server.stop ()
         printfn "Commander Server stopped"
-
         0 
     with e -> 
         printfn "Error: %A" e

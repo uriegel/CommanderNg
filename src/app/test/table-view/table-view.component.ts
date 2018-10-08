@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { from, Observable } from 'rxjs'
 import { IColumnSortEvent, IColumns } from '../../columns/columns.component'
-import { IItem } from '../../table-view/table-view.component'
+import { Item } from '../../model/model'
 
 @Component({
   selector: 'app-test-table-view',
@@ -21,7 +21,7 @@ export class TableViewComponent implements OnInit {
         ]            
     }
     path = "c:\\windows\\system32"
-    items: Observable<IItem[]> 
+    items: Observable<Item[]> 
 
     ngOnInit() {
         this.items = this.readDirectory1()

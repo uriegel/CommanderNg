@@ -13,6 +13,9 @@ type Affe = {
     nothing: string
 }
 
+let requestOK (headers: WebServer.RequestHeaders) = 
+    headers.path.StartsWith "/Request"
+
 let run request = 
     async {
         let urlQuery = UrlQuery.create request.data.header.path

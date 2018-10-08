@@ -1,10 +1,10 @@
 import { ItemProcessor, ProcessorType } from "./item-processor"
 import { Observable, from } from "rxjs"
-import { IItem } from "../table-view/table-view.component"
 import { NgZone } from "@angular/core"
 import { CommanderViewComponent } from "../commander-view/commander-view.component"
 import { FileExtensionPipe } from "../pipes/file-extension.pipe"
 import { SettingsService } from "../services/settings.service"
+import { Item } from "../model/model"
 
 export class FileProcessor extends ItemProcessor {
     type: ProcessorType = ProcessorType.file
@@ -29,7 +29,7 @@ export class FileProcessor extends ItemProcessor {
     canCreateFolder() { return true }
     canDelete() { return true }
 
-    get(path: string, recentPath?: string): Observable<IItem[]> { 
+    get(path: string, recentPath?: string): Observable<Item[]> { 
         return null
         // this.requestId = ++FileProcessor.requestId
         // return from(new Promise((res, rej) => 
@@ -85,7 +85,7 @@ export class FileProcessor extends ItemProcessor {
         // ))
     }
 
-    process(item: IItem) {
+    process(item: Item) {
         // const fileItem = item as FileItem
         // switch (fileItem.type) {
         //     case 1:

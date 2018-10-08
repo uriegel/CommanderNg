@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core'
+import { Subject } from 'rxjs'
+import { Item } from '../model/model'
 
 @Injectable({
     providedIn: 'root'
 })
 export class ConnectionService {
-    constructor() { }
+    leftViewEvents = new Subject<Item[]>()
+    rightViewEvents = new Subject<Item[]>()
 
-    addEventListener(event: string) {
-        this.source.addEventListener(event, evt => console.log("onEreignis", evt.data))
+    constructor() { 
+        this.source.addEventListener("leftView", (evt: MessageEvent) => console.log("onEreignis", evt.data))
+        this.source.addEventListener("rightView", (evt: MessageEvent) => console.log("onEreignis", evt.data))
     }
 
     post(method: string) {
@@ -20,7 +24,7 @@ export class ConnectionService {
         })
     }
 
-    source = new EventSource("events")
+    private source = new EventSource("events")
     private baseUrl = "http://localhost:20000"
 }
 
