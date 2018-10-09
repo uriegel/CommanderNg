@@ -12,7 +12,7 @@ let run request =
         | "get" ->
             let test = DirectoryProcessor.getItems @"c:\windows\system32"
             let str = Json.serialize test
-            ()
+            do! Response.asyncSendJsonString request str
         | "close" -> 
             close ()
             do! Response.asyncSendJson request Seq.empty
