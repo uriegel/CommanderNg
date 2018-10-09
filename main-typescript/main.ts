@@ -8,9 +8,6 @@ var XMLHttpRequest = require('xhr2')
 app.on('ready', () => {
 
     console.log("Starting Commander")
-    //const auguryPath = 'C:\\Users\\urieg\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\elgalmkoelokbchhkhacckoklkejnhcd\\1.19.1_0'
-    //const prc = spawn("dotnet", [ "C:\\Users\\urieg\\source\\repos\\Commander\\Commander\\bin\\Debug\\netcoreapp2.1\\Commander.dll" ])
-
     const prc = spawn("dotnet", [ "..\\Commander\\bin\\Debug\\netcoreapp2.1\\Commander.dll" ])
     prc.stdout.on('data', data => {
         var str = data.toString()
@@ -20,6 +17,7 @@ app.on('ready', () => {
 
     prc.on('close', code => console.log('process exit code', code))
 
+    //const auguryPath = 'C:\\Users\\urieg\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\elgalmkoelokbchhkhacckoklkejnhcd\\1.19.1_0'
     //BrowserWindow.addDevToolsExtension(auguryPath)
 
     const bounds = JSON.parse(settings.get("window-bounds", 
@@ -43,7 +41,7 @@ app.on('ready', () => {
             return
         canClose = true
         e.preventDefault()
-        await post("close")
+        await close()
         mainWindow.close()
     })
 
@@ -86,14 +84,8 @@ app.on('ready', () => {
             },
             {
                 label: '&Löschen',
-
-                    
-
                 accelerator: "Delete",
                 // click: evt =>  mainWindow.webContents.send("delete")
-                click: evt =>  post("close")
-
-
             },
             {
                 type: 'separator'
@@ -212,13 +204,20 @@ app.on('window-all-closed', () => {
         app.quit()
 })
 
-function post(method: string) {
-    return new Promise((res, rej) => {
+function close() {
+    return post("close")
+}
+
+function post<T>(method: string, param?: any) {
+    return new Promise<T>((res, rej) => {
         const request = new XMLHttpRequest()
-        const encodedPath = encodeURI(method)
-        request.open('GET', `${baseUrl}/Request/${encodedPath}`, true)
-        request.onload = (e:any) => res()
-        request.send()
+        request.open('POST', `${baseUrl}/request/${method}`, true)
+        request.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
+        request.onload = (_:any) => {
+            var result = <T>JSON.parse(request.responseText)
+            res(result)
+        }
+        request.send(JSON.stringify(param))
     })
 }
 

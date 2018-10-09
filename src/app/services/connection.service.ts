@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Subject, Observable } from 'rxjs'
-import { Item } from '../model/model'
+import { Item, Empty } from '../model/model'
 
 @Injectable({
     providedIn: 'root'
@@ -22,13 +22,16 @@ export class ConnectionService {
         this.source.addEventListener("rightView", (evt: MessageEvent) => console.log("onEreignis", evt.data))
     }
 
-    post(method: string) {
-        return new Promise((res, rej) => {
+    private post<T>(method: string, param?: any) {
+        return new Promise<T>((res, rej) => {
             const request = new XMLHttpRequest()
-            const encodedPath = encodeURI(method)
-            request.open('POST', `${this.baseUrl}/${encodedPath}`, true)
-            request.onload = e => res()
-            request.send()
+            request.open('POST', `${this.baseUrl}/request/${method}`, true)
+            request.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
+            request.onload = evt => {
+                var result = <T>JSON.parse(request.responseText)
+                res(result)
+            }
+            request.send(JSON.stringify(param))
         })
     }
 

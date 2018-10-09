@@ -15,4 +15,8 @@ export class ConnectionComponent implements OnInit {
             console.log("Commander event", evt)
         })
     }
+
+    onStart() {
+        
+    }
 }

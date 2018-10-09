@@ -15,6 +15,9 @@ let sseInit context =
         
 let run () = evt.WaitOne () |> ignore
 
+let close () = 
+    printfn "Closing Commander Server"
+    
 let shutdown () =
     printfn "Shutting down Commander Server"
     evt.Set () |> ignore

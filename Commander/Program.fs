@@ -2,16 +2,30 @@
 open Request
 open Commander
 open Model
+open Str
 
 [<EntryPoint>]
 let main argv =
     Console.OutputEncoding <- System.Text.Encoding.UTF8
     printfn "Starting Commander Server"
 
+
+    let test = "/request/close"
+        
+
+    
+    
+         
+
     let test = DirectoryProcessor.getItems @"c:\windows\system32"
     let str = Json.serialize test
 
     let erg = Json.deserialize<Event> str
+
+
+
+
+
     
     try
         let configuration = {
