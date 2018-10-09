@@ -50,7 +50,7 @@ let main argv =
         }
         WebServer.Server.start configuration
         printfn "Commander Server started"
-        //Commander.run () |> ignore
+        Commander.run () |> ignore
         WebServer.Server.stop ()
         printfn "Commander Server stopped"
         0 

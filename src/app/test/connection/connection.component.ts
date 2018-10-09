@@ -17,6 +17,7 @@ export class ConnectionComponent implements OnInit {
     }
 
     onStart() {
-        
+        let response = this.connection.get()
+        console.log("Response", response)
     }
 }

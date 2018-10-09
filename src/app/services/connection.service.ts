@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Subject, Observable } from 'rxjs'
-import { Item, Empty } from '../model/model'
+import { Item, Response } from '../model/model'
 
 @Injectable({
     providedIn: 'root'
@@ -20,6 +20,10 @@ export class ConnectionService {
         this.source.addEventListener("commander", (evt: MessageEvent) => this.commanderSubject.next(evt.data as string))
         this.source.addEventListener("leftView", (evt: MessageEvent) => console.log("onEreignis", evt.data))
         this.source.addEventListener("rightView", (evt: MessageEvent) => console.log("onEreignis", evt.data))
+    }
+
+    get(path?: string) {
+        return this.post<Response>("get")
     }
 
     private post<T>(method: string, param?: any) {
