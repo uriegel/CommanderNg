@@ -29,7 +29,7 @@ let main argv =
     let str1 = Json.serialize rekwest
     
 
-    let erg = Json.deserialize<Event> str
+    let erg = Json.deserialize<Response> str
     let erg1 = Json.deserialize<Request> str1
 
     

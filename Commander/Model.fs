@@ -12,7 +12,7 @@ type FileItem = {
     dateTime: DateTime
 }
 
-type Event = {
+type Response = {
     directoryItems: DirectoryItem list
     fileItems: FileItem list
 }
