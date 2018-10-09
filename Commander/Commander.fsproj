@@ -6,6 +6,7 @@
   <ItemGroup>
     <Compile Include="Str.fs" />
     <Compile Include="Json.fs" />
+    <Compile Include="LocalStorage.fs" />
     <Compile Include="Model.fs" />
     <Compile Include="ModelTools.fs" />
     <Compile Include="DirectoryProcessor.fs" />
@@ -18,7 +19,6 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
     <Reference Include="WebServer">
       <HintPath>WebServer.dll</HintPath>
     </Reference>

@@ -10,16 +10,14 @@ let main argv =
     Console.OutputEncoding <- System.Text.Encoding.UTF8
     printfn "Starting Commander Server"
 
+    LocalStorage.load ()
+    let affe = LocalStorage.get "Affe"
+    LocalStorage.set "Affe" "Huhn" |> ignore
+    let huhn = LocalStorage.get "Affe"
+
 
     let test = "/request/close"
         
-    let appSettings = ConfigurationManager.AppSettings
-    let value = appSettings.Item "test"         
-    appSettings.["test"] <- "Affe"
-    let value2 = appSettings.Item "test"         
-    
-
-    
     let rekwest = {
         commanderView = Some CommanderView.Left
         newPath = None
@@ -52,7 +50,7 @@ let main argv =
         }
         WebServer.Server.start configuration
         printfn "Commander Server started"
-        Commander.run () |> ignore
+        //Commander.run () |> ignore
         WebServer.Server.stop ()
         printfn "Commander Server stopped"
         0 
