@@ -43,6 +43,7 @@ let main argv =
         let configuration = {
             WebServer.Configuration.defaultConfiguration with
                 port = 20000
+                noCompression = true
                 checkRequest = requestOK
                 request = Request.run
                 webroot = System.IO.Directory.GetCurrentDirectory ()
