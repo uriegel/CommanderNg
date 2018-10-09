@@ -2,7 +2,6 @@
 open Request
 open Commander
 open Model
-open Str
 
 [<EntryPoint>]
 let main argv =
@@ -14,13 +13,19 @@ let main argv =
         
 
     
-    
+    let rekwest = {
+        commanderView = Some CommanderView.Left
+        newPath = None
+    }
          
 
     let test = DirectoryProcessor.getItems @"c:\windows\system32"
     let str = Json.serialize test
+    let str1 = Json.serialize rekwest
+    
 
     let erg = Json.deserialize<Event> str
+    let erg1 = Json.deserialize<Request> str1
 
 
 

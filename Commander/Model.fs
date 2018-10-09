@@ -16,3 +16,10 @@ type Event = {
     directoryItems: DirectoryItem list
     fileItems: FileItem list
 }
+
+type CommanderView = Left = 1 | Right = 2
+
+type Request = {
+    commanderView: CommanderView option
+    newPath: string option
+}
