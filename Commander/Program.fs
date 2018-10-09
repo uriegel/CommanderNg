@@ -2,6 +2,8 @@
 open Request
 open Commander
 open Model
+open System.Configuration
+open Microsoft.Extensions.Configuration
 
 [<EntryPoint>]
 let main argv =
@@ -11,6 +13,11 @@ let main argv =
 
     let test = "/request/close"
         
+    let appSettings = ConfigurationManager.AppSettings
+    let value = appSettings.Item "test"         
+    appSettings.["test"] <- "Affe"
+    let value2 = appSettings.Item "test"         
+    
 
     
     let rekwest = {
@@ -26,6 +33,8 @@ let main argv =
 
     let erg = Json.deserialize<Event> str
     let erg1 = Json.deserialize<Request> str1
+
+    
 
 
 
