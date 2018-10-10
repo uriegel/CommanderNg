@@ -13,18 +13,21 @@ let getItems (path: string) =
 
     let directoryItems = 
         directoryItems ()
-        |> List.map (fun item -> {
+        |> Array.map (fun item -> {
             name = item.Name
             dateTime = item.LastWriteTime
         })
 
+    // TODO:
+    //|> Array.sortByDescending (fun n -> n.Extension, n.Name)
     let fileItems = 
         fileItems ()
-        |> List.map (fun item -> {
+        |> Array.map (fun item -> {
             name = item.Name
             extension = "Ext"
-            dateTime = item.LastWriteTime
+            dateTime = item.LastWriteTime.ToString "s"
         })
+        |> Array.sortByDescending (fun n -> n.dateTime)
     let result = {
         directoryItems = directoryItems
         fileItems = fileItems

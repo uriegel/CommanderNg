@@ -9,12 +9,12 @@ type DirectoryItem = {
 type FileItem = {
     name: string
     extension: string
-    dateTime: DateTime
+    dateTime: string
 }
 
 type Response = {
-    directoryItems: DirectoryItem list
-    fileItems: FileItem list
+    directoryItems: DirectoryItem[]
+    fileItems: FileItem[]
 }
 
 type CommanderView = Left = 1 | Right = 2
