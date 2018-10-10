@@ -26,7 +26,16 @@
             "label": "build Electron",
             "type": "shell",
             "group": "build",
-            "command": "npm run electron",
+            "command": "ng build",
+            "problemMatcher": [
+                "$tsc"
+            ]
+        }
+        {
+            "label": "build Electron Release",
+            "type": "shell",
+            "group": "build",
+            "command": "ng build --prod",
             "problemMatcher": [
                 "$tsc"
             ]
