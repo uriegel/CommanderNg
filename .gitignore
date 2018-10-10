@@ -42,3 +42,5 @@ addon/build/
 Commander/bin
 Commander/obj
 bin/Debug/netcoreapp2.1/Commander.dll
+addon/bin/
+build/config.gypi

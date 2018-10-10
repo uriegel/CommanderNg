@@ -15,6 +15,10 @@ app.on('ready', () => {
         console.log(lines.join(""));
     })
 
+    console.log("Affe")
+    const addon = require('addon')
+    console.log(addon.hello())
+
     prc.on('close', code => console.log('process exit code', code))
 
     //const auguryPath = 'C:\\Users\\urieg\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\elgalmkoelokbchhkhacckoklkejnhcd\\1.19.1_0'
