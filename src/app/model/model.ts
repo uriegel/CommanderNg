@@ -3,18 +3,30 @@ export interface ServerEvent {
 }
 
 export enum ItemType {
-    File,
+    Parent,
     Directory,
-    Drive,
-    Parent
+    File,
+    Drive
 }
 
 export interface Item {
+    itemType: ItemType
     name: string
+    extension?: string
+    dateTime?: Date
+    size: number
     isSelected?: boolean
     isCurrent?: boolean
-    type: ItemType
 }
+
+export interface Response {
+    items: Item[]
+}
+
+
+
+
+
 
 export interface DirectoryItem {
     name: string
@@ -27,7 +39,3 @@ export interface FileItem {
     dateTime: Date
 }
 
-export interface Response {
-    directoryItems: DirectoryItem[]
-    fileItems: FileItem[]
-}

@@ -11,8 +11,6 @@ import { Buttons } from '../enums/buttons.enum'
 import { DialogResultValue } from '../enums/dialog-result-value.enum'
 import { Item, ItemType } from '../model/model'
 
-// TODO: SortOrder: switch off when name ascending
-
 @Component({
     selector: 'app-commander-view',
     templateUrl: './commander-view.component.html',
@@ -98,7 +96,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         const items = this.tableView.getAllItems().filter(n => n.isSelected)
         if (items.length > 0)
             return items;
-        if (this.currentItem.type != ItemType.Parent)
+        if (this.currentItem.itemType != ItemType.Parent)
             return [ this.currentItem ]
         else
             return []
@@ -256,7 +254,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     }
 
     private isItemSelectable(item: Item) {
-        switch (item.type) {
+        switch (item.itemType) {
             case 0:
             case 1:
                 return true

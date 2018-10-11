@@ -17,13 +17,13 @@
             "label": "build Main UI",
             "type": "typescript",
             "group": "build",
-            "tsconfig": "main-typescript\\tsconfig.json",
+            "tsconfig": "main-typescript/tsconfig.json",
             "problemMatcher": [
                 "$tsc"
             ]
         },
         {
-            "label": "build Electron",
+            "label": "build Angular",
             "type": "shell",
             "group": "build",
             "command": "ng build",

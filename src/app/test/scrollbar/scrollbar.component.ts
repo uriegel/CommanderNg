@@ -2,16 +2,12 @@ import { Component, ViewChild, OnInit } from '@angular/core'
 import { Observable, Subscriber, from } from 'rxjs'
 import { ScrollbarComponent as ScrollBar  } from "../../scrollbar/scrollbar.component"
 import { ConnectionService } from 'src/app/services/connection.service'
-
-interface Item {
-    text: string
-    isCurrent: boolean
-}
+import { Item } from 'src/app/model/model'
 
 @Component({
-  selector: 'app-test-scrollbar',
-  templateUrl: './scrollbar.component.html',
-  styleUrls: ['./scrollbar.component.css']
+    selector: 'app-test-scrollbar',
+    templateUrl: './scrollbar.component.html',
+    styleUrls: ['./scrollbar.component.css']
 })
 export class ScrollbarComponent implements OnInit {
 
@@ -34,14 +30,8 @@ export class ScrollbarComponent implements OnInit {
     get(path: string): Observable<Item[]> { 
         return from(new Promise(async (res, rej) => {
             let response = await this.connection.get(path)
-            //response.fileItems
-//            const items = result.map(i => { return {
-            //         text: i.name,
-            //         isCurrent: false 
-            //     }}) 
-            //     res(items)
-            })
-        )
+            res(response.items)
+        }))
     }
 
     onKeyDown(evt: KeyboardEvent) {
