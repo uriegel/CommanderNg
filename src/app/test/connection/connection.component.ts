@@ -16,8 +16,8 @@ export class ConnectionComponent implements OnInit {
         })
     }
 
-    onStart() {
-        let response = this.connection.get()
+    async onStart() {
+        let response = await this.connection.get()
         console.log("Response", response)
     }
 }

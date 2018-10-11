@@ -1,6 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core'
 import { Observable, Subscriber, from } from 'rxjs'
 import { ScrollbarComponent as ScrollBar  } from "../../scrollbar/scrollbar.component"
+import { ConnectionService } from 'src/app/services/connection.service'
 
 interface Item {
     text: string
@@ -19,6 +20,8 @@ export class ScrollbarComponent implements OnInit {
     
     ngOnInit() { this.items = this.get(this.dirs[1]) }
 
+    constructor(private connection: ConnectionService) {}
+
     onNew() {
         const index = this.seed++ % 3
         const dir = this.dirs[index]
@@ -29,17 +32,16 @@ export class ScrollbarComponent implements OnInit {
     }
 
     get(path: string): Observable<Item[]> { 
-        return from(new Promise(
-        (res, rej) => {}
-            // this.addon.readDirectory(path, 
-            // (err, result) => {
-            //     const items = result.map(i => { return {
+        return from(new Promise(async (res, rej) => {
+            let response = await this.connection.get(path)
+            //response.fileItems
+//            const items = result.map(i => { return {
             //         text: i.name,
             //         isCurrent: false 
             //     }}) 
             //     res(items)
-            // })
-        ))
+            })
+        )
     }
 
     onKeyDown(evt: KeyboardEvent) {

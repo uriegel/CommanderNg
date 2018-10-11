@@ -2,7 +2,6 @@ module Request
 open WebServer
 open Commander
 open Str
-
 let requestOK (headers: WebServer.RequestHeaders) = headers.path.StartsWith "/request"
 
 let run request = 

@@ -1,5 +1,6 @@
 module Model
 open System
+open Newtonsoft.Json
 
 type DirectoryItem = {
     name: string
@@ -9,7 +10,7 @@ type DirectoryItem = {
 type FileItem = {
     name: string
     extension: string
-    dateTime: string
+    dateTime: DateTime
 }
 
 type Response = {

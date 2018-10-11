@@ -24,10 +24,12 @@ let getItems (path: string) =
         fileItems ()
         |> Array.map (fun item -> {
             name = item.Name
-            extension = "Ext"
-            dateTime = item.LastWriteTime.ToString "s"
+            extension = item.Extension
+            dateTime = item.LastWriteTime
         })
-        |> Array.sortByDescending (fun n -> n.dateTime)
+        |> Array.map (fun item -> (item, item.dateTime.ToString "s"))
+        |> Array.sortByDescending (fun (item, date) -> date)
+        |> Array.map (fun (item, date) -> item)
     let result = {
         directoryItems = directoryItems
         fileItems = fileItems
