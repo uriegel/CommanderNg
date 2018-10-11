@@ -27,13 +27,13 @@ let createParentItem () = {
     itemType = ItemType.Parent
     extension = null
     name = ".."
-    dateTime = DateTime.Now
+    dateTime = Unchecked.defaultof<DateTime>
     size = 0L
 }
 
 let createDirectoryItem (item: DirectoryInfo) = {
     itemType = ItemType.Directory
-    extension = "None"
+    extension = null
     name = item.Name
     dateTime = item.LastWriteTime
     size = 0L

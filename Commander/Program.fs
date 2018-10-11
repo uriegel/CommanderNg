@@ -4,6 +4,7 @@ open Commander
 open Model
 open System.Configuration
 open Microsoft.Extensions.Configuration
+open System.IO
 
 [<EntryPoint>]
 let main argv =
@@ -24,7 +25,8 @@ let main argv =
     }
          
 
-    let test = DirectoryProcessor.getItems @"c:\windows\system32"
+    //let test = DirectoryProcessor.getItems @"c:\windows\system32"
+    let test = DirectoryProcessor.getItems (Directory.GetCurrentDirectory ())
     let str = Json.serialize test
     let str1 = Json.serialize rekwest
     
@@ -46,7 +48,7 @@ let main argv =
                 noCompression = true
                 checkRequest = requestOK
                 request = Request.run
-                webroot = System.IO.Directory.GetCurrentDirectory ()
+                webroot = Directory.GetCurrentDirectory ()
                 serverSentEvent = Some sseInit
         }
         WebServer.Server.start configuration
