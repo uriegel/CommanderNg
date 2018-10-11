@@ -4,10 +4,9 @@ open ModelTools
 open Model
 
 type SortItem = 
-    None = 0
-    | Name = 1
-    | Extension = 2
-    | DateTime = 3
+    | Name = 0
+    | Extension = 1
+    | DateTime = 2
 
 let getItems (path: string) = 
 
@@ -50,10 +49,9 @@ let getItems (path: string) =
         | _ -> mapSortName
     let mapping = (mapItem >> mapSort)
     let sorting = 
-        match descending, sortItem with
-        | _, SortItem.None -> id
-        | true, _ -> Array.sortByDescending takeSortItem
-        | false, _ -> Array.sortBy takeSortItem
+        match descending with
+        | true -> Array.sortByDescending takeSortItem
+        | false -> Array.sortBy takeSortItem
 
     let fileItems = 
         fileItems ()
