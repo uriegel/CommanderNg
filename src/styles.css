@@ -1,20 +1,4 @@
-:root {
-    --background-color: white;
-    --color: black;
-    --selected-bg-color: blue;
-    --selected-bg-hover-color: #0063ff;
-    --selected-color: white;
-    --separator-color: lightgray;
-    --scrollbar-border-color: lightgray;
-    --scrollbar-grip-color: rgb(209, 209, 209);
-    --scrollbar-button-active-color: #aaa;
-    --scrollbar-border-color: #eee;
-    --scrollbar-image-color: #666;
-    --scrollbar-grip-hover-color: #bbb;
-    --scrollbar-grip-active-color: #999;
-    --commander-item-hover: aliceblue;
-    --grip-color: #f0f0f0;
-}
+
 
 body {
     font-family: Arial, Helvetica, sans-serif;
