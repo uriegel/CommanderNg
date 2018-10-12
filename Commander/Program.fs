@@ -23,24 +23,7 @@ let main argv =
         commanderView = Some CommanderView.Left
         newPath = None
     }
-         
 
-    //let test = DirectoryProcessor.getItems @"c:\windows\system32"
-    let test = DirectoryProcessor.getItems (Directory.GetCurrentDirectory ())
-    let str = Json.serialize test
-    let str1 = Json.serialize rekwest
-    
-
-    let erg = Json.deserialize<Response> str
-    let erg1 = Json.deserialize<Request> str1
-
-    
-
-
-
-
-
-    
     try
         let configuration = {
             WebServer.Configuration.defaultConfiguration with

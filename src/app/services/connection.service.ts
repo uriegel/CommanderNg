@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core'
 import { Subject, Observable } from 'rxjs'
-import { Item, Response } from '../model/model'
+import { Item, Response, Get } from '../model/model'
+
+function formatParams(params) {
+    return "?" + Object
+        .keys(params)
+        .map(key => key+"="+encodeURIComponent(params[key]))
+        .join("&")
+}
 
 @Injectable({
     providedIn: 'root'
@@ -23,19 +30,22 @@ export class ConnectionService {
     }
 
     get(path?: string) {
-        return this.post<Response>("get")
+        const get: Get = {
+            path: path
+        }
+        return this.post<Response>("get", formatParams(get))
     }
 
-    private post<T>(method: string, param?: any) {
+    private post<T>(method: string, param = "") {
         return new Promise<T>((res, rej) => {
             const request = new XMLHttpRequest()
-            request.open('POST', `${this.baseUrl}/request/${method}`, true)
+            request.open('POST', `${this.baseUrl}/request/${method}${param}`, true)
             request.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
             request.onload = evt => {
                 var result = <T>JSON.parse(request.responseText)
                 res(result)
             }
-            request.send(JSON.stringify(param))
+            request.send()
         })
     }
 

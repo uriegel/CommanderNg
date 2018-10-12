@@ -8,7 +8,6 @@ var XMLHttpRequest = require('xhr2')
 app.on('ready', () => {
 
     console.log("Starting Commander")
-    //const prc = spawn("dotnet", [ "..\\Commander\\bin\\Debug\\netcoreapp2.1\\Commander.dll" ])
     const prc = spawn("dotnet", [ "../Commander/bin/Debug/netcoreapp2.1/Commander.dll" ])
     prc.stdout.on('data', data => {
         var str = data.toString()

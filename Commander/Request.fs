@@ -1,21 +1,21 @@
 module Request
-open System.IO
 open WebServer
 open Commander
-open Str
 
 let requestOK (headers: WebServer.RequestHeaders) = headers.path.StartsWith "/request"
 
 let run request = 
     async {
-        let method = request.data.header.path |> substring (1 + indexOfStartPos '/' 1 request.data.header.path)
-        match method with
+        let query = UrlQuery.create request.data.header.path
+        match query.method with
         | "get" ->
-            //let test = DirectoryProcessor.getItems @"c:\windows\system32"
-            let test = DirectoryProcessor.getItems @"/"
-            //let test = DirectoryProcessor.getItems (Directory.GetCurrentDirectory ())
-            let str = Json.serialize test
-            do! Response.asyncSendJsonString request str
+            let path = query.Query "path"
+            match path with
+            | Some path ->
+                let test = DirectoryProcessor.getItems path
+                let str = Json.serialize test
+                do! Response.asyncSendJsonString request str
+            | None -> do! Response.asyncSendJsonString request ""
         | "close" -> 
             close ()
             do! Response.asyncSendJson request Seq.empty

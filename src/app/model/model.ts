@@ -9,6 +9,10 @@ export enum ItemType {
     Drive
 }
 
+export interface Get {
+    path?: string
+}
+
 export interface Item {
     itemType: ItemType
     name: string
