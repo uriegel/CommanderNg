@@ -106,6 +106,7 @@ export class ScrollbarComponent implements OnInit {
 
     private itemValues: Item[]
     private seed = 0
-    private dirs = [ "c:\\", "c:\\windows", "c:\\windows\\system32"]
+    //private dirs = [ "c:\\", "c:\\windows", "c:\\windows\\system32"]
+    private dirs = [ "/", "/usr/share", "/opt"]
     private displayObserver: Subscriber<Item[]>
 }

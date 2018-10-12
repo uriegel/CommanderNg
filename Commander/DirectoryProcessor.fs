@@ -17,7 +17,12 @@ let getItems (path: string) =
     let directoryItems = directoryItems di
     let fileItems = fileItems di
 
-    let directoryItems = directoryItems () |> Array.map createDirectoryItem
+    let sortByName di = Str.toLower di.name
+
+    let directoryItems = 
+        directoryItems () 
+        |> Array.map createDirectoryItem
+        |> Array.sortBy sortByName
 
     // Sorting:
     let descending = false
@@ -26,9 +31,9 @@ let getItems (path: string) =
     let takeItem (a, _) = a
     let takeSortItem (_, b) = b
 
-    let mapSortName item  = item, (item.name, item.name)
-    let mapSortExtension item  = item, (item.extension, item.name)
-    let mapSortDateTime item = item, (item.dateTime.ToString "s", item.name)
+    let mapSortName item  = item, (Str.toLower item.name, Str.toLower item.name)
+    let mapSortExtension item  = item, (Str.toLower item.extension, Str.toLower item.name)
+    let mapSortDateTime item = item, (item.dateTime.ToString "s", Str.toLower item.name)
 
     let mapSort = 
         match sortItem with

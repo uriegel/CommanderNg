@@ -10,3 +10,5 @@ let indexOf (str: string) (subStr: string) =
 let indexOfStartPos (chr: char) (start: int) (str: string) = str.IndexOf (chr, start)
 
 let substring startIndex (str: string) = str.Substring startIndex
+
+let toLower (str: string) = str.ToLower ()
