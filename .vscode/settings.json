@@ -7,5 +7,6 @@
         "*.rh": "cpp",
         "vector": "cpp",
         "string": "cpp"
-    }
+    },
+    "FSharp.fsacRuntime": "netcore"
 }
