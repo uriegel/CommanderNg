@@ -16,6 +16,11 @@ let run request =
                 let str = Json.serialize test
                 do! Response.asyncSendJsonString request str
             | None -> do! Response.asyncSendJsonString request ""
+        | "setTheme" -> 
+            let theme = query.Query "theme"                        
+            match theme with
+            | Some theme -> setTheme theme
+            | None -> ()
         | "close" -> 
             close ()
             do! Response.asyncSendJson request Seq.empty

@@ -27,10 +27,9 @@ export interface Response {
     items: Item[]
 }
 
-
-
-
-
+export interface CommanderEvent {
+    theme?: string
+}
 
 export interface DirectoryItem {
     name: string

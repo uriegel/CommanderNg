@@ -32,7 +32,5 @@ export class ThemesService {
         link.href = `assets/themes/${theme}.css`
         link.media = 'all'
         head.appendChild(link)    
-    
-        setTimeout(() => this.setTheme("blue"), 6000)    
     } 
 }

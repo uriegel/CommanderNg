@@ -5,17 +5,15 @@ import * as settings from 'electron-settings'
 import  { spawn } from 'child_process'
 var XMLHttpRequest = require('xhr2')
 
+console.log("Starting Commander")
+const prc = spawn("dotnet", [ "../Commander/bin/Debug/netcoreapp2.1/Commander.dll" ])
+prc.stdout.on('data', data => {
+    var str = data.toString()
+    var lines = str.split(/(\r?\n)/g);
+    console.log(lines.join(""));
+})
+
 app.on('ready', () => {
-
-    console.log("Starting Commander")
-    const prc = spawn("dotnet", [ "../Commander/bin/Debug/netcoreapp2.1/Commander.dll" ])
-    prc.stdout.on('data', data => {
-        var str = data.toString()
-        var lines = str.split(/(\r?\n)/g);
-        console.log(lines.join(""));
-    })
-
-    console.log("Affe")
     const addon = require('addon')
     console.log(addon.hello())
 
@@ -53,13 +51,9 @@ app.on('ready', () => {
 
     mainWindow.on('move', () => saveBounds())
 
-    mainWindow.on('maximize', () => {
-        settings.set("isMaximized", true)
-    })
+    mainWindow.on('maximize', () => settings.set("isMaximized", true))
 
-    mainWindow.on('unmaximize', () => {
-        settings.set("isMaximized", false)
-    })
+    mainWindow.on('unmaximize', () => settings.set("isMaximized", false))
 
     function saveBounds() {
         if (!mainWindow.isMaximized()) {
@@ -74,11 +68,9 @@ app.on('ready', () => {
             submenu: [{
                 label: '&Umbenennen',
                 accelerator: "F2"
-            },
-            {
+            },{
                 type: 'separator'
-            },            
-            {
+            },{
                 label: '&Kopieren',
                 accelerator: "F5"
             },
@@ -154,36 +146,28 @@ app.on('ready', () => {
             {
                 type: 'separator'
             },            
-            // {
-            //     label: '&Blaues Thema',
-            //     type: "radio",
-            //     checked: theme == "blue",
-            //     click: () => {
-            //         mainWindow.webContents.send("setTheme", "blue")
-            //         settings.set("theme", "blue")  
-            //     } 
-            // },
-            // {
-            //     label: '&Hellblaues Thema',
-            //     type: "radio",
-            //     checked: theme == "lightblue",
-            //     click: () => {
-            //         mainWindow.webContents.send("setTheme", "lightblue")
-            //         settings.set("theme", "lightblue")  
-            //     } 
-            // },
-            // {
-            //     label: '&Dunkles Thema',
-            //     type: "radio",
-            //     checked: theme == "dark",
-            //     click: () => {
-            //         mainWindow.webContents.send("setTheme", "dark")
-            //         settings.set("theme", "dark")  
-            //     } 
-            // },
-            // {
-            //     type: 'separator'
-            // },            
+            {
+                label: '&Blaues Thema',
+                type: "radio",
+                //checked: theme == "blue",
+                checked: true,
+                click: () => setTheme("blue")
+            },
+            {
+                label: '&Hellblaues Thema',
+                type: "radio",
+                //checked: theme == "lightblue",
+                click: () => setTheme("lightblue")
+            },
+            {
+                label: '&Dunkles Thema',
+                type: "radio",
+                //checked: theme == "dark",
+                click: () => setTheme("dark")
+            },
+            {
+                type: 'separator'
+            },            
             {
                 label: '&Vollbild',
                 click: () => mainWindow.setFullScreen(!mainWindow.isFullScreen()),
@@ -212,17 +196,28 @@ function close() {
     return post("close")
 }
 
-function post<T>(method: string, param?: any) {
+function formatParams(params:any) {
+    return "?" + Object
+        .keys(params)
+        .map(key => key+"="+encodeURIComponent(params[key]))
+        .join("&")
+}
+
+function setTheme(theme: string) {
+    post("setTheme", formatParams({"theme": theme}))
+    settings.set("theme", theme)  
+}
+
+function post<T>(method: string, param = "") {
     return new Promise<T>((res, rej) => {
         const request = new XMLHttpRequest()
-        request.open('POST', `${baseUrl}/request/${method}`, true)
+        request.open('POST', `${baseUrl}/request/${method}${param}`, true)
         request.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
-        request.onload = (_:any) => {
+        request.onload = (evt:any) => {
             var result = <T>JSON.parse(request.responseText)
             res(result)
         }
-        request.send(JSON.stringify(param))
+        request.send()
     })
 }
-
 const baseUrl = "http://localhost:20000"

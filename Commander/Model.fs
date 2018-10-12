@@ -18,6 +18,11 @@ type Response = {
 
 type CommanderView = Left = 1 | Right = 2
 
+type CommanderEvent = {
+    theme: string option
+    isInitialized: Boolean
+}
+
 type Request = {
     commanderView: CommanderView option
     newPath: string option
