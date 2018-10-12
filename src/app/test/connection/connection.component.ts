@@ -17,8 +17,8 @@ export class ConnectionComponent implements OnInit {
     }
 
     async onStart() {
-      //  let response = await this.connection.get("c:\\windows\\system32")
-        let response = await this.connection.get("/usr/share")
+        let response = await this.connection.get("c:\\windows\\system32")
+      //  let response = await this.connection.get("/usr/share")
         console.log("Response", response)
     }
 }
