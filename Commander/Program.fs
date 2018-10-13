@@ -16,7 +16,6 @@ let main argv =
     LocalStorage.set "Affe" "Huhn" |> ignore
     let huhn = LocalStorage.get "Affe"
 
-
     let test = "/request/close"
         
     let rekwest = {

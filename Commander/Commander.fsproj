@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Api.fs" />
     <Compile Include="Str.fs" />
     <Compile Include="Json.fs" />
     <Compile Include="LocalStorage.fs" />
@@ -19,6 +20,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
     <Reference Include="WebServer">
       <HintPath>WebServer.dll</HintPath>
     </Reference>

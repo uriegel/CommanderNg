@@ -1,8 +1,44 @@
 module Request
 open WebServer
 open Commander
+open System.IO
+open System.Drawing
+open System.Drawing.Imaging
+open System.Runtime.InteropServices
+open System
 
 let requestOK (headers: WebServer.RequestHeaders) = headers.path.StartsWith "/request"
+
+let getIcon (ext: string option) = async {
+    let rec getIconHandle callCount = async {
+        match ext with 
+        | None -> return (Icon.ExtractAssociatedIcon @"C:\Windows\system32\SHELL32.dll").Handle
+        | Some path ->
+            let mutable shinfo = Api.ShFileInfo () 
+            Api.SHGetFileInfo (path, Api.FileAttributeNormal, &shinfo, Marshal.SizeOf shinfo, 
+                Api.SHGetFileInfoConstants.ICON 
+                ||| Api.SHGetFileInfoConstants.SMALLICON 
+                ||| Api.SHGetFileInfoConstants.USEFILEATTRIBUTES 
+                ||| Api.SHGetFileInfoConstants.TYPENAME) |> ignore
+            if shinfo.hIcon <> IntPtr.Zero then
+                return shinfo.hIcon
+            else
+                match Marshal.GetLastWin32Error () with
+                | 997 when callCount < 3 ->
+                    do! Async.Sleep 20
+                    return! getIconHandle <| callCount + 1
+                | _ -> return (Icon.ExtractAssociatedIcon @"C:\Windows\system32\SHELL32.dll").Handle
+    }
+
+    let! iconHandle = getIconHandle 0
+    use icon = Icon.FromHandle iconHandle
+    use bitmap = icon.ToBitmap ()
+    let ms = new MemoryStream()
+    bitmap.Save (ms, ImageFormat.Png)
+    ms.Capacity <- int ms.Length
+    Api.DestroyIcon iconHandle |> ignore
+    return ms.GetBuffer ()
+}
 
 let run request = 
     async {
@@ -21,6 +57,9 @@ let run request =
             match theme with
             | Some theme -> setTheme theme
             | None -> ()
+        | "icon" ->
+            let! bytes = getIcon <| query.Query "path"
+            do! Response.asyncSendFileBytes request "image/png" (Some bytes)
         | "close" -> 
             close ()
             do! Response.asyncSendJson request Seq.empty
