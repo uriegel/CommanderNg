@@ -24,7 +24,12 @@ export class ConnectionService {
     }
 
     constructor() {
-        this.source.addEventListener("commander", (evt: MessageEvent) => this.commanderSubject.next(evt.data as string))
+        this.source.addEventListener("commander", (evt: MessageEvent) => {
+            console.log("Commander event", evt)
+            this.commanderSubject.next(evt.data as string)
+        })
+        
+        this.source.onmessage = msg => console.log("msg", msg)
         this.source.addEventListener("leftView", (evt: MessageEvent) => console.log("onEreignis", evt.data))
         this.source.addEventListener("rightView", (evt: MessageEvent) => console.log("onEreignis", evt.data))
     }

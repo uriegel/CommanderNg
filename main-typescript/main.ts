@@ -17,7 +17,8 @@ function start() {
     bounds.icon = path.join(__dirname, 'Commander/assets/images/kirk.png')
 
     const mainWindow = new BrowserWindow(bounds)
-    mainWindow.loadURL("http://localhost:20000/Commander")
+    //mainWindow.loadURL("http://localhost:20000/Commander")
+    mainWindow.loadURL("https://uriegel.de")
 
     if (settings.get("isMaximized"))
         mainWindow.maximize()
@@ -53,9 +54,7 @@ function start() {
     return theme
 }
 
-console.log("Zeit: ", new Date())
 app.on('ready', () => {
-    console.log("Zeit2: ", new Date())
     console.log("Starting Commander")
     
     const prc = spawn("dotnet", [ "../Commander/bin/Debug/netcoreapp2.1/Commander.dll" ])
@@ -183,25 +182,25 @@ function initializeMenu(mainWindow: BrowserWindow, theme: string) {
                 type: "radio",
                 visible: process.platform == "linux",
                 checked: theme == "ubuntu",
-                click: () => setTheme(theme)
+                click: () => setTheme("ubuntu")
             },
             {
                 label: '&Blaues Thema',
                 type: "radio",
                 checked: theme == "blue",
-                click: () => setTheme(theme)
+                click: () => setTheme("blue")
             },
             {
                 label: '&Hellblaues Thema',
                 type: "radio",
                 checked: theme == "lightblue",
-                click: () => setTheme(theme)
+                click: () => setTheme("lightblue")
             },
             {
                 label: '&Dunkles Thema',
                 type: "radio",
                 checked: theme == "dark",
-                click: () => setTheme(theme)
+                click: () => setTheme("dark")
             },
             {
                 type: 'separator'
@@ -233,6 +232,7 @@ function formatParams(params:any) {
 }
 
 function setTheme(theme: string) {
+    console.log("Theme", theme)
     post("setTheme", formatParams({"theme": theme}))
     settings.set("theme", theme)  
 }

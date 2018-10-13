@@ -23,6 +23,7 @@ export class ThemesService {
     constructor() { }
 
     setTheme(theme: string) {
+        console.log("theme", theme)
         removeThemes()
         const head = document.getElementsByTagName('head')[0]
         let link = document.createElement('link')
