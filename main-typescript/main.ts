@@ -17,9 +17,8 @@ function start() {
     bounds.icon = path.join(__dirname, 'Commander/assets/images/kirk.png')
 
     const mainWindow = new BrowserWindow(bounds)
-    //mainWindow.loadURL("http://localhost:20000/Commander")
-    mainWindow.loadURL("https://uriegel.de")
-
+    mainWindow.loadURL("http://localhost:20000/Commander")
+    
     if (settings.get("isMaximized"))
         mainWindow.maximize()
 
