@@ -5,6 +5,10 @@ import * as settings from 'electron-settings'
 import  { spawn } from 'child_process'
 var XMLHttpRequest = require('xhr2')
 
+function getDefaultTheme() {
+    return process.platform == "linux" ? "ubuntu": "blue"
+}
+
 function start() {
     const bounds = <any>settings.get("window-bounds", { 
         width: 800,
@@ -36,7 +40,7 @@ function start() {
 
     mainWindow.on('unmaximize', () => settings.set("isMaximized", false))
 
-    const theme = <any>settings.get("theme", "blue")
+    const theme = <any>settings.get("theme", getDefaultTheme())
 
     initializeMenu(mainWindow, theme)
 
@@ -55,7 +59,7 @@ app.on('ready', () => {
     console.log("Starting Commander")
     
     const prc = spawn("dotnet", [ "../Commander/bin/Debug/netcoreapp2.1/Commander.dll" ])
-    let theme = "blue"
+    let theme = ""
     prc.stdout.on('data', data => {
         const str = data.toString()
         const lines = str.split(/(\r?\n)/g).map(n => n.trim()).filter(n => !!n)
@@ -175,22 +179,29 @@ function initializeMenu(mainWindow: BrowserWindow, theme: string) {
                 type: 'separator'
             },            
             {
+                label: '&Ubuntu',
+                type: "radio",
+                visible: process.platform == "linux",
+                checked: theme == "ubuntu",
+                click: () => setTheme(theme)
+            },
+            {
                 label: '&Blaues Thema',
                 type: "radio",
                 checked: theme == "blue",
-                click: () => setTheme("blue")
+                click: () => setTheme(theme)
             },
             {
                 label: '&Hellblaues Thema',
                 type: "radio",
                 checked: theme == "lightblue",
-                click: () => setTheme("lightblue")
+                click: () => setTheme(theme)
             },
             {
                 label: '&Dunkles Thema',
                 type: "radio",
                 checked: theme == "dark",
-                click: () => setTheme("dark")
+                click: () => setTheme(theme)
             },
             {
                 type: 'separator'
