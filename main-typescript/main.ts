@@ -5,37 +5,18 @@ import * as settings from 'electron-settings'
 import  { spawn } from 'child_process'
 var XMLHttpRequest = require('xhr2')
 
-console.log("Starting Commander")
-const prc = spawn("dotnet", [ "../Commander/bin/Debug/netcoreapp2.1/Commander.dll" ])
-prc.stdout.on('data', data => {
-    var str = data.toString()
-    var lines = str.split(/(\r?\n)/g);
-    console.log(lines.join(""));
-})
-
-app.on('ready', () => {
-    const addon = require('addon')
-    console.log(addon.hello())
-
-    prc.on('close', code => console.log('process exit code', code))
-
-    //const auguryPath = 'C:\\Users\\urieg\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\elgalmkoelokbchhkhacckoklkejnhcd\\1.19.1_0'
-    //BrowserWindow.addDevToolsExtension(auguryPath)
-
-    const bounds = JSON.parse(settings.get("window-bounds", 
-        JSON.stringify({ 
-            width: 800,
-            height: 600
-        }
-    )) as string)
-
+function start() {
+    const bounds = <any>settings.get("window-bounds", { 
+        width: 800,
+        height: 600
+    })
     bounds.icon = path.join(__dirname, 'Commander/assets/images/kirk.png')
+
     const mainWindow = new BrowserWindow(bounds)
+    mainWindow.loadURL("http://localhost:20000/Commander")
 
     if (settings.get("isMaximized"))
         mainWindow.maximize()
-
-    mainWindow.loadURL("http://localhost:20000/Commander")
 
     let canClose = false
     mainWindow.on('close', async e => {
@@ -55,13 +36,63 @@ app.on('ready', () => {
 
     mainWindow.on('unmaximize', () => settings.set("isMaximized", false))
 
+    const theme = <any>settings.get("theme", "blue")
+
+    initializeMenu(mainWindow, theme)
+
     function saveBounds() {
         if (!mainWindow.isMaximized()) {
             const bounds = mainWindow.getBounds()
-            settings.set("window-bounds", JSON.stringify(bounds))
+            settings.set("window-bounds", <any>bounds)
         }
     }    
+    return theme
+}
 
+console.log("Zeit: ", new Date())
+app.on('ready', () => {
+    console.log("Zeit2: ", new Date())
+    console.log("Starting Commander")
+    
+    const prc = spawn("dotnet", [ "../Commander/bin/Debug/netcoreapp2.1/Commander.dll" ])
+    let theme = "blue"
+    prc.stdout.on('data', data => {
+        const str = data.toString()
+        const lines = str.split(/(\r?\n)/g).map(n => n.trim()).filter(n => !!n)
+        lines.forEach(n => {
+            switch (n) {
+                case "-cmdevt: ready":
+                    theme = start()
+                    break
+                case "-cmdevt: sse":
+                    setTheme(theme)
+                    break
+                default:
+                    console.log(n)
+                    break
+            }
+        })
+    })
+
+    const addon = require('addon')
+    console.log(addon.hello())
+
+    prc.on('close', code => console.log('process exit code', code))
+
+    //const auguryPath = 'C:\\Users\\urieg\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\elgalmkoelokbchhkhacckoklkejnhcd\\1.19.1_0'
+    //BrowserWindow.addDevToolsExtension(auguryPath)
+})
+
+app.on('window-all-closed', () => {
+    if (process.platform != 'darwin') 
+        app.quit()
+})
+
+function close() {
+    return post("close")
+}
+
+function initializeMenu(mainWindow: BrowserWindow, theme: string) {
     const menu = Menu.buildFromTemplate([
         {
             label: '&Datei',
@@ -89,7 +120,6 @@ app.on('ready', () => {
             {
                 label: 'Ordner &anlegen',
                 accelerator: "F7",
-                click: evt =>  mainWindow.webContents.send("createFolder")
             },            
             {
                 label: '&Eigenschaften',
@@ -127,12 +157,10 @@ app.on('ready', () => {
                 label: '&Versteckte Dateien',
                 accelerator: "Ctrl+H",
                 type: "checkbox",
-                click: evt =>  mainWindow.webContents.send("setShowHidden", evt.checked)
             },
             {
                 label: '&Aktualisieren',
                 accelerator: "Ctrl+R",
-                click: evt =>  mainWindow.webContents.send("refresh")
             },            
             {
                 type: 'separator'
@@ -141,7 +169,7 @@ app.on('ready', () => {
                 label: '&Vorschau',
                 accelerator: "F3",
                 type: "checkbox",
-                click: evt =>  mainWindow.webContents.send("viewer", evt.checked)
+//                click: evt =>  mainWindow.webContents.send("viewer", evt.checked)
             },
             {
                 type: 'separator'
@@ -149,20 +177,19 @@ app.on('ready', () => {
             {
                 label: '&Blaues Thema',
                 type: "radio",
-                //checked: theme == "blue",
-                checked: true,
+                checked: theme == "blue",
                 click: () => setTheme("blue")
             },
             {
                 label: '&Hellblaues Thema',
                 type: "radio",
-                //checked: theme == "lightblue",
+                checked: theme == "lightblue",
                 click: () => setTheme("lightblue")
             },
             {
                 label: '&Dunkles Thema',
                 type: "radio",
-                //checked: theme == "dark",
+                checked: theme == "dark",
                 click: () => setTheme("dark")
             },
             {
@@ -185,15 +212,6 @@ app.on('ready', () => {
     ])
 
     Menu.setApplicationMenu(menu)   
-})
-
-app.on('window-all-closed', () => {
-    if (process.platform != 'darwin') 
-        app.quit()
-})
-
-function close() {
-    return post("close")
 }
 
 function formatParams(params:any) {

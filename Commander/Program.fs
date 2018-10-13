@@ -36,6 +36,7 @@ let main argv =
         }
         WebServer.Server.start configuration
         printfn "Commander Server started"
+        printfn "-cmdevt: ready"
         Commander.run () |> ignore
         WebServer.Server.stop ()
         printfn "Commander Server stopped"

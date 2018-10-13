@@ -9,6 +9,7 @@ let mutable private serverSentEvent: SseContext option = None
 
 let private commander = "commander"
 let sseInit context =
+    printfn "-cmdevt: sse"
     printfn "Initializing server sent events"
     serverSentEvent <- Some context
     let commanderEvent = {
