@@ -11,6 +11,10 @@ import { Item } from '../model/model'
 })
 export class TableViewComponent {
 
+    // TODO: THead Binding an ColumnsControl, automatische Initialisierung der Spalten
+    // TODO: TData: row: Binding an ColumnsControl, ngFor, erste Spalte IconView, alle anderen strings, mit Binding von Classes, sind im ColumnsControl
+    // TODO: F#-Commander liefert nur ein Array von aufbereiteten Strings
+
     @Input() private id: string 
     @Input() itemHeight = 0
     @Output() private onSort: EventEmitter<IColumnSortEvent> = new EventEmitter()    
