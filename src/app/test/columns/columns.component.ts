@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ColumnsComponent as Columns, IColumnSortEvent } from '../../columns/columns.component'
+import { Component, OnInit, ViewChild } from '@angular/core'
+import { IColumnSortEvent } from '../../columns/columns.component'
+import { Columns } from 'src/app/model/model';
 
 @Component({
     selector: 'app-test-columns',
@@ -10,10 +11,10 @@ export class TestColumnsComponent implements OnInit {
 
     constructor() { }
 
-    @ViewChild(Columns) columns: Columns
+    columns: Columns
 
     ngOnInit() {
-        this.columns.columns = {
+        this.columns = {
             name: "Columns",
             values: [
                 { name: "Name", isSortable: true },
@@ -30,7 +31,7 @@ export class TestColumnsComponent implements OnInit {
     }
 
     onOther() {
-        this.columns.columns = {
+        this.columns = {
             name: "Columns2",
             values: [
                 { name: "Datei", isSortable: true },

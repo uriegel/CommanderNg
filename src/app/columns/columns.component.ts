@@ -1,5 +1,5 @@
-import { Component, ViewChildren, ViewChild, ElementRef, QueryList, Renderer2, Output, EventEmitter } from '@angular/core'
-import { Column, Columns } from '../model/model'
+import { Component, ViewChildren, ViewChild, ElementRef, QueryList, Renderer2, Output, EventEmitter, Input } from '@angular/core'
+import { Columns } from '../model/model'
 
 export interface IColumnSortEvent {
     index: number,
@@ -24,6 +24,7 @@ export class ColumnsComponent {
     }
     private _ths: QueryList<ElementRef>
 
+    @Input()
     columns: Columns = {
         name: "nil",
         values: []
