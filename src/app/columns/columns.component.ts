@@ -1,14 +1,5 @@
 import { Component, ViewChildren, ViewChild, ElementRef, QueryList, Renderer2, Output, EventEmitter } from '@angular/core'
-
-export interface IColumns {
-    name: string
-    columns: IColumn[]
-}
-
-export interface IColumn {
-    name: string
-    isSortable?: boolean
-}
+import { Column, Columns } from '../model/model'
 
 export interface IColumnSortEvent {
     index: number,
@@ -33,9 +24,9 @@ export class ColumnsComponent {
     }
     private _ths: QueryList<ElementRef>
 
-    columns: IColumns = {
-        name: "Nil",
-        columns: []            
+    columns: Columns = {
+        name: "nil",
+        values: []
     }
 
     readonly height = 16
@@ -58,8 +49,9 @@ export class ColumnsComponent {
     private onClick(evt: Event) {
         if (!this.grippingReady) {
             const th = evt.target as HTMLElement
-            const columnResult = this.columns
-                .columns.map((n, i) => { return { column: n, index: i }})
+            const columnResult = 
+                this.columns.values
+                .map((n, i) => { return { column: n, index: i }})
                 .find(n => n.column.name == th.innerText.trim())
             if (columnResult && columnResult.column.isSortable) {
                 const ascending = th.classList.contains("sortAscending")
@@ -130,7 +122,7 @@ export class ColumnsComponent {
         this.ths.forEach((th, i) => {
             widths[i] = th.nativeElement.style.width
             if (!widths[i])
-                widths[i] = (100 / this.columns.columns.length) + '%'
+                widths[i] = (100 / this.columns.values.length) + '%'
         })
         return widths
     }
@@ -150,10 +142,10 @@ export class ColumnsComponent {
     private getCombinedWidth(column: HTMLElement, nextColumn: HTMLElement) {
         const firstWidth = column.style.width
             ? parseFloat(column.style.width.substr(0, column.style.width.length - 1))
-            : 100 / this.columns.columns.length
+            : 100 / this.columns.values.length
         const secondWidth = nextColumn.style.width
             ? parseFloat(nextColumn.style.width.substr(0, nextColumn.style.width.length - 1))
-            : 100 / this.columns.columns.length
+            : 100 / this.columns.values.length
         return firstWidth + secondWidth
     }
 

@@ -28,6 +28,7 @@ export interface Response {
 }
 
 export interface CommanderEvent {
+    columns?: Columns
     theme?: string
 }
 
@@ -42,3 +43,12 @@ export interface FileItem {
     dateTime: Date
 }
 
+export interface Columns {
+    name: string
+    values: Column[]
+}
+
+export interface Column {
+    name: string
+    isSortable?: boolean
+}

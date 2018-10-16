@@ -16,7 +16,7 @@ export class FileProcessor extends ItemProcessor {
     get columns() {
         return {
             name: "file",
-            columns: [
+            values: [
                 { name: "Name", isSortable: true },
                 { name: "Erw.", isSortable: true },
                 { name: "Datum", isSortable: true },

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { from, Observable } from 'rxjs'
-import { IColumnSortEvent, IColumns } from '../../columns/columns.component'
-import { Item } from '../../model/model'
+import { IColumnSortEvent } from '../../columns/columns.component'
+import { Item, Columns } from '../../model/model'
 
 @Component({
   selector: 'app-test-table-view',
@@ -10,9 +10,9 @@ import { Item } from '../../model/model'
 })
 export class TableViewComponent implements OnInit {
 
-    columns: IColumns = {
+    columns: Columns = {
         name: "Columns",
-        columns: [
+        values: [
             { name: "Name", isSortable: true },
             { name: "Erw.", isSortable: true },
             { name: "Datum", isSortable: true },

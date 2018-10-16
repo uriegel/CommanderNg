@@ -1,8 +1,7 @@
-import { IColumns } from "../columns/columns.component"
 import { Observable } from "rxjs"
 import { CommanderViewComponent } from "../commander-view/commander-view.component"
 import { SettingsService } from "../services/settings.service"
-import { Item } from "../model/model"
+import { Item, Columns } from "../model/model"
 
 export enum ProcessorType {
     root,
@@ -14,7 +13,7 @@ export abstract class ItemProcessor  {
 
     abstract type: ProcessorType
 
-    abstract get columns(): IColumns
+    abstract get columns(): Columns
 
     abstract get(path: string, recentPath?: string): Observable<Item[]>
 

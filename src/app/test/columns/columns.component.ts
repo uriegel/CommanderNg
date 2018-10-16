@@ -6,7 +6,7 @@ import { ColumnsComponent as Columns, IColumnSortEvent } from '../../columns/col
     templateUrl: './columns.component.html',
     styleUrls: ['./columns.component.css']
 })
-export class ColumnsComponent implements OnInit {
+export class TestColumnsComponent implements OnInit {
 
     constructor() { }
 
@@ -15,7 +15,7 @@ export class ColumnsComponent implements OnInit {
     ngOnInit() {
         this.columns.columns = {
             name: "Columns",
-            columns: [
+            values: [
                 { name: "Name", isSortable: true },
                 { name: "Erw.", isSortable: true },
                 { name: "Datum" },
@@ -32,7 +32,7 @@ export class ColumnsComponent implements OnInit {
     onOther() {
         this.columns.columns = {
             name: "Columns2",
-            columns: [
+            values: [
                 { name: "Datei", isSortable: true },
                 { name: "Erweiterung", isSortable: true },
                 { name: "Zeit" },

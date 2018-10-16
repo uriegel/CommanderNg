@@ -1,8 +1,8 @@
 import { Component, ViewChild, ElementRef, Output, EventEmitter, Input } from '@angular/core'
 import { Observable } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
-import { ColumnsComponent as Columns, IColumns, IColumnSortEvent } from '../columns/columns.component'
-import { Item } from '../model/model'
+import { ColumnsComponent as IColumnSortEvent, ColumnsComponent } from '../columns/columns.component'
+import { Item, Columns } from '../model/model'
 
 @Component({
   selector: 'app-table-view',
@@ -21,15 +21,15 @@ export class TableViewComponent {
     @Output() private onCurrentIndexChanged: EventEmitter<Number> = new EventEmitter()    
     @ViewChild("table") table: ElementRef
     @ViewChild(Scrollbar) private scrollbar: Scrollbar
-    @ViewChild(Columns) private columnsControl: Columns
+    @ViewChild(ColumnsComponent) private columnsControl: ColumnsComponent
     @Input() path: string
     @Input() 
     get columns() { return this._columns }
-    set columns(value: IColumns) {
+    set columns(value: Columns) {
         this._columns = value
         this.setColumnsInControl()
     }
-    private _columns: IColumns
+    private _columns: Columns
     @Input() 
     get items() : object { return this._items }
     set items(value: object) {
@@ -153,7 +153,7 @@ export class TableViewComponent {
         if (this.columnsControl && this.columns) {
             const columns = {
                 name: `${this.id}-${this.columns.name}`,
-                columns: this.columns.columns
+                values: this.columns.values
             }
             this.columnsControl.columns = columns
         }

@@ -9,7 +9,7 @@ export class DrivesProcessor extends ItemProcessor {
     get columns() {
         return {
             name: "drives",
-            columns: [
+            values: [
                 { name: "Name" },
                 { name: "Bezeichnung" },
                 { name: "Größe" }

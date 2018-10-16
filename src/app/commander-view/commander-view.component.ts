@@ -4,12 +4,12 @@ import { Observable, Subject, from, fromEvent, zip } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
 import { ItemProcessor } from '../processors/item-processor'
-import { IColumnSortEvent, IColumns } from '../columns/columns.component'
+import { IColumnSortEvent } from '../columns/columns.component'
 import { TableViewComponent } from '../table-view/table-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResultValue } from '../enums/dialog-result-value.enum'
-import { Item, ItemType } from '../model/model'
+import { Item, ItemType, Columns } from '../model/model'
 
 @Component({
     selector: 'app-commander-view',
@@ -50,7 +50,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     @ViewChild("input") private input: ElementRef
     @Output() private gotFocus: EventEmitter<CommanderViewComponent> = new EventEmitter()    
     @Input() id: string
-    @Input() columns: IColumns = { name: "nil", columns: []}
+    @Input() columns: Columns = { name: "", values: []}
     @Input()
     get path() { return this._path }
     set path(value: string) {
