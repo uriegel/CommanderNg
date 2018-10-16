@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, Output, EventEmitter, Input } from '@angular/core'
 import { Observable } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
-import { ColumnsComponent as IColumnSortEvent, ColumnsComponent } from '../columns/columns.component'
+import { ColumnsComponent as IColumnSortEvent } from '../columns/columns.component'
 import { Item, Columns } from '../model/model'
 
 @Component({
@@ -21,15 +21,10 @@ export class TableViewComponent {
     @Output() private onCurrentIndexChanged: EventEmitter<Number> = new EventEmitter()    
     @ViewChild("table") table: ElementRef
     @ViewChild(Scrollbar) private scrollbar: Scrollbar
-    @ViewChild(ColumnsComponent) private columnsControl: ColumnsComponent
     @Input() path: string
-    @Input() 
-    get columns() { return this._columns }
-    set columns(value: Columns) {
-        this._columns = value
-        this.setColumnsInControl()
-    }
-    private _columns: Columns
+    @Input()
+    columns: Columns
+
     @Input() 
     get items() : object { return this._items }
     set items(value: object) {
@@ -148,16 +143,6 @@ export class TableViewComponent {
     private end() { this.setCurrentIndex(this.tableViewItems.length - 1) } 
     
     private pos1() { this.setCurrentIndex(0) } 
-
-    private setColumnsInControl() {
-        if (this.columnsControl && this.columns) {
-            const columns = {
-                name: `${this.id}-${this.columns.name}`,
-                values: this.columns.values
-            }
-            this.columnsControl.columns = columns
-        }
-    }
 
     private tableViewItems: Item[]
 }

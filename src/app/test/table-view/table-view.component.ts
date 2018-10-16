@@ -46,6 +46,18 @@ export class TableViewComponent implements OnInit {
     }
 
     onChange() {
+
+
+        this.columns = {
+            name: "Kolumnen",
+            values: [
+                { name: "Name", isSortable: true },
+                { name: "Ext..", isSortable: true },
+                { name: "Date", isSortable: true },
+                { name: "Size" }
+            ]            
+        }
+
         this.path = "c:"
         this.items = this.readDirectory2()
     }
