@@ -8,7 +8,7 @@ type SortItem =
     | Extension = 1
     | DateTime = 2
 
-let getItems (path: string) = 
+let getItems path = 
 
     let di = DirectoryInfo path
     let directoryItems (di: DirectoryInfo) () = GetSafeItems di.GetDirectories 
@@ -17,7 +17,7 @@ let getItems (path: string) =
     let directoryItems = directoryItems di
     let fileItems = fileItems di
 
-    let sortByName di = Str.toLower di.name
+    let sortByName item = Str.toLower item.name
 
     let directoryItems = 
         directoryItems () 
@@ -41,7 +41,7 @@ let getItems (path: string) =
         | SortItem.Extension -> mapSortExtension
         | SortItem.DateTime -> mapSortDateTime
         | _ -> mapSortName
-    let mapping = (createFileItem >> mapSort)
+    let mapping = createFileItem >> mapSort
     let sorting = 
         match descending with
         | true -> Array.sortByDescending takeSortItem
