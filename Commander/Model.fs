@@ -12,6 +12,16 @@ type Item = {
     size: int64 
 }
 
+type Column = {
+    name: string
+    isSortable: bool
+}
+
+type Columns = {
+    name: string
+    values: Column[]
+}
+
 type Response = {
     items: Item[]
 }

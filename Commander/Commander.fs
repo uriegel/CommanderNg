@@ -1,13 +1,26 @@
 module Commander
 open System.Threading
 open Model
+open Processor
 open WebServer
+
+[<Literal>]
+let COMMANDER = "commander"
+
+[<Literal>]
+let LEFT = "LeftProcessor"
+
+[<Literal>]
+let RIGHT = "RightProcessor"
+
 
 let private evt = new ManualResetEvent false
 
 let mutable private serverSentEvent: SseContext option = None
 
-let private commander = "commander"
+let leftProcessor = create LEFT
+let rightProcessor = create RIGHT
+
 let sseInit context =
     printfn "-cmdevt: sse"
     printfn "Initializing server sent events"
@@ -16,11 +29,12 @@ let sseInit context =
         theme = None
         isInitialized = true
     }
-    context.send commander <| Json.serialize commanderEvent
-        
+    context.send COMMANDER <| Json.serialize commanderEvent
+
 let run () = evt.WaitOne () |> ignore
 
 let close () = 
+    let affe = leftProcessor.get <| Some ""
     printfn "Closing Commander Server"
     
 let shutdown () =
@@ -34,5 +48,5 @@ let setTheme (theme: string) =
             theme = Some theme
             isInitialized = false
         }
-        context.send commander <| Json.serialize commanderEvent
+        context.send COMMANDER <| Json.serialize commanderEvent
     | None -> ()
