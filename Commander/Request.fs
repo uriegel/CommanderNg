@@ -1,11 +1,20 @@
 module Request
-open WebServer
-open Commander
+open System
 open System.IO
 open System.Drawing
 open System.Drawing.Imaging
 open System.Runtime.InteropServices
-open System
+open Commander
+open Model
+open WebServer
+let (| IsCommanderView | _ |) (arg: UrlQueryType) = 
+    match arg.Query "commanderView" with
+    | Some commanderView -> 
+        match LanguagePrimitives.EnumOfValue<int, CommanderView> <| int commanderView with
+        | CommanderView.Left -> Some Commander.leftProcessor
+        | CommanderView.Right -> Some Commander.leftProcessor
+        | _ -> None
+    | _ -> None
 
 let requestOK (headers: WebServer.RequestHeaders) = headers.path.StartsWith "/request"
 
@@ -39,19 +48,22 @@ let getIcon (ext: string option) = async {
     Api.DestroyIcon iconHandle |> ignore
     return ms.GetBuffer ()
 }
-
 let run request = 
     async {
         let query = UrlQuery.create request.data.header.path
         match query.method with
         | "get" ->
             let path = query.Query "path"
-            match path with
-            | Some path ->
-                let test = DirectoryProcessor.getItems path
-                let str = Json.serialize test
+            let processor = 
+                match query with
+                | IsCommanderView processor -> Some processor
+                | _ -> None
+            match processor with
+            | Some processor -> 
+                let response = processor.get path
+                let str = Json.serialize response
                 do! Response.asyncSendJsonString request str
-            | None -> do! Response.asyncSendJsonString request ""
+            | None -> do! Response.asyncSendJsonString request ""        
         | "setTheme" -> 
             let theme = query.Query "theme"                        
             match theme with

@@ -34,11 +34,10 @@ export class ConnectionService {
     }
 
     get(commanderView: CommanderView, path?: string) {
-        path = path || ""
-        const get: Get = {
+        const get: Get = path ? {
             path: path,
             commanderView: commanderView
-        }
+        } : { commanderView: commanderView }
         return this.post<Response>("get", formatParams(get))
     }
 

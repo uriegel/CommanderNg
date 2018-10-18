@@ -3,10 +3,10 @@ open Model
 open DirectoryProcessor
 
 [<Literal>]
-let ROOT = "Root"
+let ROOT = "root"
 
 [<Literal>]
-let DRIVES = "Drives"
+let DRIVES = "drives"
 
 [<Literal>]
 let FILE_SYSTEM = "FileSystem"
@@ -26,7 +26,7 @@ let create (id: string) =
     let (| TypeChanged | _ |) arg = 
         match lastColumns with 
         | Some value -> if arg = value then None else Some ()
-        | None -> None
+        | None -> Some ()
 
     let getColumns columnsType =
         match columnsType with
@@ -57,13 +57,14 @@ let create (id: string) =
                 }
         | _ -> None
 
-    let getRootItems () = { items = [||] }
-    let getDriveItems () = { items = [||] }
+    let getRootItems () = { items = [||]; columns = getColumns Type.Root }
+    let getDriveItems () = { items = [||]; columns = getColumns Type.Drives }
 
     let getFileItems path = 
         let items = getItems path
         {
             items = items
+            columns = getColumns Type.FileSystem
         }
 
     let get path = 

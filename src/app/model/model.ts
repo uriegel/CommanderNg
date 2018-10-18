@@ -16,7 +16,7 @@ export enum CommanderView {
 
 export interface Get {
     commanderView: number   
-    path: string
+    path?: string
 }
 
 export interface Item {
@@ -30,6 +30,7 @@ export interface Item {
 }
 
 export interface Response {
+    columns?: Columns
     items: Item[]
 }
 

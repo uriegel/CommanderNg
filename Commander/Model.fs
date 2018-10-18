@@ -23,6 +23,7 @@ type Columns = {
 }
 
 type Response = {
+    columns: Columns option  
     items: Item[]
 }
 

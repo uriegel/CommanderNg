@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
 import { IColumnSortEvent } from '../../columns/columns.component'
-import { Columns } from 'src/app/model/model';
+import { Columns, CommanderView } from 'src/app/model/model';
+import { ConnectionService } from 'src/app/services/connection.service';
 
 @Component({
     selector: 'app-test-columns',
@@ -9,38 +10,30 @@ import { Columns } from 'src/app/model/model';
 })
 export class TestColumnsComponent implements OnInit {
 
-    constructor() { }
+    constructor(private connection: ConnectionService) { }
 
     columns: Columns
 
-    ngOnInit() {
-        this.columns = {
-            name: "Columns",
-            values: [
-                { name: "Name", isSortable: true },
-                { name: "Erw.", isSortable: true },
-                { name: "Datum" },
-                { name: "Größe", isSortable: true },
-                { name: "Version", isSortable: true },
-            ]            
-        }
+    async ngOnInit() {
+
+        const response = await this.connection.get(CommanderView.Left)
+        if (response.columns) 
+            this.columns = response.columns
     }
 
     onSort(sortEvent: IColumnSortEvent) {
         console.log(`Sorting: ${sortEvent.index} ascending: ${sortEvent.ascending}`)
     }
 
-    onOther() {
-        this.columns = {
-            name: "Columns2",
-            values: [
-                { name: "Datei", isSortable: true },
-                { name: "Erweiterung", isSortable: true },
-                { name: "Zeit" },
-                { name: "Bytes", isSortable: true },
-                { name: "Version" },
-                { name: "Leerspalte" }
-            ]            
-        }
+    async onFiles() {
+        const response = await this.connection.get(CommanderView.Left, "c:\\windows\\system32")
+        if (response.columns) 
+            this.columns = response.columns
+    }
+
+    async onDrives() {
+        const response = await this.connection.get(CommanderView.Left, "drives")
+        if (response.columns) 
+            this.columns = response.columns
     }
 }

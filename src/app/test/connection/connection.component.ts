@@ -25,7 +25,8 @@ export class ConnectionComponent implements OnInit {
             console.log("Response", response)
         }
         else {
-            const response = await this.connection.get(CommanderView.Left,  "c:\\windows\\system32")
+            //const response = await this.connection.get(CommanderView.Left,  "c:\\windows\\system32")
+            const response = await this.connection.get(CommanderView.Left,  "c:\\")
             console.log("Response", response)
         }
     }
