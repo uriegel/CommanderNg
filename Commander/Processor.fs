@@ -3,13 +3,13 @@ open Model
 open DirectoryProcessor
 
 [<Literal>]
-let ROOT = "root"
+let ROOT = "Root"
 
 [<Literal>]
-let DRIVES = "drives"
+let DRIVES = "Drives"
 
 [<Literal>]
-let FILE_SYSTEM = "fileSystem"
+let FILE_SYSTEM = "FileSystem"
 
 type ProcessorObject = {
     get: (string option)->Response
@@ -19,7 +19,6 @@ type Type =
     Root = 0
     | Drives = 1
     | FileSystem = 2
-
 let create (id: string) = 
 
     let mutable lastColumns: Type option = None
@@ -35,16 +34,26 @@ let create (id: string) =
             lastColumns <- Some columnsType
             match columnsType with
             | Type.Root -> Some {
-                    name = ROOT
-                    values = [||]
+                    name = id + "-" + ROOT
+                    values = [| { name = "Name"; isSortable = false } |]
                 }
             | Type.Drives -> Some {
-                    name = DRIVES
-                    values = [||]
+                    name = id + "-" + DRIVES
+                    values = [| 
+                        { name = "Name"; isSortable = false }
+                        { name = "Bezeichnung"; isSortable = false }
+                        { name = "Größe"; isSortable = false }
+                    |]
                 }
             | _ -> Some {
-                    name = FILE_SYSTEM
-                    values = [||]
+                    name = id + "-" + FILE_SYSTEM
+                    values = [|
+                        { name = "Name"; isSortable = true }
+                        { name = "Erw."; isSortable = true }
+                        { name = "Datum"; isSortable = true }
+                        { name = "Größe"; isSortable = true }
+                        { name = "Version"; isSortable = true }
+                    |]
                 }
         | _ -> None
 

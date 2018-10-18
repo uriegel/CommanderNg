@@ -34,7 +34,6 @@ let sseInit context =
 let run () = evt.WaitOne () |> ignore
 
 let close () = 
-    let affe = leftProcessor.get <| Some ""
     printfn "Closing Commander Server"
     
 let shutdown () =

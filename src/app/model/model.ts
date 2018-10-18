@@ -9,8 +9,14 @@ export enum ItemType {
     Drive
 }
 
+export enum CommanderView {
+    Left,
+    Right
+}
+
 export interface Get {
-    path?: string
+    commanderView: number   
+    path: string
 }
 
 export interface Item {

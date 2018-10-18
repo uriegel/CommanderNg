@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { ConnectionService } from '../../services/connection.service'
+import { CommanderView } from 'src/app/model/model';
 
 @Component({
     selector: 'app-test-connection',
@@ -17,8 +18,17 @@ export class ConnectionComponent implements OnInit {
     }
 
     async onStart() {
-        let response = await this.connection.get("c:\\windows\\system32")
-      //  let response = await this.connection.get("/usr/share")
-        console.log("Response", response)
+        if (this.first) {
+            this.first = false
+            const response = await this.connection.get(CommanderView.Left)
+        //  let response = await this.connection.get("/usr/share")
+            console.log("Response", response)
+        }
+        else {
+            const response = await this.connection.get(CommanderView.Left,  "c:\\windows\\system32")
+            console.log("Response", response)
+        }
     }
+
+    private first = true
 }

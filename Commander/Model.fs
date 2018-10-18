@@ -26,7 +26,7 @@ type Response = {
     items: Item[]
 }
 
-type CommanderView = Left = 1 | Right = 2
+type CommanderView = Left = 0 | Right = 1
 
 type CommanderEvent = {
     theme: string option

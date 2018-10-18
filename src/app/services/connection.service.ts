@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Subject, Observable } from 'rxjs'
-import { Item, Response, Get } from '../model/model'
+import { Item, Response, Get, CommanderView } from '../model/model'
 
 function formatParams(params) {
     return "?" + Object
@@ -33,9 +33,11 @@ export class ConnectionService {
         this.source.addEventListener("rightView", (evt: MessageEvent) => console.log("onEreignis", evt.data))
     }
 
-    get(path?: string) {
+    get(commanderView: CommanderView, path?: string) {
+        path = path || ""
         const get: Get = {
-            path: path
+            path: path,
+            commanderView: commanderView
         }
         return this.post<Response>("get", formatParams(get))
     }
