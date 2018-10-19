@@ -22,6 +22,8 @@ export class TableViewComponent {
     @ViewChild("table") table: ElementRef
     @ViewChild(Scrollbar) private scrollbar: Scrollbar
     @Input() path: string
+    
+    
     @Input()
     columns: Columns
 

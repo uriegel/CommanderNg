@@ -1,5 +1,5 @@
 <table id="table">
-    <thead app-columns [columns]="(columns|async)?.columns" (onSort)="onSort($event)"></thead>
+    <thead app-columns [columns]="(response|async)?.columns" (onSort)="onSort($event)"></thead>
     <tbody>
         <tr>
             <td>Test</td>

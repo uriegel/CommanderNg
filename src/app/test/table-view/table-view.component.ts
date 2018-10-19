@@ -1,84 +1,33 @@
 import { Component, OnInit } from '@angular/core'
 import { from, Observable } from 'rxjs'
 import { IColumnSortEvent } from '../../columns/columns.component'
-import { Item, Columns } from '../../model/model'
+import { Item, Response, CommanderView } from '../../model/model'
+import { ConnectionService } from 'src/app/services/connection.service'
 
 @Component({
-  selector: 'app-test-table-view',
-  templateUrl: './table-view.component.html',
-  styleUrls: ['./table-view.component.css']
+    selector: 'app-test-table-view',
+    templateUrl: './table-view.component.html',
+    styleUrls: ['./table-view.component.css']
 })
 export class TableViewComponent implements OnInit {
 
-    columns: Columns = {
-        name: "Columns",
-        values: [
-            { name: "Name", isSortable: true },
-            { name: "Erw.", isSortable: true },
-            { name: "Datum", isSortable: true },
-            { name: "Größe" },
-            { name: "Version", isSortable: true }
-        ]            
-    }
+    response: Observable<Response>
+
     path = "c:\\windows\\system32"
     items: Observable<Item[]> 
 
-    ngOnInit() {
-        this.items = this.readDirectory1()
+    constructor(private connection: ConnectionService) {
+        this.response = from(this.connection.get(CommanderView.Left))
     }
 
-    private readDirectory1 = this.getReadDirectory("c:\\windows\\system32")
-    private readDirectory2 = this.getReadDirectory("c:\\")
+    ngOnInit() { }
 
     onNeu() {
-        this.path = "c:\\windows\\system32"
-        this.items = this.readDirectory1()
-        const subscription = this.items.subscribe({ 
-            next: value => {
-                // const index = value.findIndex(n=> (n as FileItem).name.toLowerCase() == "recovery")
-                // if (index != -1) {
-                //     value[0].isCurrent = false 
-                //     value[index].isCurrent = true
-                // }
-                // subscription.unsubscribe()
-            }
-        })
+        this.response = from(this.connection.get(CommanderView.Left, "c:\\windows\\system32"))
     }
 
     onChange() {
-
-
-        this.columns = {
-            name: "Kolumnen",
-            values: [
-                { name: "Name", isSortable: true },
-                { name: "Ext..", isSortable: true },
-                { name: "Date", isSortable: true },
-                { name: "Size" }
-            ]            
-        }
-
-        this.path = "c:"
-        this.items = this.readDirectory2()
-    }
-
-    private getReadDirectory(path: string) {
-        return null
-        // let fileItems: FileItem[]
-
-        // const readDirectoryPromise = (): Promise<FileItem[]> => {
-        //     return new Promise((res, rej) => {
-        //         if (fileItems) 
-        //             res(fileItems)
-        //         else
-        //             this.addon.readDirectory(path, (err, result) => {
-        //                 res(result)
-        //             })
-        //     })
-        // }
-
-        // const readDirectory = () => from(readDirectoryPromise())
-        // return readDirectory
+        this.response = from(this.connection.get(CommanderView.Left, "c:\\windows"))
     }
 
     onSort(sortEvent: IColumnSortEvent) {

@@ -20,11 +20,7 @@ export interface Get {
 }
 
 export interface Item {
-    itemType: ItemType
-    name: string
-    extension?: string
-    dateTime?: Date
-    size: number
+    items: string[]
     isSelected?: boolean
     isCurrent?: boolean
 }

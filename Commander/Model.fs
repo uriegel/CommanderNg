@@ -22,9 +22,13 @@ type Columns = {
     values: Column[]
 }
 
+type ResponseItem = {
+    item: string[]
+}
+
 type Response = {
     columns: Columns option  
-    items: Item[]
+    items: ResponseItem[]
 }
 
 type CommanderView = Left = 0 | Right = 1

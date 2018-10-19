@@ -96,102 +96,102 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         const items = this.tableView.getAllItems().filter(n => n.isSelected)
         if (items.length > 0)
             return items;
-        if (this.currentItem.itemType != ItemType.Parent)
-            return [ this.currentItem ]
-        else
-            return []
+//        if (this.currentItem.itemType != ItemType.Parent)
+//            return [ this.currentItem ]
+  //      else
+    //        return []
     }
 
     createFolder(dialog: DialogComponent) {
-        if (this.itemProcessor.canCreateFolder()) {
-            dialog.buttons = Buttons.OkCancel
-            dialog.text = "Möchtest Du einen neuen Ordner anlegen?"
-            dialog.withInput = true
-            dialog.inputText = this.currentItem.name != ".." ? this.currentItem.name : ""
-            const subscription = dialog.show().subscribe(result => {
-                subscription.unsubscribe()
-                if (result.result == DialogResultValue.Ok) {
-                    const subscription = this.itemProcessor.createFolder(`${this.path}\\${result.text}`)
-                        .subscribe(obs => {
-                            subscription.unsubscribe()
-                            this.refresh()
-                            this.focus()
-                        }, err => {
-                            subscription.unsubscribe()
-                            switch (err) {
-                                case 183:
-                                    dialog.text = "Der Ordner existiert bereits!"
-                                    break
-                                case 123:
-                                    dialog.text = "Die Syntax für den Dateinamen, Verzeichnisnamen oder die Datenträgerbezeichnung ist falsch!"
-                                    break
-                                case 1223:
-                                    this.focus()    
-                                    return
-                                default:
-                                    dialog.text = `Fehler: ${err}`
-                                    break
-                            }
+        // if (this.itemProcessor.canCreateFolder()) {
+        //     dialog.buttons = Buttons.OkCancel
+        //     dialog.text = "Möchtest Du einen neuen Ordner anlegen?"
+        //     dialog.withInput = true
+        //     dialog.inputText = this.currentItem.name != ".." ? this.currentItem.name : ""
+        //     const subscription = dialog.show().subscribe(result => {
+        //         subscription.unsubscribe()
+        //         if (result.result == DialogResultValue.Ok) {
+        //             const subscription = this.itemProcessor.createFolder(`${this.path}\\${result.text}`)
+        //                 .subscribe(obs => {
+        //                     subscription.unsubscribe()
+        //                     this.refresh()
+        //                     this.focus()
+        //                 }, err => {
+        //                     subscription.unsubscribe()
+        //                     switch (err) {
+        //                         case 183:
+        //                             dialog.text = "Der Ordner existiert bereits!"
+        //                             break
+        //                         case 123:
+        //                             dialog.text = "Die Syntax für den Dateinamen, Verzeichnisnamen oder die Datenträgerbezeichnung ist falsch!"
+        //                             break
+        //                         case 1223:
+        //                             this.focus()    
+        //                             return
+        //                         default:
+        //                             dialog.text = `Fehler: ${err}`
+        //                             break
+        //                     }
                             
-                            const subscriptionDialog = dialog.show().subscribe(result => {
-                                subscriptionDialog.unsubscribe()
-                                this.focus()
-                            })
-                        })
-                }
-                else
-                    this.focus()
-            })
-        }
-        else {
-            dialog.text = "Du kannst hier keinen Ordner anlegen!"
-            const subscription = dialog.show().subscribe(() => {
-                subscription.unsubscribe()
-                this.focus()
-            })
-        }
+        //                     const subscriptionDialog = dialog.show().subscribe(result => {
+        //                         subscriptionDialog.unsubscribe()
+        //                         this.focus()
+        //                     })
+        //                 })
+        //         }
+        //         else
+        //             this.focus()
+        //     })
+        // }
+        // else {
+        //     dialog.text = "Du kannst hier keinen Ordner anlegen!"
+        //     const subscription = dialog.show().subscribe(() => {
+        //         subscription.unsubscribe()
+        //         this.focus()
+        //     })
+        // }
     }
 
     delete(dialog: DialogComponent) {
-        if (this.itemProcessor.canDelete()) {
-            var items = this.getSelectedItems()
-            if (items.length == 0)
-                return
-            dialog.buttons = Buttons.OkCancel
-            dialog.text = "Möchtest Du die selektierten Elemente löschen?"
-            const subscription = dialog.show().subscribe(result => {
-                subscription.unsubscribe()
-                if (result.result == DialogResultValue.Ok) {
-                    const subscription = this.itemProcessor.deleteItems(items.map(n => `${this.path}\\${n.name}`))
-                        .subscribe(obs => {
-                            subscription.unsubscribe()
-                            this.refresh()
-                            this.focus()
-                        }, err => {
-                            subscription.unsubscribe()
-                            switch (err) {
-                                default:
-                                    dialog.text = `Fehler: ${err}`
-                                    break
-                            }
+        // if (this.itemProcessor.canDelete()) {
+        //     var items = this.getSelectedItems()
+        //     if (items.length == 0)
+        //         return
+        //     dialog.buttons = Buttons.OkCancel
+        //     dialog.text = "Möchtest Du die selektierten Elemente löschen?"
+        //     const subscription = dialog.show().subscribe(result => {
+        //         subscription.unsubscribe()
+        //         if (result.result == DialogResultValue.Ok) {
+        //             const subscription = this.itemProcessor.deleteItems(items.map(n => `${this.path}\\${n.name}`))
+        //                 .subscribe(obs => {
+        //                     subscription.unsubscribe()
+        //                     this.refresh()
+        //                     this.focus()
+        //                 }, err => {
+        //                     subscription.unsubscribe()
+        //                     switch (err) {
+        //                         default:
+        //                             dialog.text = `Fehler: ${err}`
+        //                             break
+        //                     }
                         
-                            const subscriptionDialog = dialog.show().subscribe(result => {
-                                subscriptionDialog.unsubscribe()
-                                this.focus()
-                            })
-                        })
-                }
-                else
-                    this.focus()
-            })
-        }
-        else {
-            dialog.text = "Du kannst hier keine Elemente löschen!"
-            const subscription = dialog.show().subscribe(() => {
-                subscription.unsubscribe()
-                this.focus()
-            })
-        }
+        //                     const subscriptionDialog = dialog.show().subscribe(result => {
+        //                         subscriptionDialog.unsubscribe()
+        //                         this.focus()
+        //                     })
+        //                 })
+        //         }
+        //         else
+        //             this.focus()
+        //     })
+        // }
+        // else {
+        //     dialog.text = "Du kannst hier keine Elemente löschen!"
+        //     const subscription = dialog.show().subscribe(() => {
+        //         subscription.unsubscribe()
+        //         this.focus()
+        //     })
+        // }
     }
 
     onFocus() { this.focus() }
@@ -254,13 +254,13 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     }
 
     private isItemSelectable(item: Item) {
-        switch (item.itemType) {
-            case 0:
-            case 1:
+        // switch (item.itemType) {
+        //     case 0:
+        //     case 1:
                 return true
-            default:
-                return false
-        }
+            // default:
+            //     return false
+        //}
     }
 
     onClick(evt: MouseEvent) { 
@@ -329,36 +329,36 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         }
 
         const restictedValue = zip(inputChars, items, (char, itemArray) => {
-            const result = {
-                char: char.key,
-                items: itemArray.filter(n => n.name.toLowerCase().startsWith(this.restrictValue + char.key))
-            }
-            if (result.items.length > 0 && !result.items.find(n => n.isCurrent)) {
-                itemArray.forEach(n => n.isCurrent = false)
-                result.items[0].isCurrent = true
-            }
-            return result
+            // const result = {
+            //     char: char.key,
+            //     items: itemArray.filter(n => n.name.toLowerCase().startsWith(this.restrictValue + char.key))
+            // }
+            // if (result.items.length > 0 && !result.items.find(n => n.isCurrent)) {
+            //     itemArray.forEach(n => n.isCurrent = false)
+            //     result.items[0].isCurrent = true
+            // }
+            //return result
         })
         restictedValue.subscribe(n => {
-            if (n.items.length > 0) {
-                this.restrictValue += n.char
-                if (!originalItems)
-                    originalItems = this.items
-                this.items = from(new Promise<Item[]>(res => res(n.items)))
-            }
+            // if (n.items.length > 0) {
+            //     this.restrictValue += n.char
+            //     if (!originalItems)
+            //         originalItems = this.items
+            //     this.items = from(new Promise<Item[]>(res => res(n.items)))
+            // }
         })
 
         const back = zip(backSpaces, backItems, (char, itemArray) => {
-            if (this.restrictValue.length > 0) {
-                this.restrictValue = this.restrictValue.substr(0, this.restrictValue.length - 1)
-                return itemArray.filter(n => n.name.toLowerCase().startsWith(this.restrictValue))
-            }
+            // if (this.restrictValue.length > 0) {
+            //     this.restrictValue = this.restrictValue.substr(0, this.restrictValue.length - 1)
+            //     return itemArray.filter(n => n.name.toLowerCase().startsWith(this.restrictValue))
+            // }
         })
         back.subscribe(n => {
-            if (this.restrictValue.length == 0)
-                undoRestriction()
-            else if (n.length > 0) 
-                this.setItems(from(new Promise<Item[]>(res => res(n))))
+            // if (this.restrictValue.length == 0)
+            //     undoRestriction()
+            // else if (n.length > 0) 
+            //     this.setItems(from(new Promise<Item[]>(res => res(n))))
         })
 
         this.restrictingOffs.subscribe(() => undoRestriction())

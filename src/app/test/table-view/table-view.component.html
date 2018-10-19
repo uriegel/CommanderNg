@@ -1,4 +1,4 @@
-<app-table-view class="tableContainer" [id]="'table'" [columns]="columns" [itemHeight]=18 
+<app-table-view class="tableContainer" [id]="'table'" [columns]="(response|async)?.columns" [itemHeight]=18 
     [path]="path" [items]="items" (onSort)="onSort($event)"></app-table-view>
 <button (click)="onNeu()">Neu</button>
 <button (click)="onChange()">Auswechseln</button>

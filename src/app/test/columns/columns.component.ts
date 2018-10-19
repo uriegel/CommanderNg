@@ -12,10 +12,10 @@ import { Observable, from } from 'rxjs';
 export class TestColumnsComponent implements OnInit {
 
     constructor(private connection: ConnectionService) {
-        this.columns = from(this.connection.get(CommanderView.Left))
+        this.response = from(this.connection.get(CommanderView.Left))
     }
 
-    columns: Observable<Response>
+    response: Observable<Response>
 
     ngOnInit() { }
 
@@ -24,6 +24,6 @@ export class TestColumnsComponent implements OnInit {
     }
 
     onChange(path: string) {
-        this.columns = from(this.connection.get(CommanderView.Left, path))
+        this.response = from(this.connection.get(CommanderView.Left, path))
     }
 }
