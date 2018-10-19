@@ -25,7 +25,12 @@ export class ColumnsComponent {
     private _ths: QueryList<ElementRef>
 
     @Input()
-    columns: Columns = {
+    get columns() { return this._columns }
+    set columns(value) {
+        if (value)
+            this._columns = value
+    }
+    private _columns: Columns = {
         name: "nil",
         values: []
     }

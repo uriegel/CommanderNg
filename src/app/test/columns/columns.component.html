@@ -1,5 +1,5 @@
 <table id="table">
-    <thead app-columns [columns]="columns" (onSort)="onSort($event)"></thead>
+    <thead app-columns [columns]="(columns|async)?.columns" (onSort)="onSort($event)"></thead>
     <tbody>
         <tr>
             <td>Test</td>
@@ -16,6 +16,6 @@
     </tbody>
 </table>
 <div>
-    <button (click)="onDrives()">Drives</button>
-    <button (click)="onFiles()">Files</button>
+    <button (click)="onChange('drives')">Drives</button>
+    <button (click)="onChange('c:\\windows\\system32')">Files</button>
 </div>
