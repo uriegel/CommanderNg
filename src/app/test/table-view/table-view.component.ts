@@ -13,9 +13,6 @@ export class TableViewComponent implements OnInit {
 
     response: Observable<Response>
 
-    path = "c:\\windows\\system32"
-    items: Observable<Item[]> 
-
     constructor(private connection: ConnectionService) {
         this.response = from(this.connection.get(CommanderView.Left))
     }

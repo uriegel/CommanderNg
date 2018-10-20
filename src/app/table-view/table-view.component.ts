@@ -2,7 +2,7 @@ import { Component, ViewChild, ElementRef, Output, EventEmitter, Input } from '@
 import { Observable } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as IColumnSortEvent } from '../columns/columns.component'
-import { Item, Columns } from '../model/model'
+import { Response, Item, Columns } from '../model/model'
 
 @Component({
   selector: 'app-table-view',
@@ -28,21 +28,8 @@ export class TableViewComponent {
     columns: Columns
 
     @Input() 
-    get items() : object { return this._items }
-    set items(value: object) {
-        this._items = value as Observable<Item[]>
-        if (this._items) {
-            const subscription = this._items.subscribe({ 
-                next: value => {
-                    this.tableViewItems = value
-                    subscription.unsubscribe()
-                }
-            })
-            setTimeout(() => this.onCurrentIndexChanged.emit(0), 200)
-        }
-    }
-    private _items: Observable<Item[]>
-
+    items: Item[]
+    
     focus() { this.table.nativeElement.focus() }
 
     getCurrentItemIndex() { return this.getCurrentIndex() }
@@ -50,16 +37,16 @@ export class TableViewComponent {
     getCurrentItem() {
         const index = this.getCurrentIndex()
         if (index != -1)
-            return this.tableViewItems[index]
+            return this.items[index]
         else
             return null
     }
 
-    getAllItems() { return this.tableViewItems }
+    getAllItems() { return this.items }
 
     downOne() {
         const index = this.getCurrentIndex(0)
-        const nextIndex = index < this.tableViewItems.length - 1 ? index + 1 : index
+        const nextIndex = index < this.items.length - 1 ? index + 1 : index
         this.setCurrentIndex(nextIndex, index)
     }
 
@@ -108,7 +95,7 @@ export class TableViewComponent {
     }
 
     private getCurrentIndex(defaultValue?: number) { 
-        const index = this.tableViewItems.findIndex(n => n.isCurrent) 
+        const index = this.items.findIndex(n => n.isCurrent) 
         if (index != -1 || defaultValue == null)
             return index
         else
@@ -118,8 +105,8 @@ export class TableViewComponent {
     private setCurrentIndex(index: number, lastIndex?: number) {
         if (lastIndex == null) 
             lastIndex = this.getCurrentIndex(0)
-        this.tableViewItems[lastIndex].isCurrent = false
-        this.tableViewItems[index].isCurrent = true
+        this.items[lastIndex].isCurrent = false
+        this.items[index].isCurrent = true
         this.scrollbar.scrollIntoView(index)
         this.onCurrentIndexChanged.emit(index)
     }
@@ -132,7 +119,7 @@ export class TableViewComponent {
 
     private pageDown() {
         const index = this.getCurrentIndex(0)
-        const nextIndex = index < this.tableViewItems.length - this.scrollbar.itemsCapacity + 1 ? index + this.scrollbar.itemsCapacity - 1: this.tableViewItems.length - 1
+        const nextIndex = index < this.items.length - this.scrollbar.itemsCapacity + 1 ? index + this.scrollbar.itemsCapacity - 1: this.items.length - 1
         this.setCurrentIndex(nextIndex, index)
     }
 
@@ -142,9 +129,7 @@ export class TableViewComponent {
         this.setCurrentIndex(nextIndex, index)
     }
 
-    private end() { this.setCurrentIndex(this.tableViewItems.length - 1) } 
+    private end() { this.setCurrentIndex(this.items.length - 1) } 
     
     private pos1() { this.setCurrentIndex(0) } 
-
-    private tableViewItems: Item[]
 }

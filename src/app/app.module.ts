@@ -38,7 +38,7 @@ import { DialogComponent as TestDialogComponent } from './test/dialog/dialog.com
 import { DialogComponent } from './dialog/dialog.component';
 import { SelectAllDirective } from './directives/select-all.directive';
 import { DefaultButtonDirective } from './directives/default-button.directive';
-import { ConnectionComponent } from './test/connection/connection.component'
+import { ConnectionComponent } from './test/connection/connection.component';
 
 @NgModule({
     declarations: [

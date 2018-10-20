@@ -23,7 +23,7 @@ type Columns = {
 }
 
 type ResponseItem = {
-    item: string[]
+    items: string[]
 }
 
 type Response = {

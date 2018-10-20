@@ -61,7 +61,7 @@ let create (id: string) =
     let getDriveItems () = { items = [||]; columns = getColumns Type.Drives }
 
     let getResponseItem (item: Item) =
-        { item = [| item.name; item.extension; item.dateTime.ToString "r"; string item.size |] }
+        { items = [| item.name; item.extension; item.dateTime.ToString "r"; string item.size |] }
 
     let getFileItems path = 
         let items = getItems path
