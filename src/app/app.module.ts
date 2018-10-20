@@ -10,12 +10,10 @@ import { ColumnsComponent } from './columns/columns.component'
 import { IconViewComponent } from './test/icon-view/icon-view.component'
 import { TableViewComponent as TestTableViewComponent } from './test/table-view/table-view.component'
 import { TableViewComponent } from './table-view/table-view.component'
-import { FileItemComponent } from './datatemplates/file-item/file-item.component'
-import { DirectoryItemComponent } from './datatemplates/directory-item/directory-item.component'
+import { TableViewItemComponent } from './datatemplates/table-view-item/table-view-item.component'
 import { CommanderViewComponent } from './commander-view/commander-view.component'
 import { CommanderViewComponent as TestCommanderViewComponent } from './test/commander-view/commander-view.component'
 import { ItemProcesserFactoryService } from './processors/item-processer-factory.service'
-import { DriveItemComponent } from './datatemplates/drive-item/drive-item.component'
 import { FileSizePipe } from './pipes/file-size.pipe'
 import { DatePipe } from './pipes/date.pipe'
 import { FileExtensionPipe } from './pipes/file-extension.pipe'
@@ -26,7 +24,6 @@ import { DriveComponent } from './svgs/drive/drive.component'
 import { NetworkdriveComponent } from './svgs/networkdrive/networkdrive.component'
 import { CdromComponent } from './svgs/cdrom/cdrom.component'
 import { UsbComponent } from './svgs/usb/usb.component'
-import { ParentItemComponent } from './datatemplates/parent-item/parent-item.component'
 import { VirtualListPipe } from './pipes/virtual-list.pipe'
 import { ClipHeightPipe } from './pipes/clip-height.pipe'
 import { RestricterComponent as TestRestrictor} from './test/restricter/restricter.component'
@@ -50,11 +47,9 @@ import { ConnectionComponent } from './test/connection/connection.component';
         IconViewComponent,
         TestTableViewComponent,
         TableViewComponent,
-        FileItemComponent,
-        DirectoryItemComponent,
+        TableViewItemComponent,
         CommanderViewComponent,
         TestCommanderViewComponent,
-        DriveItemComponent,
         FileSizePipe,
         DatePipe,
         FileExtensionPipe,
@@ -65,7 +60,6 @@ import { ConnectionComponent } from './test/connection/connection.component';
         NetworkdriveComponent,
         CdromComponent,
         UsbComponent,
-        ParentItemComponent,
         VirtualListPipe,
         ClipHeightPipe,
         TestRestrictor,
