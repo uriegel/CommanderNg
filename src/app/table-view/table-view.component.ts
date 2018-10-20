@@ -12,6 +12,8 @@ import { Response, Item, Columns } from '../model/model'
 export class TableViewComponent {
 
     // TODO: ItemHeight automatically
+    // TODO: Item: no specifically defined data (like string[]) -> DataTemplate evaluates data
+    // TODO: Second TableViewTest with other data and other Template, like items 2 lines high 
     // TODO: DataTemplate for TableView must be set in consuming container
     // TODO: TData: row: Binding an ColumnsControl, ngFor, erste Spalte IconView, alle anderen strings, mit Binding von Classes, sind im ColumnsControl
     // TODO: F#-Commander liefert nur ein Array von aufbereiteten Strings
