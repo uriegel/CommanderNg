@@ -1,6 +1,6 @@
 <div class="container" (focusin)="onFocusIn($event)">
     <input #input value="{{path}}" (change)="onInputChange()" appSelectAll >
-    <app-table-view class="tableView" [id]="id" [itemHeight]=18 [columns]="columns" [path]="path" [items]="items" tabindex="1"
+    <app-table-view class="tableView" [id]="id" [itemHeight]=18 [columns]="columns" [items]="items" tabindex="1"
         (onSort)="onColumnSort($event)" (onCurrentIndexChanged)="onCurrentIndexChanged($event)" 
         (focus)="onFocus()" (click)="onClick($event)" (dblclick)="onDblClick($event)" (keydown)="onKeydown($event)">
     </app-table-view>
