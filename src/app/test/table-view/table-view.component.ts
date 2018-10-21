@@ -11,6 +11,12 @@ import { ConnectionService } from 'src/app/services/connection.service'
 })
 export class TableViewComponent implements OnInit {
 
+    //itemType = "item"
+    itemType = "testItem"
+
+    //itemHeight = 18
+    itemHeight = 30
+
     response: Observable<Response>
 
     constructor(private connection: ConnectionService) {

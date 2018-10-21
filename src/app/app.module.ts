@@ -32,10 +32,11 @@ import { GridSplitterComponent } from './grid-splitter/grid-splitter.component'
 import { CommanderComponent } from './commander/commander.component'
 import { FullPathPipe } from './pipes/full-path.pipe';
 import { DialogComponent as TestDialogComponent } from './test/dialog/dialog.component'
-import { DialogComponent } from './dialog/dialog.component';
-import { SelectAllDirective } from './directives/select-all.directive';
-import { DefaultButtonDirective } from './directives/default-button.directive';
-import { ConnectionComponent } from './test/connection/connection.component';
+import { DialogComponent } from './dialog/dialog.component'
+import { SelectAllDirective } from './directives/select-all.directive'
+import { DefaultButtonDirective } from './directives/default-button.directive'
+import { ConnectionComponent } from './test/connection/connection.component'
+import { TableViewTestItemComponent } from './test/table-view-test-item/table-view-test-item.component'
 
 @NgModule({
     declarations: [
@@ -72,6 +73,7 @@ import { ConnectionComponent } from './test/connection/connection.component';
         SelectAllDirective,
         DefaultButtonDirective,
         ConnectionComponent,
+        TableViewTestItemComponent,
     ],
     imports: [
         BrowserModule,

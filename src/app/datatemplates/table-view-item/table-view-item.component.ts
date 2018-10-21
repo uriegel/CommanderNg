@@ -9,6 +9,4 @@ import { Item } from '../../model/model'
 export class TableViewItemComponent {
     @Input()
     item: Item
-    @Input()
-    basePath: string
 }

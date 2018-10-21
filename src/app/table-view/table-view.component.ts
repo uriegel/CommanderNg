@@ -11,18 +11,17 @@ import { Response, Item, Columns } from '../model/model'
 })
 export class TableViewComponent {
 
-    // TODO: ItemHeight automatically
-    // TODO: Item: no specifically defined data (like string[]) -> DataTemplate evaluates data
-    // TODO: Second TableViewTest with other data and other Template, like items 2 lines high 
-    // TODO: DataTemplate for TableView must be set in consuming container
+    // TODO: ItemHeight in Theme, setItemHeight initial and when theme changes
     // TODO: TData: row: Binding an ColumnsControl, ngFor, erste Spalte IconView, alle anderen strings, mit Binding von Classes, sind im ColumnsControl
     // TODO: F#-Commander liefert nur ein Array von aufbereiteten Strings
 
     @Input() itemHeight = 0
+    @Input() itemType: string
     @Output() private onSort: EventEmitter<IColumnSortEvent> = new EventEmitter()    
     @Output() private onCurrentIndexChanged: EventEmitter<Number> = new EventEmitter()    
     @ViewChild("table") table: ElementRef
     @ViewChild(Scrollbar) private scrollbar: Scrollbar
+    @ViewChild("tbody")
     
     @Input()
     columns: Columns

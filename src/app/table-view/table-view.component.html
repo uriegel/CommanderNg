@@ -2,8 +2,10 @@
      (keydown)="onKeyDown($event)" (mousewheel)=scrollbar.onMouseWheel($event) (mousedown)="onMouseDown($event)">
     <thead app-columns [columns]="columns" (onSort)="onColumnSort($event)"></thead>
     <tbody>
-        <ng-container *ngFor="let item of items | virtualList: scrollbar | async" >
-            <tr class="pointer-def" app-table-view-item [item]=item 
+        <ng-container *ngFor="let item of items | virtualList: scrollbar | async" [ngSwitch]="itemType">
+            <tr class="pointer-def" app-table-view-item [item]=item *ngSwitchCase="'item'" 
+            [class.isCurrent]="item.isCurrent" [class.isSelected]="item.isSelected" [class.isHidden]="item.isHidden"></tr>
+            <tr class="pointer-def" app-table-view-test-item [item]=item *ngSwitchCase="'testItem'" 
             [class.isCurrent]="item.isCurrent" [class.isSelected]="item.isSelected" [class.isHidden]="item.isHidden"></tr>
         </ng-container>   
     </tbody>
