@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, ElementRef } from '@angular/core'
 import { ConnectionService } from './services/connection.service'
 import { CommanderEvent } from './model/model'
 
@@ -9,7 +9,6 @@ import { CommanderEvent } from './model/model'
         "[class.light-blue-theme]": "theme == 'lightblue'",
         "[class.dark-theme]": "theme == 'dark'",
         "[class.ubuntu-theme]": "theme == 'ubuntu'"
-        
 	},
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
@@ -17,11 +16,16 @@ import { CommanderEvent } from './model/model'
 export class AppComponent {
     public theme: string;
 
-    constructor(private connection: ConnectionService) { 
+    constructor(private elRef: ElementRef, private connection: ConnectionService) { 
         this.connection.commanderEvents.subscribe(evt => {
             const commanderEvent: CommanderEvent = JSON.parse(evt)
             if (commanderEvent.theme)
                 this.theme = commanderEvent.theme
+            setTimeout(() => {
+                const bodyStyles = window.getComputedStyle(elRef.nativeElement)
+                var fooBar = bodyStyles.getPropertyValue('--itemHeight')
+                console.log("--itemHeight", fooBar)
+            })
         })  
     }
 }
