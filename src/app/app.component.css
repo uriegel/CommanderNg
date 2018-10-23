@@ -1,6 +1,6 @@
 :host(.blue-theme) {
     --font-size: 75%;
-    --itemHeight: 18;
+    --itemHeight: 16;
     --font-family: Arial, Helvetica, sans-serif;
     --background-color: white;
     --color: black;
@@ -21,7 +21,7 @@
 
 :host(.dark-theme) {
     --font-size: 75%;
-    --itemHeight: 18;
+    --itemHeight: 16;
     --font-family: Arial, Helvetica, sans-serif;
     --background-color: rgb(37,37,38);
     --color: rgba(255, 255, 255, 0.85);
@@ -44,7 +44,7 @@
 
 :host(.light-blue-theme) {
     --font-size: 85%;
-    --itemHeight: 22;
+    --itemHeight: 17;
     --font-family: Arial, Helvetica, sans-serif;
     --background-color: white;
     --color: rgba(0, 0, 0, 0.75);

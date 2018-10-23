@@ -3,6 +3,7 @@ import { from, Observable } from 'rxjs'
 import { IColumnSortEvent } from '../../columns/columns.component'
 import { Item, Response, CommanderView } from '../../model/model'
 import { ConnectionService } from 'src/app/services/connection.service'
+import { ThemesService } from 'src/app/services/themes.service'
 
 @Component({
     selector: 'app-test-table-view',
@@ -11,15 +12,12 @@ import { ConnectionService } from 'src/app/services/connection.service'
 })
 export class TableViewComponent implements OnInit {
 
-    //itemType = "item"
-    itemType = "testItem"
-
-    //itemHeight = 18
-    itemHeight = 30
+    itemType = "item"
+    //itemType = "testItem"
 
     response: Observable<Response>
 
-    constructor(private connection: ConnectionService) {
+    constructor(public themes: ThemesService, private connection: ConnectionService) {
         this.response = from(this.connection.get(CommanderView.Left))
     }
 

@@ -11,7 +11,6 @@ import { Response, Item, Columns } from '../model/model'
 })
 export class TableViewComponent {
 
-    // TODO: ItemHeight in Theme, setItemHeight initial and when theme changes
     // TODO: TData: row: Binding an ColumnsControl, ngFor, erste Spalte IconView, alle anderen strings, mit Binding von Classes, sind im ColumnsControl
     // TODO: F#-Commander liefert nur ein Array von aufbereiteten Strings
 

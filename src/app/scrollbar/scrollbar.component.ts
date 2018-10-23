@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, Output, EventEmitter, Input } from '@angular/core'
 import { trigger, state, style, transition, animate } from '@angular/animations'
+import { ThemesService } from '../services/themes.service';
 
 @Component({
     selector: 'app-scrollbar',
@@ -43,9 +44,14 @@ export class ScrollbarComponent implements AfterViewInit {
     
     get itemsCapacity() { return this._itemsCapacity }
 
-    constructor(private renderer: Renderer2) {}
+    constructor(private renderer: Renderer2, private themes: ThemesService) {}
 
     ngAfterViewInit() {
+        this.themes.itemHeightChanged.subscribe(val => {
+            console.log("Nächstes", val)
+            console.log("Höhe", this.itemHeight)
+            this.onResize(true)
+        })
         this.onResize()
     }
 
@@ -105,8 +111,8 @@ export class ScrollbarComponent implements AfterViewInit {
             this.itemsChanged(this.itemsCountAbsolute, this._itemsCapacity, index - this._itemsCapacity + 1)
     }
 
-    onResize() {
-        if (this.list && this.list.parentElement.clientHeight != this.recentHeight) {
+    onResize(force = false) {
+        if (force || (this.list && this.list.parentElement.clientHeight != this.recentHeight)) {
             this.recentHeight = this.list.parentElement.clientHeight
             this._itemsCapacity = this.calculateCapacity()
             this.itemsChanged(this.itemsCountAbsolute, this._itemsCapacity)
