@@ -8,11 +8,10 @@ open WebServer
 let COMMANDER = "commander"
 
 [<Literal>]
-let LEFT = "LeftProcessor"
+let LEFT = 0
 
 [<Literal>]
-let RIGHT = "RightProcessor"
-
+let RIGHT = 1
 
 let private evt = new ManualResetEvent false
 

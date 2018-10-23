@@ -11,4 +11,4 @@ let indexOfStartPos (chr: char) (start: int) (str: string) = str.IndexOf (chr, s
 
 let substring startIndex (str: string) = str.Substring startIndex
 
-let toLower (str: string) = str.ToLower ()
+let toLower (str: string) = if str <> null then str.ToLower () else ""

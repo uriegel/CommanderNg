@@ -8,7 +8,15 @@ type SortItem =
     | Extension = 1
     | DateTime = 2
 
-let getItems path = 
+let getResponseItem id (item: Item) = { 
+        items = [| item.name; item.extension; item.dateTime.ToString "r"; string item.size |] 
+        icon = 
+            match Str.toLower item.extension with
+            | ".exe" -> "/request/icon?path=" + item.name + "&id=" + string id
+            | _ -> "/request/icon?path=." + item.extension
+    }
+
+let getItems path id = 
 
     let di = DirectoryInfo path
     let directoryItems (di: DirectoryInfo) () = GetSafeItems di.GetDirectories 
@@ -53,3 +61,13 @@ let getItems path =
         |> sorting
         |> Array.map takeItem
     Array.concat [| [| createParentItem () |] ; directoryItems ; fileItems |]
+    |> Array.map (getResponseItem id)
+
+let getColumns () = [|
+        { name = "Name"; isSortable = true }
+        { name = "Erw."; isSortable = true }
+        { name = "Datum"; isSortable = true }
+        { name = "Größe"; isSortable = true }
+        { name = "Version"; isSortable = true }
+    |]
+    

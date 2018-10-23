@@ -1,6 +1,7 @@
 module Processor
 open Model
 open DirectoryProcessor
+open WebServer
 
 [<Literal>]
 let ROOT = "root"
@@ -19,7 +20,7 @@ type Type =
     Root = 0
     | Drives = 1
     | FileSystem = 2
-let create (id: string) = 
+let create id = 
 
     let mutable lastColumns: Type option = None
 
@@ -34,11 +35,11 @@ let create (id: string) =
             lastColumns <- Some columnsType
             match columnsType with
             | Type.Root -> Some {
-                    name = id + "-" + ROOT
+                    name = string id + "-" + ROOT
                     values = [| { name = "Name"; isSortable = false } |]
                 }
             | Type.Drives -> Some {
-                    name = id + "-" + DRIVES
+                    name = string id + "-" + DRIVES
                     values = [| 
                         { name = "Name"; isSortable = false }
                         { name = "Bezeichnung"; isSortable = false }
@@ -46,33 +47,13 @@ let create (id: string) =
                     |]
                 }
             | _ -> Some {
-                    name = id + "-" + FILE_SYSTEM
-                    values = [|
-                        { name = "Name"; isSortable = true }
-                        { name = "Erw."; isSortable = true }
-                        { name = "Datum"; isSortable = true }
-                        { name = "Größe"; isSortable = true }
-                        { name = "Version"; isSortable = true }
-                    |]
-                }
+                    name = string id
+                    values = DirectoryProcessor.getColumns ()
+                }    
         | _ -> None
 
     let getRootItems () = { items = [||]; columns = getColumns Type.Root }
     let getDriveItems () = { items = [||]; columns = getColumns Type.Drives }
-
-    let getResponseItem (item: Item) = { 
-            items = [| item.name; item.extension; item.dateTime.ToString "r"; string item.size |] 
-            icon = "/request/icon?path=.cs"
-        }
-
-    let getFileItems path = 
-        let items = getItems path
-        {
-            items = 
-                items
-                |> Array.map getResponseItem
-            columns = getColumns Type.FileSystem
-        }
 
     let get path = 
         let path = 
@@ -83,8 +64,11 @@ let create (id: string) =
         match path with 
         | ROOT -> getRootItems ()
         | DRIVES -> getDriveItems () 
-        | _ -> getFileItems path
-
+        | _ -> {
+                items = DirectoryProcessor.getItems path id
+                columns = getColumns Type.FileSystem
+            }
+        
     {
         get = get
     }
