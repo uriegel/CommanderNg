@@ -23,6 +23,7 @@ export class AppComponent {
             setTimeout(() => {
                 const bodyStyles = window.getComputedStyle(appElement.nativeElement)
                 themes.itemHeight = <any>bodyStyles.getPropertyValue('--itemHeight')
+                themes.testItemHeight = <any>bodyStyles.getPropertyValue('--testItemHeight')
             })
         })  
     }
