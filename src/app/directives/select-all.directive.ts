@@ -1,5 +1,4 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core'
-import { NoFileExtensionPipe } from '../pipes/no-file-extension.pipe';
 
 @Directive({
     selector: '[appSelectAll]'
@@ -15,8 +14,8 @@ export class SelectAllDirective {
             this.initial = false
             if (this.selectNameOnly) {
                 const input = this.el.nativeElement as HTMLInputElement
-                const noFileExtensionPipe = new NoFileExtensionPipe()
-                const name = noFileExtensionPipe.transform(input.value)
+                var pos = input.value.lastIndexOf('.');
+                const name = pos != -1 ? input.value.substring(0, pos) : input.value
                 input.setSelectionRange(0, name.length)
                 return
             }

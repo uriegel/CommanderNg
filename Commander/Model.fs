@@ -24,6 +24,7 @@ type Columns = {
 
 type ResponseItem = {
     items: string[]
+    icon: string
 }
 
 type Response = {

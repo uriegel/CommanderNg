@@ -13,12 +13,8 @@ import { TableViewComponent } from './table-view/table-view.component'
 import { TableViewItemComponent } from './datatemplates/table-view-item/table-view-item.component'
 import { CommanderViewComponent } from './commander-view/commander-view.component'
 import { CommanderViewComponent as TestCommanderViewComponent } from './test/commander-view/commander-view.component'
-import { ItemProcesserFactoryService } from './processors/item-processer-factory.service'
 import { FileSizePipe } from './pipes/file-size.pipe'
 import { DatePipe } from './pipes/date.pipe'
-import { FileExtensionPipe } from './pipes/file-extension.pipe'
-import { NoFileExtensionPipe } from './pipes/no-file-extension.pipe'
-import { FileIconPipe } from './pipes/file-icon.pipe'
 import { FolderComponent } from './svgs/folder/folder.component'
 import { DriveComponent } from './svgs/drive/drive.component'
 import { NetworkdriveComponent } from './svgs/networkdrive/networkdrive.component'
@@ -30,7 +26,6 @@ import { RestricterComponent as TestRestrictor} from './test/restricter/restrict
 import { GridComponent } from './test/grid/grid.component'
 import { GridSplitterComponent } from './grid-splitter/grid-splitter.component'
 import { CommanderComponent } from './commander/commander.component'
-import { FullPathPipe } from './pipes/full-path.pipe';
 import { DialogComponent as TestDialogComponent } from './test/dialog/dialog.component'
 import { DialogComponent } from './dialog/dialog.component'
 import { SelectAllDirective } from './directives/select-all.directive'
@@ -53,9 +48,6 @@ import { TableViewTestItemComponent } from './test/table-view-test-item/table-vi
         TestCommanderViewComponent,
         FileSizePipe,
         DatePipe,
-        FileExtensionPipe,
-        NoFileExtensionPipe,
-        FileIconPipe,
         FolderComponent,
         DriveComponent,
         NetworkdriveComponent,
@@ -67,7 +59,6 @@ import { TableViewTestItemComponent } from './test/table-view-test-item/table-vi
         GridComponent,
         GridSplitterComponent,
         CommanderComponent,
-        FullPathPipe,
         TestDialogComponent,
         DialogComponent,
         SelectAllDirective,
@@ -79,7 +70,7 @@ import { TableViewTestItemComponent } from './test/table-view-test-item/table-vi
         BrowserModule,
         BrowserAnimationsModule
     ],
-    providers: [ItemProcesserFactoryService],
+    providers: [],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

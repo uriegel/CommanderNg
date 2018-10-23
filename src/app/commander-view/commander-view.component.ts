@@ -2,8 +2,6 @@ import { Component, ViewChild, ElementRef, Input, OnInit, AfterViewInit, Output,
 import { trigger, state, style, transition, animate } from '@angular/animations'
 import { Observable, Subject, from, fromEvent, zip } from 'rxjs'
 import { filter } from 'rxjs/operators'
-import { ItemProcesserFactoryService } from '../processors/item-processer-factory.service'
-import { ItemProcessor } from '../processors/item-processor'
 import { IColumnSortEvent } from '../columns/columns.component'
 import { TableViewComponent } from '../table-view/table-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
@@ -57,13 +55,6 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         this.restrictingOffs.next()
         if (value.endsWith('\\'))
             value = value.substr(0, value.length - 1)
-        const itemProcessor = this.processorFactory.get(this.itemProcessor, this, value)
-        if (itemProcessor) {
-            this.itemProcessor = itemProcessor
-            this.columns = this.itemProcessor.columns
-            this.columnSort = null
-        }
-        this.setItems(this.itemProcessor.get(value, this.path))
         this._path = value
     }
     private _path: string
@@ -79,7 +70,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         this.initializeRestrict() 
     }
 
-    constructor(private processorFactory: ItemProcesserFactoryService) { }
+    constructor() { }
 
     focus() { this.tableView.focus() }
 
@@ -284,8 +275,6 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     private processItem() {
         const item = this.tableView.getCurrentItem()
-        if (item)
-            this.itemProcessor.process(item)
     }
 
     private setItems(items: Observable<Item[]>) {
@@ -294,7 +283,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         else {
             const subscription = (items as Observable<Item[]>).subscribe({next: value => {
                 subscription.unsubscribe()
-                this.items = from(new Promise<Item[]>(res => res(this.itemProcessor.sort(value, this.columnSort.index, this.columnSort.ascending))))
+                //this.items = from(new Promise<Item[]>(res => res(this.itemProcessor.sort(value, this.columnSort.index, this.columnSort.ascending))))
             }})
         }
     }
@@ -368,5 +357,4 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     private readonly restrictingOffs = new Subject()
     private columnSort: IColumnSortEvent = null
     private keyDownEvents: Observable<KeyboardEvent>
-    private itemProcessor: ItemProcessor
 }

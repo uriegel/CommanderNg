@@ -60,8 +60,10 @@ let create (id: string) =
     let getRootItems () = { items = [||]; columns = getColumns Type.Root }
     let getDriveItems () = { items = [||]; columns = getColumns Type.Drives }
 
-    let getResponseItem (item: Item) =
-        { items = [| item.name; item.extension; item.dateTime.ToString "r"; string item.size |] }
+    let getResponseItem (item: Item) = { 
+            items = [| item.name; item.extension; item.dateTime.ToString "r"; string item.size |] 
+            icon = "/request/icon?path=.cs"
+        }
 
     let getFileItems path = 
         let items = getItems path

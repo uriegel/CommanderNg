@@ -1,14 +1,12 @@
-<!-- <td>
-    <div class="iconName">
-        <img [src]="item.name | fileIcon: basePath" alt="" >
-        <span class="nameValue">{{item.name | noFileExtension}}</span>
-    </div>
-</td> -->
-<!-- <td>{{item.name | fileExtension }}</td>
-<td [class.isExif]="item.isExif">{{item.time | date }}</td>
+<!-- <td [class.isExif]="item.isExif">{{item.time | date }}</td>
 <td class="size" >{{item.size | fileSize}}</td>
 <td>{{item.version}}</td> -->
-<td>{{item.items[0]}}</td>
+<td>
+    <div class="iconName">
+        <img [src]="item.icon" alt="" >
+        <span class="nameValue">{{item.items[0]}}</span>
+    </div>
+</td>
 <td>{{item.items[1]}}</td>
 <td>{{item.items[2]}}</td>
 <td>{{item.items[3]}}</td>

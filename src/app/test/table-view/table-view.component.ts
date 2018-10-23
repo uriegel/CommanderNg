@@ -12,8 +12,8 @@ import { ThemesService } from 'src/app/services/themes.service'
 })
 export class TableViewComponent implements OnInit {
 
-    //itemType = "item"
-    itemType = "testItem"
+    itemType = "item"
+    //itemType = "testItem"
 
     response: Observable<Response>
 

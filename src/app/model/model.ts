@@ -21,6 +21,7 @@ export interface Get {
 
 export interface Item {
     items: string[]
+    icon: string
     isSelected?: boolean
     isCurrent?: boolean
 }
