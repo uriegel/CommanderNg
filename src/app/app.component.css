@@ -5,6 +5,7 @@
     --font-family: Arial, Helvetica, sans-serif;
     --background-color: white;
     --color: black;
+    --icon-color: darkgray;
     --selected-bg-color: blue;
     --selected-bg-hover-color: #0063ff;
     --selected-color: white;
@@ -27,6 +28,7 @@
     --font-family: Arial, Helvetica, sans-serif;
     --background-color: rgb(37,37,38);
     --color: rgba(255, 255, 255, 0.85);
+    --icon-color: lightgray;
     --selected-bg-color: blue;
     --selected-bg-hover-color: #0063ff;
     --selected-color: white;
@@ -51,6 +53,7 @@
     --font-family: Arial, Helvetica, sans-serif;
     --background-color: white;
     --color: rgba(0, 0, 0, 0.75);
+    --icon-color: darkgray;
 
     --selected-bg-color: rgb(0, 122, 204);
     --selected-bg-hover-color: #0063ff;
@@ -79,6 +82,7 @@
 }
 
 :host.ubuntu-theme {
+    --icon-color: darkgray;
     --font-family: Arial, Helvetica, sans-serif;
     --itemHeight: 18;
     --font-size: 85%;
