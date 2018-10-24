@@ -11,9 +11,12 @@ type SortItem =
 let getResponseItem id (item: Item) = { 
         items = [| item.name; item.extension; item.dateTime.ToString "r"; string item.size |] 
         icon = 
-            match Str.toLower item.extension with
-            | ".exe" -> "/request/icon?path=" + item.name + "&id=" + string id
-            | _ -> "/request/icon?path=." + item.extension
+            match item.itemType with
+            | ItemType.File ->
+                match Str.toLower item.extension with
+                | ".exe" -> "/request/icon?path=" + item.name + "&id=" + string id
+                | _ -> "/request/icon?path=." + item.extension
+            | _ -> "Folder"
     }
 
 let getItems path id = 

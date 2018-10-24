@@ -3,7 +3,8 @@
 <td>{{item.version}}</td> -->
 <td>
     <div class="iconName">
-        <img [src]="item.icon" alt="" >
+        <img [src]="item.icon" alt="" *ngIf="item.icon != 'Folder'">
+        <app-folder *ngIf="item.icon == 'Folder'"></app-folder>
         <span class="nameValue">{{item.items[0]}}</span>
     </div>
 </td>
