@@ -18,11 +18,22 @@ let (| IsCommanderView | _ |) (arg: UrlQueryType) =
 
 let requestOK (headers: WebServer.RequestHeaders) = headers.path.StartsWith "/request"
 
-let getIcon (ext: string option) = async {
+let getIcon (ext: string option) (idStrOption: string option) = async {
+
+    // TODO: NoCache set -> no cache!
     let rec getIconHandle callCount = async {
         match ext with 
         | None -> return (Icon.ExtractAssociatedIcon @"C:\Windows\system32\SHELL32.dll").Handle
-        | Some path ->
+        | Some ext ->
+            let path = 
+                match idStrOption with
+                | Some id -> 
+                    let path = 
+                        match LanguagePrimitives.EnumOfValue<int, CommanderView> <| int id with 
+                        | CommanderView.Left -> Commander.leftProcessor.getCurrentPath ()
+                        | _ -> Commander.rightProcessor.getCurrentPath ()
+                    Path.Combine (path, ext)
+                | None -> ext
             let mutable shinfo = Api.ShFileInfo () 
             Api.SHGetFileInfo (path, Api.FileAttributeNormal, &shinfo, Marshal.SizeOf shinfo, 
                 Api.SHGetFileInfoConstants.ICON 
@@ -70,7 +81,7 @@ let run request =
             | Some theme -> setTheme theme
             | None -> ()
         | "icon" ->
-            let! bytes = getIcon <| query.Query "path"
+            let! bytes = getIcon <| query.Query "path" <| query.Query "id"
             do! Response.asyncSendFileBytes request "image/png" (Some bytes)
         | "close" -> 
             close ()

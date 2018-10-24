@@ -14,6 +14,7 @@ let FILE_SYSTEM = "FileSystem"
 
 type ProcessorObject = {
     get: (string option)->Response
+    getCurrentPath: unit->string
 }
 
 type Type =
@@ -23,6 +24,7 @@ type Type =
 let create id = 
 
     let mutable lastColumns: Type option = None
+    let mutable currentPath = @"c:\windows" // TODO: Initial "root", then save value in LocalStorage
 
     let (| TypeChanged | _ |) arg = 
         match lastColumns with 
@@ -58,8 +60,10 @@ let create id =
     let get path = 
         let path = 
             match path with
-            | Some path -> path
-            | None -> @"c:\windows" // TODO: Initial "root", then save value in LocalStorage
+            | Some path -> 
+                currentPath <- path
+                path
+            | None -> currentPath
 
         match path with 
         | ROOT -> getRootItems ()
@@ -68,7 +72,10 @@ let create id =
                 items = DirectoryProcessor.getItems path id
                 columns = getColumns Type.FileSystem
             }
+
+    let getCurrentPath () = currentPath            
         
     {
         get = get
+        getCurrentPath = getCurrentPath
     }
