@@ -1,4 +1,4 @@
-:host(.blue-theme) {
+:host.blue-theme {
     --font-size: 75%;
     --itemHeight: 18;
     --testItemHeight: 30;
@@ -20,7 +20,7 @@
     --grip-color: #f0f0f0;
 }
 
-:host(.dark-theme) {
+:host.dark-theme {
     --font-size: 75%;
     --itemHeight: 18;
     --testItemHeight: 30;
@@ -44,7 +44,7 @@
     --grip-color: rgb(67,67,68);
 }
 
-:host(.light-blue-theme) {
+:host.light-blue-theme {
     --font-size: 85%;
     --itemHeight: 18;
     --testItemHeight: 32;
@@ -78,7 +78,7 @@
     --grip-color: #dcdcdc;
 }
 
-:host(.ubuntu-theme) {
+:host.ubuntu-theme {
     --font-family: Arial, Helvetica, sans-serif;
     --itemHeight: 18;
     --font-size: 85%;
