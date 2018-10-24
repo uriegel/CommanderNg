@@ -20,7 +20,6 @@ let requestOK (headers: WebServer.RequestHeaders) = headers.path.StartsWith "/re
 
 let getIcon (ext: string option) (idStrOption: string option) = async {
 
-    // TODO: NoCache set -> no cache!
     let rec getIconHandle callCount = async {
         match ext with 
         | None -> return (Icon.ExtractAssociatedIcon @"C:\Windows\system32\SHELL32.dll").Handle
