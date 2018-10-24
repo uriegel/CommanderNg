@@ -2,14 +2,51 @@ module DirectoryProcessor
 open System.IO
 open ModelTools
 open Model
+open Str
 
 type SortItem = 
     | Name = 0
     | Extension = 1
     | DateTime = 2
 
+let getNameOnly name =
+    match name with 
+    | ".." -> name
+    | _ -> 
+        let pos = lastIndexOf name "."
+        match pos with
+        | -1 -> name
+        | _ -> substringLength 0 pos name
+
+let getDataTime (dateTime: System.DateTime) =
+    match dateTime.Ticks with
+    | 0L -> ""
+    | _ -> dateTime.ToString "g"
+
+let getSize item = 
+    match item.itemType with
+    | ItemType.File -> 
+        let str = string item.size
+        let len = String.length str
+        let firstDigits = len % 3
+        let rec getFirstDigits (str: string) =
+            if String.length str = 3 then 
+                str 
+            else 
+                let first = substringLength 0 3 str
+                let last = substring 3 str
+                first + "." + getFirstDigits last
+        
+        if len > 3 && firstDigits <> 0 then
+            substringLength 0 firstDigits str + "." + (getFirstDigits <| substring firstDigits str)
+        elif len > 3 && firstDigits = 0 then
+            getFirstDigits <| substring firstDigits str
+        else
+            str
+    | _ -> ""
+
 let getResponseItem id (item: Item) = { 
-        items = [| item.name; item.extension; item.dateTime.ToString "r"; string item.size |] 
+        items = [| getNameOnly item.name; item.extension; getDataTime item.dateTime; getSize item |] 
         icon = 
             match item.itemType with
             | ItemType.File ->

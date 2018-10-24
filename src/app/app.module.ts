@@ -13,7 +13,6 @@ import { TableViewComponent } from './table-view/table-view.component'
 import { TableViewItemComponent } from './datatemplates/table-view-item/table-view-item.component'
 import { CommanderViewComponent } from './commander-view/commander-view.component'
 import { CommanderViewComponent as TestCommanderViewComponent } from './test/commander-view/commander-view.component'
-import { FileSizePipe } from './pipes/file-size.pipe'
 import { DatePipe } from './pipes/date.pipe'
 import { FolderComponent } from './svgs/folder/folder.component'
 import { DriveComponent } from './svgs/drive/drive.component'
@@ -46,7 +45,6 @@ import { TableViewTestItemComponent } from './test/table-view-test-item/table-vi
         TableViewItemComponent,
         CommanderViewComponent,
         TestCommanderViewComponent,
-        FileSizePipe,
         DatePipe,
         FolderComponent,
         DriveComponent,
