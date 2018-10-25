@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core'
-import { Item } from '../../model/model'
+import { Item, Columns } from '../../model/model'
 
 @Component({
     selector: '[app-table-view-item]',
@@ -9,4 +9,6 @@ import { Item } from '../../model/model'
 export class TableViewItemComponent {
     @Input()
     item: Item
+    @Input()
+    columns: Columns
 }

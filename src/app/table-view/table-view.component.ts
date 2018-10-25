@@ -3,6 +3,7 @@ import { Observable } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as IColumnSortEvent } from '../columns/columns.component'
 import { Response, Item, Columns } from '../model/model'
+import { tick } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-table-view',
@@ -12,7 +13,7 @@ import { Response, Item, Columns } from '../model/model'
 export class TableViewComponent {
 
     // TODO: TData: row: Binding an ColumnsControl, ngFor, erste Spalte IconView, alle anderen strings, mit Binding von Classes, sind im ColumnsControl
-
+    // TODO: [columnsHeight]=16 from theme
     @Input() itemHeight = 0
     @Input() itemType: string
     @Output() private onSort: EventEmitter<IColumnSortEvent> = new EventEmitter()    
@@ -22,7 +23,12 @@ export class TableViewComponent {
     @ViewChild("tbody")
     
     @Input()
-    columns: Columns
+    set columns(value: Columns) {
+        if (value)
+            this._columns = value
+    }
+    get columns() { return this._columns }
+    _columns: Columns
 
     @Input() 
     items: Item[]

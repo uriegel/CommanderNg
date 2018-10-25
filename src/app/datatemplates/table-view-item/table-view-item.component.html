@@ -8,6 +8,6 @@
         <span class="nameValue">{{item.items[0]}}</span>
     </div>
 </td>
-<td>{{item.items[1]}}</td>
-<td>{{item.items[2]}}</td>
-<td>{{item.items[3]}}</td>
+<td [class.rightAligned]="columns?.values[1].rightAligned">{{item.items[1]}}</td>
+<td [class.rightAligned]="columns?.values[2].rightAligned">{{item.items[2]}}</td>
+<td [class.rightAligned]="columns?.values[3].rightAligned">{{item.items[3]}}</td>

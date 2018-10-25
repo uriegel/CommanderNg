@@ -54,5 +54,6 @@ export interface Columns {
 
 export interface Column {
     name: string
+    rightAligned?: boolean
     isSortable?: boolean
 }

@@ -38,14 +38,14 @@ let create id =
             match columnsType with
             | Type.Root -> Some {
                     name = string id + "-" + ROOT
-                    values = [| { name = "Name"; isSortable = false } |]
+                    values = [| { name = "Name"; isSortable = false; rightAligned = false } |]
                 }
             | Type.Drives -> Some {
                     name = string id + "-" + DRIVES
                     values = [| 
-                        { name = "Name"; isSortable = false }
-                        { name = "Bezeichnung"; isSortable = false }
-                        { name = "Größe"; isSortable = false }
+                        { name = "Name"; isSortable = false; rightAligned = false }
+                        { name = "Bezeichnung"; isSortable = false; rightAligned = false }
+                        { name = "Größe"; isSortable = false; rightAligned = true }
                     |]
                 }
             | _ -> Some {

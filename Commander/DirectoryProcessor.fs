@@ -104,10 +104,10 @@ let getItems path id =
     |> Array.map (getResponseItem id)
 
 let getColumns () = [|
-        { name = "Name"; isSortable = true }
-        { name = "Erw."; isSortable = true }
-        { name = "Datum"; isSortable = true }
-        { name = "Größe"; isSortable = true }
-        { name = "Version"; isSortable = true }
+        { name = "Name"; isSortable = true; rightAligned = false }
+        { name = "Erw."; isSortable = true; rightAligned = false }
+        { name = "Datum"; isSortable = true; rightAligned = false }
+        { name = "Größe"; isSortable = true; rightAligned = true }
+        { name = "Version"; isSortable = true; rightAligned = false }
     |]
     
