@@ -12,21 +12,6 @@ let main argv =
     Console.OutputEncoding <- System.Text.Encoding.UTF8
     printfn "Starting Commander Server"
 
-
-
-    let version = DirectoryProcessor.getVersion @"c:\setup.exe"
-
-    let stopwatch = Stopwatch()
-    stopwatch.Start ()
-
-    for i in [0..1000] do
-        DirectoryProcessor.getVersion @"c:\setup.exe" |> ignore
-
-    let iläpst = stopwatch.Elapsed
-
-
-    printfn "%s %A" version iläpst
-
     LocalStorage.load ()
     let affe = LocalStorage.get "Affe"
     LocalStorage.set "Affe" "Huhn" |> ignore
@@ -38,7 +23,6 @@ let main argv =
         commanderView = Some CommanderView.Left
         newPath = None
     }
-
 
     // TODO:
     // Subject for events

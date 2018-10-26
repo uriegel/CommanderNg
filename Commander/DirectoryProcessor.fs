@@ -50,6 +50,24 @@ let getVersion file =
     let fvi = FileVersionInfo.GetVersionInfo file
     sprintf "%u.%u.%u.%u" fvi.FileMajorPart fvi.FileMinorPart fvi.FileBuildPart fvi.FilePrivatePart
 
+let retrieveFileVersions path (items: ResponseItem[]) = 
+    let isVersionFile (item: ResponseItem) =
+        let ext = toLower item.items.[1]
+        ext = ".exe"  || ext = ".dll"
+
+    let getVersionItem (item: ResponseItem) = 
+        Path.Combine (path, sprintf "%s.%s" item.items.[0] item.items.[1])
+
+    let files = 
+        items 
+        // |> Array.indexed
+        // |> Array.map
+        |> Array.filter isVersionFile 
+        |> Array.map getVersionItem
+    
+    ()
+
+
 let getResponseItem id (item: Item) = { 
         items = [| getNameOnly item.name; item.extension; getDataTime item.dateTime; getSize item |] 
         icon = 
