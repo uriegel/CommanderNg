@@ -5,11 +5,27 @@ open Model
 open System.Configuration
 open Microsoft.Extensions.Configuration
 open System.IO
+open System.Diagnostics
 
 [<EntryPoint>]
 let main argv =
     Console.OutputEncoding <- System.Text.Encoding.UTF8
     printfn "Starting Commander Server"
+
+
+
+    let version = DirectoryProcessor.getVersion @"c:\setup.exe"
+
+    let stopwatch = Stopwatch()
+    stopwatch.Start ()
+
+    for i in [0..1000] do
+        DirectoryProcessor.getVersion @"c:\setup.exe" |> ignore
+
+    let iläpst = stopwatch.Elapsed
+
+
+    printfn "%s %A" version iläpst
 
     LocalStorage.load ()
     let affe = LocalStorage.get "Affe"

@@ -37,11 +37,11 @@ let create id =
             lastColumns <- Some columnsType
             match columnsType with
             | Type.Root -> Some {
-                    name = string id + "-" + ROOT
+                    name = sprintf "%d-%s" id ROOT
                     values = [| { name = "Name"; isSortable = false; rightAligned = false } |]
                 }
             | Type.Drives -> Some {
-                    name = string id + "-" + DRIVES
+                    name = sprintf "%d-%s" id DRIVES
                     values = [| 
                         { name = "Name"; isSortable = false; rightAligned = false }
                         { name = "Bezeichnung"; isSortable = false; rightAligned = false }

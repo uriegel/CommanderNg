@@ -3,6 +3,7 @@ open System.IO
 open ModelTools
 open Model
 open Str
+open System.Diagnostics
 
 type SortItem = 
     | Name = 0
@@ -35,15 +36,19 @@ let getSize item =
             else 
                 let first = substringLength 0 3 str
                 let last = substring 3 str
-                first + "." + getFirstDigits last
+                sprintf "%s.%s" first <| getFirstDigits last
         
         if len > 3 && firstDigits <> 0 then
-            substringLength 0 firstDigits str + "." + (getFirstDigits <| substring firstDigits str)
+            sprintf "%s.%s" <| substringLength 0 firstDigits str <| (getFirstDigits <| substring firstDigits str)
         elif len > 3 && firstDigits = 0 then
             getFirstDigits <| substring firstDigits str
         else
             str
     | _ -> ""
+
+let getVersion file =
+    let fvi = FileVersionInfo.GetVersionInfo file
+    sprintf "%u.%u.%u.%u" fvi.FileMajorPart fvi.FileMinorPart fvi.FileBuildPart fvi.FilePrivatePart
 
 let getResponseItem id (item: Item) = { 
         items = [| getNameOnly item.name; item.extension; getDataTime item.dateTime; getSize item |] 
@@ -51,8 +56,8 @@ let getResponseItem id (item: Item) = {
             match item.itemType with
             | ItemType.File ->
                 match Str.toLower item.extension with
-                | ".exe" -> "/request/icon?path=" + item.name + "&id=" + string id
-                | _ -> "/request/icon?path=." + item.extension
+                | ".exe" -> sprintf "/request/icon?path=%s&id=%d" item.name id
+                | _ -> sprintf "/request/icon?path=.%s" item.extension
             | _ -> "Folder"
     }
 
