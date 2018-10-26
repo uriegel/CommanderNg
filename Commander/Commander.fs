@@ -24,6 +24,8 @@ let sseInit context =
     printfn "-cmdevt: sse"
     printfn "Initializing server sent events"
     serverSentEvent <- Some context
+    leftProcessor.initEvents <| serverSentEvent.Value.send "Left"
+    rightProcessor.initEvents <| serverSentEvent.Value.send "Right"
     let commanderEvent = {
         theme = None
         isInitialized = true

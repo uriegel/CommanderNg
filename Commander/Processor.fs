@@ -13,6 +13,7 @@ let DRIVES = "drives"
 let FILE_SYSTEM = "FileSystem"
 
 type ProcessorObject = {
+    initEvents: (string->unit)->unit
     get: (string option)->Response
     getCurrentPath: unit->string
 }
@@ -25,6 +26,10 @@ let create id =
 
     let mutable lastColumns: Type option = None
     let mutable currentPath = @"c:\windows" // TODO: Initial "root", then save value in LocalStorage
+    let mutable sentEvent = fun (item: string) -> ()
+    let mutable requestNr = 0
+
+    let initEvents hotSentEvent = sentEvent <- hotSentEvent
 
     let (| TypeChanged | _ |) arg = 
         match lastColumns with 
@@ -58,6 +63,7 @@ let create id =
     let getDriveItems () = { items = [||]; columns = getColumns Type.Drives }
 
     let get path = 
+        requestNr <- requestNr + 1
         let path = 
             match path with
             | Some path -> 
@@ -68,14 +74,27 @@ let create id =
         match path with 
         | ROOT -> getRootItems ()
         | DRIVES -> getDriveItems () 
-        | _ -> {
+        | _ -> 
+            let result = {
                 items = DirectoryProcessor.getItems path id
                 columns = getColumns Type.FileSystem
             }
+            let thisRequest = requestNr
+
+            let check () = thisRequest = requestNr
+
+            async {
+                do! Async.Sleep(100) 
+                let updateItems = retrieveFileVersions path result.items check
+                sentEvent <| Json.serialize updateItems          
+            } |> Async.Start
+            
+            result
 
     let getCurrentPath () = currentPath            
         
     {
+        initEvents = initEvents
         get = get
         getCurrentPath = getCurrentPath
     }

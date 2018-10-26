@@ -68,3 +68,8 @@ let createFileItem (item: FileInfo) = {
     dateTime = item.LastWriteTime
     size = item.Length
 }
+
+type UpdateItem = {
+    index: int
+    version: string
+}
