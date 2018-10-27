@@ -24,11 +24,6 @@ let main argv =
         newPath = None
     }
 
-    // TODO:
-    // Subject for events
-    // sseInit subscribes events-Subject
-    // Commander and the two commander views send events to Subject
-
     try
         let configuration = {
             WebServer.Configuration.defaultConfiguration with

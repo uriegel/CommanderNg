@@ -12,7 +12,6 @@ import { tick } from '@angular/core/src/render3';
 })
 export class TableViewComponent {
 
-    // TODO: TData: row: Binding an ColumnsControl, ngFor, erste Spalte IconView, alle anderen strings, mit Binding von Classes, sind im ColumnsControl
     // TODO: [columnsHeight]=16 from theme
     @Input() itemHeight = 0
     @Input() itemType: string

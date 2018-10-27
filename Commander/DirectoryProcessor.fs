@@ -69,7 +69,7 @@ let retrieveFileVersions path (items: ResponseItem[]) check =
     |> Array.map getVersionItem
 
 let getResponseItem id (item: Item) = { 
-        items = [| getNameOnly item.name; item.extension; getDataTime item.dateTime; getSize item |] 
+        items = [| getNameOnly item.name; item.extension; getDataTime item.dateTime; getSize item; "" |] 
         icon = 
             match item.itemType with
             | ItemType.File ->
