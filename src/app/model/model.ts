@@ -57,3 +57,8 @@ export interface Column {
     rightAligned?: boolean
     isSortable?: boolean
 }
+
+export interface UpdateItem  {
+    index: number
+    version: string
+}

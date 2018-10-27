@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input } from '@angular/core'
 import { from, Observable } from 'rxjs'
 import { IColumnSortEvent } from '../../columns/columns.component'
-import { Item, Response, CommanderView } from '../../model/model'
+import { Item, Response, CommanderView, UpdateItem } from '../../model/model'
 import { ConnectionService } from 'src/app/services/connection.service'
 import { ThemesService } from 'src/app/services/themes.service'
 
@@ -16,6 +16,12 @@ export class TableViewComponent implements OnInit {
     //itemType = "testItem"
 
     response: Observable<Response>
+
+    @Input()
+    set viewEvents(data: string) {
+        const value = JSON.parse(data)
+        console.log("view sse", value)
+    }
 
     constructor(public themes: ThemesService, private connection: ConnectionService) {
         this.response = from(this.connection.get(CommanderView.Left))

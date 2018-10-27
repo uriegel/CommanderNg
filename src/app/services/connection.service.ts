@@ -29,8 +29,8 @@ export class ConnectionService {
             this.commanderSubject.next(evt.data as string)
         })
         
-        this.source.addEventListener("leftView", (evt: MessageEvent) => console.log("onEreignis", evt.data))
-        this.source.addEventListener("rightView", (evt: MessageEvent) => console.log("onEreignis", evt.data))
+        this.source.addEventListener("leftView", (evt: MessageEvent) => this.leftViewSubject.next(evt.data))
+        this.source.addEventListener("rightView", (evt: MessageEvent) => this.rightViewSubject.next(evt.data))
     }
 
     get(commanderView: CommanderView, path?: string) {

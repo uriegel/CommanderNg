@@ -8,6 +8,12 @@ open WebServer
 let COMMANDER = "commander"
 
 [<Literal>]
+let LEFTVIEW = "leftView"
+
+[<Literal>]
+let RIGHTVIEW = "rightView"
+
+[<Literal>]
 let LEFT = 0
 
 [<Literal>]
@@ -24,8 +30,8 @@ let sseInit context =
     printfn "-cmdevt: sse"
     printfn "Initializing server sent events"
     serverSentEvent <- Some context
-    leftProcessor.initEvents <| serverSentEvent.Value.send "Left"
-    rightProcessor.initEvents <| serverSentEvent.Value.send "Right"
+    leftProcessor.initEvents <| serverSentEvent.Value.send LEFTVIEW
+    rightProcessor.initEvents <| serverSentEvent.Value.send RIGHTVIEW
     let commanderEvent = {
         theme = None
         isInitialized = true
