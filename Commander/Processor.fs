@@ -87,7 +87,12 @@ let create id =
                 do! Async.Sleep(100) 
                 let updateItems = retrieveFileVersions path result.items check
                 match check () with
-                | true -> sentEvent <| Json.serialize updateItems
+                | true -> 
+                    let commanderUpdate = {
+                        id = requestNr
+                        updateItems =  updateItems
+                    }
+                    sentEvent <| Json.serialize commanderUpdate
                 | false -> ()          
             } |> Async.Start
             

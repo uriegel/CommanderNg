@@ -62,3 +62,8 @@ export interface UpdateItem  {
     index: number
     version: string
 }
+
+export interface CommanderUpdate {
+    id: number
+    updateItems: UpdateItem[]
+}

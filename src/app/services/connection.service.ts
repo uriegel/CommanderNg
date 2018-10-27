@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { Subject, Observable } from 'rxjs'
+import { Subject, Observable, BehaviorSubject } from 'rxjs'
 import { Item, Response, Get, CommanderView } from '../model/model'
 
 function formatParams(params) {
@@ -57,7 +57,7 @@ export class ConnectionService {
     private source = new EventSource("events")
     private baseUrl = "http://localhost:20000"
     private commanderSubject = new Subject<string>()
-    private leftViewSubject = new Subject<Item[]>()
-    private rightViewSubject = new Subject<Item[]>()
+    private leftViewSubject = new BehaviorSubject<Item[]>(null)
+    private rightViewSubject = new BehaviorSubject<Item[]>(null)
 }
 

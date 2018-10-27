@@ -73,3 +73,9 @@ type UpdateItem = {
     index: int
     version: string
 }
+
+type CommanderUpdate = {
+    id: int
+    updateItems: UpdateItem[]
+}
+
