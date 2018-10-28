@@ -7,7 +7,7 @@ import { TableViewComponent } from '../table-view/table-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResultValue } from '../enums/dialog-result-value.enum'
-import { Item, ItemType, Columns, Response, CommanderView, CommanderUpdate } from '../model/model'
+import { Item, Response, CommanderView, CommanderUpdate } from '../model/model'
 import { ThemesService } from '../services/themes.service';
 import { ConnectionService } from '../services/connection.service';
 
@@ -46,7 +46,7 @@ import { ConnectionService } from '../services/connection.service';
 })
 export class CommanderViewComponent implements OnInit, AfterViewInit {
 
-    // TODO: ItemHeight wrong, perhaps because of directory text box?
+    // TODO: Return on folder selection -> get
     // TODO: Display hidden
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
     @ViewChild("input") private input: ElementRef
