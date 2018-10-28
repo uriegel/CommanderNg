@@ -21,7 +21,7 @@ export class ConnectionService {
     }
     get rightViewEvents(): Observable<Item[]>  {
         return this.rightViewSubject
-    })
+    }
 
     constructor() {
         this.source.addEventListener("commander", (evt: MessageEvent) => {
@@ -34,7 +34,7 @@ export class ConnectionService {
     }
 
     get(commanderView: CommanderView, path?: string) {
-      )  const get: Get = path ? {
+        const get: Get = path ? {
             path: path,
             commanderView: commanderView
         } : { commanderView: commanderView }
