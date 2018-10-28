@@ -15,7 +15,7 @@ let FILE_SYSTEM = "FileSystem"
 
 type ProcessorObject = {
     initEvents: (string->unit)->unit
-    get: (string option)->GetResult
+    get: (string option)->(string option)->GetResult
     processItem: int->GetResult
     getCurrentPath: unit->string
 }
@@ -71,7 +71,7 @@ let create id =
         continuation = None
     }
 
-    let get path = 
+    let get path selectThis = 
         requestNr <- requestNr + 1
         let path = 
             match path with
@@ -80,19 +80,28 @@ let create id =
                 path
             | None -> currentPath
 
+        let getIndexToSelect (currentItems: Item[]) = 
+            match selectThis with
+            | Some name -> 
+                currentItems |> Array.findIndex (fun t -> t.name = name)
+            | None -> 0
+
         match path with 
         | ROOT -> getRootItems ()
         | DRIVES -> getDriveItems () 
         | _ -> 
             currentItems <- DirectoryProcessor.getItems path id
 
-            let getResponseItem (item: Item) = { 
+            let indexToSelect = getIndexToSelect currentItems
+
+            let getResponseItem index (item: Item) = { 
                 icon = item.icon
                 items = [| getNameOnly item.name; item.extension; getDataTime item.dateTime; getSize item; "" |] 
+                isCurrent = index = indexToSelect
             }
 
             let result = {
-                items = Some (currentItems |> Array.map getResponseItem)
+                items = Some (currentItems |> Array.mapi getResponseItem)
                 columns = getColumns Type.FileSystem
             }
             let thisRequest = requestNr
@@ -119,14 +128,13 @@ let create id =
 
     let processItem index =             
         let selectedItem = currentItems.[index]
-        printfn "Das ist der selektierte Wert: %s" selectedItem.name
         match selectedItem.itemType with
         | ItemType.Parent ->
             let info = DirectoryInfo currentPath
-            get <| Some info.Parent.FullName            
+            get (Some info.Parent.FullName) (Some info.Name)
         | ItemType.Directory -> 
             let path = Path.Combine (currentPath, selectedItem.name)
-            get <| Some path
+            get (Some path) None
         | _ -> 
             {
                 response = {

@@ -79,11 +79,11 @@ let run request =
     async {
         let query = UrlQuery.create request.data.header.path
         match query.method with
-        | "get" -> do! asyncProcessorRequest query (fun processor query -> processor.get <| query.Query "path")
+        | "get" -> do! asyncProcessorRequest query (fun processor query -> processor.get (query.Query "path") None)
         | "process" ->
             match query.Query "index" with
             | Some index -> do! asyncProcessorRequest query (fun processor query -> processor.processItem <| int index)
-            | None -> ()
+            |None -> ()
         | "setTheme" -> 
             let theme = query.Query "theme"                        
             match theme with

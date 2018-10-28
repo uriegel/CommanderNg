@@ -27,6 +27,7 @@ type Columns = {
 type ResponseItem = {
     items: string[]
     icon: string
+    isCurrent: bool
 }
 
 type Response = {
