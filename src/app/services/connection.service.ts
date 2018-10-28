@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Subject, Observable, BehaviorSubject } from 'rxjs'
-import { Item, Response, Get, CommanderView } from '../model/model'
+import { Item, Response, Get, CommanderView, Process } from '../model/model'
 
 function formatParams(params) {
     return "?" + Object
@@ -39,6 +39,14 @@ export class ConnectionService {
             commanderView: commanderView
         } : { commanderView: commanderView }
         return this.post<Response>("get", formatParams(get))
+    }
+
+    process(commanderView: CommanderView, index: number) {
+        const process: Process = {
+            index: index,
+            commanderView: commanderView
+        } 
+        return this.post<Response>("process", formatParams(process))
     }
 
     private post<T>(method: string, param = "") {

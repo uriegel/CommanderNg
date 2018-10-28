@@ -59,24 +59,31 @@ let getIcon (ext: string option) (idStrOption: string option) = async {
     return ms.GetBuffer ()
 }
 let run request = 
+
+    let asyncProcessorRequest query predicate = async {
+        let processor = 
+            match query with
+            | IsCommanderView processor -> Some processor
+            | _ -> None
+        match processor with
+        | Some processor -> 
+            let response = predicate processor query
+            let str = Json.serialize response.response
+            do! Response.asyncSendJsonString request str
+            match response.continuation with
+            | Some continuation -> continuation ()
+            | None -> ()
+        | None -> do! Response.asyncSendJsonString request ""        
+    }
+
     async {
         let query = UrlQuery.create request.data.header.path
         match query.method with
-        | "get" ->
-            let path = query.Query "path"
-            let processor = 
-                match query with
-                | IsCommanderView processor -> Some processor
-                | _ -> None
-            match processor with
-            | Some processor -> 
-                let response = processor.get path
-                let str = Json.serialize response.response
-                do! Response.asyncSendJsonString request str
-                match response.continuation with
-                | Some continuation -> continuation ()
-                | None -> ()
-            | None -> do! Response.asyncSendJsonString request ""        
+        | "get" -> do! asyncProcessorRequest query (fun processor query -> processor.get <| query.Query "path")
+        | "process" ->
+            match query.Query "index" with
+            | Some index -> do! asyncProcessorRequest query (fun processor query -> processor.processItem <| int index)
+            | None -> ()
         | "setTheme" -> 
             let theme = query.Query "theme"                        
             match theme with

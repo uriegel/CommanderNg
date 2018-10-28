@@ -19,6 +19,11 @@ export interface Get {
     path?: string
 }
 
+export interface Process {
+    commanderView: number   
+    index: number
+}
+
 export interface Item {
     items: string[]
     icon: string

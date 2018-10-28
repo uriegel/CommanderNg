@@ -69,17 +69,6 @@ let retrieveFileVersions path (items: ResponseItem[]) check =
     |> Array.filter isVersionFile 
     |> Array.map getVersionItem
 
-let getResponseItem id (item: Item) = { 
-        items = [| getNameOnly item.name; item.extension; getDataTime item.dateTime; getSize item; "" |] 
-        icon = 
-            match item.itemType with
-            | ItemType.File ->
-                match Str.toLower item.extension with
-                | ".exe" -> sprintf "/request/icon?path=%s&id=%d" item.name id
-                | _ -> sprintf "/request/icon?path=.%s" item.extension
-            | _ -> "Folder"
-    }
-
 let getItems path id = 
 
     let di = DirectoryInfo path
@@ -113,7 +102,7 @@ let getItems path id =
         | SortItem.Extension -> mapSortExtension
         | SortItem.DateTime -> mapSortDateTime
         | _ -> mapSortName
-    let mapping = createFileItem >> mapSort
+    let mapping = (createFileItem id) >> mapSort
     let sorting = 
         match descending with
         | true -> Array.sortByDescending takeSortItem
@@ -125,7 +114,6 @@ let getItems path id =
         |> sorting
         |> Array.map takeItem
     Array.concat [| [| createParentItem () |] ; directoryItems ; fileItems |]
-    |> Array.map (getResponseItem id)
 
 let getColumns () = [|
         { name = "Name"; isSortable = true; rightAligned = false }

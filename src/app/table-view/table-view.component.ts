@@ -29,8 +29,10 @@ export class TableViewComponent {
 
     @Input() 
     set items(value: Item[]) {
-        console.log("Items", value)
-        this._items = value
+        if (value) {
+            console.log("Items", value)
+            this._items = value
+        }
     }
     get items() { return this._items }
     _items: Item[]

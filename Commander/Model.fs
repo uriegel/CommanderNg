@@ -6,6 +6,7 @@ type ItemType = Parent = 0 | Directory = 1 | File = 2
 
 type Item = {
     itemType: ItemType
+    icon: string
     name: string
     extension: string 
     dateTime: DateTime
@@ -30,7 +31,7 @@ type ResponseItem = {
 
 type Response = {
     columns: Columns option  
-    items: ResponseItem[]
+    items: ResponseItem[] option
 }
 
 type GetResult = {
@@ -52,6 +53,7 @@ type Request = {
 
 let createParentItem () = {
     itemType = ItemType.Parent
+    icon = "Folder"
     extension = null
     name = ".."
     dateTime = Unchecked.defaultof<DateTime>
@@ -60,14 +62,19 @@ let createParentItem () = {
 
 let createDirectoryItem (item: DirectoryInfo) = {
     itemType = ItemType.Directory
+    icon = "Folder"
     extension = null
     name = item.Name
     dateTime = item.LastWriteTime
     size = 0L
 }
 
-let createFileItem (item: FileInfo) = {
+let createFileItem id (item: FileInfo) = {
     itemType = ItemType.File
+    icon = 
+        match Str.toLower item.Extension with
+        | ".exe" -> sprintf "/request/icon?path=%s&id=%d" item.Name id
+        | _ -> sprintf "/request/icon?path=.%s" item.Extension
     extension = item.Extension
     name = item.Name
     dateTime = item.LastWriteTime

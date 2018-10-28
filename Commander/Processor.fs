@@ -1,4 +1,5 @@
 module Processor
+open System.IO
 open Model
 open DirectoryProcessor
 open WebServer
@@ -15,6 +16,7 @@ let FILE_SYSTEM = "FileSystem"
 type ProcessorObject = {
     initEvents: (string->unit)->unit
     get: (string option)->GetResult
+    processItem: int->GetResult
     getCurrentPath: unit->string
 }
 
@@ -28,6 +30,7 @@ let create id =
     let mutable currentPath = @"c:\" // TODO: Initial "root", then save value in LocalStorage
     let mutable sentEvent = fun (item: string) -> ()
     let mutable requestNr = 0
+    let mutable currentItems = [||]
 
     let initEvents hotSentEvent = sentEvent <- hotSentEvent
 
@@ -60,11 +63,11 @@ let create id =
         | _ -> None
 
     let getRootItems () = { 
-        response = { items = [||]; columns = getColumns Type.Root }
+        response = { items = Some [||]; columns = getColumns Type.Root }
         continuation = None
     }
     let getDriveItems () = { 
-        response = { items = [||]; columns = getColumns Type.Drives }
+        response = { items = Some [||]; columns = getColumns Type.Drives }
         continuation = None
     }
 
@@ -81,8 +84,15 @@ let create id =
         | ROOT -> getRootItems ()
         | DRIVES -> getDriveItems () 
         | _ -> 
+            currentItems <- DirectoryProcessor.getItems path id
+
+            let getResponseItem (item: Item) = { 
+                icon = item.icon
+                items = [| getNameOnly item.name; item.extension; getDataTime item.dateTime; getSize item; "" |] 
+            }
+
             let result = {
-                items = DirectoryProcessor.getItems path id
+                items = Some (currentItems |> Array.map getResponseItem)
                 columns = getColumns Type.FileSystem
             }
             let thisRequest = requestNr
@@ -91,7 +101,7 @@ let create id =
 
             let continuation () = 
                 async {
-                    let updateItems = retrieveFileVersions path result.items check
+                    let updateItems = retrieveFileVersions path result.items.Value check
                     match check () with
                     | true -> 
                         let commanderUpdate = {
@@ -106,12 +116,31 @@ let create id =
                 response = result
                 continuation = Some continuation
             }
-            
+
+    let processItem index =             
+        let selectedItem = currentItems.[index]
+        printfn "Das ist der selektierte Wert: %s" selectedItem.name
+        match selectedItem.itemType with
+        | ItemType.Parent ->
+            let info = DirectoryInfo currentPath
+            get <| Some info.Parent.FullName            
+        | ItemType.Directory -> 
+            let path = Path.Combine (currentPath, selectedItem.name)
+            get <| Some path
+        | _ -> 
+            {
+                response = {
+                    items = None
+                    columns = None
+                }
+                continuation = None
+            }
 
     let getCurrentPath () = currentPath            
         
     {
         initEvents = initEvents
         get = get
+        processItem = processItem
         getCurrentPath = getCurrentPath
     }

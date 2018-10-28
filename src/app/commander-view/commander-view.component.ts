@@ -46,7 +46,7 @@ import { ConnectionService } from '../services/connection.service';
 })
 export class CommanderViewComponent implements OnInit, AfterViewInit {
 
-    // TODO: Return on folder selection -> get
+    // TODO: preserve last selection, set new selection when path changed 
     // TODO: Display hidden
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
     @ViewChild("input") private input: ElementRef
@@ -287,10 +287,12 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     }
 
     onColumnSort(evt: IColumnSortEvent) {
+        
     }
 
     private processItem() {
-
+        const index = this.tableView.getCurrentItemIndex()
+        this.response = from(this.connection.process(this.id, index))
     }
 
     private initializeRestrict() {
