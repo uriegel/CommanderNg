@@ -7,7 +7,9 @@ import { TableViewComponent } from '../table-view/table-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResultValue } from '../enums/dialog-result-value.enum'
-import { Item, ItemType, Columns } from '../model/model'
+import { Item, ItemType, Columns, Response, CommanderView, CommanderUpdate } from '../model/model'
+import { ThemesService } from '../services/themes.service';
+import { ConnectionService } from '../services/connection.service';
 
 @Component({
     selector: 'app-commander-view',
@@ -44,11 +46,12 @@ import { Item, ItemType, Columns } from '../model/model'
 })
 export class CommanderViewComponent implements OnInit, AfterViewInit {
 
+    // TODO: ItemHeight wrong, perhaps because of directory text box?
+    // TODO: Display hidden
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
     @ViewChild("input") private input: ElementRef
     @Output() private gotFocus: EventEmitter<CommanderViewComponent> = new EventEmitter()    
-    @Input() id: string
-    @Input() columns: Columns = { name: "", values: []}
+    @Input() id: CommanderView
     @Input()
     get path() { return this._path }
     set path(value: string) {
@@ -58,7 +61,20 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         this._path = value
     }
     private _path: string
-    items: Observable<Item[]>     
+
+    @Input()
+    set viewEvents(data: string) {
+        if (data) {
+            const update = JSON.parse(data) as CommanderUpdate
+            if (update.updateItems) {
+                const items = this.tableView.getAllItems()
+                if (items) 
+                    update.updateItems.forEach(n => items[n.index].items[n.columnIndex] = n.value)
+            }
+        }
+    }    
+
+    response: Observable<Response>
 
     currentItem: Item
 
@@ -70,7 +86,9 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         this.initializeRestrict() 
     }
 
-    constructor() { }
+    constructor(public themes: ThemesService, private connection: ConnectionService) {
+        this.response = from(this.connection.get(CommanderView.Left))
+    }
 
     focus() { this.tableView.focus() }
 
@@ -269,23 +287,10 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     }
 
     onColumnSort(evt: IColumnSortEvent) {
-        this.columnSort = evt
-        this.setItems(this.items)
     }
 
     private processItem() {
-        const item = this.tableView.getCurrentItem()
-    }
 
-    private setItems(items: Observable<Item[]>) {
-        if (!this.columnSort)
-            this.items = items
-        else {
-            const subscription = (items as Observable<Item[]>).subscribe({next: value => {
-                subscription.unsubscribe()
-                //this.items = from(new Promise<Item[]>(res => res(this.itemProcessor.sort(value, this.columnSort.index, this.columnSort.ascending))))
-            }})
-        }
     }
 
     private initializeRestrict() {
@@ -297,10 +302,10 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         let originalItems: Observable<Item[]>
         
         inputChars.subscribe(n => {
-            const subscription = this.items.subscribe(n => {
-                items.next(n)
-                subscription.unsubscribe()
-            })
+            // const subscription = this.items.subscribe(n => {
+            //     items.next(n)
+            //     subscription.unsubscribe()
+            // })
         })
         backSpaces.subscribe(n => {
             const subscription = originalItems.subscribe(n => {
@@ -311,7 +316,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
         const undoRestriction = () => {
             if (originalItems) {
-                this.setItems(originalItems)
+                //this.setItems(originalItems)
                 originalItems = null
                 this.restrictValue = ""
             }
