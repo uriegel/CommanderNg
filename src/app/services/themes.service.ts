@@ -7,6 +7,8 @@ import { Observable, Subject } from 'rxjs';
 export class ThemesService {
     constructor() { }
 
+    columnHeight = 0
+
     itemHeightChanged: Observable<boolean> = new Subject<boolean>();
 
     theme = ""

@@ -60,7 +60,8 @@ let retrieveFileVersions path (items: ResponseItem[]) check =
 
     let getVersionItem (index, item: ResponseItem) = {
         index = index
-        version = getVersion <| Path.Combine (path, sprintf "%s%s" item.items.[0] item.items.[1])
+        columnIndex = 4
+        value = getVersion <| Path.Combine (path, sprintf "%s%s" item.items.[0] item.items.[1])
     }
         
     items 

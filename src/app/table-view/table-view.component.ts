@@ -1,18 +1,16 @@
 import { Component, ViewChild, ElementRef, Output, EventEmitter, Input } from '@angular/core'
-import { Observable } from 'rxjs'
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as IColumnSortEvent } from '../columns/columns.component'
-import { Response, Item, Columns } from '../model/model'
-import { tick } from '@angular/core/src/render3';
+import { Item, Columns } from '../model/model'
 
 @Component({
-  selector: 'app-table-view',
-  templateUrl: './table-view.component.html',
-  styleUrls: ['./table-view.component.css']
+    selector: 'app-table-view',
+    templateUrl: './table-view.component.html',
+    styleUrls: ['./table-view.component.css']
 })
 export class TableViewComponent {
 
-    // TODO: [columnsHeight]=16 from theme
+    @Input() columnHeight = 0
     @Input() itemHeight = 0
     @Input() itemType: string
     @Output() private onSort: EventEmitter<IColumnSortEvent> = new EventEmitter()    
@@ -23,14 +21,19 @@ export class TableViewComponent {
     
     @Input()
     set columns(value: Columns) {
-        if (value)
+        if (value) 
             this._columns = value
     }
     get columns() { return this._columns }
     _columns: Columns
 
     @Input() 
-    items: Item[]
+    set items(value: Item[]) {
+        console.log("Items", value)
+        this._items = value
+    }
+    get items() { return this._items }
+    _items: Item[]
     
     focus() { this.table.nativeElement.focus() }
 

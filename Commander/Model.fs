@@ -33,6 +33,11 @@ type Response = {
     items: ResponseItem[]
 }
 
+type GetResult = {
+    response: Response
+    continuation: (unit->unit) option
+}
+
 type CommanderView = Left = 0 | Right = 1
 
 type CommanderEvent = {
@@ -71,7 +76,8 @@ let createFileItem (item: FileInfo) = {
 
 type UpdateItem = {
     index: int
-    version: string
+    columnIndex: int
+    value: string
 }
 
 type CommanderUpdate = {

@@ -3,7 +3,7 @@ import { CommanderViewComponent as Commander } from '../../commander-view/comman
 
 @Component({
     selector: 'test-commander-view',
-    template: '<app-commander-view></app-commander-view><app-commander-view></app-commander-view>',
+    template: '<app-commander-view></app-commander-view>',
     styleUrls: ['./commander-view.component.css']
 })
 export class CommanderViewComponent implements AfterViewInit {

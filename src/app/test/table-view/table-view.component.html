@@ -1,5 +1,6 @@
-<app-table-view class="tableContainer" [columns]="(response|async)?.columns" [itemHeight]="themes.itemHeight" [itemType]="itemType"
-    [items]="(response|async)?.items" (onSort)="onSort($event)"></app-table-view>
+<app-table-view class="tableContainer" [columns]="(response|async)?.columns" 
+    [itemHeight]="themes.itemHeight" [columnHeight]="themes.columnHeight"
+    [itemType]="itemType" [items]="(response|async)?.items" (onSort)="onSort($event)"></app-table-view>
 <button (click)="onNeu()">Neu</button>
 <button (click)="onChange()">Auswechseln</button>
 

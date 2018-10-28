@@ -71,8 +71,11 @@ let run request =
             match processor with
             | Some processor -> 
                 let response = processor.get path
-                let str = Json.serialize response
+                let str = Json.serialize response.response
                 do! Response.asyncSendJsonString request str
+                match response.continuation with
+                | Some continuation -> continuation ()
+                | None -> ()
             | None -> do! Response.asyncSendJsonString request ""        
         | "setTheme" -> 
             let theme = query.Query "theme"                        

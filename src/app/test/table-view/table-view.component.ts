@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core'
 import { from, Observable } from 'rxjs'
 import { IColumnSortEvent } from '../../columns/columns.component'
-import { Item, Response, CommanderView, UpdateItem, CommanderUpdate } from '../../model/model'
+import { Response, CommanderView, CommanderUpdate } from '../../model/model'
 import { ConnectionService } from 'src/app/services/connection.service'
 import { ThemesService } from 'src/app/services/themes.service'
 import { TableViewComponent as tableView } from '../../table-view/table-view.component'
@@ -25,12 +25,8 @@ export class TableViewComponent implements OnInit {
             if (update.updateItems) {
                 console.log("view sse", update)
                 const items = this.tableView.getAllItems()
-                if (items) {
-                    update.updateItems.forEach(n => {
-                        // TODO: 4 not fix, but in UpdateItem
-                        items[n.index].items[4] = n.version
-                    })
-                }
+                if (items) 
+                    update.updateItems.forEach(n => items[n.index].items[n.columnIndex] = n.value)
             }
         }
     }

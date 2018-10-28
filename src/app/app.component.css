@@ -1,5 +1,6 @@
 :host.blue-theme {
     --font-size: 75%;
+    --itemColumnHeight: 16;
     --itemHeight: 18;
     --testItemHeight: 30;
     --font-family: Arial, Helvetica, sans-serif;
@@ -23,6 +24,7 @@
 
 :host.dark-theme {
     --font-size: 75%;
+    --itemColumnHeight: 16;
     --itemHeight: 18;
     --testItemHeight: 30;
     --font-family: Arial, Helvetica, sans-serif;
@@ -48,6 +50,7 @@
 
 :host.light-blue-theme {
     --font-size: 85%;
+    --itemColumnHeight: 17;
     --itemHeight: 18;
     --testItemHeight: 32;
     --font-family: Arial, Helvetica, sans-serif;
@@ -84,6 +87,7 @@
 :host.ubuntu-theme {
     --icon-color: darkgray;
     --font-family: Arial, Helvetica, sans-serif;
+    --itemColumnHeight: 17;
     --itemHeight: 18;
     --font-size: 85%;
     --menu-color: rgba(255, 255, 255, 0.85);

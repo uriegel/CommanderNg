@@ -14,7 +14,7 @@ let FILE_SYSTEM = "FileSystem"
 
 type ProcessorObject = {
     initEvents: (string->unit)->unit
-    get: (string option)->Response
+    get: (string option)->GetResult
     getCurrentPath: unit->string
 }
 
@@ -25,7 +25,7 @@ type Type =
 let create id = 
 
     let mutable lastColumns: Type option = None
-    let mutable currentPath = @"c:\windows" // TODO: Initial "root", then save value in LocalStorage
+    let mutable currentPath = @"c:\" // TODO: Initial "root", then save value in LocalStorage
     let mutable sentEvent = fun (item: string) -> ()
     let mutable requestNr = 0
 
@@ -59,8 +59,14 @@ let create id =
                 }    
         | _ -> None
 
-    let getRootItems () = { items = [||]; columns = getColumns Type.Root }
-    let getDriveItems () = { items = [||]; columns = getColumns Type.Drives }
+    let getRootItems () = { 
+        response = { items = [||]; columns = getColumns Type.Root }
+        continuation = None
+    }
+    let getDriveItems () = { 
+        response = { items = [||]; columns = getColumns Type.Drives }
+        continuation = None
+    }
 
     let get path = 
         requestNr <- requestNr + 1
@@ -83,20 +89,24 @@ let create id =
 
             let check () = thisRequest = requestNr
 
-            async {
-                do! Async.Sleep(100) 
-                let updateItems = retrieveFileVersions path result.items check
-                match check () with
-                | true -> 
-                    let commanderUpdate = {
-                        id = requestNr
-                        updateItems =  updateItems
-                    }
-                    sentEvent <| Json.serialize commanderUpdate
-                | false -> ()          
-            } |> Async.Start
+            let continuation () = 
+                async {
+                    let updateItems = retrieveFileVersions path result.items check
+                    match check () with
+                    | true -> 
+                        let commanderUpdate = {
+                            id = requestNr
+                            updateItems =  updateItems
+                        }
+                        sentEvent <| Json.serialize commanderUpdate
+                    | false -> ()          
+                } |> Async.Start
             
-            result
+            {
+                response = result
+                continuation = Some continuation
+            }
+            
 
     let getCurrentPath () = currentPath            
         

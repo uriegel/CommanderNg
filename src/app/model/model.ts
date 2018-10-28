@@ -60,7 +60,8 @@ export interface Column {
 
 export interface UpdateItem  {
     index: number
-    version: string
+    columnIndex: number
+    value: string   
 }
 
 export interface CommanderUpdate {

@@ -24,6 +24,7 @@ export class AppComponent {
                 const bodyStyles = window.getComputedStyle(appElement.nativeElement)
                 themes.itemHeight = <any>bodyStyles.getPropertyValue('--itemHeight')
                 themes.testItemHeight = <any>bodyStyles.getPropertyValue('--testItemHeight')
+                themes.columnHeight = <any>bodyStyles.getPropertyValue('--itemColumnHeight')
             })
         })  
     }
