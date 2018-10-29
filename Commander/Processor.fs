@@ -25,8 +25,6 @@ type Type =
     | Drives = 1
     | FileSystem = 2
 
-let mutable showHidden = false
-
 let create id = 
 
     let mutable lastColumns: Type option = None

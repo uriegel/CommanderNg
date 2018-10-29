@@ -10,6 +10,13 @@ type SortItem =
     | Extension = 1
     | DateTime = 2
 
+let mutable showHidden = true
+
+let filterHidden (attributes: FileAttributes) = 
+    match showHidden with
+    | true -> not (isHidden attributes)
+    | false -> false
+
 let getNameOnly name =
     match name with 
     | ".." -> name
@@ -82,6 +89,7 @@ let getItems path id =
 
     let directoryItems = 
         directoryItems () 
+        |> Array.filter (fun n -> filterHidden n.Attributes)
         |> Array.map createDirectoryItem
         |> Array.sortBy sortByName
 
@@ -110,6 +118,7 @@ let getItems path id =
 
     let fileItems = 
         fileItems ()
+        |> Array.filter (fun n -> filterHidden n.Attributes)
         |> Array.map mapping
         |> sorting
         |> Array.map takeItem

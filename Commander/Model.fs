@@ -66,11 +66,16 @@ let createParentItem () = {
     isHidden = false
 }
 
+let getDirectoryName (item: DirectoryInfo) = 
+    match item.Extension with
+    | null|""  -> item.Name
+    | _ -> sprintf "%s%s" item.Name item.Extension
+
 let createDirectoryItem (item: DirectoryInfo) = {
     itemType = ItemType.Directory
     icon = "Folder"
-    extension = null
-    name = item.Name
+    extension = ""
+    name = getDirectoryName item
     dateTime = item.LastWriteTime
     size = 0L
     isHidden = isHidden item.Attributes

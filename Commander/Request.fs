@@ -95,8 +95,8 @@ let run request =
         | "showHidden" ->
             let str = query.Query "show"                        
             match str with
-            | Some value when value = "true" -> Processor.showHidden <- true
-            | _ -> Processor.showHidden <- false
+            | Some value when value = "true" -> DirectoryProcessor.showHidden <- true
+            | _ -> DirectoryProcessor.showHidden <- false
             do! Response.asyncSendJsonString request "{}"
         | "close" -> 
             close ()
