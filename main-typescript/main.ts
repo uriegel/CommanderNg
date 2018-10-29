@@ -59,7 +59,7 @@ app.on('ready', () => {
     const prc = spawn("dotnet", [ "../Commander/bin/Debug/netcoreapp2.1/Commander.dll" ])
     let theme = ""
     prc.stdout.on('data', data => {
-        const str = data.toString()
+        const str = data.toString() as string
         const lines = str.split(/(\r?\n)/g).map(n => n.trim()).filter(n => !!n)
         lines.forEach(n => {
             switch (n) {
