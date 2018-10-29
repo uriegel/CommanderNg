@@ -10,12 +10,12 @@ type SortItem =
     | Extension = 1
     | DateTime = 2
 
-let mutable showHidden = true
+let mutable showHidden = false
 
 let filterHidden (attributes: FileAttributes) = 
     match showHidden with
-    | true -> not (isHidden attributes)
-    | false -> false
+    | true -> true
+    | false -> not (isHidden attributes)
 
 let getNameOnly name =
     match name with 
