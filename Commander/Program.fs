@@ -1,11 +1,7 @@
 ﻿open System
 open Request
 open Commander
-open Model
-open System.Configuration
-open Microsoft.Extensions.Configuration
 open System.IO
-open System.Diagnostics
 
 [<EntryPoint>]
 let main argv =
@@ -16,13 +12,6 @@ let main argv =
     let affe = LocalStorage.get "Affe"
     LocalStorage.set "Affe" "Huhn" |> ignore
     let huhn = LocalStorage.get "Affe"
-
-    let test = "/request/close"
-        
-    let rekwest = {
-        commanderView = Some CommanderView.Left
-        newPath = None
-    }
 
     try
         let configuration = {
