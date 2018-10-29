@@ -29,6 +29,7 @@ export interface Item {
     icon: string
     isSelected?: boolean
     isCurrent?: boolean
+    isHidden?: boolean
 }
 
 export interface Response {

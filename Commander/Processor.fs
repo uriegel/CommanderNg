@@ -24,6 +24,9 @@ type Type =
     Root = 0
     | Drives = 1
     | FileSystem = 2
+
+let mutable showHidden = false
+
 let create id = 
 
     let mutable lastColumns: Type option = None
@@ -98,6 +101,7 @@ let create id =
                 icon = item.icon
                 items = [| getNameOnly item.name; item.extension; getDataTime item.dateTime; getSize item; "" |] 
                 isCurrent = index = indexToSelect
+                isHidden = item.isHidden
             }
 
             let result = {

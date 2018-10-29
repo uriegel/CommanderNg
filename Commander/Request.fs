@@ -83,18 +83,25 @@ let run request =
         | "process" ->
             match query.Query "index" with
             | Some index -> do! asyncProcessorRequest query (fun processor query -> processor.processItem <| int index)
-            |None -> ()
+            | None -> do! Response.asyncSendJsonString request ""
         | "setTheme" -> 
             let theme = query.Query "theme"                        
             match theme with
             | Some theme -> setTheme theme
-            | None -> ()
+            | None -> do! Response.asyncSendJsonString request "{}"
         | "icon" ->
             let! bytes = getIcon <| query.Query "path" <| query.Query "id"
             do! Response.asyncSendFileBytes request "image/png" (Some bytes)
+        | "showHidden" ->
+            let str = query.Query "show"                        
+            match str with
+            | Some value when value = "true" -> Processor.showHidden <- true
+            | _ -> Processor.showHidden <- false
+            do! Response.asyncSendJsonString request "{}"
         | "close" -> 
             close ()
             do! Response.asyncSendJson request Seq.empty
             shutdown ()
+            do! Response.asyncSendJsonString request ""
         | _ -> failwith "Unknown command"
     }

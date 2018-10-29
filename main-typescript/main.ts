@@ -1,6 +1,5 @@
 import {app, BrowserWindow, protocol, Menu} from 'electron'
 import * as path from 'path'
-import * as url from 'url'
 import * as settings from 'electron-settings'
 import  { spawn } from 'child_process'
 var XMLHttpRequest = require('xhr2')
@@ -159,6 +158,7 @@ function initializeMenu(mainWindow: BrowserWindow, theme: string) {
                 label: '&Versteckte Dateien',
                 accelerator: "Ctrl+H",
                 type: "checkbox",
+                click: evt => post("showHidden", formatParams({"show": evt.checked}))
             },
             {
                 label: '&Aktualisieren',

@@ -11,6 +11,7 @@ type Item = {
     extension: string 
     dateTime: DateTime
     size: int64 
+    isHidden: bool
 }
 
 type Column = {
@@ -28,6 +29,7 @@ type ResponseItem = {
     items: string[]
     icon: string
     isCurrent: bool
+    isHidden: bool
 }
 
 type Response = {
@@ -52,6 +54,8 @@ type Request = {
     newPath: string option
 }
 
+let isHidden (attributes: FileAttributes) = attributes.HasFlag FileAttributes.Hidden
+
 let createParentItem () = {
     itemType = ItemType.Parent
     icon = "Folder"
@@ -59,6 +63,7 @@ let createParentItem () = {
     name = ".."
     dateTime = Unchecked.defaultof<DateTime>
     size = 0L
+    isHidden = false
 }
 
 let createDirectoryItem (item: DirectoryInfo) = {
@@ -68,6 +73,7 @@ let createDirectoryItem (item: DirectoryInfo) = {
     name = item.Name
     dateTime = item.LastWriteTime
     size = 0L
+    isHidden = isHidden item.Attributes
 }
 
 let createFileItem id (item: FileInfo) = {
@@ -80,6 +86,7 @@ let createFileItem id (item: FileInfo) = {
     name = item.Name
     dateTime = item.LastWriteTime
     size = item.Length
+    isHidden = isHidden item.Attributes
 }
 
 type UpdateItem = {
