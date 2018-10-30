@@ -46,7 +46,6 @@ import { ConnectionService } from '../services/connection.service';
 })
 export class CommanderViewComponent implements OnInit, AfterViewInit {
 
-    // TODO: Save state display hidden
     // TODO: Refresh: save currentItem
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
     @ViewChild("input") private input: ElementRef

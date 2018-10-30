@@ -40,8 +40,9 @@ function start() {
     mainWindow.on('unmaximize', () => settings.set("isMaximized", false))
 
     const theme = <any>settings.get("theme", getDefaultTheme())
+    const showHidden = <boolean>settings.get("showHidden", false)
 
-    initializeMenu(mainWindow, theme)
+    initializeMenu(mainWindow, theme, showHidden)
 
     function saveBounds() {
         if (!mainWindow.isMaximized()) {
@@ -64,6 +65,7 @@ app.on('ready', () => {
             switch (n) {
                 case "-cmdevt: ready":
                     theme = start()
+                    post("showHidden", formatParams({"show": settings.get("showHidden", false)}))
                     break
                 case "-cmdevt: sse":
                     setTheme(theme)
@@ -93,7 +95,7 @@ function close() {
     return post("close")
 }
 
-function initializeMenu(mainWindow: BrowserWindow, theme: string) {
+function initializeMenu(mainWindow: BrowserWindow, theme: string, showHidden: boolean) {
     const menu = Menu.buildFromTemplate([
         {
             label: '&Datei',
@@ -157,12 +159,18 @@ function initializeMenu(mainWindow: BrowserWindow, theme: string) {
             submenu: [{
                 label: '&Versteckte Dateien',
                 accelerator: "Ctrl+H",
+                checked: showHidden,
                 type: "checkbox",
-                click: evt => post("showHidden", formatParams({"show": evt.checked}))
+                click: evt => {
+                    post("showHidden", formatParams({"show": evt.checked}))
+                    post("refresh")
+                    settings.set("showHidden", evt.checked)
+                }
             },
             {
                 label: '&Aktualisieren',
                 accelerator: "Ctrl+R",
+                click: evt => post("refresh")
             },            
             {
                 type: 'separator'

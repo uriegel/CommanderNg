@@ -98,7 +98,7 @@ let run request =
             | Some value when value = "true" -> DirectoryProcessor.showHidden <- true
             | _ -> DirectoryProcessor.showHidden <- false
             do! Response.asyncSendJsonString request "{}"
-            refresh ()
+        | "refresh" -> refresh ()
         | "close" -> 
             close ()
             do! Response.asyncSendJson request Seq.empty
