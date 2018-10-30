@@ -46,8 +46,27 @@ type CommanderView = Left = 0 | Right = 1
 
 type CommanderEvent = {
     theme: string option
-    isInitialized: Boolean
+    isInitialized: bool
+    refresh: bool
 }
+
+let createInitialized () = {
+        theme = None
+        isInitialized = true
+        refresh = false
+    }
+
+let createTheme theme = {
+        theme = Some theme
+        isInitialized = false
+        refresh = false
+    }
+
+let createRefresh () = {
+        theme = None
+        isInitialized = false
+        refresh = true
+    }
 
 type Request = {
     commanderView: CommanderView option

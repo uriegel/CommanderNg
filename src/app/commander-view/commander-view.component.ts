@@ -7,7 +7,7 @@ import { TableViewComponent } from '../table-view/table-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResultValue } from '../enums/dialog-result-value.enum'
-import { Item, Response, CommanderView, CommanderUpdate } from '../model/model'
+import { Item, Response, CommanderView, CommanderUpdate, CommanderEvent } from '../model/model'
 import { ThemesService } from '../services/themes.service';
 import { ConnectionService } from '../services/connection.service';
 
@@ -46,7 +46,8 @@ import { ConnectionService } from '../services/connection.service';
 })
 export class CommanderViewComponent implements OnInit, AfterViewInit {
 
-    // TODO: Display hidden
+    // TODO: Save state display hidden
+    // TODO: Refresh: save currentItem
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
     @ViewChild("input") private input: ElementRef
     @Output() private gotFocus: EventEmitter<CommanderViewComponent> = new EventEmitter()    
@@ -86,7 +87,12 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     }
 
     constructor(public themes: ThemesService, private connection: ConnectionService) {
-        this.response = from(this.connection.get(CommanderView.Left))
+        this.refresh()
+        this.connection.commanderEvents.subscribe(evt => {
+            const commanderEvent: CommanderEvent = JSON.parse(evt)
+            if (commanderEvent.refresh)
+                this.refresh()
+        })
     }
 
     focus() { this.tableView.focus() }
@@ -98,7 +104,9 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     onResize() { this.tableView.onResize() }
 
-    refresh() { this.path = this.path }
+    refresh() { 
+        this.response = from(this.connection.get(CommanderView.Left))
+    }
 
     getSelectedItems() {
         const items = this.tableView.getAllItems().filter(n => n.isSelected)

@@ -40,6 +40,7 @@ export interface Response {
 export interface CommanderEvent {
     columns?: Columns
     theme?: string
+    refresh?: boolean
 }
 
 export interface DirectoryItem {

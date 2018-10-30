@@ -32,11 +32,7 @@ let sseInit context =
     serverSentEvent <- Some context
     leftProcessor.initEvents <| serverSentEvent.Value.send LEFTVIEW
     rightProcessor.initEvents <| serverSentEvent.Value.send RIGHTVIEW
-    let commanderEvent = {
-        theme = None
-        isInitialized = true
-    }
-    context.send COMMANDER <| Json.serialize commanderEvent
+    context.send COMMANDER <| Json.serialize (createInitialized ())
 
 let run () = evt.WaitOne () |> ignore
 
@@ -49,10 +45,10 @@ let shutdown () =
     
 let setTheme (theme: string) =
     match serverSentEvent with
-    | Some context -> 
-        let commanderEvent = {
-            theme = Some theme
-            isInitialized = false
-        }
-        context.send COMMANDER <| Json.serialize commanderEvent
+    | Some context -> context.send COMMANDER <| Json.serialize (createTheme theme)
+    | None -> ()
+
+let refresh () = 
+    match serverSentEvent with
+    | Some context -> context.send COMMANDER <| Json.serialize (createRefresh ())
     | None -> ()
