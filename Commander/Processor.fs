@@ -77,8 +77,11 @@ let create id =
         let path = 
             match path with
             | Some path -> 
-                currentPath <- path
-                path
+                if Directory.Exists path then
+                    currentPath <- path
+                    path
+                else
+                    currentPath
             | None -> currentPath
 
         let getIndexToSelect (currentItems: Item[]) = 
@@ -97,7 +100,11 @@ let create id =
 
             let getResponseItem index (item: Item) = { 
                 icon = item.icon
-                items = [| getNameOnly item.name; item.extension; getDataTime item.dateTime; getSize item; "" |] 
+                items = 
+                    match item.itemType with
+                    | ItemType.File -> [| getNameOnly item.name; item.extension; getDataTime item.dateTime; getSize item; "" |] 
+                    | ItemType.Directory -> [| item.name; ""; getDataTime item.dateTime; ""; "" |] 
+                    | _ -> [| item.name; ""; ""; ""; "" |] 
                 isCurrent = index = indexToSelect
                 isHidden = item.isHidden
             }
