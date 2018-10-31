@@ -25,6 +25,7 @@ export interface Process {
 }
 
 export interface Item {
+    index: number
     items: string[]
     icon: string
     isSelected?: boolean
@@ -37,10 +38,14 @@ export interface Response {
     items: Item[]
 }
 
+export interface ShowHidden {
+    value: boolean
+}
+
 export interface CommanderEvent {
-    columns?: Columns
     theme?: string
     refresh?: boolean
+    showHidden?: ShowHidden
 }
 
 export interface DirectoryItem {

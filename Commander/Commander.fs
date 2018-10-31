@@ -52,3 +52,8 @@ let refresh () =
     match serverSentEvent with
     | Some context -> context.send COMMANDER <| Json.serialize (createRefresh ())
     | None -> ()
+
+let showHidden hidden = 
+    match serverSentEvent with
+    | Some context -> context.send COMMANDER <| Json.serialize (createShowHidden hidden)
+    | None -> ()

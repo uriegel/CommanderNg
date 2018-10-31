@@ -99,6 +99,7 @@ let create id =
             let indexToSelect = getIndexToSelect currentItems
 
             let getResponseItem index (item: Item) = { 
+                index = index
                 icon = item.icon
                 items = 
                     match item.itemType with

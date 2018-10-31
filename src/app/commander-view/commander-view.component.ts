@@ -46,7 +46,8 @@ import { ConnectionService } from '../services/connection.service';
 })
 export class CommanderViewComponent implements OnInit, AfterViewInit {
 
-    // TODO: Refresh: save currentItem
+    // TODO: ShowHidden: filter hidden
+    // TODO: Restrict Items, filter hidden
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
     @ViewChild("input") private input: ElementRef
     @Output() private gotFocus: EventEmitter<CommanderViewComponent> = new EventEmitter()    

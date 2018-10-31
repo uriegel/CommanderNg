@@ -65,10 +65,10 @@ app.on('ready', () => {
             switch (n) {
                 case "-cmdevt: ready":
                     theme = start()
-                    post("showHidden", formatParams({"show": settings.get("showHidden", false)}))
                     break
                 case "-cmdevt: sse":
                     setTheme(theme)
+                    post("showHidden", formatParams({"show": settings.get("showHidden", false)}))
                     break
                 default:
                     console.log(n)
@@ -82,8 +82,8 @@ app.on('ready', () => {
 
     prc.on('close', code => console.log('process exit code', code))
 
-    //const auguryPath = 'C:\\Users\\urieg\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\elgalmkoelokbchhkhacckoklkejnhcd\\1.19.1_0'
-    //BrowserWindow.addDevToolsExtension(auguryPath)
+    // const auguryPath = 'C:\\Users\\urieg\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\elgalmkoelokbchhkhacckoklkejnhcd\\1.19.1_0'
+    // BrowserWindow.addDevToolsExtension(auguryPath)
 })
 
 app.on('window-all-closed', () => {
@@ -163,7 +163,6 @@ function initializeMenu(mainWindow: BrowserWindow, theme: string, showHidden: bo
                 type: "checkbox",
                 click: evt => {
                     post("showHidden", formatParams({"show": evt.checked}))
-                    post("refresh")
                     settings.set("showHidden", evt.checked)
                 }
             },
