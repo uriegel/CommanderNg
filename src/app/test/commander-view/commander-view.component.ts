@@ -5,7 +5,7 @@ import { CommanderEvent } from 'src/app/model/model';
 
 @Component({
     selector: 'test-commander-view',
-    template: '<app-commander-view [id]=0 [viewEvents]="connection.leftViewEvents|async"></app-commander-view>',
+    template: '<app-commander-view [id]="0" [viewEvents]="connection.leftViewEvents|async"></app-commander-view>',
     styleUrls: ['./commander-view.component.css']
 })
 export class CommanderViewComponent implements AfterViewInit {

@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, Input, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core'
 import { trigger, state, style, transition, animate } from '@angular/animations'
 import { Observable, Subject, from, fromEvent, zip } from 'rxjs'
-import { filter } from 'rxjs/operators'
+import { filter, map } from 'rxjs/operators'
 import { IColumnSortEvent } from '../columns/columns.component'
 import { TableViewComponent } from '../table-view/table-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
@@ -75,6 +75,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     }    
 
     response: Observable<Response>
+    items: Observable<Item[]>
 
     currentItem: Item
 
@@ -82,12 +83,14 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     ngOnInit() { this.path = "drives" }
     ngAfterViewInit() { 
+
+        this.refresh()
+
         this.keyDownEvents = fromEvent(this.tableView.table.nativeElement, "keydown") 
         this.initializeRestrict() 
     }
 
     constructor(public themes: ThemesService, private connection: ConnectionService) {
-        this.refresh()
         this.connection.commanderEvents.subscribe(evt => {
             const commanderEvent: CommanderEvent = JSON.parse(evt)
             if (commanderEvent.refresh)
@@ -105,7 +108,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     onResize() { this.tableView.onResize() }
 
     refresh() { 
-        this.reconnectPipes()
+        this.reconnectObservables(from(this.connection.get(this.id)))
     }
 
     getSelectedItems() {
@@ -299,7 +302,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     private processItem() {
         const index = this.tableView.getCurrentItemIndex()
-        this.reconnectPipes(index)
+        this.reconnectObservables(from(this.connection.process(this.id, index)))
     }
 
     private initializeRestrict() {
@@ -368,8 +371,11 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         escapes.subscribe(() => undoRestriction())
     }
 
-    reconnectPipes(index?: number) {
-        this.response = from(this.connection.get(this.id))
+    reconnectObservables(observable: Observable<Response>) {
+        this.response = observable
+        this.items = 
+            this.response
+            .pipe(map(n => n.items.filter(n => !n.isHidden)))
     }
 
     private readonly restrictingOffs = new Subject()
