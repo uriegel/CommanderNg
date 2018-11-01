@@ -105,7 +105,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     onResize() { this.tableView.onResize() }
 
     refresh() { 
-        this.response = from(this.connection.get(CommanderView.Left))
+        this.reconnectPipes()
     }
 
     getSelectedItems() {
@@ -299,7 +299,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     private processItem() {
         const index = this.tableView.getCurrentItemIndex()
-        this.response = from(this.connection.process(this.id, index))
+        this.reconnectPipes(index)
     }
 
     private initializeRestrict() {
@@ -366,6 +366,10 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
         this.restrictingOffs.subscribe(() => undoRestriction())
         escapes.subscribe(() => undoRestriction())
+    }
+
+    reconnectPipes(index?: number) {
+        this.response = from(this.connection.get(this.id))
     }
 
     private readonly restrictingOffs = new Subject()

@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core'
 import { from, Observable } from 'rxjs'
 import { IColumnSortEvent } from '../../columns/columns.component'
-import { Response, CommanderView, CommanderUpdate } from '../../model/model'
+import { Response, CommanderView, CommanderUpdate, Item } from '../../model/model'
 import { ConnectionService } from 'src/app/services/connection.service'
 import { ThemesService } from 'src/app/services/themes.service'
 import { TableViewComponent as tableView } from '../../table-view/table-view.component'
+import { map, filter } from 'rxjs/operators';
 
 @Component({
     selector: 'app-test-table-view',
@@ -17,6 +18,7 @@ export class TableViewComponent implements OnInit {
     //itemType = "testItem"
 
     response: Observable<Response>
+    items: Observable<Item[]>
 
     @Input()
     set viewEvents(data: string) {
@@ -25,8 +27,9 @@ export class TableViewComponent implements OnInit {
             if (update.updateItems) {
                 console.log("view sse", update)
                 const items = this.tableView.getAllItems()
-                if (items) 
-                    update.updateItems.forEach(n => items[n.index].items[n.columnIndex] = n.value)
+                // TODO: itemIndex, not arrayIndex
+                // if (items) 
+                //     update.updateItems.forEach(n => items[n.index].items[n.columnIndex] = n.value)
             }
         }
     }
@@ -34,20 +37,27 @@ export class TableViewComponent implements OnInit {
     @ViewChild(tableView) tableView: tableView
 
     constructor(public themes: ThemesService, private connection: ConnectionService) {
-        this.response = from(this.connection.get(CommanderView.Left))
+        this.reconnectObservables(from(this.connection.get(CommanderView.Left)))
     }
 
     ngOnInit() { }
 
     onNeu() {
-        this.response = from(this.connection.get(CommanderView.Left, "c:\\windows\\system32"))
+        this.reconnectObservables(from(this.connection.get(CommanderView.Left, "c:\\windows\\system32")))
     }
 
     onChange() {
-        this.response = from(this.connection.get(CommanderView.Left, "c:\\windows"))
+        this.reconnectObservables(from(this.connection.get(CommanderView.Left, "c:\\windows")))
     }
 
     onSort(sortEvent: IColumnSortEvent) {
         console.log(`Sorting: ${sortEvent.index} ascending: ${sortEvent.ascending}`)
+    }
+
+    private reconnectObservables(observable: Observable<Response>) {
+        this.response = observable
+        this.items = 
+            this.response
+            .pipe(map(n => n.items.filter(n => !n.isHidden)))
     }
 }
