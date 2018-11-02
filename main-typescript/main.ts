@@ -50,7 +50,7 @@ function start() {
             settings.set("window-bounds", <any>bounds)
         }
     }    
-    return theme
+    return {mainWindow, theme}
 }
 
 app.on('ready', () => {
@@ -58,16 +58,19 @@ app.on('ready', () => {
     
     const prc = spawn("dotnet", [ "../Commander/bin/Debug/netcoreapp2.1/Commander.dll" ])
     let theme = ""
+    let mainWindow: BrowserWindow
     prc.stdout.on('data', data => {
         const str = data.toString() as string
         const lines = str.split(/(\r?\n)/g).map(n => n.trim()).filter(n => !!n)
         lines.forEach(n => {
             switch (n) {
                 case "-cmdevt: ready":
-                    theme = start()
+                    let res = start()
+                    mainWindow = res.mainWindow
+                    theme = res.theme
                     break
                 case "-cmdevt: sse":
-                    setTheme(theme)
+                    setTheme(mainWindow, theme)
                     post("showHidden", formatParams({"show": settings.get("showHidden", false)}))
                     break
                 default:
@@ -188,25 +191,25 @@ function initializeMenu(mainWindow: BrowserWindow, theme: string, showHidden: bo
                 type: "radio",
                 visible: process.platform == "linux",
                 checked: theme == "ubuntu",
-                click: () => setTheme("ubuntu")
+                click: () => setTheme(mainWindow, "ubuntu")
             },
             {
                 label: '&Blaues Thema',
                 type: "radio",
                 checked: theme == "blue",
-                click: () => setTheme("blue")
+                click: () => setTheme(mainWindow,"blue")
             },
             {
                 label: '&Hellblaues Thema',
                 type: "radio",
                 checked: theme == "lightblue",
-                click: () => setTheme("lightblue")
+                click: () => setTheme(mainWindow,"lightblue")
             },
             {
                 label: '&Dunkles Thema',
                 type: "radio",
                 checked: theme == "dark",
-                click: () => setTheme("dark")
+                click: () => setTheme(mainWindow,"dark")
             },
             {
                 type: 'separator'
@@ -237,8 +240,9 @@ function formatParams(params:any) {
         .join("&")
 }
 
-function setTheme(theme: string) {
+function setTheme(mainWindow: BrowserWindow, theme: string) {
     console.log("Theme", theme)
+    mainWindow.webContents.send("setTheme", theme)
     post("setTheme", formatParams({"theme": theme}))
     settings.set("theme", theme)  
 }

@@ -18,14 +18,13 @@ export class AppComponent {
     constructor(public themes: ThemesService, private appElement: ElementRef, private connection: ConnectionService) { 
         this.connection.commanderEvents.subscribe(evt => {
             const commanderEvent: CommanderEvent = JSON.parse(evt)
-            if (commanderEvent.theme)
+            if (commanderEvent.theme) {
                 themes.theme = commanderEvent.theme
-            setTimeout(() => {
                 const bodyStyles = window.getComputedStyle(appElement.nativeElement)
                 themes.itemHeight = <any>bodyStyles.getPropertyValue('--itemHeight')
                 themes.testItemHeight = <any>bodyStyles.getPropertyValue('--testItemHeight')
                 themes.columnHeight = <any>bodyStyles.getPropertyValue('--itemColumnHeight')
-            })
+            }
         })  
     }
 }

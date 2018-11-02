@@ -46,7 +46,7 @@ import { ConnectionService } from '../services/connection.service';
 })
 export class CommanderViewComponent implements OnInit, AfterViewInit {
 
-    // TODO: ShowHidden: filter hidden
+    // TODO: ShowHidden: filter hidden directly from main ts
     // TODO: Restrict Items, filter hidden
     // TODO: Sort columns
     // TODO: icon with caches and the right icon
@@ -80,7 +80,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     }    
 
     response: Observable<Response>
-    items: Observable<Item[]>
+    items: Item[]
 
     currentItem: Item
 
@@ -307,7 +307,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     private processItem() {
         const index = this.tableView.getCurrentItemIndex()
-        this.reconnectObservables(from(this.connection.process(this.id, index)))
+        this.reconnectObservables(from(this.connection.process(this.id, this.items[index].index)))
     }
 
     private initializeRestrict() {
@@ -378,9 +378,10 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     reconnectObservables(observable: Observable<Response>) {
         this.response = observable
-        this.items = 
-            this.response
-            .pipe(map(n => n.items.filter(n => !n.isHidden)))
+        const subscription = this.response.subscribe(obs =>{
+            subscription.unsubscribe()
+            this.items = obs.items.filter(n => !n.isHidden)
+        })
     }
 
     private readonly restrictingOffs = new Subject()
