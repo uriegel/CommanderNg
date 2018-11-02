@@ -19,11 +19,6 @@ let getNameOnly name =
         | -1 -> name
         | _ -> substringLength 0 pos name
 
-let getDataTime (dateTime: System.DateTime) =
-    match dateTime.Ticks with
-    | 0L -> ""
-    | _ -> dateTime.ToString "g"
-
 let getSize item = 
     match item.itemType with
     | ItemType.File -> 
@@ -78,41 +73,15 @@ let getItems path id =
     let directoryItems = directoryItems di
     let fileItems = fileItems di
 
-    let sortByName (item: Item) = Str.toLower item.name
-
     let directoryItems = 
         directoryItems () 
         |> Array.map createDirectoryItem
-        |> Array.sortBy sortByName
 
-    // Sorting:
-    let descending = false
-    let sortItem = SortItem.Name
-
-    let takeItem (a, _) = a
-    let takeSortItem (_, b) = b
-
-    let mapSortName (item: Item) = item, (Str.toLower item.name, Str.toLower item.name)
-    let mapSortExtension item  = item, (Str.toLower item.extension, Str.toLower item.name)
-    let mapSortDateTime item = item, (item.dateTime.ToString "s", Str.toLower item.name)
-
-    let mapSort = 
-        match sortItem with
-        | SortItem.Name -> mapSortName
-        | SortItem.Extension -> mapSortExtension
-        | SortItem.DateTime -> mapSortDateTime
-        | _ -> mapSortName
-    let mapping = (createFileItem id) >> mapSort
-    let sorting = 
-        match descending with
-        | true -> Array.sortByDescending takeSortItem
-        | false -> Array.sortBy takeSortItem
+    let mapping = createFileItem id 
 
     let fileItems = 
         fileItems ()
         |> Array.map mapping
-        |> sorting
-        |> Array.map takeItem
     Array.concat [| [| createParentItem () |] ; directoryItems ; fileItems |]
 
 let getColumns () = [|

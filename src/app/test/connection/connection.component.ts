@@ -25,8 +25,14 @@ export class ConnectionComponent implements OnInit {
             console.log("Response", response)
         }
         else {
-            //const response = await this.connection.get(CommanderView.Left,  "c:\\windows\\system32")
-            const response = await this.connection.get(CommanderView.Left,  "c:\\")
+            const response = await this.connection.get(CommanderView.Left,  "c:\\windows\\system32")
+            //const response = await this.connection.get(CommanderView.Left,  "c:\\")
+
+            const item = response.items[100]
+            console.log("Name", item.items[0])
+            const jsdate = new Date(parseInt(item.items[2]))
+            console.log("Time", jsdate.toLocaleString([], {hour: '2-digit', minute:'2-digit'}))
+            console.log("Datum", jsdate.toLocaleString([], {day: '2-digit', month: '2-digit', year:'numeric'}))
             console.log("Response", response)
         }
     }

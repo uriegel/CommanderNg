@@ -1,8 +1,8 @@
 module Processor
 open System.IO
 open Model
+open ModelTools
 open DirectoryProcessor
-open WebServer
 
 [<Literal>]
 let ROOT = "root"
@@ -103,8 +103,8 @@ let create id =
                 icon = item.icon
                 items = 
                     match item.itemType with
-                    | ItemType.File -> [| getNameOnly item.name; item.extension; getDataTime item.dateTime; getSize item; "" |] 
-                    | ItemType.Directory -> [| item.name; ""; getDataTime item.dateTime; ""; "" |] 
+                    | ItemType.File -> [| getNameOnly item.name; item.extension; convertTime item.dateTime; getSize item; "" |] 
+                    | ItemType.Directory -> [| item.name; ""; convertTime item.dateTime; ""; "" |] 
                     | _ -> [| item.name; ""; ""; ""; "" |] 
                 isCurrent = index = indexToSelect
                 isHidden = item.isHidden
