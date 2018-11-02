@@ -19,28 +19,6 @@ let getNameOnly name =
         | -1 -> name
         | _ -> substringLength 0 pos name
 
-let getSize item = 
-    match item.itemType with
-    | ItemType.File -> 
-        let str = string item.size
-        let len = String.length str
-        let firstDigits = len % 3
-        let rec getFirstDigits (str: string) =
-            if String.length str = 3 then 
-                str 
-            else 
-                let first = substringLength 0 3 str
-                let last = substring 3 str
-                sprintf "%s.%s" first <| getFirstDigits last
-        
-        if len > 3 && firstDigits <> 0 then
-            sprintf "%s.%s" <| substringLength 0 firstDigits str <| (getFirstDigits <| substring firstDigits str)
-        elif len > 3 && firstDigits = 0 then
-            getFirstDigits <| substring firstDigits str
-        else
-            str
-    | _ -> ""
-
 let retrieveFileVersions path (items: ResponseItem[]) check = 
     let isVersionFile (index, item: ResponseItem) =
         let ext = toLower item.items.[1]
@@ -85,10 +63,10 @@ let getItems path id =
     Array.concat [| [| createParentItem () |] ; directoryItems ; fileItems |]
 
 let getColumns () = [|
-        { name = "Name"; isSortable = true; rightAligned = false }
-        { name = "Erw."; isSortable = true; rightAligned = false }
-        { name = "Datum"; isSortable = true; rightAligned = false }
-        { name = "Größe"; isSortable = true; rightAligned = true }
-        { name = "Version"; isSortable = true; rightAligned = false }
+        { name = "Name"; isSortable = true; isSize = false; isDate = false }
+        { name = "Erw."; isSortable = true; isSize = false; isDate = false }
+        { name = "Datum"; isSortable = true; isSize = false; isDate = true }
+        { name = "Größe"; isSortable = true; isSize = true; isDate = false }
+        { name = "Version"; isSortable = true; isSize = false; isDate = false }
     |]
     

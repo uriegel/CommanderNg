@@ -13,7 +13,6 @@ import { TableViewComponent } from './table-view/table-view.component'
 import { TableViewItemComponent } from './datatemplates/table-view-item/table-view-item.component'
 import { CommanderViewComponent } from './commander-view/commander-view.component'
 import { CommanderViewComponent as TestCommanderViewComponent } from './test/commander-view/commander-view.component'
-import { DatePipe } from './pipes/date.pipe'
 import { FolderComponent } from './svgs/folder/folder.component'
 import { DriveComponent } from './svgs/drive/drive.component'
 import { NetworkdriveComponent } from './svgs/networkdrive/networkdrive.component'
@@ -31,6 +30,7 @@ import { SelectAllDirective } from './directives/select-all.directive'
 import { DefaultButtonDirective } from './directives/default-button.directive'
 import { ConnectionComponent } from './test/connection/connection.component'
 import { TableViewTestItemComponent } from './test/table-view-test-item/table-view-test-item.component'
+import { ItemPipe } from './pipes/item.pipe'
 
 @NgModule({
     declarations: [
@@ -45,7 +45,6 @@ import { TableViewTestItemComponent } from './test/table-view-test-item/table-vi
         TableViewItemComponent,
         CommanderViewComponent,
         TestCommanderViewComponent,
-        DatePipe,
         FolderComponent,
         DriveComponent,
         NetworkdriveComponent,
@@ -63,6 +62,7 @@ import { TableViewTestItemComponent } from './test/table-view-test-item/table-vi
         DefaultButtonDirective,
         ConnectionComponent,
         TableViewTestItemComponent,
+        ItemPipe,
     ],
     imports: [
         BrowserModule,

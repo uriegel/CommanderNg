@@ -47,14 +47,14 @@ let create id =
             match columnsType with
             | Type.Root -> Some {
                     name = sprintf "%d-%s" id ROOT
-                    values = [| { name = "Name"; isSortable = false; rightAligned = false } |]
+                    values = [| { name = "Name"; isSortable = false; isSize = false; isDate = false } |]
                 }
             | Type.Drives -> Some {
                     name = sprintf "%d-%s" id DRIVES
                     values = [| 
-                        { name = "Name"; isSortable = false; rightAligned = false }
-                        { name = "Bezeichnung"; isSortable = false; rightAligned = false }
-                        { name = "Größe"; isSortable = false; rightAligned = true }
+                        { name = "Name"; isSortable = false; isSize = false; isDate = false }
+                        { name = "Bezeichnung"; isSortable = false; isSize = false; isDate = false }
+                        { name = "Größe"; isSortable = false; isSize = true; isDate = false }
                     |]
                 }
             | _ -> Some {
@@ -103,7 +103,7 @@ let create id =
                 icon = item.icon
                 items = 
                     match item.itemType with
-                    | ItemType.File -> [| getNameOnly item.name; item.extension; convertTime item.dateTime; getSize item; "" |] 
+                    | ItemType.File -> [| getNameOnly item.name; item.extension; convertTime item.dateTime; string item.size; "" |] 
                     | ItemType.Directory -> [| item.name; ""; convertTime item.dateTime; ""; "" |] 
                     | _ -> [| item.name; ""; ""; ""; "" |] 
                 isCurrent = index = indexToSelect

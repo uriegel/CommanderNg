@@ -16,8 +16,9 @@ type Item = {
 
 type Column = {
     name: string
-    rightAligned: bool
+    isSize: bool
     isSortable: bool
+    isDate: bool
 }
 
 type Columns = {

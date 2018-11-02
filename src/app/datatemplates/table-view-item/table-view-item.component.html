@@ -8,7 +8,7 @@
         <span class="nameValue">{{item.items[0]}}</span>
     </div>
 </td>
-<td [class.rightAligned]="columns?.values[1].rightAligned">{{item.items[1]}}</td>
-<td [class.rightAligned]="columns?.values[2].rightAligned">{{item.items[2]}}</td>
-<td [class.rightAligned]="columns?.values[3].rightAligned">{{item.items[3]}}</td>
-<td [class.rightAligned]="columns?.values[4].rightAligned">{{item.items[4]}}</td>
+<td [class.rightAligned]="columns?.values[1].isSize">{{item.items[1]|item: columns?.values[1]}}</td>
+<td [class.rightAligned]="columns?.values[2].isSize">{{item.items[2]|item: columns?.values[2]}}</td>
+<td [class.rightAligned]="columns?.values[3].isSize">{{item.items[3]|item: columns?.values[3]}}</td>
+<td [class.rightAligned]="columns?.values[4].isSize">{{item.items[4]|item: columns?.values[4]}}</td>

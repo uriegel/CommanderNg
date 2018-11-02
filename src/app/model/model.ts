@@ -66,8 +66,9 @@ export interface Columns {
 
 export interface Column {
     name: string
-    rightAligned?: boolean
+    isSize?: boolean
     isSortable?: boolean
+    isDate?: boolean
 }
 
 export interface UpdateItem  {

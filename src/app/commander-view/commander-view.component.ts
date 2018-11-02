@@ -48,6 +48,8 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     // TODO: ShowHidden: filter hidden
     // TODO: Restrict Items, filter hidden
+    // TODO: Sort columns
+    // TODO: icon with caches and the right icon
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
     @ViewChild("input") private input: ElementRef
     @Output() private gotFocus: EventEmitter<CommanderViewComponent> = new EventEmitter()    

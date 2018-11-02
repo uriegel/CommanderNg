@@ -58,6 +58,7 @@ export class TableViewComponent implements OnInit {
         this.response = observable
         this.items = 
             this.response
-            .pipe(map(n => n.items.filter(n => !n.isHidden)))
+            //.pipe(map(n => n.items.filter(n => !n.isHidden)))
+            .pipe(map(n => n.items))
     }
 }
