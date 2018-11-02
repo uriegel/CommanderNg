@@ -69,7 +69,10 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
             if (update.updateItems) {
                 const items = this.tableView.getAllItems()
                 if (items) 
-                    update.updateItems.forEach(n => items[n.index].items[n.columnIndex] = n.value)
+                    update.updateItems.forEach(n => {
+                        var item = items.find(m => m.index == n.index)
+                        item.items[n.columnIndex] = n.value
+                    })
             }
         }
     }    
