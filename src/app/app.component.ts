@@ -20,10 +20,12 @@ export class AppComponent {
         electron.themeChanged.subscribe(theme => {
             console.log("Theme changed", theme)
             themes.theme = theme
-            const bodyStyles = window.getComputedStyle(appElement.nativeElement)
-            themes.itemHeight = <any>bodyStyles.getPropertyValue('--itemHeight')
-            themes.testItemHeight = <any>bodyStyles.getPropertyValue('--testItemHeight')
-            themes.columnHeight = <any>bodyStyles.getPropertyValue('--itemColumnHeight')
+            setTimeout(() => {
+                const bodyStyles = window.getComputedStyle(appElement.nativeElement)
+                themes.itemHeight = <any>bodyStyles.getPropertyValue('--itemHeight')
+                themes.testItemHeight = <any>bodyStyles.getPropertyValue('--testItemHeight')
+                themes.columnHeight = <any>bodyStyles.getPropertyValue('--itemColumnHeight')
+            })
         })
     }
 }
