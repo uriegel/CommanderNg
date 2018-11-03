@@ -8,8 +8,9 @@ import { DialogComponent } from '../dialog/dialog.component'
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResultValue } from '../enums/dialog-result-value.enum'
 import { Item, Response, CommanderView, CommanderUpdate, CommanderEvent } from '../model/model'
-import { ThemesService } from '../services/themes.service';
-import { ConnectionService } from '../services/connection.service';
+import { ThemesService } from '../services/themes.service'
+import { ConnectionService } from '../services/connection.service'
+import { ElectronService } from '../services/electron.service'
 
 @Component({
     selector: 'app-commander-view',
@@ -79,6 +80,14 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         }
     }    
 
+    @Input()
+    set showHidden(value: boolean) {
+        this._showHidden = value
+        this.refreshItems()
+    }
+    get showHidden() { return this._showHidden }
+    private _showHidden = false
+
     response: Observable<Response>
     items: Item[]
 
@@ -95,7 +104,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         this.initializeRestrict() 
     }
 
-    constructor(public themes: ThemesService, private connection: ConnectionService) {
+    constructor(public themes: ThemesService, private connection: ConnectionService, private electron: ElectronService) {
         this.connection.commanderEvents.subscribe(evt => {
             const commanderEvent: CommanderEvent = JSON.parse(evt)
             if (commanderEvent.refresh)
@@ -380,10 +389,17 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         this.response = observable
         const subscription = this.response.subscribe(obs =>{
             subscription.unsubscribe()
-            this.items = obs.items.filter(n => !n.isHidden)
+            this.originalItems = obs.items
+            this.items = this.originalItems.filter(n => this.showHidden || !n.isHidden)    
         })
     }
+    
+    private refreshItems() {
+        if (this.items)
+            this.items = this.originalItems.filter(n => this.showHidden || !n.isHidden)    
+    }
 
+    private originalItems: Item[]
     private readonly restrictingOffs = new Subject()
     private columnSort: IColumnSortEvent = null
     private keyDownEvents: Observable<KeyboardEvent>

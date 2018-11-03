@@ -32,7 +32,10 @@ export function run(process: ChildProcess) {
 
     initializeMenu(mainWindow, theme, showHidden)
 
-    ipcMain.on('initialized', () => setTheme(mainWindow, theme))
+    ipcMain.on('initialized', () => {
+        setTheme(mainWindow, theme)
+        mainWindow.webContents.send("showHidden", showHidden)
+    })
 
     function saveBounds() {
         if (!mainWindow.isMaximized()) {
@@ -126,7 +129,7 @@ function initializeMenu(mainWindow: BrowserWindow, theme: string, showHidden: bo
                 checked: showHidden,
                 type: "checkbox",
                 click: evt => {
-                    //post("showHidden", formatParams({"show": evt.checked}))
+                    mainWindow.webContents.send("showHidden", evt.checked)
                     settings.set("showHidden", evt.checked)
                 }
             },
