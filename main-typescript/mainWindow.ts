@@ -1,4 +1,4 @@
-import {BrowserWindow, protocol, Menu} from 'electron'
+import {BrowserWindow, Menu, ipcMain} from 'electron'
 import * as settings from 'electron-settings'
 import * as path from 'path'
 import { Observable } from 'rxjs'
@@ -31,6 +31,8 @@ export function run(process: ChildProcess) {
     const showHidden = <boolean>settings.get("showHidden", false)
 
     initializeMenu(mainWindow, theme, showHidden)
+
+    ipcMain.on('initialized', () => setTheme(mainWindow, theme))
 
     function saveBounds() {
         if (!mainWindow.isMaximized()) {

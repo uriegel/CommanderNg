@@ -20,8 +20,6 @@ let LEFT = 0
 [<Literal>]
 let RIGHT = 1
 
-let private evt = new ManualResetEvent false
-
 let mutable private serverSentEvent: SseContext option = None
 
 let leftProcessor = create LEFT
@@ -32,7 +30,6 @@ let sseInit context =
     serverSentEvent <- Some context
     leftProcessor.initEvents <| serverSentEvent.Value.send LEFTVIEW
     rightProcessor.initEvents <| serverSentEvent.Value.send RIGHTVIEW
-    context.send COMMANDER <| Json.serialize (createInitialized ())
 
 let run () = 
     let line = Console.ReadLine()
@@ -42,21 +39,3 @@ let run () =
 let close () = 
     printfn "Closing Commander Server"
     
-let shutdown () =
-    printfn "Shutting down Commander Server"
-    evt.Set () |> ignore
-    
-let setTheme (theme: string) =
-    match serverSentEvent with
-    | Some context -> context.send COMMANDER <| Json.serialize (createTheme theme)
-    | None -> ()
-
-let refresh () = 
-    match serverSentEvent with
-    | Some context -> context.send COMMANDER <| Json.serialize (createRefresh ())
-    | None -> ()
-
-let showHidden hidden = 
-    match serverSentEvent with
-    | Some context -> context.send COMMANDER <| Json.serialize (createShowHidden hidden)
-    | None -> ()

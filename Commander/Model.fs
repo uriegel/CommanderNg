@@ -46,45 +46,6 @@ type GetResult = {
 
 type CommanderView = Left = 0 | Right = 1
 
-type ShowHidden = {
-    value: bool
-}
-
-type CommanderEvent = {
-    theme: string option
-    isInitialized: bool
-    refresh: bool
-    showHidden: ShowHidden option
-}
-
-let createInitialized () = {
-        theme = None
-        isInitialized = true
-        refresh = false
-        showHidden = None
-    }
-
-let createTheme theme = {
-        theme = Some theme
-        isInitialized = false
-        refresh = false
-        showHidden = None
-    }
-
-let createRefresh () = {
-        theme = None
-        isInitialized = false
-        refresh = true
-        showHidden = None
-    }
-
-let createShowHidden hidden = {
-        theme = None
-        isInitialized = false
-        refresh = false
-        showHidden = Some { value = hidden }
-    }
-
 type Request = {
     commanderView: CommanderView option
     newPath: string option

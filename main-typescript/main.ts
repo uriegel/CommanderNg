@@ -1,5 +1,5 @@
-import {app, BrowserWindow, Menu} from 'electron'
-import  { spawn, ChildProcess } from 'child_process'
+import {app } from 'electron'
+import { spawn, ChildProcess } from 'child_process'
 import { Observable, zip, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { run } from './mainWindow';
@@ -30,28 +30,19 @@ prc.stdout.on('data', data => {
 })
 prc.on('close', code => console.log('process exit code', code))
 
+app.on('window-all-closed', () => {
+    if (process.platform != 'darwin') 
+        app.quit()
+})
+
+interface CommanderEvent {
+    cmd: string,
+    process: ChildProcess   
+}
+
 // const auguryPath = 'C:\\Users\\urieg\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\elgalmkoelokbchhkhacckoklkejnhcd\\1.19.1_0'
 // BrowserWindow.addDevToolsExtension(auguryPath)
 
 // const addon = require('addon')
 // console.log(addon.hello())
 
-    
-
-// app.on('window-all-closed', () => {
-//     if (process.platform != 'darwin') 
-//         app.quit()
-// })
-
-// function formatParams(params:any) {
-//     return "?" + Object
-//         .keys(params)
-//         .map(key => key+"="+encodeURIComponent(params[key]))
-//         .join("&")
-// }
-
-
-interface CommanderEvent {
-    cmd: string,
-    process: ChildProcess   
-}

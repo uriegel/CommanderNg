@@ -16,5 +16,6 @@ export class ElectronService {
                 (this.themeChanged as Subject<string>).next(theme)
             })
         })
+        ipcRenderer.send("initialized")
     }   
 }
