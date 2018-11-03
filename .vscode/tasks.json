@@ -14,7 +14,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "build Main UI",
+            "label": "build Electron",
             "type": "typescript",
             "group": "build",
             "tsconfig": "main-typescript/tsconfig.json",
@@ -23,7 +23,7 @@
             ]
         },
         {
-            "label": "build Main UI",
+            "label": "build Electron",
             "type": "typescript",
             "group": "build",
             "tsconfig": "main-typescript\\tsconfig.json",

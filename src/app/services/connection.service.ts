@@ -1,7 +1,6 @@
-import { Injectable, NgZone } from '@angular/core'
+import { Injectable } from '@angular/core'
 import { Subject, Observable, BehaviorSubject } from 'rxjs'
 import { Item, Response, Get, CommanderView, Process } from '../model/model'
-const { ipcRenderer } = (<any>window).require('electron')
 
 function formatParams(params) {
     return "?" + Object
@@ -24,11 +23,7 @@ export class ConnectionService {
         return this.rightViewSubject
     }
 
-    constructor(private zone: NgZone) {
-
-        ipcRenderer.on("setTheme", (_: any, theme: string) => {
-            this.zone.run(() => console.log("Theme renderer", theme))
-        })
+    constructor() {
 
         this.source.addEventListener("commander", (evt: MessageEvent) => {
             console.log("Commander event", evt)

@@ -1,7 +1,7 @@
 import { Component, ElementRef } from '@angular/core'
-import { ConnectionService } from './services/connection.service'
-import { CommanderEvent } from './model/model'
+import { ElectronService } from './services/electron.service'
 import { ThemesService } from './services/themes.service'
+import { ConnectionService } from './services/connection.service';
 
 @Component({
     selector: 'app-root',
@@ -15,16 +15,15 @@ import { ThemesService } from './services/themes.service'
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-    constructor(public themes: ThemesService, private appElement: ElementRef, private connection: ConnectionService) { 
-        this.connection.commanderEvents.subscribe(evt => {
-            const commanderEvent: CommanderEvent = JSON.parse(evt)
-            if (commanderEvent.theme) {
-                themes.theme = commanderEvent.theme
-                const bodyStyles = window.getComputedStyle(appElement.nativeElement)
-                themes.itemHeight = <any>bodyStyles.getPropertyValue('--itemHeight')
-                themes.testItemHeight = <any>bodyStyles.getPropertyValue('--testItemHeight')
-                themes.columnHeight = <any>bodyStyles.getPropertyValue('--itemColumnHeight')
-            }
-        })  
+    constructor(public themes: ThemesService, public connection: ConnectionService, 
+        private electron: ElectronService, private appElement: ElementRef) { 
+        electron.themeChanged.subscribe(theme => {
+            console.log("Theme changed", theme)
+            themes.theme = theme
+            const bodyStyles = window.getComputedStyle(appElement.nativeElement)
+            themes.itemHeight = <any>bodyStyles.getPropertyValue('--itemHeight')
+            themes.testItemHeight = <any>bodyStyles.getPropertyValue('--testItemHeight')
+            themes.columnHeight = <any>bodyStyles.getPropertyValue('--itemColumnHeight')
+        })
     }
 }

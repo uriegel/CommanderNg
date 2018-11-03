@@ -28,7 +28,6 @@ let leftProcessor = create LEFT
 let rightProcessor = create RIGHT
 
 let sseInit context =
-    printfn "-cmdevt: sse"
     printfn "Initializing server sent events"
     serverSentEvent <- Some context
     leftProcessor.initEvents <| serverSentEvent.Value.send LEFTVIEW
