@@ -3,6 +3,7 @@ open System.Threading
 open Model
 open Processor
 open WebServer
+open System
 
 [<Literal>]
 let COMMANDER = "commander"
@@ -34,7 +35,10 @@ let sseInit context =
     rightProcessor.initEvents <| serverSentEvent.Value.send RIGHTVIEW
     context.send COMMANDER <| Json.serialize (createInitialized ())
 
-let run () = evt.WaitOne () |> ignore
+let run () = 
+    let line = Console.ReadLine()
+    printfn "Cmd: %s" line
+    ()
 
 let close () = 
     printfn "Closing Commander Server"
