@@ -6,7 +6,7 @@ import { ElectronService } from 'src/app/services/electron.service';
 
 @Component({
     selector: 'test-commander-view',
-    template: '<app-commander-view [id]="0" [viewEvents]="connection.leftViewEvents|async" [showHidden]="electron.showHiddenChanged | async"></app-commander-view>',
+    templateUrl: './commander-view.component.html',
     styleUrls: ['./commander-view.component.css']
 })
 export class CommanderViewComponent implements AfterViewInit {

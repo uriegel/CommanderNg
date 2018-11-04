@@ -47,7 +47,6 @@ import { ElectronService } from '../services/electron.service'
 })
 export class CommanderViewComponent implements OnInit, AfterViewInit {
 
-    // TODO: RefreshItems after CommanderUpdate
     // TODO: ExifDate
     // TODO: Restrict Items
     // TODO: icon with caches and the right icon
@@ -71,11 +70,17 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
             const update = JSON.parse(data) as CommanderUpdate
             if (update.updateItems) {
                 const items = this.tableView.getAllItems()
-                if (items) 
-                    update.updateItems.forEach(n => {
-                        var item = items.find(m => m.index == n.index)
-                        item.items[n.columnIndex] = n.value
-                    })
+                if (items) {
+                    if (update.updateItems.length > 0) {
+                        update.updateItems.forEach(n => {
+                            var item = items.find(m => m.index == n.index)
+                            item.items[n.columnIndex] = n.value
+                        })
+                        if (this.columnSort && (this.tableView.columns.values[this.columnSort.index].columnsType == ColumnsType.Version
+                                || this.tableView.columns.values[this.columnSort.index].columnsType == ColumnsType.Date))
+                            this.refreshItems()
+                    }
+                }
             }
         }
     }    
@@ -402,6 +407,26 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
                 const folders = items.filter(n => n.itemType == ItemType.Parent || n.itemType == ItemType.Directory)
                 const itemsToSort = items.filter(n => n.itemType == ItemType.File || n.itemType == ItemType.Drive)
 
+                const compareVersion = (versionLeft?: string, versionRight?: string) => {
+                    if (!versionLeft)
+                        return -1
+                    else if (!versionRight)
+                        return 1
+                    else {
+                        var leftParts = <number[]><any>versionLeft.split('.')
+                        var rightParts = <number[]><any>versionRight.split('.')
+                        if (leftParts[0] != rightParts[0])
+                            return <number>leftParts[0] - rightParts[0]
+                        else if (leftParts[1] != rightParts[1])
+                            return leftParts[1] - rightParts[1]
+                        else if (leftParts[2] != rightParts[2])
+                            return leftParts[2] - rightParts[2]
+                        else if (leftParts[3] != rightParts[3])
+                            return leftParts[3] - rightParts[3]
+                        else return 0
+                    }
+                }
+
                 const sortedItems = itemsToSort.sort((a, b) => {
 
                     let result = 0
@@ -412,7 +437,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
                             result = x - y
                             break
                         case ColumnsType.Version:
-                            // TODO:
+                            result = compareVersion(a.items[this.columnSort.index], b.items[this.columnSort.index])
                             break
                         default:
                             result = a.items[this.columnSort.index].localeCompare(b.items[this.columnSort.index])
