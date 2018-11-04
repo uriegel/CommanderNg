@@ -281,7 +281,9 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     private selectAllItems(currentItemIndex: number, above: boolean) {
         this.tableView.getAllItems().forEach((item, index) => {
-            item.isSelected = above ? index <= currentItemIndex : index >= currentItemIndex ? this.isItemSelectable(item) : false
+            item.isSelected = this.isItemSelectable(item) 
+                ? above ? index <= currentItemIndex : index >= currentItemIndex ? this.isItemSelectable(item) : false
+                : false
         })
     }
 
@@ -295,13 +297,13 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     }
 
     private isItemSelectable(item: Item) {
-        // switch (item.itemType) {
-        //     case 0:
-        //     case 1:
+        switch (item.itemType) {
+            case ItemType.Parent:
+            case ItemType.Drive:
+                return false
+            default:
                 return true
-            // default:
-            //     return false
-        //}
+        }
     }
 
     onClick(evt: MouseEvent) { 
