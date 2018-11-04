@@ -47,7 +47,7 @@ import { ElectronService } from '../services/electron.service'
 })
 export class CommanderViewComponent implements OnInit, AfterViewInit {
 
-    // TODO: Sort columns: mark version and size
+    // TODO: Sort columns: mark version
     // TODO: Restrict Items
     // TODO: icon with caches and the right icon
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
@@ -402,7 +402,15 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
                 const itemsToSort = items.filter(n => n.itemType == ItemType.File || n.itemType == ItemType.Drive)
 
                 const sortedItems = itemsToSort.sort((a, b) => {
-                    let result = a.items[this.columnSort.index].localeCompare(b.items[this.columnSort.index])
+
+                    let result = 0
+                    if (this.tableView.columns.values[this.columnSort.index].isSize) {
+                        const x = parseInt(a.items[this.columnSort.index])
+                        const y = parseInt(b.items[this.columnSort.index])
+                        result = x - y
+                    }
+                    else
+                        result = a.items[this.columnSort.index].localeCompare(b.items[this.columnSort.index])
                     if (result == 0 && this.columnSort.index > 0)
                         result = a.items[0].localeCompare(b.items[0])
                     return this.columnSort.ascending ? result : -result
