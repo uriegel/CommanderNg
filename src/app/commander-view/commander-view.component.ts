@@ -339,7 +339,8 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         let originalItems: Observable<Item[]>
         
         inputChars.subscribe(n => {
-            // const subscription = this.items.subscribe(n => {
+            console.log("inputChars", n)
+            //const subscription = this.items.subscribe(n => {
             //     items.next(n)
             //     subscription.unsubscribe()
             // })
