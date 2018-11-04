@@ -7,7 +7,7 @@ import { TableViewComponent } from '../table-view/table-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResultValue } from '../enums/dialog-result-value.enum'
-import { Item, Response, CommanderView, CommanderUpdate, CommanderEvent } from '../model/model'
+import { Item, Response, CommanderView, CommanderUpdate, CommanderEvent, ItemType } from '../model/model'
 import { ThemesService } from '../services/themes.service'
 import { ConnectionService } from '../services/connection.service'
 import { ElectronService } from '../services/electron.service'
@@ -47,9 +47,8 @@ import { ElectronService } from '../services/electron.service'
 })
 export class CommanderViewComponent implements OnInit, AfterViewInit {
 
-    // TODO: ShowHidden: filter hidden directly from main ts
-    // TODO: Restrict Items, filter hidden
-    // TODO: Sort columns
+    // TODO: Sort columns: mark version and size
+    // TODO: Restrict Items
     // TODO: icon with caches and the right icon
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
     @ViewChild("input") private input: ElementRef
@@ -311,7 +310,8 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     }
 
     onColumnSort(evt: IColumnSortEvent) {
-        
+        this.columnSort = evt
+        this.refreshItems()
     }
 
     private processItem() {
@@ -390,13 +390,33 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         const subscription = this.response.subscribe(obs =>{
             subscription.unsubscribe()
             this.originalItems = obs.items
-            this.items = this.originalItems.filter(n => this.showHidden || !n.isHidden)    
+            this.refreshItems()
         })
     }
     
     private refreshItems() {
-        if (this.items)
-            this.items = this.originalItems.filter(n => this.showHidden || !n.isHidden)    
+        if (this.originalItems) {
+
+            const sortItems = (items: Item[]) => {
+                const folders = items.filter(n => n.itemType == ItemType.Parent || n.itemType == ItemType.Directory)
+                const itemsToSort = items.filter(n => n.itemType == ItemType.File || n.itemType == ItemType.Drive)
+
+                const sortedItems = itemsToSort.sort((a, b) => {
+                    let result = a.items[this.columnSort.index].localeCompare(b.items[this.columnSort.index])
+                    if (result == 0 && this.columnSort.index > 0)
+                        result = a.items[0].localeCompare(b.items[0])
+                    return this.columnSort.ascending ? result : -result
+                })
+
+                return folders.concat(sortedItems)
+            }
+
+            const itemsToSort = this.originalItems.filter(n => this.showHidden || !n.isHidden)    
+            if (this.columnSort)
+                this.items = sortItems(itemsToSort)
+            else
+                this.items = itemsToSort
+        }
     }
 
     private originalItems: Item[]

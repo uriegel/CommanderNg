@@ -28,6 +28,7 @@ type Type =
 let create id = 
 
     let mutable lastColumns: Type option = None
+    // TODO: DriveItems
     let mutable currentPath = @"c:\" // TODO: Initial "root", then save value in LocalStorage
     let mutable sentEvent = fun (item: string) -> ()
     let mutable requestNr = 0
@@ -99,6 +100,7 @@ let create id =
             let indexToSelect = getIndexToSelect currentItems
 
             let getResponseItem index (item: Item) = { 
+                itemType = item.itemType
                 index = index
                 icon = item.icon
                 items = 

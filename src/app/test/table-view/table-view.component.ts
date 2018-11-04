@@ -20,20 +20,6 @@ export class TableViewComponent implements OnInit {
     response: Observable<Response>
     items: Observable<Item[]>
 
-    @Input()
-    set viewEvents(data: string) {
-        if (data) {
-            const update = JSON.parse(data) as CommanderUpdate
-            if (update.updateItems) {
-                console.log("view sse", update)
-                const items = this.tableView.getAllItems()
-                // TODO: itemIndex, not arrayIndex
-                // if (items) 
-                //     update.updateItems.forEach(n => items[n.index].items[n.columnIndex] = n.value)
-            }
-        }
-    }
-
     @ViewChild(tableView) tableView: tableView
 
     constructor(public themes: ThemesService, private connection: ConnectionService) {

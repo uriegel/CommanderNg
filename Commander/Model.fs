@@ -2,7 +2,7 @@ module Model
 open System
 open System.IO
 
-type ItemType = Parent = 0 | Directory = 1 | File = 2 
+type ItemType = Undefined = 0 | Parent = 1 | Directory = 2 | File = 3 
 
 type Item = {
     itemType: ItemType
@@ -27,6 +27,7 @@ type Columns = {
 }
 
 type ResponseItem = {
+    itemType: ItemType
     index: int
     items: string[]
     icon: string

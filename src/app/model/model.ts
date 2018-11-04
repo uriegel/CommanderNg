@@ -3,6 +3,7 @@ export interface ServerEvent {
 }
 
 export enum ItemType {
+    Undefiend,
     Parent,
     Directory,
     File,
@@ -25,6 +26,7 @@ export interface Process {
 }
 
 export interface Item {
+    itemType: ItemType
     index: number
     items: string[]
     icon: string
