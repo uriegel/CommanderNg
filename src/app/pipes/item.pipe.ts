@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core'
-import { Column } from '../model/model'
+import { Column, ColumnsType } from '../model/model'
 
 function getSize(size: string) {
     if (size != "0" && !size)
@@ -30,15 +30,18 @@ function getSize(size: string) {
 })
 export class ItemPipe implements PipeTransform {
     transform(value: string, column: Column): any {
-        if (column.isDate) {
-            if (!value)
-                return ""
-            const jsdate = new Date(parseInt(value))
-            return jsdate.toLocaleString([], {day: '2-digit', month: '2-digit', year:'numeric'}) 
-                + " " + jsdate.toLocaleString([], {hour: '2-digit', minute:'2-digit'})
+        switch (column.columnsType) {
+            case ColumnsType.Date:
+                if (!value)
+                    return ""
+                const jsdate = new Date(parseInt(value))
+                return jsdate.toLocaleString([], {day: '2-digit', month: '2-digit', year:'numeric'}) 
+                    + " " + jsdate.toLocaleString([], {hour: '2-digit', minute:'2-digit'})
+            case ColumnsType.Size:
+                return getSize(value)
+            default:
+                return value
         }
-        else if (column.isSize) return getSize(value)
-        else return value
     }
 }
 

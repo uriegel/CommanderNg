@@ -7,7 +7,7 @@ import { TableViewComponent } from '../table-view/table-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResultValue } from '../enums/dialog-result-value.enum'
-import { Item, Response, CommanderView, CommanderUpdate, CommanderEvent, ItemType } from '../model/model'
+import { Item, Response, CommanderView, CommanderUpdate, CommanderEvent, ItemType, ColumnsType } from '../model/model'
 import { ThemesService } from '../services/themes.service'
 import { ConnectionService } from '../services/connection.service'
 import { ElectronService } from '../services/electron.service'
@@ -47,7 +47,8 @@ import { ElectronService } from '../services/electron.service'
 })
 export class CommanderViewComponent implements OnInit, AfterViewInit {
 
-    // TODO: Sort columns: mark version
+    // TODO: RefreshItems after CommanderUpdate
+    // TODO: ExifDate
     // TODO: Restrict Items
     // TODO: icon with caches and the right icon
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
@@ -404,13 +405,20 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
                 const sortedItems = itemsToSort.sort((a, b) => {
 
                     let result = 0
-                    if (this.tableView.columns.values[this.columnSort.index].isSize) {
-                        const x = parseInt(a.items[this.columnSort.index])
-                        const y = parseInt(b.items[this.columnSort.index])
-                        result = x - y
+                    switch (this.tableView.columns.values[this.columnSort.index].columnsType) {
+                        case ColumnsType.Size:
+                            const x = parseInt(a.items[this.columnSort.index])
+                            const y = parseInt(b.items[this.columnSort.index])
+                            result = x - y
+                            break
+                        case ColumnsType.Version:
+                            // TODO:
+                            break
+                        default:
+                            result = a.items[this.columnSort.index].localeCompare(b.items[this.columnSort.index])
+                            break
                     }
-                    else
-                        result = a.items[this.columnSort.index].localeCompare(b.items[this.columnSort.index])
+                        
                     if (result == 0 && this.columnSort.index > 0)
                         result = a.items[0].localeCompare(b.items[0])
                     return this.columnSort.ascending ? result : -result

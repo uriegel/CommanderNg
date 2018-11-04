@@ -1,6 +1,5 @@
 import { Component, ViewChild, OnInit, NgZone, HostListener, AfterViewInit, Input } from '@angular/core'
 import { CommanderViewComponent } from '../commander-view/commander-view.component'
-import { SettingsService } from '../services/settings.service'
 import { DialogComponent } from '../dialog/dialog.component'
 
 @Component({
@@ -20,7 +19,7 @@ export class CommanderComponent implements OnInit, AfterViewInit {
 
     isViewVisible = false
 
-    constructor(private zone: NgZone, private settings: SettingsService) {}
+    constructor(private zone: NgZone) {}
 
     ngOnInit() {
         // ipcRenderer.on("viewer", (_: any, on: boolean) => this.zone.run(() => this.isViewVisible = on))

@@ -66,11 +66,17 @@ export interface Columns {
     values: Column[]
 }
 
+export enum ColumnsType {
+    String,
+    Size,
+    Date,
+    Version
+}
+
 export interface Column {
     name: string
-    isSize?: boolean
     isSortable?: boolean
-    isDate?: boolean
+    columnsType: ColumnsType
 }
 
 export interface UpdateItem  {

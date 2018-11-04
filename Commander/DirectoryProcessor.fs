@@ -63,10 +63,11 @@ let getItems path id =
     Array.concat [| [| createParentItem () |] ; directoryItems ; fileItems |]
 
 let getColumns () = [|
-        { name = "Name"; isSortable = true; isSize = false; isDate = false }
-        { name = "Erw."; isSortable = true; isSize = false; isDate = false }
-        { name = "Datum"; isSortable = true; isSize = false; isDate = true }
-        { name = "Größe"; isSortable = true; isSize = true; isDate = false }
-        { name = "Version"; isSortable = true; isSize = false; isDate = false }
+        // TODO: take Browser language))
+        { name = "Name"; isSortable = true; columnsType = ColumnsType.String }
+        { name = "Erw."; isSortable = true; columnsType = ColumnsType.String }
+        { name = "Datum"; isSortable = true; columnsType = ColumnsType.Date }
+        { name = "Größe"; isSortable = true; columnsType = ColumnsType.Size }
+        { name = "Version"; isSortable = true; columnsType = ColumnsType.Version }
     |]
     

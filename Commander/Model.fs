@@ -14,11 +14,12 @@ type Item = {
     isHidden: bool
 }
 
+type ColumnsType = String = 0 | Size = 1 | Date = 2| Version = 3
+
 type Column = {
     name: string
-    isSize: bool
     isSortable: bool
-    isDate: bool
+    columnsType: ColumnsType
 }
 
 type Columns = {

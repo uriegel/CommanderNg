@@ -48,14 +48,14 @@ let create id =
             match columnsType with
             | Type.Root -> Some {
                     name = sprintf "%d-%s" id ROOT
-                    values = [| { name = "Name"; isSortable = false; isSize = false; isDate = false } |]
+                    values = [| { name = "Name"; isSortable = false; columnsType = ColumnsType.String } |]
                 }
             | Type.Drives -> Some {
                     name = sprintf "%d-%s" id DRIVES
                     values = [| 
-                        { name = "Name"; isSortable = false; isSize = false; isDate = false }
-                        { name = "Bezeichnung"; isSortable = false; isSize = false; isDate = false }
-                        { name = "Größe"; isSortable = false; isSize = true; isDate = false }
+                        { name = "Name"; isSortable = false; columnsType = ColumnsType.String }
+                        { name = "Bezeichnung"; isSortable = false; columnsType = ColumnsType.String }
+                        { name = "Größe"; isSortable = false; columnsType = ColumnsType.String }
                     |]
                 }
             | _ -> Some {
