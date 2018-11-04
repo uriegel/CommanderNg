@@ -33,6 +33,7 @@ export interface Item {
     isSelected?: boolean
     isCurrent?: boolean
     isHidden?: boolean
+    isExif?: boolean
 }
 
 export interface Response {

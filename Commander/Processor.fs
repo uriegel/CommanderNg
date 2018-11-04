@@ -123,11 +123,12 @@ let create id =
             let continuation () = 
                 async {
                     let updateItems = retrieveFileVersions path result.items.Value check
+                    let updateItems2 = retrieveExifDates path result.items.Value check
                     match check () with
                     | true -> 
                         let commanderUpdate = {
                             id = requestNr
-                            updateItems =  updateItems
+                            updateItems =  Array.concat [|updateItems; updateItems2|] 
                         }
                         sentEvent <| Json.serialize commanderUpdate
                     | false -> ()          

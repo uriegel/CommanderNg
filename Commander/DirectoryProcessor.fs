@@ -1,9 +1,10 @@
 module DirectoryProcessor
 open System.IO
+open System.Diagnostics
 open ModelTools
 open Model
 open Str
-open System.Diagnostics
+open ExifReader
 
 type SortItem = 
     | Name = 0
@@ -41,6 +42,31 @@ let retrieveFileVersions path (items: ResponseItem[]) check =
     |> Array.indexed
     |> Array.filter isVersionFile 
     |> Array.map getVersionItem
+
+let retrieveExifDates path (items: ResponseItem[]) check = 
+    let isExifFile (index, item: ResponseItem) =
+        let ext = toLower item.items.[1]
+        ext = ".jpg"
+
+    let getExifDate file =
+        match check () with 
+        | true ->
+            let exif = getExifDate file
+            match exif with 
+            | Some value -> convertTime value
+            | None -> ""
+        | false -> ""
+
+    let getExifDateItem (index, item: ResponseItem) = {
+        index = index
+        columnIndex = 2
+        value = getExifDate <| Path.Combine (path, sprintf "%s%s" item.items.[0] item.items.[1])
+    }
+        
+    items 
+    |> Array.indexed
+    |> Array.filter isExifFile 
+    |> Array.map getExifDateItem
 
 let getItems path id = 
 

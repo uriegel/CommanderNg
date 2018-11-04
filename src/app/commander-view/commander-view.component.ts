@@ -47,7 +47,6 @@ import { ElectronService } from '../services/electron.service'
 })
 export class CommanderViewComponent implements OnInit, AfterViewInit {
 
-    // TODO: ExifDate
     // TODO: Restrict Items
     // TODO: icon with caches and the right icon
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
@@ -69,12 +68,16 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         if (data) {
             const update = JSON.parse(data) as CommanderUpdate
             if (update.updateItems) {
+                console.log("update.updateItems", update.updateItems)
+
                 const items = this.tableView.getAllItems()
                 if (items) {
                     if (update.updateItems.length > 0) {
                         update.updateItems.forEach(n => {
                             var item = items.find(m => m.index == n.index)
                             item.items[n.columnIndex] = n.value
+                            if (this.tableView.columns.values[n.columnIndex].columnsType == ColumnsType.Date) 
+                                item.isExif = true
                         })
                         if (this.columnSort && (this.tableView.columns.values[this.columnSort.index].columnsType == ColumnsType.Version
                                 || this.tableView.columns.values[this.columnSort.index].columnsType == ColumnsType.Date))

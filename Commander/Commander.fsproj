@@ -7,6 +7,7 @@
     <Compile Include="Api.fs" />
     <Compile Include="Str.fs" />
     <Compile Include="Json.fs" />
+    <Compile Include="ExifReader.fs" />
     <Compile Include="LocalStorage.fs" />
     <Compile Include="Model.fs" />
     <Compile Include="ModelTools.fs" />
