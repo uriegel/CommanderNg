@@ -26,59 +26,15 @@ type Type =
     | Drives = 1
     | FileSystem = 2
 
-
-// TODO: In DataTemplate variable count of columns
-// TODO: SO nicht
-// type MessageBasedCounter () = 
-
-//     static let updateState (count,sum) msg = 
-
-//         // increment the counters and...
-//         let newSum = sum + msg
-//         let newCount = count + 1
-//         printfn "Count is: %i. Sum is: %i" newCount newSum 
-
-//         // ...emulate a short delay
-//         Utility.RandomSleep()
-
-//         // return the new state
-//         (newCount,newSum)
-
-//     // create the agent
-//     static let agent = MailboxProcessor.Start(fun inbox -> 
-
-//         // the message processing function
-//         let rec messageLoop oldState = async{
-
-//             // read a message
-//             let! msg = inbox.Receive()
-
-//             // do the core logic
-//             let newState = updateState oldState msg
-
-//             // loop to top
-//             return! messageLoop newState 
-//             }
-
-//         // start the loop 
-//         messageLoop (0,0)
-//         )
-// static member Add i = agent.Post i
-// MessageBasedCounter.Add 4
-// MessageBasedCounter.Add 5
-    // public interface to hide the implementation
-    
-
 let create id = 
 
     let mutable lastColumns: Type option = None
-    let mutable currentPath = DRIVES // @"c:\" //DRIVES //  // TODO: Initial "root"
+    let mutable currentPath = @"c:\" //DRIVES //  // TODO: Initial "root"
+    // TODO: get from drive
     // TODO: get always with path
-    // TODO: Processor left or right is decoupled from requests via Mailbox
-    // TODO: SSE-events are sent to a Mailbox in the according processor (state update cmd)
+    // TODO: Processor left or right is decoupled from requests 
     // TODO: path must be returned and then saved in CommanderView
     // TODO: Processor does not have to save left/right
-    // TODO: DriveItems
     let mutable sentEvent = fun (item: string) -> ()
     let mutable requestNr = 0
     let mutable currentItems = [||]
@@ -102,9 +58,9 @@ let create id =
             | Type.Drives -> Some {
                     name = string id
                     values = [| 
-                        { name = "Name"; isSortable = false; columnsType = ColumnsType.String }
-                        { name = "Bezeichnung"; isSortable = false; columnsType = ColumnsType.String }
-                        { name = "Größe"; isSortable = false; columnsType = ColumnsType.Size }
+                        { name = "Name"; isSortable = true; columnsType = ColumnsType.IconName }
+                        { name = "Bezeichnung"; isSortable = true; columnsType = ColumnsType.String }
+                        { name = "Größe"; isSortable = true; columnsType = ColumnsType.Size }
                     |]
                 }
             | _ -> Some {

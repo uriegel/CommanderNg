@@ -34,3 +34,7 @@ img {
     text-align: right;
     padding-right: 10px;
 }
+
+span {
+    flex-grow: 1;
+}

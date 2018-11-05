@@ -1,27 +1,10 @@
-<!-- <td [class.isExif]="item.isExif">{{item.time | date }}</td>
-<td class="size" >{{item.size | fileSize}}</td>
-<td>{{item.version}}</td> -->
-<td>
+<td [class.isExif]="item.isExif && column.columnsType == 2"
+    *ngFor="let column of columns?.values; let i = index">
     <div class="iconName">
-        <img [src]="item.icon" alt="" *ngIf="item.icon != 'Folder'">
-        <app-folder *ngIf="item.icon == 'Folder'"></app-folder>
-        <span class="nameValue">{{item.items[0]}}</span>
+        <img [src]="item.icon" alt="" *ngIf="column.columnsType == 4 && item.icon != 'Folder'">
+        <app-folder *ngIf="column.columnsType == 4 && item.icon == 'Folder'"></app-folder>
+        <span class="nameValue" [class.rightAligned]="column.columnsType == 1">
+            {{item.items[i]|item: column}}
+        </span>
     </div>
 </td>
-<td [class.rightAligned]="columns?.values[1]?.isSize"
-    [class.isExif]="item.isExif && columns?.values[1]?.columnsType == 2">
-    {{item.items[1]|item: columns?.values[1]}}
-</td>
-<td [class.rightAligned]="columns?.values[2]?.isSize"
-    [class.isExif]="item.isExif && columns?.values[2]?.columnsType == 2">
-    {{item.items[2]|item: columns?.values[2]}}
-</td>
-
-<!-- <td [class.rightAligned]="columns?.values[3]?.isSize"
-    [class.isExif]="item.isExif && columns?.values[3]?.columnsType == 2">
-    {{item.items[3]|item: columns?.values[3]}}
-</td>
-<td [class.rightAligned]="columns?.values[4]?.isSize"
-    [class.isExif]="item.isExif && columns?.values[4]?.columnsType == 2">
-    {{item.items[4]|item: columns?.values[4]}}
-</td> -->
