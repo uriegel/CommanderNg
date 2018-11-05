@@ -47,7 +47,6 @@ import { ElectronService } from '../services/electron.service'
 })
 export class CommanderViewComponent implements OnInit, AfterViewInit {
 
-    // TODO: Restrict Items
     // TODO: icon with caches and the right icon
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
     @ViewChild("input") private input: ElementRef
@@ -97,11 +96,18 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     private _showHidden = false
 
     response: Observable<Response>
-    items: Item[]
+    get items() { return this._items}
+    set items(value: Item[]) { 
+        this.undoRestriction()
+        this._items = value
+    }
+    private _items: Item[]
 
     currentItem: Item
 
     restrictValue = ""
+
+    undoRestriction = () => {}
 
     ngOnInit() { this.path = "drives" }
     ngAfterViewInit() { 
@@ -109,7 +115,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         this.refresh()
 
         this.keyDownEvents = fromEvent(this.tableView.table.nativeElement, "keydown") 
-        this.initializeRestrict() 
+        this.undoRestriction = this.initializeRestrict() 
     }
 
     constructor(public themes: ThemesService, private connection: ConnectionService, private electron: ElectronService) {
@@ -334,67 +340,35 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         const inputChars = this.keyDownEvents.pipe(filter(n => !n.altKey && !n.ctrlKey && !n.shiftKey && n.key.length > 0 && n.key.length < 2))
         const backSpaces = this.keyDownEvents.pipe(filter(n => n.which == 8))
         const escapes = this.keyDownEvents.pipe(filter(n => n.which == 27))
-        const items = new Subject<Item[]>()
-        const backItems = new Subject<Item[]>()
-        let originalItems: Observable<Item[]>
+        let originalItems: Item[]
         
-        inputChars.subscribe(n => {
-            console.log("inputChars", n)
-            //const subscription = this.items.subscribe(n => {
-            //     items.next(n)
-            //     subscription.unsubscribe()
-            // })
+        inputChars.subscribe(evt => {
+            const items = this.items.filter(n => n.items[0].toLowerCase().startsWith(this.restrictValue + evt.key))
+            if (items.length > 0) {
+                this.restrictValue += evt.key
+                if (!originalItems)
+                    originalItems = this.items
+                this._items = items
+            }
         })
-        backSpaces.subscribe(n => {
-            const subscription = originalItems.subscribe(n => {
-                backItems.next(n)
-                subscription.unsubscribe()
-            })
+        backSpaces.subscribe(evt => {
+            if (this.restrictValue.length > 0) {
+                this.restrictValue = this.restrictValue.substr(0, this.restrictValue.length - 1)
+                const items = originalItems.filter(n => n.items[0].toLowerCase().startsWith(this.restrictValue))
+                this._items = items
+            }
         })
 
         const undoRestriction = () => {
             if (originalItems) {
-                //this.setItems(originalItems)
+                this._items = originalItems
                 originalItems = null
                 this.restrictValue = ""
             }
         }
 
-        const restictedValue = zip(inputChars, items, (char, itemArray) => {
-            // const result = {
-            //     char: char.key,
-            //     items: itemArray.filter(n => n.name.toLowerCase().startsWith(this.restrictValue + char.key))
-            // }
-            // if (result.items.length > 0 && !result.items.find(n => n.isCurrent)) {
-            //     itemArray.forEach(n => n.isCurrent = false)
-            //     result.items[0].isCurrent = true
-            // }
-            //return result
-        })
-        restictedValue.subscribe(n => {
-            // if (n.items.length > 0) {
-            //     this.restrictValue += n.char
-            //     if (!originalItems)
-            //         originalItems = this.items
-            //     this.items = from(new Promise<Item[]>(res => res(n.items)))
-            // }
-        })
-
-        const back = zip(backSpaces, backItems, (char, itemArray) => {
-            // if (this.restrictValue.length > 0) {
-            //     this.restrictValue = this.restrictValue.substr(0, this.restrictValue.length - 1)
-            //     return itemArray.filter(n => n.name.toLowerCase().startsWith(this.restrictValue))
-            // }
-        })
-        back.subscribe(n => {
-            // if (this.restrictValue.length == 0)
-            //     undoRestriction()
-            // else if (n.length > 0) 
-            //     this.setItems(from(new Promise<Item[]>(res => res(n))))
-        })
-
-        this.restrictingOffs.subscribe(() => undoRestriction())
         escapes.subscribe(() => undoRestriction())
+        return undoRestriction
     }
 
     reconnectObservables(observable: Observable<Response>) {
