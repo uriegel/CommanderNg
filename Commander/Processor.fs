@@ -28,8 +28,11 @@ type Type =
 let create id = 
 
     let mutable lastColumns: Type option = None
+    let mutable currentPath = @"c:\" // TODO: Initial "root"
+    // TODO: get always with path
+    // TODO: path must be returned and then saved in CommanderView
+    // TODO: Processor does not have to save left/right
     // TODO: DriveItems
-    let mutable currentPath = @"c:\" // TODO: Initial "root", then save value in LocalStorage
     let mutable sentEvent = fun (item: string) -> ()
     let mutable requestNr = 0
     let mutable currentItems = [||]
