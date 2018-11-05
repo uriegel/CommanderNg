@@ -3,6 +3,7 @@ open System.IO
 open Model
 open ModelTools
 open DirectoryProcessor
+open DriveProcessor
 
 [<Literal>]
 let ROOT = "root"
@@ -26,7 +27,8 @@ type Type =
     | FileSystem = 2
 
 
-// TODO:
+// TODO: In DataTemplate variable count of columns
+// TODO: SO nicht
 // type MessageBasedCounter () = 
 
 //     static let updateState (count,sum) msg = 
@@ -70,7 +72,7 @@ type Type =
 let create id = 
 
     let mutable lastColumns: Type option = None
-    let mutable currentPath = @"c:\" // TODO: Initial "root"
+    let mutable currentPath = DRIVES // @"c:\" //DRIVES //  // TODO: Initial "root"
     // TODO: get always with path
     // TODO: Processor left or right is decoupled from requests via Mailbox
     // TODO: SSE-events are sent to a Mailbox in the according processor (state update cmd)
@@ -98,11 +100,11 @@ let create id =
                     values = [| { name = "Name"; isSortable = false; columnsType = ColumnsType.String } |]
                 }
             | Type.Drives -> Some {
-                    name = sprintf "%d-%s" id DRIVES
+                    name = string id
                     values = [| 
                         { name = "Name"; isSortable = false; columnsType = ColumnsType.String }
                         { name = "Bezeichnung"; isSortable = false; columnsType = ColumnsType.String }
-                        { name = "Größe"; isSortable = false; columnsType = ColumnsType.String }
+                        { name = "Größe"; isSortable = false; columnsType = ColumnsType.Size }
                     |]
                 }
             | _ -> Some {
@@ -115,10 +117,24 @@ let create id =
         response = { items = Some [||]; columns = getColumns Type.Root }
         continuation = None
     }
-    let getDriveItems () = { 
-        response = { items = Some [||]; columns = getColumns Type.Drives }
-        continuation = None
-    }
+
+    let getDriveItems () = 
+        let getResponseDriveItem index (item: Item) = { 
+                itemType = ItemType.Directory
+                index = index
+                icon = item.icon
+                items = [| item.name; item.extension; string item.size |] 
+                isCurrent = index = 0 //indexToSelect
+                isHidden = item.isHidden
+            }
+       
+        let drives = 
+            getDrives ()
+            |> Array.mapi getResponseDriveItem
+        { 
+            response = { items = Some drives; columns = getColumns Type.Drives }
+            continuation = None
+        }
 
     let get path selectThis = 
         requestNr <- requestNr + 1

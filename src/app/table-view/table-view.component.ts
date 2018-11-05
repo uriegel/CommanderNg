@@ -21,8 +21,10 @@ export class TableViewComponent {
     
     @Input()
     set columns(value: Columns) {
-        if (value) 
+        if (value) {
+            console.log("Spalten", value)
             this._columns = value
+        }
     }
     get columns() { return this._columns }
     _columns: Columns

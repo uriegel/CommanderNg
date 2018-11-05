@@ -65,6 +65,16 @@ let createParentItem () = {
     isHidden = false
 }
 
+let createDriveItem (item: DriveInfo) = {
+    itemType = ItemType.Directory
+    icon = "Folder"
+    extension = item.VolumeLabel
+    name = item.Name
+    dateTime = Unchecked.defaultof<DateTime>
+    size = item.TotalFreeSpace
+    isHidden = false
+}
+
 let createDirectoryItem (item: DirectoryInfo) = {
     itemType = ItemType.Directory
     icon = "Folder"

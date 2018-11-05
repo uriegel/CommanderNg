@@ -10,6 +10,7 @@
     <Compile Include="ExifReader.fs" />
     <Compile Include="Model.fs" />
     <Compile Include="ModelTools.fs" />
+    <Compile Include="DriveProcessor.fs" />
     <Compile Include="DirectoryProcessor.fs" />
     <Compile Include="Processor.fs" />
     <Compile Include="Commander.fs" />

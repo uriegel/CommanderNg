@@ -6,6 +6,7 @@ open WebServer
 
 [<EntryPoint>]
 let main argv =
+
     Console.OutputEncoding <- System.Text.Encoding.UTF8
     printfn "Starting Commander Server"
 
