@@ -9,11 +9,6 @@ let main argv =
     Console.OutputEncoding <- System.Text.Encoding.UTF8
     printfn "Starting Commander Server"
 
-    LocalStorage.load ()
-    let affe = LocalStorage.get "Affe"
-    LocalStorage.set "Affe" "Huhn" |> ignore
-    let huhn = LocalStorage.get "Affe"
-
     try
         let configuration = {
             WebServer.Configuration.defaultConfiguration with
