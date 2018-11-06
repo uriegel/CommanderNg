@@ -39,7 +39,29 @@ export class TableViewComponent {
     get items() { return this._items }
     _items: Item[]
     
-    focus() { this.table.nativeElement.focus() }
+    onFocusIn(evt: Event) {
+        console.log("Hab ihn bekommen")
+    }
+
+    focus() { 
+
+        const index = this.getCurrentIndex()
+        console.log("Hab gcii", index)
+        // var index = this.currentItemIndex - this.startPosition
+        // if (index >= 0 && index < this.tableCapacity)
+        // {
+        //     var trs = this.tbody.querySelectorAll('tr')
+        //     if (index < trs.length)
+        //     {
+        //         trs[index].focus()
+        //         return true
+        //     }
+        // }
+        // this.tableView.focus()
+        // return false
+    
+        this.table.nativeElement.focus() 
+    }
 
     getCurrentItemIndex() { return this.getCurrentIndex() }
 

@@ -348,7 +348,10 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
                 this.restrictValue += evt.key
                 if (!originalItems)
                     originalItems = this.items
+                this.items.forEach(n => n.isCurrent = false)    
                 this._items = items
+                items[0].isCurrent = true
+                this.tableView.focus()
             }
         })
         backSpaces.subscribe(evt => {
