@@ -58,7 +58,7 @@ let create id =
             | Type.Drives -> Some {
                     name = string id
                     values = [| 
-                        { name = "Name"; isSortable = true; columnsType = ColumnsType.IconName }
+                        { name = "Name"; isSortable = true; columnsType = ColumnsType.String }
                         { name = "Bezeichnung"; isSortable = true; columnsType = ColumnsType.String }
                         { name = "Größe"; isSortable = true; columnsType = ColumnsType.Size }
                     |]

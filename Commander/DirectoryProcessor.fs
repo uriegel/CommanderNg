@@ -90,7 +90,7 @@ let getItems path id =
 
 let getColumns () = [|
         // TODO: take Browser language))
-        { name = "Name"; isSortable = true; columnsType = ColumnsType.IconName }
+        { name = "Name"; isSortable = true; columnsType = ColumnsType.String }
         { name = "Erw."; isSortable = true; columnsType = ColumnsType.String }
         { name = "Datum"; isSortable = true; columnsType = ColumnsType.Date }
         { name = "Größe"; isSortable = true; columnsType = ColumnsType.Size }
