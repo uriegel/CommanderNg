@@ -109,7 +109,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     undoRestriction = () => {}
 
-    ngOnInit() { this.path = "drives" }
+    ngOnInit() { this.path = "c:\\" }// //drives" }
     ngAfterViewInit() { 
 
         this.refresh()

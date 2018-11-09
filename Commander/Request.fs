@@ -42,11 +42,11 @@ let getIcon (ext: string option) (idStrOption: string option) = async {
             if shinfo.hIcon <> IntPtr.Zero then
                 return shinfo.hIcon
             else
-                match Marshal.GetLastWin32Error () with
-                | 997 when callCount < 3 ->
+                if callCount < 3 then
                     do! Async.Sleep 20
                     return! getIconHandle <| callCount + 1
-                | _ -> return (Icon.ExtractAssociatedIcon @"C:\Windows\system32\SHELL32.dll").Handle
+                else 
+                    return (Icon.ExtractAssociatedIcon @"C:\Windows\system32\SHELL32.dll").Handle
     }
 
     let! iconHandle = getIconHandle 0
