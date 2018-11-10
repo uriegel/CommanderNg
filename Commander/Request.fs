@@ -4,9 +4,10 @@ open System.IO
 open System.Drawing
 open System.Drawing.Imaging
 open System.Runtime.InteropServices
-open Commander
 open Model
 open WebServer
+
+let notModified = DateTime.Parse("02.02.2012 14:00")
 let (| IsCommanderView | _ |) (arg: UrlQueryType) = 
     match arg.Query "commanderView" with
     | Some commanderView -> 
@@ -86,6 +87,6 @@ let run request =
             | None -> do! Response.asyncSendJsonString request ""
         | "icon" ->
             let! bytes = getIcon <| query.Query "path" <| query.Query "id"
-            do! Response.asyncSendFileBytes request "image/png" (Some bytes)
+            do! Response.asyncSendFileBytes request "image/png" notModified (Some bytes)
         | _ -> failwith "Unknown command"
     }
