@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Subject, Observable, BehaviorSubject } from 'rxjs'
-import { Item, Response, Get, CommanderView, Process } from '../model/model'
+import { Item, Response, Get, Process } from '../model/model'
 
 function formatParams(params) {
     return "?" + Object
@@ -13,42 +13,40 @@ function formatParams(params) {
     providedIn: 'root'
 })
 export class ConnectionService {
-    get commanderEvents(): Observable<string>  {
-        return this.commanderSubject
+    get serverEvents(): Observable<string>  {
+        return this.serverEventsSubject
     }
-    get leftViewEvents(): Observable<Item[]>  {
-        return this.leftViewSubject
-    }
-    get rightViewEvents(): Observable<Item[]>  {
-        return this.rightViewSubject
+
+    get ready(): Observable<boolean>  {
+        return this.readySubject
     }
 
     constructor() {
+        this.source.onopen = () => this.readySubject.next(true)
 
         this.source.addEventListener("commander", (evt: MessageEvent) => {
             console.log("Commander event", evt)
-            this.commanderSubject.next(evt.data as string)
+            this.serverEventsSubject.next(evt.data as string)
         })
-        
-        this.source.addEventListener("leftView", (evt: MessageEvent) => this.leftViewSubject.next(evt.data))
-        this.source.addEventListener("rightView", (evt: MessageEvent) => this.rightViewSubject.next(evt.data))
+       
     }
 
-    get(commanderView: CommanderView, path?: string) {
-        const get: Get = path ? {
+    get(requestNr: number, source: number, path: string) {
+        const get: Get = {
+            requestNr: requestNr,
+            source: source,
             path: path,
-            commanderView: commanderView
-        } : { commanderView: commanderView }
+        }
         return this.post<Response>("get", formatParams(get))
     }
 
-    process(commanderView: CommanderView, index: number) {
-        const process: Process = {
-            index: index || 0,
-            commanderView: commanderView
-        } 
-        return this.post<Response>("process", formatParams(process))
-    }
+    // process(commanderView: CommanderView, index: number) {
+    //     const process: Process = {
+    //         index: index || 0,
+    //         commanderView: commanderView
+    //     } 
+    //     return this.post<Response>("process", formatParams(process))
+    // }
 
     private post<T>(method: string, param = "") {
         return new Promise<T>((res, rej) => {
@@ -63,10 +61,9 @@ export class ConnectionService {
         })
     }
 
-    private source = new EventSource("events")
-    private baseUrl = "http://localhost:20000"
-    private commanderSubject = new Subject<string>()
-    private leftViewSubject = new BehaviorSubject<Item[]>(null)
-    private rightViewSubject = new BehaviorSubject<Item[]>(null)
+    private readonly source = new EventSource("events")
+    private readonly baseUrl = "http://localhost:20000"
+    private readonly readySubject = new BehaviorSubject<boolean>(false)
+    private readonly serverEventsSubject = new Subject<string>()
 }
 

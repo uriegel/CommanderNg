@@ -1,3 +1,7 @@
+<p *ngIf="!connection.ready">Connection not ready</p>
+<p *ngIf="connection.ready">Connection ready</p>
 <p>
-  <button (click)="onStart()">Start</button>
+    <button (click)="onStart()" *ngIf="connection.ready">Start</button>
 </p>
+
+

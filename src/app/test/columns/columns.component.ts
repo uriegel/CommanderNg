@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
 import { IColumnSortEvent } from '../../columns/columns.component'
-import { Response, CommanderView } from 'src/app/model/model';
+import { Response } from 'src/app/model/model';
 import { ConnectionService } from 'src/app/services/connection.service';
 import { Observable, from } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { Observable, from } from 'rxjs';
 export class TestColumnsComponent implements OnInit {
 
     constructor(private connection: ConnectionService) {
-        this.response = from(this.connection.get(CommanderView.Left))
+        //this.response = from(this.connection.get(CommanderView.Left))
     }
 
     response: Observable<Response>
@@ -24,6 +24,6 @@ export class TestColumnsComponent implements OnInit {
     }
 
     onChange(path: string) {
-        this.response = from(this.connection.get(CommanderView.Left, path))
+        //this.response = from(this.connection.get(CommanderView.Left, path))
     }
 }

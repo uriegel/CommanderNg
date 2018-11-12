@@ -1,6 +1,3 @@
-export interface ServerEvent {
-    items?: Item[]
-}
 
 export enum ItemType {
     Undefiend,
@@ -10,13 +7,9 @@ export enum ItemType {
     Drive
 }
 
-export enum CommanderView {
-    Left,
-    Right
-}
-
 export interface Get {
-    commanderView: number   
+    requestNr: number
+    source: number
     path?: string
 }
 

@@ -7,7 +7,7 @@ import { TableViewComponent } from '../table-view/table-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResultValue } from '../enums/dialog-result-value.enum'
-import { Item, Response, CommanderView, CommanderUpdate, CommanderEvent, ItemType, ColumnsType } from '../model/model'
+import { Item, Response, CommanderUpdate, CommanderEvent, ItemType, ColumnsType } from '../model/model'
 import { ThemesService } from '../services/themes.service'
 import { ConnectionService } from '../services/connection.service'
 import { ElectronService } from '../services/electron.service'
@@ -51,7 +51,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
     @ViewChild("input") private input: ElementRef
     @Output() private gotFocus: EventEmitter<CommanderViewComponent> = new EventEmitter()    
-    @Input() id: CommanderView
+    @Input() id = 0
     @Input()
     get path() { return this._path }
     set path(value: string) {
@@ -119,11 +119,12 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     }
 
     constructor(public themes: ThemesService, private connection: ConnectionService, private electron: ElectronService) {
-        this.connection.commanderEvents.subscribe(evt => {
-            const commanderEvent: CommanderEvent = JSON.parse(evt)
-            if (commanderEvent.refresh)
-                this.refresh()
-        })
+        // use filter "source"
+        // this.connection.serverEvents.subscribe(evt => {
+        //     const commanderEvent: CommanderEvent = JSON.parse(evt)
+        //     if (commanderEvent.refresh)
+        //         this.refresh()
+        // })
     }
 
     focus() { this.tableView.focus() }
@@ -136,7 +137,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     onResize() { this.tableView.onResize() }
 
     refresh() { 
-        this.reconnectObservables(from(this.connection.get(this.id)))
+//        this.reconnectObservables(from(this.connection.get(this.id)))
     }
 
     getSelectedItems() {
@@ -333,7 +334,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     private processItem() {
         const index = this.tableView.getCurrentItemIndex()
-        this.reconnectObservables(from(this.connection.process(this.id, this.items[index].index)))
+        //this.reconnectObservables(from(this.connection.process(this.id, this.items[index].index)))
     }
 
     private initializeRestrict() {

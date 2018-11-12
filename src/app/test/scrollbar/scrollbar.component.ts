@@ -2,7 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core'
 import { Observable, Subscriber, from } from 'rxjs'
 import { ScrollbarComponent as ScrollBar  } from "../../scrollbar/scrollbar.component"
 import { ConnectionService } from 'src/app/services/connection.service'
-import { Item, CommanderView } from 'src/app/model/model'
+import { Item } from 'src/app/model/model'
 
 @Component({
     selector: 'app-test-scrollbar',
@@ -31,8 +31,8 @@ export class ScrollbarComponent implements OnInit {
 
     get(path: string): Observable<Item[]> { 
         return from(new Promise(async (res, rej) => {
-            let response = await this.connection.get(CommanderView.Left, path)
-            res(response.items)
+            //let response = await this.connection.get(CommanderView.Left, path)
+            //res(response.items)
         }))
     }
 
