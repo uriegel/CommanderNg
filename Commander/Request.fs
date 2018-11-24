@@ -7,6 +7,14 @@ open System.Runtime.InteropServices
 open Model
 open WebServer
 
+let run request = 
+    async {
+        do! FixedResponses.asyncSendServerError request
+        //do! Response.asyncSendJsonString request ""
+    }
+
+//=====================================================================
+
 let notModified = DateTime.Parse("02.02.2012 14:00")
 let (| IsCommanderView | _ |) (arg: UrlQueryType) = 
     match arg.Query "commanderView" with
@@ -59,7 +67,7 @@ let getIcon (ext: string option) (idStrOption: string option) = async {
     Api.DestroyIcon iconHandle |> ignore
     return ms.GetBuffer ()
 }
-let run request = 
+let runn request = 
 
     let asyncProcessorRequest query predicate = async {
         let processor = 
