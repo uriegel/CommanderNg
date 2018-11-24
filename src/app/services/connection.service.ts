@@ -54,8 +54,12 @@ export class ConnectionService {
             request.open('POST', `${this.baseUrl}/request/${method}${param}`, true)
             request.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
             request.onload = evt => {
-                var result = <T>JSON.parse(request.responseText)
-                res(result)
+                if (request.status == 200) {
+                    var result = <T>JSON.parse(request.responseText)
+                    res(result)
+                }
+                else
+                    rej(request)
             }
             request.send()
         })

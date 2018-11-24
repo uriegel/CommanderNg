@@ -17,18 +17,22 @@ export class ConnectionComponent implements OnInit {
     }
 
     async onStart() {
-        const response = await this.connection.get(++this.recentRequestNr, 111, "c:\\windows")
-        //let response = await this.connection.get(++this.recentRequestNr, 111, "/usr/share")
-        console.log("Response", response)
-        //const response = await this.connection.get(CommanderView.Left,  "c:\\windows\\system32")
-        //const response = await this.connection.get(CommanderView.Left,  "c:\\")
+        try {
+            const response = await this.connection.get(++this.recentRequestNr, 111, "c:\\windows")
+            //let response = await this.connection.get(++this.recentRequestNr, 111, "/usr/share")
+            console.log("Response", response)
+            //const response = await this.connection.get(CommanderView.Left,  "c:\\windows\\system32")
+            //const response = await this.connection.get(CommanderView.Left,  "c:\\")
 
-        //const item = response.items[100]
-        //console.log("Name", item.items[0])
-        //const jsdate = new Date(parseInt(item.items[2]))
-        //console.log("Time", jsdate.toLocaleString([], {hour: '2-digit', minute:'2-digit'}))
-        //console.log("Datum", jsdate.toLocaleString([], {day: '2-digit', month: '2-digit', year:'numeric'}))
-        //console.log("Response", response)
+            //const item = response.items[100]
+            //console.log("Name", item.items[0])
+            //const jsdate = new Date(parseInt(item.items[2]))
+            //console.log("Time", jsdate.toLocaleString([], {hour: '2-digit', minute:'2-digit'}))
+            //console.log("Datum", jsdate.toLocaleString([], {day: '2-digit', month: '2-digit', year:'numeric'}))
+            //console.log("Response", response)
+        } catch (err) {
+            console.log("HTTP request failed", err)
+        }
     }
 
     private recentRequestNr = 0
