@@ -5,6 +5,7 @@ open System.Drawing
 open System.Drawing.Imaging
 open System.Runtime.InteropServices
 open Model
+open Directory
 open Drives
 open WebServer
 
@@ -20,7 +21,7 @@ let run request =
             let response = 
                 match path with
                 | "root" -> getRoot withColumns
-                | _ -> getRoot withColumns
+                | _ -> getDirectoryItems path requestId withColumns
             let str = Json.serialize response.response
             do! Response.asyncSendJsonString request str
             match response.continuation with

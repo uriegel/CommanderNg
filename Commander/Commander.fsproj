@@ -13,6 +13,7 @@
     <Compile Include="DirectoryProcessor.fs" />
     <Compile Include="Processor.fs" />
     <Compile Include="Commander.fs" />
+    <Compile Include="Directory.fs" />
     <Compile Include="Drives.fs" />
     <Compile Include="Request.fs" />
     <Compile Include="Program.fs" />
