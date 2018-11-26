@@ -3,7 +3,6 @@ open System.IO
 open Model
 open ModelTools
 open DirectoryProcessor
-open DriveProcessor
 
 [<Literal>]
 let ROOT = "root"
@@ -74,24 +73,6 @@ let create id =
         continuation = None
     }
 
-    let getDriveItems () = 
-        let getResponseDriveItem index (item: Item) = { 
-                itemType = ItemType.Directory
-                index = index
-                icon = item.icon
-                items = [| item.name; item.extension; string item.size |] 
-                isCurrent = index = 0 //indexToSelect
-                isHidden = item.isHidden
-            }
-       
-        let drives = 
-            getDrives ()
-            |> Array.mapi getResponseDriveItem
-        { 
-            response = { items = Some drives; columns = getColumns Type.Drives }
-            continuation = None
-        }
-
     let get path selectThis = 
         requestNr <- requestNr + 1
         let path = 
@@ -112,7 +93,7 @@ let create id =
 
         match path with 
         | ROOT -> getRootItems ()
-        | DRIVES -> getDriveItems () 
+        | DRIVES -> getRootItems ()
         | _ -> 
             currentItems <- DirectoryProcessor.getItems path id
 

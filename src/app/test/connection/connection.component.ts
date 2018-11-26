@@ -15,12 +15,16 @@ export class ConnectionComponent implements OnInit {
             console.log("Server event", evt)
         })
     }
-
-    async onStart() {
+    withColumns
+    async onRoot() {
         try {
-            const response = await this.connection.get(111, "c:\\windows")
+            const response = await this.connection.get("root", this.recentColumns != "root")
+//            const response = await this.connection.get("c:\\windows")
             //let response = await this.connection.get(++this.recentRequestNr, 111, "/usr/share")
             console.log("Response", response)
+            if (response.columns) {
+                this.recentColumns = response.columns.name
+            }
             //const response = await this.connection.get(CommanderView.Left,  "c:\\windows\\system32")
             //const response = await this.connection.get(CommanderView.Left,  "c:\\")
 
@@ -36,4 +40,5 @@ export class ConnectionComponent implements OnInit {
     }
 
     private recentRequestNr = 0
+    private recentColumns = ""
 }

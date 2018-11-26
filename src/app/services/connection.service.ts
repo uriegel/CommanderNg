@@ -31,11 +31,11 @@ export class ConnectionService {
        
     }
 
-    get(callerId: number, path: string) {
+    get(path: string, withColumns?: boolean) {
         const requestId = ++seed;
         const get: Get = {
             requestId: requestId,
-            callerId: callerId,
+            withColumns: withColumns,
             path: path,
         }
         return this.post<Response>("get", formatParams(get))
