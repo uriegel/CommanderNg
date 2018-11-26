@@ -1,7 +1,10 @@
 <p *ngIf="!connection.ready">Connection not ready</p>
 <p *ngIf="connection.ready">Connection ready</p>
 <p>
-    <button (click)="onRoot()" *ngIf="connection.ready">Root</button>
+    <button (click)="onGet('root')" *ngIf="connection.ready">Root</button>
+    <button (click)="onGet('c:\\windows')" *ngIf="connection.ready">Windows</button>
+    <button (click)="onGet('c:\\windows\\system32')" *ngIf="connection.ready">System32</button>
+    <button (click)="onGet('/usr/share')" *ngIf="connection.ready">Share</button>
 </p>
 
 
