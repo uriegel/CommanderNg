@@ -8,9 +8,9 @@ export enum ItemType {
 }
 
 export interface Get {
-    requestNr: number
-    source: number
-    path?: string
+    requestId: number
+    callerId: number
+    path: string
 }
 
 export interface Process {

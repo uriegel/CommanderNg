@@ -31,10 +31,11 @@ export class ConnectionService {
        
     }
 
-    get(requestNr: number, source: number, path: string) {
+    get(callerId: number, path: string) {
+        const requestId = ++seed;
         const get: Get = {
-            requestNr: requestNr,
-            source: source,
+            requestId: requestId,
+            callerId: callerId,
             path: path,
         }
         return this.post<Response>("get", formatParams(get))
@@ -71,3 +72,4 @@ export class ConnectionService {
     private readonly serverEventsSubject = new Subject<string>()
 }
 
+var seed = 0

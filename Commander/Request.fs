@@ -7,10 +7,51 @@ open System.Runtime.InteropServices
 open Model
 open WebServer
 
+let getRoot () = 
+        let getResponseDriveItem index (item: Item) = { 
+                itemType = ItemType.Directory
+                index = index
+                icon = item.icon
+                items = [| item.name; item.extension; string item.size |] 
+                isCurrent = index = 0 //indexToSelect
+                isHidden = item.isHidden
+            }
+
+        DriveInfo.GetDrives () 
+        |> Array.filter (fun drive -> drive.IsReady)
+        |> Array.sortBy (fun n -> n.Name)
+        |> Array.map createDriveItem
+        |> Array.mapi getResponseDriveItem
+
+            // fun d -> Seq.append d [| 
+            //                         { kind = "Drive"; parent = null; name = "Registry"; fullname = null; imageUrl = "images/registry.png";
+            //                             ext = null; isHidden=false; dateTime = null; fileSize = 0L; }
+            //                         { kind = "Drive"; parent = null; name = "Dienste"; fullname = null; imageUrl = "images/service.png";
+            //                             ext = null; isHidden=false; dateTime = null; fileSize = 0L }
+            //                         { kind = "Drive"; parent = null; name = "Favoriten"; fullname = null; imageUrl = "images/favorite.png";
+            //                             ext = null; isHidden=false; dateTime = null; fileSize = 0L } |])
+
+        //let driveResult = { currentDirectory = "drives"; items = Seq.toArray drives }
+
 let run request = 
+    let query = UrlQuery.create request.data.header.path
+
+    let requestId = query.Query "requestId"
+    let callerId = query.Query "callerId"
+    let path = query.Query "path"
     async {
-        do! FixedResponses.asyncSendServerError request
-        //do! Response.asyncSendJsonString request ""
+        match path with
+        | Some path ->
+            let response = 
+                match path with
+                | "root" -> getRoot ()
+                | _ -> getRoot ()
+            let str = Json.serialize response.response
+            do! Response.asyncSendJsonString request str
+            match response.continuation with
+            | Some continuation -> continuation ()
+            | None -> ()
+        | None -> do! FixedResponses.asyncSendServerError request
     }
 
 //=====================================================================
