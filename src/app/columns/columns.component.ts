@@ -14,6 +14,7 @@ export interface IColumnSortEvent {
 export class ColumnsComponent {
     constructor(private renderer: Renderer2) {}
 
+    @Input() id = ""
     @Output() onSort: EventEmitter<IColumnSortEvent> = new EventEmitter()    
     @ViewChild("columnsRow") columnsRow: ElementRef
     @ViewChildren("th") 
@@ -113,7 +114,7 @@ export class ColumnsComponent {
 
         const onup = (evt: MouseEvent) => {
             const columnsWidths = this.getWidths()
-            localStorage[this.columns.name] = JSON.stringify(columnsWidths)
+            localStorage[this.getColumnsId()] = JSON.stringify(columnsWidths)
             document.body.style.cursor = null
             window.removeEventListener('mousemove', onmove)
             window.removeEventListener('mouseup', onup)
@@ -138,12 +139,14 @@ export class ColumnsComponent {
     }
     
     private restoreWidths() {
-        const json = localStorage[this.columns.name]
+        const json = localStorage[this.getColumnsId()]
         if (json && this.ths) {
             const columnWidth = JSON.parse(json)
             this.setWidths(columnWidth)
         }
     }
+
+    private getColumnsId() { return this.id + "-" + this.columns.name }
 
     private getCombinedWidth(column: HTMLElement, nextColumn: HTMLElement) {
         const firstWidth = column.style.width

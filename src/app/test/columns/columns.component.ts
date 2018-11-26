@@ -12,7 +12,7 @@ import { Observable, from } from 'rxjs';
 export class TestColumnsComponent implements OnInit {
 
     constructor(private connection: ConnectionService) {
-        //this.response = from(this.connection.get(CommanderView.Left))
+        this.response = from(this.connection.get("root", true))
     }
 
     response: Observable<Response>
