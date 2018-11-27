@@ -28,10 +28,7 @@ type Type =
 let create id = 
 
     let mutable lastColumns: Type option = None
-    let mutable currentPath = @"c:\" //DRIVES //  // TODO: Initial "root"
-    // TODO: get from drive
-    // TODO: get always with path
-    // TODO: Processor left or right is decoupled from requests 
+    let mutable currentPath = @"c:\" 
     // TODO: path must be returned and then saved in CommanderView
     // TODO: Processor does not have to save left/right
     let mutable sentEvent = fun (item: string) -> ()

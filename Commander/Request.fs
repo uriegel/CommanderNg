@@ -8,7 +8,6 @@ open Directory
 open Drives
 open WebServer
 
-// TODO: Exe-path icons
 let requestOK (headers: WebServer.RequestHeaders) = headers.path.StartsWith "/request"
 
 let run request = 
