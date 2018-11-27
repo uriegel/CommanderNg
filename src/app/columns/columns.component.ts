@@ -31,7 +31,6 @@ export class ColumnsComponent {
     set columns(value) {
         if (value) {
             this._columns = value
-            console.log("Neue Kolumnen")
             if (this.columnsName != value.name) {
                 this.columnsName = value.name
                 this.onColumnsChanged.emit(value.name)

@@ -5,6 +5,9 @@ open Model
 open ModelTools
 open Str
 
+// TODO: Version or eXIF    
+// TODO: indexToSelect
+
 [<Literal>]
 let DIRECTORY = "directory"
 
