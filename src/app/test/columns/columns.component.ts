@@ -19,11 +19,18 @@ export class TestColumnsComponent implements OnInit {
 
     ngOnInit() { }
 
+    onColumnsChanged(name: string) {
+        console.log("New Columns", name)
+        this.columns = name
+    }
+
     onSort(sortEvent: IColumnSortEvent) {
         console.log(`Sorting: ${sortEvent.index} ascending: ${sortEvent.ascending}`)
     }
 
     onChange(path: string) {
-        //this.response = from(this.connection.get(CommanderView.Left, path))
+        this.response = from(this.connection.get(path, path == "root" ? this.columns != "root" : this.columns == "root"))
     }
+
+    private columns = ""
 }

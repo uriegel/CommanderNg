@@ -16,6 +16,7 @@ export class ColumnsComponent {
 
     @Input() id = ""
     @Output() onSort: EventEmitter<IColumnSortEvent> = new EventEmitter()    
+    @Output() onColumnsChanged: EventEmitter<string> = new EventEmitter()    
     @ViewChild("columnsRow") columnsRow: ElementRef
     @ViewChildren("th") 
     get ths() { return this._ths }
@@ -28,8 +29,14 @@ export class ColumnsComponent {
     @Input()
     get columns() { return this._columns }
     set columns(value) {
-        if (value)
+        if (value) {
             this._columns = value
+            console.log("Neue Kolumnen")
+            if (this.columnsName != value.name) {
+                this.columnsName = value.name
+                this.onColumnsChanged.emit(value.name)
+            }
+        }
     }
     private _columns: Columns = {
         name: "nil",
@@ -160,4 +167,5 @@ export class ColumnsComponent {
 
     private previous = false
     private grippingReady = false
+    private columnsName = ""
 }
