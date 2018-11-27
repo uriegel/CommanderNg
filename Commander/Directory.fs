@@ -40,7 +40,6 @@ let getDirectoryItems path (requestId: string option) withColumns =
                 index = 0
                 icon = "Folder"
                 items = [| item.Name; ""; string 0; convertTime item.LastWriteTime; ""; "" |] 
-                //isCurrent = index = 0 //indexToSelect
                 isCurrent = false
                 isHidden = isHidden item.Attributes
             }
@@ -50,10 +49,9 @@ let getDirectoryItems path (requestId: string option) withColumns =
                 index = 0
                 icon = 
                     match Str.toLower item.Extension with
-                    | ".exe" -> sprintf "/request/icon?path=%s&id=%d" item.Name id
+                    | ".exe" -> sprintf "/request/icon?path=%s" item.FullName
                     | _ -> sprintf "/request/icon?path=.%s" item.Extension
                 items = [| getNameOnly item.Name; item.Extension; string item.Length; convertTime item.LastWriteTime; ""; "" |] 
-                //isCurrent = index = 0 //indexToSelect
                 isCurrent = false
                 isHidden = isHidden item.Attributes
             }
@@ -70,6 +68,7 @@ let getDirectoryItems path (requestId: string option) withColumns =
             { 
                 responseItem with
                     index = index
+                    isCurrent = index = 0 // indexToSelect
             }
         
         Array.concat [| [| createParentItem () |] ; directoryItems ; fileItems |]
