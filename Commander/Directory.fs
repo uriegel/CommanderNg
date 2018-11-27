@@ -1,9 +1,11 @@
 module Directory
-open System.IO
 open System
+open System.Diagnostics
+open System.IO
 open Model
 open ModelTools
 open Str
+open ExifReader
 
 // TODO: Version or eXIF    
 // TODO: indexToSelect
@@ -77,6 +79,72 @@ let getDirectoryItems path (requestId: string option) withColumns =
         Array.concat [| [| createParentItem () |] ; directoryItems ; fileItems |]
         |> Array.mapi fillIndexes
 
+    let retrieveFileVersions path (items: ResponseItem[]) check = 
+        let isVersionFile (index, item: ResponseItem) =
+            let ext = toLower item.items.[1]
+            ext = ".exe"  || ext = ".dll"
+
+        let getVersion file =
+            match check () with 
+            | true ->
+                let fvi = FileVersionInfo.GetVersionInfo file
+                sprintf "%u.%u.%u.%u" fvi.FileMajorPart fvi.FileMinorPart fvi.FileBuildPart fvi.FilePrivatePart
+            | false -> ""
+
+        let getVersionItem (index, item: ResponseItem) = {
+            index = index
+            columnIndex = 4
+            value = getVersion <| Path.Combine (path, sprintf "%s%s" item.items.[0] item.items.[1])
+        }
+            
+        items 
+        |> Array.indexed
+        |> Array.filter isVersionFile 
+        |> Array.map getVersionItem
+
+    let retrieveExifDates path (items: ResponseItem[]) check = 
+        let isExifFile (index, item: ResponseItem) =
+            let ext = toLower item.items.[1]
+            ext = ".jpg"
+
+        let getExifDate file =
+            match check () with 
+            | true ->
+                let exif = getExifDate file
+                match exif with 
+                | Some value -> convertTime value
+                | None -> ""
+            | false -> ""
+
+        let getExifDateItem (index, item: ResponseItem) = {
+            index = index
+            columnIndex = 2
+            value = getExifDate <| Path.Combine (path, sprintf "%s%s" item.items.[0] item.items.[1])
+        }
+
+        items 
+        |> Array.indexed
+        |> Array.filter isExifFile 
+        |> Array.map getExifDateItem
+
+    let thisRequest = requestNr
+
+    let check () = thisRequest = requestNr
+
+    let continuation () = 
+        async {
+            let updateItems = retrieveFileVersions path result.items.Value check
+            let updateItems2 = retrieveExifDates path result.items.Value check
+            match check () with
+            | true -> 
+                let commanderUpdate = {
+                    id = requestNr
+                    updateItems =  Array.concat [|updateItems; updateItems2|] 
+                }
+                sentEvent <| Json.serialize commanderUpdate
+            | false -> ()          
+        } |> Async.Start        
+
     let getColumns () = {
             name = DIRECTORY
             values = [| 
@@ -90,6 +158,6 @@ let getDirectoryItems path (requestId: string option) withColumns =
         }
     { 
         response = { items = Some (getItems ()); columns = if withColumns then Some (getColumns ()) else None }
-        continuation = None
+        continuation = Some continuation
     }
 
