@@ -131,6 +131,7 @@ let getDirectoryItems path (requestId: string option) withColumns =
         |> Array.filter isExifFile 
         |> Array.map getExifDateItem
 
+    // TODO: not the most recent requestId!!!
     let thisRequest = requestId
 
     let getColumns () = {
