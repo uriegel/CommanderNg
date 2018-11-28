@@ -5,6 +5,7 @@ open System.IO
 open Model
 open ModelTools
 open Str
+open Sse
 open ExifReader
 
 // TODO: Version or eXIF    
@@ -127,23 +128,7 @@ let getDirectoryItems path (requestId: string option) withColumns =
         |> Array.filter isExifFile 
         |> Array.map getExifDateItem
 
-    let thisRequest = requestNr
-
-    let check () = thisRequest = requestNr
-
-    let continuation () = 
-        async {
-            let updateItems = retrieveFileVersions path result.items.Value check
-            let updateItems2 = retrieveExifDates path result.items.Value check
-            match check () with
-            | true -> 
-                let commanderUpdate = {
-                    id = requestNr
-                    updateItems =  Array.concat [|updateItems; updateItems2|] 
-                }
-                sentEvent <| Json.serialize commanderUpdate
-            | false -> ()          
-        } |> Async.Start        
+    let thisRequest = requestId
 
     let getColumns () = {
             name = DIRECTORY
@@ -156,8 +141,30 @@ let getDirectoryItems path (requestId: string option) withColumns =
                 { name = "Version"; isSortable = true; columnsType = ColumnsType.Version }
             |]
         }
+
+    let response = { items = Some (getItems ()); columns = if withColumns then Some (getColumns ()) else None }        
+
+    let check () = thisRequest = requestId
+
+    let continuation requestId () = 
+        async {
+            let updateItems = retrieveFileVersions path response.items.Value check
+            let updateItems2 = retrieveExifDates path response.items.Value check
+            match check () with
+            | true -> 
+                let commanderUpdate = {
+                    id = requestId
+                    updateItems =  Array.concat [|updateItems; updateItems2|] 
+                }
+                serverSentEvent <| Json.serialize commanderUpdate
+            | false -> ()          
+        } |> Async.Start        
+
     { 
-        response = { items = Some (getItems ()); columns = if withColumns then Some (getColumns ()) else None }
-        continuation = Some continuation
+        response = response
+        continuation = 
+            match requestId with
+            | Some requestId -> Some (continuation <| int requestId)
+            | None -> None
     }
 

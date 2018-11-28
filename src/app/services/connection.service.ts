@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Subject, Observable, BehaviorSubject } from 'rxjs'
-import { Item, Response, Get, Process } from '../model/model'
+import { Response, Get } from '../model/model'
 
 function formatParams(params) {
     return "?" + Object
@@ -24,11 +24,11 @@ export class ConnectionService {
     constructor() {
         this.source.onopen = () => this.readySubject.next(true)
 
-        this.source.addEventListener("commander", (evt: MessageEvent) => {
+        this.source.addEventListener("updates", (evtString: MessageEvent) => {
+            const evt = JSON.parse(evtString.data)
             console.log("Commander event", evt)
-            this.serverEventsSubject.next(evt.data as string)
+            //this.serverEventsSubject.next(evt.data as string)
         })
-       
     }
 
     get(path: string, withColumns?: boolean) {

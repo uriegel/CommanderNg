@@ -30,7 +30,6 @@ let create id =
     let mutable lastColumns: Type option = None
     let mutable currentPath = @"c:\" 
     // TODO: path must be returned and then saved in CommanderView
-    // TODO: Processor does not have to save left/right
     let mutable sentEvent = fun (item: string) -> ()
     let mutable requestNr = 0
     let mutable currentItems = [||]

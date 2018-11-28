@@ -1,11 +1,19 @@
 ﻿open System
 open System.IO
 open Request
-open Commander
 open WebServer
+open Sse
 
 [<EntryPoint>]
 let main argv =
+
+    let run () = 
+        let line = Console.ReadLine()
+        printfn "Cmd: %s" line
+        ()
+
+    let close () = 
+        printfn "Closing Commander Server"
 
     Console.OutputEncoding <- System.Text.Encoding.UTF8
     printfn "Starting Commander Server"
@@ -23,7 +31,7 @@ let main argv =
         WebServer.Server.start configuration
         printfn "Commander Server started"
         printfn "-cmdevt: ready"
-        Commander.run () |> ignore
+        run () |> ignore
         WebServer.Server.stop ()
         printfn "Commander Server stopped"
         0 
