@@ -25,6 +25,9 @@ let getDirectoryItems path (requestId: string option) withColumns =
             | _ -> substringLength 0 pos name
 
     let getItems () = 
+
+        let isHidden (attributes: FileAttributes) = attributes.HasFlag FileAttributes.Hidden
+
         let di = DirectoryInfo path
         let directoryItems (di: DirectoryInfo) () = GetSafeItems di.GetDirectories 
         let fileItems (di: DirectoryInfo) () = GetSafeItems di.GetFiles
