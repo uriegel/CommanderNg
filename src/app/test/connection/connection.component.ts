@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { ConnectionService } from '../../services/connection.service'
 
+const callerId = 1
+
 @Component({
     selector: 'app-test-connection',
     templateUrl: './connection.component.html',
@@ -18,7 +20,7 @@ export class ConnectionComponent implements OnInit {
     withColumns
     async onGet(url: string) {
         try {
-            const response = await this.connection.get(url, url == "root" ? this.recentColumns != "root" : this.recentColumns == "root")
+            const response = await this.connection.get(callerId, url, url == "root" ? this.recentColumns != "root" : this.recentColumns == "root")
             console.log("Response", response)
             if (response.columns) {
                 this.recentColumns = response.columns.name

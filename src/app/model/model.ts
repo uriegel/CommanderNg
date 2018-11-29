@@ -9,6 +9,7 @@ export enum ItemType {
 
 export interface Get {
     requestId: number
+    callerId: number
     withColumns?: boolean
     path: string
 }

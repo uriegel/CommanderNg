@@ -8,13 +8,15 @@ open Str
 open Sse
 open ExifReader
 
-// TODO: Version or eXIF    
 // TODO: indexToSelect
 
 [<Literal>]
 let DIRECTORY = "directory"
 
-let getDirectoryItems path (requestId: string option) withColumns = 
+// TODO: Initialize events w/o zone.js
+let getDirectoryItems path (requestId: string) (callerId: string) withColumns = 
+    RequestState.updateRecentRequest callerId requestId |> ignore
+
     let getNameOnly name =
         match name with 
         | ".." -> name
@@ -131,9 +133,6 @@ let getDirectoryItems path (requestId: string option) withColumns =
         |> Array.filter isExifFile 
         |> Array.map getExifDateItem
 
-    // TODO: not the most recent requestId!!!
-    let thisRequest = requestId
-
     let getColumns () = {
             name = DIRECTORY
             values = [| 
@@ -148,7 +147,7 @@ let getDirectoryItems path (requestId: string option) withColumns =
 
     let response = { items = Some (getItems ()); columns = if withColumns then Some (getColumns ()) else None }        
 
-    let check () = thisRequest = requestId
+    let check () = RequestState.getRecentRequest callerId = requestId
 
     let continuation requestId () = 
         async {
@@ -160,15 +159,12 @@ let getDirectoryItems path (requestId: string option) withColumns =
                     id = requestId
                     updateItems =  Array.concat [|updateItems; updateItems2|] 
                 }
-                serverSentEvent <| Json.serialize commanderUpdate
+                if check () then
+                    serverSentEvent <| Json.serialize commanderUpdate
             | false -> ()          
         } |> Async.Start        
 
     { 
         response = response
-        continuation = 
-            match requestId with
-            | Some requestId -> Some (continuation <| int requestId)
-            | None -> None
+        continuation = Some (continuation <| int requestId)
     }
-

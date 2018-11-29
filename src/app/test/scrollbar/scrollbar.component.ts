@@ -4,6 +4,8 @@ import { ScrollbarComponent as ScrollBar  } from "../../scrollbar/scrollbar.comp
 import { ConnectionService } from 'src/app/services/connection.service'
 import { Item } from 'src/app/model/model'
 
+const callerId = 1
+
 @Component({
     selector: 'app-test-scrollbar',
     templateUrl: './scrollbar.component.html',
@@ -31,7 +33,7 @@ export class ScrollbarComponent implements OnInit {
 
     get(path: string): Observable<Item[]> { 
         return from(new Promise(async (res, rej) => {
-            let response = await this.connection.get(path)
+            let response = await this.connection.get(callerId, path)
             res(response.items)
         }))
     }

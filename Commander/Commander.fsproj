@@ -12,6 +12,7 @@
     <Compile Include="ModelTools.fs" />
     <Compile Include="Sse.fs" />
     <Compile Include="Drives.fs" />
+    <Compile Include="RequestState.fs" />
     <Compile Include="Directory.fs" />
     <Compile Include="Request.fs" />
     <Compile Include="Program.fs" />

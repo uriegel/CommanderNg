@@ -48,6 +48,7 @@ let run request =
     let query = UrlQuery.create request.data.header.path
 
     let requestId = query.Query "requestId"
+    let callerId = query.Query "callerId"
     let withColumns = query.Query "withColumns" = Some "true"
     let path = query.Query "path"
     async {
@@ -57,13 +58,20 @@ let run request =
             | Some path ->
                 let response = 
                     match path with
-                    | "root" -> getRoot withColumns
-                    | _ -> getDirectoryItems path requestId withColumns
-                let str = Json.serialize response.response
-                do! Response.asyncSendJsonString request str
-                match response.continuation with
-                | Some continuation -> continuation ()
-                | None -> ()
+                    | "root" -> Some (getRoot withColumns)
+                    | _ -> 
+                        match (requestId, callerId) with
+                        | (Some requestId, Some callerId) -> Some (getDirectoryItems path requestId callerId withColumns)
+                        | _ -> None
+
+                match response with
+                | Some response ->
+                    let str = Json.serialize response.response
+                    do! Response.asyncSendJsonString request str
+                    match response.continuation with
+                    | Some continuation -> continuation ()
+                    | None -> ()
+                | None -> do! FixedResponses.asyncSendServerError request
             | None -> do! FixedResponses.asyncSendServerError request
         | "icon" ->
             let! bytes = getIcon <| query.Query "ext"

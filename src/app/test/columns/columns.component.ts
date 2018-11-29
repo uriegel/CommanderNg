@@ -4,6 +4,8 @@ import { Response } from 'src/app/model/model';
 import { ConnectionService } from 'src/app/services/connection.service';
 import { Observable, from } from 'rxjs';
 
+const callerId = 1
+
 @Component({
     selector: 'app-test-columns',
     templateUrl: './columns.component.html',
@@ -12,7 +14,7 @@ import { Observable, from } from 'rxjs';
 export class TestColumnsComponent implements OnInit {
 
     constructor(private connection: ConnectionService) {
-        this.response = from(this.connection.get("root", true))
+        this.response = from(this.connection.get(callerId, "root", true))
     }
 
     response: Observable<Response>
@@ -29,7 +31,7 @@ export class TestColumnsComponent implements OnInit {
     }
 
     onChange(path: string) {
-        this.response = from(this.connection.get(path, path == "root" ? this.columns != "root" : this.columns == "root"))
+        this.response = from(this.connection.get(callerId, path, path == "root" ? this.columns != "root" : this.columns == "root"))
     }
 
     private columns = ""
