@@ -7,6 +7,11 @@ import { ThemesService } from 'src/app/services/themes.service'
 import { TableViewComponent as tableView } from '../../table-view/table-view.component'
 import { map, filter } from 'rxjs/operators';
 
+// TODO: suppress columns if possible
+// TODO: EXIF and Version
+
+const callerId = 1
+
 @Component({
     selector: 'app-test-table-view',
     templateUrl: './table-view.component.html',
@@ -23,17 +28,17 @@ export class TableViewComponent implements OnInit {
     @ViewChild(tableView) tableView: tableView
 
     constructor(public themes: ThemesService, private connection: ConnectionService) {
-        //this.reconnectObservables(from(this.connection.get(CommanderView.Left)))
+        this.reconnectObservables(from(this.connection.get(callerId, "root", true)))
     }
 
     ngOnInit() { }
 
     onNeu() {
-        //this.reconnectObservables(from(this.connection.get(CommanderView.Left, "c:\\windows\\system32")))
+        this.reconnectObservables(from(this.connection.get(callerId, "c:\\windows\\system32", true)))
     }
 
     onChange() {
-        //this.reconnectObservables(from(this.connection.get(CommanderView.Left, "c:\\windows")))
+        this.reconnectObservables(from(this.connection.get(callerId, "c:\\windows", true)))
     }
 
     onSort(sortEvent: IColumnSortEvent) {
@@ -44,7 +49,7 @@ export class TableViewComponent implements OnInit {
         this.response = observable
         this.items = 
             this.response
-            //.pipe(map(n => n.items.filter(n => !n.isHidden)))
-            .pipe(map(n => n.items))
+            .pipe(map(n => n.items.filter(n => !n.isHidden)))
+            //.pipe(map(n => n.items))
     }
 }
