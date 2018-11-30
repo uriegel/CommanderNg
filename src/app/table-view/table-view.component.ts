@@ -29,6 +29,8 @@ export class TableViewComponent {
     get columns() { return this._columns }
     _columns: Columns
 
+    columnsName = ""
+
     @Input() 
     set items(value: Item[]) {
         if (value) {
@@ -39,6 +41,10 @@ export class TableViewComponent {
     get items() { return this._items }
     _items: Item[]
     
+    onColumnsChanged(name: string) {
+        this.columnsName = name
+    }
+
     onFocusIn(evt: Event) {
         console.log("Hab ihn bekommen")
     }

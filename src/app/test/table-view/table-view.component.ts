@@ -4,10 +4,10 @@ import { IColumnSortEvent } from '../../columns/columns.component'
 import { Response, Item } from '../../model/model'
 import { ConnectionService } from 'src/app/services/connection.service'
 import { ThemesService } from 'src/app/services/themes.service'
-import { TableViewComponent as tableView } from '../../table-view/table-view.component'
+import { TableViewComponent as TableView } from '../../table-view/table-view.component'
 import { map, filter } from 'rxjs/operators';
 
-// TODO: suppress columns if possible
+// TODO: Show hidden/hide hidden
 // TODO: EXIF and Version
 
 const callerId = 1
@@ -25,24 +25,29 @@ export class TableViewComponent implements OnInit {
     response: Observable<Response>
     items: Observable<Item[]>
 
-    @ViewChild(tableView) tableView: tableView
+    @ViewChild(TableView) tableView: TableView
 
-    constructor(public themes: ThemesService, private connection: ConnectionService) {
-        this.reconnectObservables(from(this.connection.get(callerId, "root", true)))
-    }
+    constructor(public themes: ThemesService, private connection: ConnectionService) { this.get("root") }
 
     ngOnInit() { }
 
-    onNeu() {
-        this.reconnectObservables(from(this.connection.get(callerId, "c:\\windows\\system32", true)))
-    }
+    onNeu() { this.get("c:\\windows\\system32") }
 
-    onChange() {
-        this.reconnectObservables(from(this.connection.get(callerId, "c:\\windows", true)))
+    onChange() { this.get("c:\\windows") }
+
+    get(path: string) {
+        this.reconnectObservables(from(this.connection.get(callerId, path, this.withColumns(path))))
     }
 
     onSort(sortEvent: IColumnSortEvent) {
         console.log(`Sorting: ${sortEvent.index} ascending: ${sortEvent.ascending}`)
+    }
+
+    private withColumns(path: string) {
+        if (this.tableView)
+            return path == "root" ? this.tableView.columnsName != "root" : this.tableView.columnsName == "root"
+        else
+            return true
     }
 
     private reconnectObservables(observable: Observable<Response>) {
