@@ -13,7 +13,6 @@ open ExifReader
 [<Literal>]
 let DIRECTORY = "directory"
 
-// TODO: Initialize events w/o zone.js
 let getDirectoryItems path (requestId: string) (callerId: string) withColumns = 
     RequestState.updateRecentRequest callerId requestId |> ignore
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Subject, Observable, BehaviorSubject } from 'rxjs'
-import { Response, Get } from '../model/model'
+import { Response, Get, CommanderUpdate } from '../model/model'
 
 function formatParams(params) {
     return "?" + Object
@@ -13,7 +13,7 @@ function formatParams(params) {
     providedIn: 'root'
 })
 export class ConnectionService {
-    get serverEvents(): Observable<string>  {
+    get serverEvents(): Observable<CommanderUpdate>  {
         return this.serverEventsSubject
     }
 
@@ -25,9 +25,8 @@ export class ConnectionService {
         this.source.onopen = () => this.readySubject.next(true)
 
         this.source.addEventListener("updates", (evtString: MessageEvent) => {
-            const evt = JSON.parse(evtString.data)
-            console.log("Commander event", evt)
-            //this.serverEventsSubject.next(evt.data as string)
+            const evt = JSON.parse(evtString.data) as CommanderUpdate
+            this.serverEventsSubject.next(evt)
         })
     }
 
@@ -70,7 +69,7 @@ export class ConnectionService {
     private readonly source = new EventSource("events")
     private readonly baseUrl = "http://localhost:20000"
     private readonly readySubject = new BehaviorSubject<boolean>(false)
-    private readonly serverEventsSubject = new Subject<string>()
+    private readonly serverEventsSubject = new Subject<CommanderUpdate>()
 }
 
 var seed = 0

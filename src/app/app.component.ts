@@ -15,7 +15,7 @@ import { ConnectionService } from './services/connection.service';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-    constructor(public themes: ThemesService,  
+    constructor(public themes: ThemesService, public connection: ConnectionService,
         private electron: ElectronService, private appElement: ElementRef) { 
         electron.themeChanged.subscribe(theme => {
             console.log("Theme changed", theme)
