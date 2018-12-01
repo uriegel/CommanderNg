@@ -76,6 +76,7 @@ export interface Column {
 
 export interface UpdateItem  {
     index: number
+    isExif: boolean
     columnIndex: number
     value: string   
 }

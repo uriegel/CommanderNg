@@ -7,9 +7,6 @@ import { ThemesService } from 'src/app/services/themes.service'
 import { TableViewComponent as TableView } from '../../table-view/table-view.component'
 import { map, filter } from 'rxjs/operators';
 
-// TODO: Show hidden/hide hidden
-// TODO: EXIF and Version
-
 const callerId = 1
 
 @Component({
@@ -28,15 +25,17 @@ export class TableViewComponent implements OnInit {
     @Input()
     set viewEvents(evt: CommanderUpdate) {
         if (evt) {
-            // TODO: filter id
-            console.log("view sse", evt)
-            // const update = JSON.parse(data) as CommanderUpdate
-            // if (update.updateItems) {
-            //     console.log("view sse", update)
-            //     const items = this.tableView.getAllItems()
-            //     if (items) 
-            //         update.updateItems.forEach(n => items[n.index].items[n.columnIndex] = n.value)
-            // }
+            if (evt.id == callerId) {
+                if (evt.updateItems) {
+                    const items = this.tableView.getAllItems()
+                    if (items) 
+                        evt.updateItems.forEach(n => {
+                            const item = items.find(m => m.index == n.index)
+                            item.items[n.columnIndex] = n.value   
+                            item.isExif = n.isExif
+                        })
+                }
+            }
         }
     }
 
@@ -49,7 +48,8 @@ export class TableViewComponent implements OnInit {
     onNeu() { this.get("c:\\windows\\system32") }
 
     //onChange() { this.get("c:\\windows") }
-    onChange() { this.get("c:\\") }
+    //onChange() { this.get("c:\\") }
+    onChange() { this.get("c:\\04 - Brayka Bay") }
 
     get(path: string) {
         this.reconnectObservables(from(this.connection.get(callerId, path, this.withColumns(path))))

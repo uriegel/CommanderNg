@@ -38,6 +38,7 @@ type GetResult = {
 
 type UpdateItem = {
     index: int
+    isExif: bool
     columnIndex: int
     value: string
 }

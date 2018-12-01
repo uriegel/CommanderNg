@@ -61,7 +61,7 @@ let run request =
                     | "root" -> Some (getRoot withColumns)
                     | _ -> 
                         match (requestId, callerId) with
-                        | (Some requestId, Some callerId) -> Some (getDirectoryItems path requestId callerId withColumns)
+                        | (Some requestId, Some callerId) -> Some (getDirectoryItems path (int requestId) (int callerId) withColumns)
                         | _ -> None
 
                 match response with

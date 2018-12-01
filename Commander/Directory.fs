@@ -13,7 +13,7 @@ open ExifReader
 [<Literal>]
 let DIRECTORY = "directory"
 
-let getDirectoryItems path (requestId: string) (callerId: string) withColumns = 
+let getDirectoryItems path (requestId: int) (callerId: int) withColumns = 
     RequestState.updateRecentRequest callerId requestId |> ignore
 
     let getNameOnly name =
@@ -40,7 +40,7 @@ let getDirectoryItems path (requestId: string) (callerId: string) withColumns =
                 itemType = ItemType.Parent
                 index = 0
                 icon = "Folder"
-                items = [| ".."; ""; string 0; convertTime Unchecked.defaultof<DateTime>; ""; "" |] 
+                items = [| ".."; ""; ""; ""; "" |] 
                 isCurrent = false
                 isHidden = false
             }
@@ -49,7 +49,7 @@ let getDirectoryItems path (requestId: string) (callerId: string) withColumns =
                 itemType = ItemType.Directory
                 index = 0
                 icon = "Folder"
-                items = [| item.Name; ""; string 0; convertTime item.LastWriteTime; ""; "" |] 
+                items = [| item.Name; ""; convertTime item.LastWriteTime; ""; "" |] 
                 isCurrent = false
                 isHidden = isHidden item.Attributes
             }
@@ -61,7 +61,7 @@ let getDirectoryItems path (requestId: string) (callerId: string) withColumns =
                     match Str.toLower item.Extension with
                     | ".exe" -> sprintf "/request/icon?path=%s" item.FullName
                     | _ -> sprintf "/request/icon?path=.%s" item.Extension
-                items = [| getNameOnly item.Name; item.Extension; string item.Length; convertTime item.LastWriteTime; ""; "" |] 
+                items = [| getNameOnly item.Name; item.Extension; convertTime item.LastWriteTime; string item.Length; "" |] 
                 isCurrent = false
                 isHidden = isHidden item.Attributes
             }
@@ -98,6 +98,7 @@ let getDirectoryItems path (requestId: string) (callerId: string) withColumns =
 
         let getVersionItem (index, item: ResponseItem) = {
             index = index
+            isExif = false
             columnIndex = 4
             value = getVersion <| Path.Combine (path, sprintf "%s%s" item.items.[0] item.items.[1])
         }
@@ -123,6 +124,7 @@ let getDirectoryItems path (requestId: string) (callerId: string) withColumns =
 
         let getExifDateItem (index, item: ResponseItem) = {
             index = index
+            isExif = true
             columnIndex = 2
             value = getExifDate <| Path.Combine (path, sprintf "%s%s" item.items.[0] item.items.[1])
         }
@@ -155,7 +157,7 @@ let getDirectoryItems path (requestId: string) (callerId: string) withColumns =
             match check () with
             | true -> 
                 let commanderUpdate = {
-                    id = requestId
+                    id = callerId
                     updateItems =  Array.concat [|updateItems; updateItems2|] 
                 }
                 if check () then
