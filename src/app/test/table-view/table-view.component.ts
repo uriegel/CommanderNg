@@ -5,7 +5,7 @@ import { Response, Item, CommanderUpdate } from '../../model/model'
 import { ConnectionService } from 'src/app/services/connection.service'
 import { ThemesService } from 'src/app/services/themes.service'
 import { TableViewComponent as TableView } from '../../table-view/table-view.component'
-import { map, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 const callerId = 1
 

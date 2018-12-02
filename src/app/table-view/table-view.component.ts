@@ -39,7 +39,7 @@ export class TableViewComponent {
         }
     }
     get items() { return this._items }
-    _items: Item[]
+    _items: Item[] = []
     
     onColumnsChanged(name: string) {
         this.columnsName = name
@@ -50,9 +50,7 @@ export class TableViewComponent {
     }
 
     focus() { 
-
         const index = this.getCurrentIndex()
-        console.log("Hab gcii", index)
         // var index = this.currentItemIndex - this.startPosition
         // if (index >= 0 && index < this.tableCapacity)
         // {
