@@ -20,8 +20,8 @@ export class TableViewComponent implements OnInit {
     //itemType = "testItem"
 
     response: Observable<Response>
-    items: Observable<Item[]>
-
+    items: Item[] = []
+    
     @Input()
     set viewEvents(evt: CommanderUpdate) {
         if (evt) {
@@ -68,9 +68,15 @@ export class TableViewComponent implements OnInit {
 
     private reconnectObservables(observable: Observable<Response>) {
         this.response = observable
-        this.items = 
+        this.itemsObservable = 
             this.response
             .pipe(map(n => n.items.filter(n => !n.isHidden)))
             //.pipe(map(n => n.items))
+        var subscription = this.itemsObservable.subscribe(items => {
+            this.items = items
+            subscription.unsubscribe()
+        })
     }
+
+    private itemsObservable: Observable<Item[]>
 }
