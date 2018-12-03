@@ -6,6 +6,7 @@ import { ConnectionService } from 'src/app/services/connection.service'
 import { ThemesService } from 'src/app/services/themes.service'
 import { TableViewComponent as TableView } from '../../table-view/table-view.component'
 import { map } from 'rxjs/operators';
+import { ElectronService } from 'src/app/services/electron.service';
 
 const callerId = 1
 
@@ -21,6 +22,15 @@ export class TableViewComponent implements OnInit {
 
     response: Observable<Response>
     items: Item[] = []
+    originalItems: Item[] = []
+
+    @Input()
+    set showHiddenChanged(value: boolean) {
+        if (this.electron.showHidden)
+            this.items = this.originalItems
+        else
+            this.items = this.originalItems.filter(n => !n.isHidden)
+    }
     
     @Input()
     set viewEvents(evt: CommanderUpdate) {
@@ -41,7 +51,7 @@ export class TableViewComponent implements OnInit {
 
     @ViewChild(TableView) tableView: TableView
 
-    constructor(public themes: ThemesService, public connection: ConnectionService) { this.get("root") }
+    constructor(public themes: ThemesService, public connection: ConnectionService, public electron: ElectronService) { this.get("root") }
 
     ngOnInit() { }
 
@@ -70,12 +80,14 @@ export class TableViewComponent implements OnInit {
         this.response = observable
         this.itemsObservable = 
             this.response
-            //.pipe(map(n => n.items.filter(n => !n.isHidden)))
             .pipe(map(n => n.items))
         var subscription = this.itemsObservable.subscribe(items => {
-            // TODO: show hidden
-            this.items = items
+            this.originalItems = items
             subscription.unsubscribe()
+            if (this.electron.showHidden)
+                this.items = this.originalItems
+            else
+                this.items = this.originalItems.filter(n => !n.isHidden)
         })
     }
 
