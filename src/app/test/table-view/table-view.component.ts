@@ -48,8 +48,8 @@ export class TableViewComponent implements OnInit {
     onNeu() { this.get("c:\\windows\\system32") }
 
     //onChange() { this.get("c:\\windows") }
-    //onChange() { this.get("c:\\") }
-    onChange() { this.get("c:\\04 - Brayka Bay") }
+    onChange() { this.get("c:\\") }
+    //onChange() { this.get("c:\\04 - Brayka Bay") }
 
     get(path: string) {
         this.reconnectObservables(from(this.connection.get(callerId, path, this.withColumns(path))))
@@ -70,9 +70,10 @@ export class TableViewComponent implements OnInit {
         this.response = observable
         this.itemsObservable = 
             this.response
-            .pipe(map(n => n.items.filter(n => !n.isHidden)))
-            //.pipe(map(n => n.items))
+            //.pipe(map(n => n.items.filter(n => !n.isHidden)))
+            .pipe(map(n => n.items))
         var subscription = this.itemsObservable.subscribe(items => {
+            // TODO: show hidden
             this.items = items
             subscription.unsubscribe()
         })
