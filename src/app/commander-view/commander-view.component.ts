@@ -12,11 +12,9 @@ import { ThemesService } from '../services/themes.service'
 import { ConnectionService } from '../services/connection.service'
 import { ElectronService } from '../services/electron.service'
 
-// TODO: Refresh
-// TODO: Sorting
-// TODO: Restricting
 // TODO: Set path in input
 // TODO: change Directory
+// TODO: Refresh
 // TODO: change Directory back: select last Item
 const callerId = 1
 
@@ -83,18 +81,14 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
                 }
             }
         }
+                        // TODO:
                         // if (this.columnSort && (this.tableView.columns.values[this.columnSort.index].columnsType == ColumnsType.Version
                         //         || this.tableView.columns.values[this.columnSort.index].columnsType == ColumnsType.Date))
                         //     this.refreshItems()
     }    
 
     @Input()
-    set showHiddenChanged(value: boolean) {
-        if (this.electron.showHidden)
-            this.items = this.originalItems
-        else
-            this.items = this.originalItems.filter(n => !n.isHidden)
-    }
+    set showHiddenChanged(value: boolean) { this.refreshItems() }
 
     currentItem: Item
 
@@ -123,7 +117,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     onResize() { this.tableView.onResize() }
 
     refresh() { 
-//        this.reconnectObservables(from(this.connection.get(this.id)))
+        //this.reconnectObservables(from(this.connection.get(this.id)))
     }
 
     getSelectedItems() {
@@ -362,10 +356,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     }
 
     private get(path: string) {
-
-const affe = this.withColumns(path)
-console.log("Affe", affe)
-        this.reconnectObservables(from(this.connection.get(callerId, path, affe)))
+        this.reconnectObservables(from(this.connection.get(callerId, path, this.withColumns(path))))
     }
 
     private reconnectObservables(observable: Observable<Response>) {
@@ -376,10 +367,7 @@ console.log("Affe", affe)
         var subscription = this.itemsObservable.subscribe(items => {
             this.originalItems = items
             subscription.unsubscribe()
-            if (this.electron.showHidden)
-                this.items = this.originalItems
-            else
-                this.items = this.originalItems.filter(n => !n.isHidden)
+            this.refreshItems();
         })
     }
 
@@ -391,63 +379,60 @@ console.log("Affe", affe)
     }
 
     private refreshItems() {
-        // if (this.originalItems) {
+        const sortItems = (items: Item[]) => {
+            const folders = items.filter(n => n.itemType == ItemType.Parent || n.itemType == ItemType.Directory)
+            const itemsToSort = items.filter(n => n.itemType == ItemType.File || n.itemType == ItemType.Drive)
 
-        //     const sortItems = (items: Item[]) => {
-        //         const folders = items.filter(n => n.itemType == ItemType.Parent || n.itemType == ItemType.Directory)
-        //         const itemsToSort = items.filter(n => n.itemType == ItemType.File || n.itemType == ItemType.Drive)
+            const compareVersion = (versionLeft?: string, versionRight?: string) => {
+                if (!versionLeft)
+                    return -1
+                else if (!versionRight)
+                    return 1
+                else {
+                    var leftParts = <number[]><any>versionLeft.split('.')
+                    var rightParts = <number[]><any>versionRight.split('.')
+                    if (leftParts[0] != rightParts[0])
+                        return <number>leftParts[0] - rightParts[0]
+                    else if (leftParts[1] != rightParts[1])
+                        return leftParts[1] - rightParts[1]
+                    else if (leftParts[2] != rightParts[2])
+                        return leftParts[2] - rightParts[2]
+                    else if (leftParts[3] != rightParts[3])
+                        return leftParts[3] - rightParts[3]
+                    else return 0
+                }
+            }
 
-        //         const compareVersion = (versionLeft?: string, versionRight?: string) => {
-        //             if (!versionLeft)
-        //                 return -1
-        //             else if (!versionRight)
-        //                 return 1
-        //             else {
-        //                 var leftParts = <number[]><any>versionLeft.split('.')
-        //                 var rightParts = <number[]><any>versionRight.split('.')
-        //                 if (leftParts[0] != rightParts[0])
-        //                     return <number>leftParts[0] - rightParts[0]
-        //                 else if (leftParts[1] != rightParts[1])
-        //                     return leftParts[1] - rightParts[1]
-        //                 else if (leftParts[2] != rightParts[2])
-        //                     return leftParts[2] - rightParts[2]
-        //                 else if (leftParts[3] != rightParts[3])
-        //                     return leftParts[3] - rightParts[3]
-        //                 else return 0
-        //             }
-        //         }
+            const sortedItems = itemsToSort.sort((a, b) => {
 
-        //         const sortedItems = itemsToSort.sort((a, b) => {
+                let result = 0
+                switch (this.tableView.columns.values[this.columnSort.index].columnsType) {
+                    case ColumnsType.Size:
+                        const x = parseInt(a.items[this.columnSort.index])
+                        const y = parseInt(b.items[this.columnSort.index])
+                        result = x - y
+                        break
+                    case ColumnsType.Version:
+                        result = compareVersion(a.items[this.columnSort.index], b.items[this.columnSort.index])
+                        break
+                    default:
+                        result = a.items[this.columnSort.index].localeCompare(b.items[this.columnSort.index])
+                        break
+                }
+                    
+                if (result == 0 && this.columnSort.index > 0)
+                    result = a.items[0].localeCompare(b.items[0])
+                return this.columnSort.ascending ? result : -result
+            })
 
-        //             let result = 0
-        //             switch (this.tableView.columns.values[this.columnSort.index].columnsType) {
-        //                 case ColumnsType.Size:
-        //                     const x = parseInt(a.items[this.columnSort.index])
-        //                     const y = parseInt(b.items[this.columnSort.index])
-        //                     result = x - y
-        //                     break
-        //                 case ColumnsType.Version:
-        //                     result = compareVersion(a.items[this.columnSort.index], b.items[this.columnSort.index])
-        //                     break
-        //                 default:
-        //                     result = a.items[this.columnSort.index].localeCompare(b.items[this.columnSort.index])
-        //                     break
-        //             }
-                        
-        //             if (result == 0 && this.columnSort.index > 0)
-        //                 result = a.items[0].localeCompare(b.items[0])
-        //             return this.columnSort.ascending ? result : -result
-        //         })
+            return folders.concat(sortedItems)
+        }
 
-        //         return folders.concat(sortedItems)
-        //     }
-
-        //     const itemsToSort = this.originalItems.filter(n => this.showHidden || !n.isHidden)    
-        //     if (this.columnSort)
-        //         this.items = sortItems(itemsToSort)
-        //     else
-        //         this.items = itemsToSort
-        // }
+        const itemsToSort = this.electron.showHidden ? this.originalItems : this.originalItems.filter(n => !n.isHidden)        
+        if (this.columnSort)
+            this.items = sortItems(itemsToSort)
+        else
+            this.items = itemsToSort
     }
 
     private itemsObservable: Observable<Item[]>
