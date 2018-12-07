@@ -10,8 +10,9 @@ export enum ItemType {
 export interface Get {
     requestId: number
     callerId: number
-    withColumns?: boolean
+    withColumns: boolean
     path: string
+    basePath?: string
 }
 
 export interface Process {

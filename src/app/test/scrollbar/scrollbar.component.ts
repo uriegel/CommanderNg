@@ -33,7 +33,7 @@ export class ScrollbarComponent implements OnInit {
 
     get(path: string): Observable<Item[]> { 
         return from(new Promise(async (res, rej) => {
-            let response = await this.connection.get(callerId, path)
+            let response = await this.connection.get(callerId, path, false)
             res(response.items)
         }))
     }

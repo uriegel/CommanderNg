@@ -315,7 +315,11 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     private processItem() {
         const index = this.tableView.getCurrentItemIndex()
-        //this.reconnectObservables(from(this.connection.process(this.id, this.items[index].index)))
+        if (this.items[index].itemType == ItemType.Directory) {
+            //const item = this.items.find(m => m.index == index)
+            //this.get(item.items[0], this.currentPath)
+            this.get(this.items[index].items[0], this.currentPath)
+        }
     }
 
     private initializeRestrict() {
@@ -356,8 +360,8 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         return undoRestriction
     }
 
-    private get(path: string) {
-        this.reconnectObservables(from(this.connection.get(callerId, path, this.withColumns(path))))
+    private get(path: string, basePath = "") {
+        this.reconnectObservables(from(this.connection.get(callerId, path, this.withColumns(path), basePath)))
     }
 
     private reconnectObservables(observable: Observable<Response>) {
