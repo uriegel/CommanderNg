@@ -41,6 +41,10 @@ let getRoot withColumns =
             }
 
         { 
-            response = { items = Some responseItems; columns = if withColumns then Some (getColumns ()) else None }
+            response = { 
+                path = ROOT
+                items = Some responseItems 
+                columns = if withColumns then Some (getColumns ()) else None 
+            }
             continuation = None
         }

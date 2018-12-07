@@ -146,7 +146,11 @@ let getDirectoryItems path (requestId: int) (callerId: int) withColumns =
             |]
         }
 
-    let response = { items = Some (getItems ()); columns = if withColumns then Some (getColumns ()) else None }        
+    let response = { 
+        path = path
+        items = Some (getItems ())
+        columns = if withColumns then Some (getColumns ()) else None 
+    }        
 
     let check () = RequestState.getRecentRequest callerId = requestId
 

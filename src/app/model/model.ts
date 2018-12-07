@@ -31,6 +31,7 @@ export interface Item {
 }
 
 export interface Response {
+    path: string
     columns?: Columns
     items: Item[]
 }

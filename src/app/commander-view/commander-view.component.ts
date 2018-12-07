@@ -59,6 +59,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     @Input() id = 0
 
     response: Observable<Response>
+    pathObservable: Observable<string>
     get items() { return this._items}
     set items(value: Item[]) { 
         this.undoRestriction()
@@ -361,10 +362,15 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     private reconnectObservables(observable: Observable<Response>) {
         this.response = observable
-        this.itemsObservable = 
+        this.pathObservable = this.response.pipe(map(n => n.path))
+        const itemsObservable = 
             this.response
             .pipe(map(n => n.items))
-        var subscription = this.itemsObservable.subscribe(items => {
+        const pathSubscription = this.pathObservable.subscribe(p => {
+            this.currentPath = p
+            pathSubscription.unsubscribe()
+        })
+        const subscription = itemsObservable.subscribe(items => {
             this.originalItems = items
             subscription.unsubscribe()
             this.refreshItems();
@@ -435,7 +441,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
             this.items = itemsToSort
     }
 
-    private itemsObservable: Observable<Item[]>
+    private currentPath = ""
     private originalItems: Item[] = []
     private readonly restrictingOffs = new Subject()
     private columnSort: IColumnSortEvent = null

@@ -27,6 +27,7 @@ type ResponseItem = {
 }
 
 type Response = {
+    path: string
     columns: Columns option  
     items: ResponseItem[] option
 }
