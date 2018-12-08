@@ -13,6 +13,8 @@ open ExifReader
 [<Literal>]
 let DIRECTORY = "directory"
 
+let combinePath a b = Path.Combine (a, b)
+
 let getDirectoryItems path (requestId: int) (callerId: int) withColumns = 
     RequestState.updateRecentRequest callerId requestId |> ignore
 

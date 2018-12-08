@@ -12,10 +12,11 @@ import { ThemesService } from '../services/themes.service'
 import { ConnectionService } from '../services/connection.service'
 import { ElectronService } from '../services/electron.service'
 
-// TODO: Set path in input
 // TODO: change Directory
-// TODO: Refresh
+// TODO: returned Path ist not optimized (c:\windows..\windows\..windows)
 // TODO: change Directory back: select last Item
+// TODO: Refresh
+// TODO: Set path in input
 const callerId = 1
 
 @Component({
@@ -97,7 +98,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     undoRestriction = () => {}
 
-    ngOnInit() { this.get("c:\\windows") }
+    ngOnInit() { this.get("root") }
     ngAfterViewInit() { 
 
         this.refresh()
@@ -315,7 +316,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     private processItem() {
         const index = this.tableView.getCurrentItemIndex()
-        if (this.items[index].itemType == ItemType.Directory) {
+        if (this.items[index].itemType == ItemType.Directory || this.items[index].itemType == ItemType.Parent) {
             //const item = this.items.find(m => m.index == index)
             //this.get(item.items[0], this.currentPath)
             this.get(this.items[index].items[0], this.currentPath)

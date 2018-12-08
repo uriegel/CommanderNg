@@ -10,6 +10,18 @@ open WebServer
 
 let requestOK (headers: WebServer.RequestHeaders) = headers.path.StartsWith "/request"
 
+let (|DirectoryPath|_|) (path, basePath) = 
+    match (path, basePath) with
+    | (Some path, None) when path <> ROOT -> Some path
+    | (Some path, Some basePath) when path <> ROOT -> Some (combinePath basePath path)
+    | _ -> None
+
+let (|Root|_|) (path, basePath) = 
+    match (path, basePath) with
+    | (Some path, _) when path = ROOT -> Some path
+    //| (Some path, Some basePath) when path <> ROOT -> Some (combinePath basePath path)
+    | _ -> None
+
 let run request = 
     let notModified = DateTime.Parse("02.02.2012 14:00")
     
@@ -51,34 +63,39 @@ let run request =
     let callerId = query.Query "callerId"
     let withColumns = query.Query "withColumns" = Some "true"
     let path = query.Query "path"
+    let basePath = query.Query "basePath"
     async {
+
+        let sendResult (getResult: Model.GetResult) = 
+            async {
+            let str = Json.serialize getResult.response
+            do! Response.asyncSendJsonString request str
+            match getResult.continuation with
+            | Some continuation -> continuation ()
+            | None -> ()
+        }
+
         match query.method with
         | "get" ->
-            match path with
-            | Some path ->
+            printfn "Hier %A %A" path basePath
+            match (path, basePath) with
+            | DirectoryPath path ->
+                printfn "Hier bin isch nischt"
                 let response = 
-                    match path with
-                    | "root" -> Some (getRoot withColumns)
-                    | _ -> 
-                        match (requestId, callerId) with
-                        | (Some requestId, Some callerId) -> Some (getDirectoryItems path (int requestId) (int callerId) withColumns)
-                        | _ -> None
-
+                    match (requestId, callerId) with
+                    | (Some requestId, Some callerId) -> Some (getDirectoryItems path (int requestId) (int callerId) withColumns)
+                    | _ -> None
                 match response with
-                | Some response ->
-                    let str = Json.serialize response.response
-                    do! Response.asyncSendJsonString request str
-                    match response.continuation with
-                    | Some continuation -> continuation ()
-                    | None -> ()
+                | Some response -> do! sendResult response
                 | None -> do! FixedResponses.asyncSendServerError request
-            | None -> do! FixedResponses.asyncSendServerError request
+            | Root _ -> 
+                printfn "Hier bin isch"
+                do! sendResult <| getRoot withColumns
+            | _ -> 
+                printfn "Why"
+                do! FixedResponses.asyncSendServerError request
         | "icon" ->
             let! bytes = getIcon <| query.Query "ext"
             do! Response.asyncSendFileBytes request "image/png" notModified (Some bytes)
         | _ -> do! FixedResponses.asyncSendServerError request
     }
-
-
-
-
