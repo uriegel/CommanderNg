@@ -7,6 +7,7 @@ open ModelTools
 open Str
 open Sse
 open ExifReader
+open System.Runtime.InteropServices
 
 // TODO: indexToSelect
 
@@ -15,7 +16,11 @@ let DIRECTORY = "directory"
 
 let combinePath a b = Path.Combine (a, b)
 
+let minPathLength = 
+    if RuntimeInformation.IsOSPlatform(OSPlatform.Windows) then 3 else 1
+
 let getDirectoryItems path (requestId: int) (callerId: int) withColumns = 
+    let directoryInfo = DirectoryInfo path
     RequestState.updateRecentRequest callerId requestId |> ignore
 
     let getNameOnly name =
@@ -31,13 +36,9 @@ let getDirectoryItems path (requestId: int) (callerId: int) withColumns =
 
         let isHidden (attributes: FileAttributes) = attributes.HasFlag FileAttributes.Hidden
 
-        let di = DirectoryInfo path
-        let directoryItems (di: DirectoryInfo) () = GetSafeItems di.GetDirectories 
-        let fileItems (di: DirectoryInfo) () = GetSafeItems di.GetFiles
+        let directoryItems () = GetSafeItems directoryInfo.GetDirectories 
+        let fileItems () = GetSafeItems directoryInfo.GetFiles
         
-        let directoryItems = directoryItems di
-        let fileItems = fileItems di
-
         let createParentItem () = {
                 itemType = ItemType.Parent
                 index = 0
@@ -149,7 +150,7 @@ let getDirectoryItems path (requestId: int) (callerId: int) withColumns =
         }
 
     let response = { 
-        path = path
+        path = directoryInfo.FullName
         items = Some (getItems ())
         columns = if withColumns then Some (getColumns ()) else None 
     }        
@@ -158,8 +159,8 @@ let getDirectoryItems path (requestId: int) (callerId: int) withColumns =
 
     let continuation requestId () = 
         async {
-            let updateItems = retrieveFileVersions path response.items.Value check
-            let updateItems2 = retrieveExifDates path response.items.Value check
+            let updateItems = retrieveFileVersions directoryInfo.FullName response.items.Value check
+            let updateItems2 = retrieveExifDates directoryInfo.FullName response.items.Value check
             match check () with
             | true -> 
                 let commanderUpdate = {

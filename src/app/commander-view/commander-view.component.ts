@@ -12,8 +12,6 @@ import { ThemesService } from '../services/themes.service'
 import { ConnectionService } from '../services/connection.service'
 import { ElectronService } from '../services/electron.service'
 
-// TODO: change Directory
-// TODO: returned Path ist not optimized (c:\windows..\windows\..windows)
 // TODO: change Directory back: select last Item
 // TODO: Refresh
 // TODO: Set path in input

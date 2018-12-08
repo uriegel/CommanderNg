@@ -12,12 +12,15 @@ let requestOK (headers: WebServer.RequestHeaders) = headers.path.StartsWith "/re
 
 let (|DirectoryPath|_|) (path, basePath) = 
     match (path, basePath) with
-    | (Some path, None) when path <> ROOT -> Some path
-    | (Some path, Some basePath) when path <> ROOT -> Some (combinePath basePath path)
+    | (Some "..", Some basePath) when String.length basePath > minPathLength 
+        -> Some (combinePath basePath "..")
+    | (Some path, Some "") when path <> ROOT && path <> ".." -> Some path
+    | (Some path, Some basePath) when path <> ROOT && path <> ".." -> Some (combinePath basePath path)
     | _ -> None
 
 let (|Root|_|) (path, basePath) = 
     match (path, basePath) with
+    | (Some "..", Some basePath) when String.length basePath <= minPathLength -> Some ROOT
     | (Some path, _) when path = ROOT -> Some path
     //| (Some path, Some basePath) when path <> ROOT -> Some (combinePath basePath path)
     | _ -> None
@@ -77,10 +80,8 @@ let run request =
 
         match query.method with
         | "get" ->
-            printfn "Hier %A %A" path basePath
             match (path, basePath) with
             | DirectoryPath path ->
-                printfn "Hier bin isch nischt"
                 let response = 
                     match (requestId, callerId) with
                     | (Some requestId, Some callerId) -> Some (getDirectoryItems path (int requestId) (int callerId) withColumns)
@@ -88,12 +89,8 @@ let run request =
                 match response with
                 | Some response -> do! sendResult response
                 | None -> do! FixedResponses.asyncSendServerError request
-            | Root _ -> 
-                printfn "Hier bin isch"
-                do! sendResult <| getRoot withColumns
-            | _ -> 
-                printfn "Why"
-                do! FixedResponses.asyncSendServerError request
+            | Root _ -> do! sendResult <| getRoot withColumns
+            | _ -> do! FixedResponses.asyncSendServerError request
         | "icon" ->
             let! bytes = getIcon <| query.Query "ext"
             do! Response.asyncSendFileBytes request "image/png" notModified (Some bytes)
