@@ -6,6 +6,7 @@ open System.Drawing.Imaging
 open System.Runtime.InteropServices
 open Directory
 open Drives
+open Model
 open WebServer
 
 let requestOK (headers: WebServer.RequestHeaders) = headers.path.StartsWith "/request"
@@ -80,17 +81,28 @@ let run request =
 
         match query.method with
         | "get" ->
-            match (path, basePath) with
-            | DirectoryPath path ->
-                let response = 
-                    match (requestId, callerId) with
-                    | (Some requestId, Some callerId) -> Some (getDirectoryItems path (int requestId) (int callerId) withColumns)
-                    | _ -> None
-                match response with
-                | Some response -> do! sendResult response
-                | None -> do! FixedResponses.asyncSendServerError request
-            | Root _ -> do! sendResult <| getRoot withColumns
-            | _ -> do! FixedResponses.asyncSendServerError request
+            let response = 
+                match (path, basePath) with
+                | DirectoryPath path ->
+                        match (requestId, callerId) with
+                        | (Some requestId, Some callerId) -> Some (getDirectoryItems path (int requestId) (int callerId) withColumns)
+                        | _ -> None
+                | Root _ -> Some (getRoot withColumns)
+                | _ -> None
+            match response with
+            | Some response -> 
+                let getResult = {
+                    response = {
+                        response.response with
+                            itemToSelect =  
+                                match (path, basePath) with
+                                | (Some "..", Some basePath) -> Some (getPath basePath)
+                                | _ -> None
+                    }
+                    continuation = response.continuation
+                }
+                do! sendResult getResult
+            | None -> do! FixedResponses.asyncSendServerError request
         | "icon" ->
             let! bytes = getIcon <| query.Query "ext"
             do! Response.asyncSendFileBytes request "image/png" notModified (Some bytes)

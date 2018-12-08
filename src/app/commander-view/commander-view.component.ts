@@ -12,7 +12,6 @@ import { ThemesService } from '../services/themes.service'
 import { ConnectionService } from '../services/connection.service'
 import { ElectronService } from '../services/electron.service'
 
-// TODO: change Directory back: select last Item
 // TODO: Refresh
 // TODO: Set path in input
 const callerId = 1
@@ -366,17 +365,11 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     private reconnectObservables(observable: Observable<Response>) {
         this.response = observable
         this.pathObservable = this.response.pipe(map(n => n.path))
-        const itemsObservable = 
-            this.response
-            .pipe(map(n => n.items))
-        const pathSubscription = this.pathObservable.subscribe(p => {
-            this.currentPath = p
-            pathSubscription.unsubscribe()
-        })
-        const subscription = itemsObservable.subscribe(items => {
-            this.originalItems = items
+        const subscription = this.response.subscribe(items => {
+            this.originalItems = items.items
+            this.currentPath = items.path
             subscription.unsubscribe()
-            this.refreshItems();
+            this.refreshItems(items.itemToSelect);
         })
     }
 
@@ -387,7 +380,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
             return true
     }
 
-    private refreshItems() {
+    private refreshItems(itemToSelect?: string) {
         const sortItems = (items: Item[]) => {
             const folders = items.filter(n => n.itemType == ItemType.Parent || n.itemType == ItemType.Directory)
             const itemsToSort = items.filter(n => n.itemType == ItemType.File || n.itemType == ItemType.Drive)
@@ -442,11 +435,16 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
             this.items = sortItems(itemsToSort)
         else
             this.items = itemsToSort
+
+        if (itemToSelect)
+            this.items.forEach(n => n.isCurrent = false)
+            const previousItem = this.items.find(n => n.items[0] == itemToSelect)
+            if (previousItem)
+                previousItem.isCurrent = true
     }
 
     private currentPath = ""
     private originalItems: Item[] = []
-    private readonly restrictingOffs = new Subject()
     private columnSort: IColumnSortEvent = null
     private keyDownEvents: Observable<KeyboardEvent>
 }

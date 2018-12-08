@@ -22,11 +22,11 @@ type ResponseItem = {
     index: int
     items: string[]
     icon: string
-    isCurrent: bool
     isHidden: bool
 }
 
 type Response = {
+    itemToSelect: string option
     path: string
     columns: Columns option  
     items: ResponseItem[] option

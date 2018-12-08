@@ -9,12 +9,14 @@ open Sse
 open ExifReader
 open System.Runtime.InteropServices
 
-// TODO: indexToSelect
-
 [<Literal>]
 let DIRECTORY = "directory"
 
 let combinePath a b = Path.Combine (a, b)
+
+let getPath path = 
+    let di = DirectoryInfo path
+    di.Name
 
 let minPathLength = 
     if RuntimeInformation.IsOSPlatform(OSPlatform.Windows) then 3 else 1
@@ -44,7 +46,6 @@ let getDirectoryItems path (requestId: int) (callerId: int) withColumns =
                 index = 0
                 icon = "Folder"
                 items = [| ".."; ""; ""; ""; "" |] 
-                isCurrent = false
                 isHidden = false
             }
 
@@ -53,7 +54,6 @@ let getDirectoryItems path (requestId: int) (callerId: int) withColumns =
                 index = 0
                 icon = "Folder"
                 items = [| item.Name; ""; convertTime item.LastWriteTime; ""; "" |] 
-                isCurrent = false
                 isHidden = isHidden item.Attributes
             }
 
@@ -65,7 +65,6 @@ let getDirectoryItems path (requestId: int) (callerId: int) withColumns =
                     | ".exe" -> sprintf "/request/icon?path=%s" item.FullName
                     | _ -> sprintf "/request/icon?path=.%s" item.Extension
                 items = [| getNameOnly item.Name; item.Extension; convertTime item.LastWriteTime; string item.Length; "" |] 
-                isCurrent = false
                 isHidden = isHidden item.Attributes
             }
            
@@ -81,11 +80,9 @@ let getDirectoryItems path (requestId: int) (callerId: int) withColumns =
             { 
                 responseItem with
                     index = index
-                    isCurrent = index = 0 // indexToSelect
             }
         
         Array.concat [| [| createParentItem () |] ; directoryItems ; fileItems |]
-        |> Array.mapi fillIndexes
 
     let retrieveFileVersions path (items: ResponseItem[]) check = 
         let isVersionFile (index, item: ResponseItem) =
@@ -150,6 +147,7 @@ let getDirectoryItems path (requestId: int) (callerId: int) withColumns =
         }
 
     let response = { 
+        itemToSelect = None
         path = directoryInfo.FullName
         items = Some (getItems ())
         columns = if withColumns then Some (getColumns ()) else None 

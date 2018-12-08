@@ -11,7 +11,6 @@ let getRoot withColumns =
                 index = index
                 icon = "Drive"
                 items = [| item.Name; item.VolumeLabel; string item.TotalSize |] 
-                isCurrent = index = 0 //indexToSelect
                 isHidden = false
             }
 
@@ -42,6 +41,7 @@ let getRoot withColumns =
 
         { 
             response = { 
+                itemToSelect = None
                 path = ROOT
                 items = Some responseItems 
                 columns = if withColumns then Some (getColumns ()) else None 
