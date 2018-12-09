@@ -13,7 +13,6 @@ import { ConnectionService } from '../services/connection.service'
 import { ElectronService } from '../services/electron.service'
 
 // TODO: Refresh
-// TODO: Set path in input
 const callerId = 1
 
 @Component({
@@ -80,14 +79,18 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
                 }
             }
         }
-                        // TODO:
-                        // if (this.columnSort && (this.tableView.columns.values[this.columnSort.index].columnsType == ColumnsType.Version
-                        //         || this.tableView.columns.values[this.columnSort.index].columnsType == ColumnsType.Date))
-                        //     this.refreshItems()
     }    
 
     @Input()
-    set showHiddenChanged(value: boolean) { this.refreshItems() }
+    set showHiddenChanged(value: boolean) { 
+        const item = this.tableView.getCurrentItem()
+        this.refreshItems() 
+        const previousItem = this.items.find(n => n.index == item.index)
+        if (previousItem) {
+            this.items[0].isCurrent = false
+            previousItem.isCurrent = true
+        }
+    }
 
     currentItem: Item
 
@@ -226,9 +229,8 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     onFocusIn(evt: Event) { this.gotFocus.emit(this) }
 
     onInputChange() {
-        // this.path = this.input.nativeElement.value
-        // this.tableView.focus()
-        // console.log("Input return")
+        this.get(this.input.nativeElement.value)
+        this.tableView.focus()
     }
 
     onKeydown(evt: KeyboardEvent) {
@@ -308,7 +310,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     onColumnSort(evt: IColumnSortEvent) {
         this.columnSort = evt
-        this.refreshItems()
+        this.refreshItems(undefined, true)
     }
 
     private processItem() {
@@ -380,7 +382,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
             return true
     }
 
-    private refreshItems(itemToSelect?: string) {
+    private refreshItems(itemToSelect?: string, noSelect = false) {
         const sortItems = (items: Item[]) => {
             const folders = items.filter(n => n.itemType == ItemType.Parent || n.itemType == ItemType.Directory)
             const itemsToSort = items.filter(n => n.itemType == ItemType.File || n.itemType == ItemType.Drive)
@@ -437,13 +439,15 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
             this.items = itemsToSort
 
         this.items.forEach(n => n.isCurrent = false)
-        if (this.items.length)
-            this.items[0].isCurrent = true
-        if (itemToSelect) {
-            const previousItem = this.items.find(n => n.items[0] == itemToSelect)
-            if (previousItem) {
-                this.items[0].isCurrent = false
-                previousItem.isCurrent = true
+        if (!noSelect) {
+            if (this.items.length)
+                this.items[0].isCurrent = true
+            if (itemToSelect) {
+                const previousItem = this.items.find(n => n.items[0] == itemToSelect)
+                if (previousItem) {
+                    this.items[0].isCurrent = false
+                    previousItem.isCurrent = true
+                }
             }
         }
     }
