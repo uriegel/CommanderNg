@@ -47,6 +47,7 @@ let getDirectoryItems path (requestId: int) (callerId: int) withColumns =
                 icon = "Folder"
                 items = [| ".."; ""; ""; ""; "" |] 
                 isHidden = false
+                isCurrent = false
             }
 
         let createDirectoryItem (item: DirectoryInfo) = { 
@@ -55,6 +56,7 @@ let getDirectoryItems path (requestId: int) (callerId: int) withColumns =
                 icon = "Folder"
                 items = [| item.Name; ""; convertTime item.LastWriteTime; ""; "" |] 
                 isHidden = isHidden item.Attributes
+                isCurrent = false
             }
 
         let createFileItem (item: FileInfo) = { 
@@ -66,6 +68,7 @@ let getDirectoryItems path (requestId: int) (callerId: int) withColumns =
                     | _ -> sprintf "/request/icon?path=.%s" item.Extension
                 items = [| getNameOnly item.Name; item.Extension; convertTime item.LastWriteTime; string item.Length; "" |] 
                 isHidden = isHidden item.Attributes
+                isCurrent = false
             }
            
         let directoryItems = 
@@ -83,6 +86,7 @@ let getDirectoryItems path (requestId: int) (callerId: int) withColumns =
             }
         
         Array.concat [| [| createParentItem () |] ; directoryItems ; fileItems |]
+        |> Array.mapi fillIndexes
 
     let retrieveFileVersions path (items: ResponseItem[]) check = 
         let isVersionFile (index, item: ResponseItem) =

@@ -1,6 +1,5 @@
 module Model
 open System
-open System.IO
 
 type ItemType = Undefined = 0 | Parent = 1 | Directory = 2 | File = 3 
 
@@ -22,6 +21,7 @@ type ResponseItem = {
     index: int
     items: string[]
     icon: string
+    isCurrent: Boolean
     isHidden: bool
 }
 

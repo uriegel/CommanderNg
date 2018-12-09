@@ -11,6 +11,7 @@ let getRoot withColumns =
                 index = index
                 icon = "Drive"
                 items = [| item.Name; item.VolumeLabel; string item.TotalSize |] 
+                isCurrent = false
                 isHidden = false
             }
 

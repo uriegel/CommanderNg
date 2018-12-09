@@ -436,11 +436,16 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         else
             this.items = itemsToSort
 
-        if (itemToSelect)
-            this.items.forEach(n => n.isCurrent = false)
+        this.items.forEach(n => n.isCurrent = false)
+        if (this.items.length)
+            this.items[0].isCurrent = true
+        if (itemToSelect) {
             const previousItem = this.items.find(n => n.items[0] == itemToSelect)
-            if (previousItem)
+            if (previousItem) {
+                this.items[0].isCurrent = false
                 previousItem.isCurrent = true
+            }
+        }
     }
 
     private currentPath = ""
