@@ -6,6 +6,7 @@
   <ItemGroup>
     <Compile Include="Api.fs" />
     <Compile Include="Str.fs" />
+    <Compile Include="Memoize.fs" />
     <Compile Include="Json.fs" />
     <Compile Include="ExifReader.fs" />
     <Compile Include="Model.fs" />
@@ -14,6 +15,8 @@
     <Compile Include="Drives.fs" />
     <Compile Include="RequestState.fs" />
     <Compile Include="Directory.fs" />
+    <Compile Include="GetLinuxIcon.fs" />
+    <Compile Include="GetWindowsIcon.fs" />
     <Compile Include="GetIcon.fs" />
     <Compile Include="Request.fs" />
     <Compile Include="Program.fs" />
