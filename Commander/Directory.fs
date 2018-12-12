@@ -65,7 +65,7 @@ let getDirectoryItems path (requestId: int) (callerId: int) withColumns =
                 icon = 
                     match Str.toLower item.Extension with
                     | ".exe" -> sprintf "/request/icon?path=%s" item.FullName
-                    | _ -> sprintf "/request/icon?path=.%s" item.Extension
+                    | _ -> sprintf "/request/icon?path=%s" item.Extension
                 items = [| getNameOnly item.Name; item.Extension; convertTime item.LastWriteTime; string item.Length; "" |] 
                 isHidden = isHidden item.Attributes
                 isCurrent = false

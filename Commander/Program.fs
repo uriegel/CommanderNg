@@ -3,9 +3,13 @@ open System.IO
 open Request
 open WebServer
 open Sse
+open System.Diagnostics
+open System.Text
 
 [<EntryPoint>]
 let main argv =
+
+    printfn "Affe oder nicht"
 
     let run () = 
         let line = Console.ReadLine()

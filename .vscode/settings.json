@@ -8,5 +8,6 @@
         "vector": "cpp",
         "string": "cpp"
     },
-    "FSharp.fsacRuntime": "netcore"
+    "FSharp.fsacRuntime": "netcore",
+    "editor.smoothScrolling": true
 }

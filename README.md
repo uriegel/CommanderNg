@@ -34,6 +34,8 @@ in c_cpp_properties.json:
     "${env:USERPROFILE}/.electron-gyp/.node-gyp/iojs-2.0.2/deps/v8/include"
 ],
 ```
+### install python gtk for linux:
+```sudo apt install python-gtk2```
 
 ## To build C++ Addon
 ```
