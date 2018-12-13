@@ -3,13 +3,12 @@ open System.IO
 open Request
 open WebServer
 open Sse
-open System.Diagnostics
-open System.Text
 
 [<EntryPoint>]
 let main argv =
 
-    printfn "Affe oder nicht"
+    // TODO: root: hide all symlinks and show /home 
+    // TODO: memoize last path
 
     let run () = 
         let line = Console.ReadLine()

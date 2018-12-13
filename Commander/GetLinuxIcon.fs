@@ -16,16 +16,27 @@ let private computeIconPath ext =
     psi.RedirectStandardInput <- true
     use proc = Process.Start psi
     use reader = proc.StandardOutput
-    reader.ReadToEnd () // TODO: async
+    let result = reader.ReadToEnd () // TODO: async
+    match result with
+        | null -> 
+            printfn "None"
+            None
+        | "" ->
+            printfn "Nix"
+            None
+        | "None\n" ->
+            printfn "Nonne"
+            None
+        | _ -> 
+            printfn "Doch %A" result
+            Some result
 
 let rec private getIconPathWithFallback ext = 
-    let result = computeIconPath ext
-    if result.Length > 3 then
-        result |> Str.substringLength 0 (result.Length - 1) 
-    else
-        getIconPathWithFallback ".txt"
+    match computeIconPath ext with
+    | Some result -> result |> Str.substringLength 0 (result.Length - 1) 
+    | None -> getIconPath ".txt" 
 
-let private getIconPath = memoize getIconPathWithFallback
+and private getIconPath = memoize getIconPathWithFallback
 
 let private initialize () = 
     let pythonCode = """import mimetypes
