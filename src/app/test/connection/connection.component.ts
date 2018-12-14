@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { ConnectionService } from '../../services/connection.service'
 
-const callerId = 1
+const callerId = "1"
 
 @Component({
     selector: 'app-test-connection',
@@ -17,7 +17,7 @@ export class ConnectionComponent implements OnInit {
             console.log("Server event", evt)
         })
     }
-    withColumns
+    withColumns: any
     async onGet(url: string) {
         try {
             const response = await this.connection.get(callerId, url, url == "root" ? this.recentColumns != "root" : this.recentColumns == "root")

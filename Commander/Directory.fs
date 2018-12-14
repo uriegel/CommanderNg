@@ -21,7 +21,7 @@ let getPath path =
 let minPathLength = 
     if RuntimeInformation.IsOSPlatform(OSPlatform.Windows) then 3 else 1
 
-let getDirectoryItems path (requestId: int) (callerId: int) withColumns = 
+let getDirectoryItems path requestId (callerId: string) withColumns = 
     let directoryInfo = DirectoryInfo path
     RequestState.updateRecentRequest callerId requestId |> ignore
 

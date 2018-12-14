@@ -50,7 +50,7 @@ let run request =
                 match (path, basePath) with
                 | DirectoryPath path ->
                         match (requestId, callerId) with
-                        | (Some requestId, Some callerId) -> Some (getDirectoryItems path (int requestId) (int callerId) withColumns)
+                        | (Some requestId, Some callerId) -> Some (getDirectoryItems path (int requestId) callerId withColumns)
                         | _ -> None
                 | Root _ -> Some (getRoot withColumns)
                 | _ -> None

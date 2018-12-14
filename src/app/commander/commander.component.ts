@@ -1,6 +1,8 @@
 import { Component, ViewChild, OnInit, NgZone, HostListener, AfterViewInit, Input } from '@angular/core'
 import { CommanderViewComponent } from '../commander-view/commander-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
+import { ConnectionService } from '../services/connection.service'
+import { ElectronService } from '../services/electron.service'
 
 @Component({
     selector: 'app-commander',
@@ -19,7 +21,7 @@ export class CommanderComponent implements OnInit, AfterViewInit {
 
     isViewVisible = false
 
-    constructor(private zone: NgZone) {}
+    constructor(public connection: ConnectionService, public electron: ElectronService, private zone: NgZone) {}
 
     ngOnInit() {
         // ipcRenderer.on("viewer", (_: any, on: boolean) => this.zone.run(() => this.isViewVisible = on))

@@ -14,7 +14,6 @@ import { ElectronService } from '../services/electron.service'
 
 // TODO: save last path
 // TODO: Refresh
-const callerId = 1
 
 @Component({
     selector: 'app-commander-view',
@@ -54,9 +53,10 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
     @ViewChild("input") private input: ElementRef
     @Output() private gotFocus: EventEmitter<CommanderViewComponent> = new EventEmitter()    
-    @Input() id = 0
+    @Input() id = ""
 
     currentPath = ""
+    
     response: Observable<Response>
     pathObservable: Observable<string>
     get items() { return this._items}
@@ -69,7 +69,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     @Input()
     set viewEvents(evt: CommanderUpdate) {
         if (evt) {
-            if (evt.id == callerId) {
+            if (evt.id == this.id) {
                 if (evt.updateItems) {
                     const items = this.tableView.getAllItems()
                     if (items) 
@@ -100,7 +100,11 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     undoRestriction = () => {}
 
-    ngOnInit() { this.get("root") }
+    ngOnInit() { 
+        //localStorage
+        //this.currentPath = 
+        this.get("root") 
+    }
     ngAfterViewInit() { 
 
         this.refresh()
@@ -335,7 +339,6 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         const index = this.tableView.getCurrentItemIndex()
         if (this.items[index].itemType == ItemType.Directory || this.items[index].itemType == ItemType.Parent) {
             //const item = this.items.find(m => m.index == index)
-            //this.get(item.items[0], this.currentPath)
             this.get(this.items[index].items[0], this.currentPath)
         }
     }
@@ -379,7 +382,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     }
 
     private get(path: string, basePath = "") {
-        this.reconnectObservables(from(this.connection.get(callerId, path, this.withColumns(path), basePath)))
+        this.reconnectObservables(from(this.connection.get(this.id, path, this.withColumns(path), basePath)))
     }
 
     private reconnectObservables(observable: Observable<Response>) {

@@ -45,7 +45,7 @@ type UpdateItem = {
 }
 
 type CommanderUpdate = {
-    id: int
+    id: string
     updateItems: UpdateItem[]
 }
 

@@ -30,7 +30,7 @@ export class ConnectionService {
         })
     }
 
-    get(callerId: number, path: string, withColumns: boolean, basePath = "") {
+    get(callerId: string, path: string, withColumns: boolean, basePath = "") {
         const requestId = ++seed;
         const get: Get = {
             requestId: requestId,

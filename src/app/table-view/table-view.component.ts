@@ -10,6 +10,7 @@ import { Item, Columns } from '../model/model'
 })
 export class TableViewComponent {
 
+    @Input() id = ""
     @Input() columnHeight = 0
     @Input() itemHeight = 0
     @Input() itemType: string

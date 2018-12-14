@@ -9,7 +9,7 @@ export enum ItemType {
 
 export interface Get {
     requestId: number
-    callerId: number
+    callerId: string
     withColumns: boolean
     path: string
     basePath?: string
@@ -85,6 +85,6 @@ export interface UpdateItem  {
 }
 
 export interface CommanderUpdate {
-    id: number
+    id: string
     updateItems: UpdateItem[]
 }

@@ -8,7 +8,7 @@ import { TableViewComponent as TableView } from '../../table-view/table-view.com
 import { map } from 'rxjs/operators';
 import { ElectronService } from 'src/app/services/electron.service';
 
-const callerId = 1
+const callerId = "1"
 
 @Component({
     selector: 'app-test-table-view',

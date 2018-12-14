@@ -4,7 +4,7 @@ import { ScrollbarComponent as ScrollBar  } from "../../scrollbar/scrollbar.comp
 import { ConnectionService } from 'src/app/services/connection.service'
 import { Item } from 'src/app/model/model'
 
-const callerId = 1
+const callerId = "1"
 
 @Component({
     selector: 'app-test-scrollbar',
