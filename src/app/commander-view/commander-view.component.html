@@ -1,5 +1,5 @@
-<div class="container" (focusin)="onFocusIn($event)">
-    <input #input value="{{currentPath}}" (change)="onInputChange()" appSelectAll >
+<div class="container" (focusin)="onFocusIn($event)" >
+    <input #input value="{{currentPath}}" (change)="onInputChange()" (mouseup)="onMouseUp($event)" (keydown)="onInputKeydown($event)" appSelectAll >
     <app-table-view class="tableView" [itemHeight]="themes.itemHeight" [columnHeight]="themes.columnHeight" [columns]="(response|async)?.columns" 
         [items]="items" tabindex="1" [itemType]="'item'"
         (onSort)="onColumnSort($event)" (onCurrentIndexChanged)="onCurrentIndexChanged($event)" 

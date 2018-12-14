@@ -10,7 +10,7 @@ const callerId = 1
 })
 export class ConnectionComponent implements OnInit {
 
-    constructor(private connection: ConnectionService) { }
+    constructor(public connection: ConnectionService) { }
 
     ngOnInit() {
         this.connection.serverEvents.subscribe(evt => {

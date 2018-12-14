@@ -12,6 +12,7 @@ import { ThemesService } from '../services/themes.service'
 import { ConnectionService } from '../services/connection.service'
 import { ElectronService } from '../services/electron.service'
 
+// TODO: save last path
 // TODO: Refresh
 const callerId = 1
 
@@ -55,6 +56,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     @Output() private gotFocus: EventEmitter<CommanderViewComponent> = new EventEmitter()    
     @Input() id = 0
 
+    currentPath = ""
     response: Observable<Response>
     pathObservable: Observable<string>
     get items() { return this._items}
@@ -111,9 +113,8 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
 
     focus() { this.tableView.focus() }
 
-    focusDirectoryInput() { 
-        this.input.nativeElement.focus() 
-        this.input.nativeElement.select()
+    onMouseUp(evt: MouseEvent) {
+        setTimeout(() => this.input.nativeElement.select())
     }
 
     onResize() { this.tableView.onResize() }
@@ -233,8 +234,25 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         this.tableView.focus()
     }
 
+    onInputKeydown(evt: KeyboardEvent) {
+        switch (evt.which) {
+            case 9: // TAB
+                this.tableView.focus()
+                evt.stopPropagation()
+                evt.preventDefault()
+                break
+        }
+    }
+
     onKeydown(evt: KeyboardEvent) {
         switch (evt.which) {
+            case 9: // TAB
+                if (evt.shiftKey) {
+                    this.input.nativeElement.focus()
+                    evt.stopPropagation()
+                    evt.preventDefault()
+                }    
+                break
             case 13: // Return
                 this.processItem()
                 console.log("return")
@@ -452,7 +470,6 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         }
     }
 
-    private currentPath = ""
     private originalItems: Item[] = []
     private columnSort: IColumnSortEvent = null
     private keyDownEvents: Observable<KeyboardEvent>

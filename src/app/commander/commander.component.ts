@@ -46,12 +46,7 @@ export class CommanderComponent implements OnInit, AfterViewInit {
                         this.rightView.focus()
                     else
                         this.leftView.focus()
-                } else {
-                    if (this.focusedView == this.leftView) 
-                        this.leftView.focusDirectoryInput()
-                    else
-                        this.rightView.focusDirectoryInput()
-                }
+                } 
                 evt.stopPropagation()
                 evt.preventDefault()
                 break

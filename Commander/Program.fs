@@ -8,7 +8,6 @@ open Sse
 let main argv =
 
     // TODO: root: hide all symlinks and show /home 
-    // TODO: memoize last path
 
     let run () = 
         let line = Console.ReadLine()
