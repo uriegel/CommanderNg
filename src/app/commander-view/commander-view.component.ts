@@ -1,18 +1,17 @@
 import { Component, ViewChild, ElementRef, Input, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core'
 import { trigger, state, style, transition, animate } from '@angular/animations'
-import { Observable, Subject, from, fromEvent, zip } from 'rxjs'
+import { Observable, from, fromEvent, zip } from 'rxjs'
 import { filter, map } from 'rxjs/operators'
 import { IColumnSortEvent } from '../columns/columns.component'
 import { TableViewComponent } from '../table-view/table-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResultValue } from '../enums/dialog-result-value.enum'
-import { Item, Response, CommanderUpdate, CommanderEvent, ItemType, ColumnsType } from '../model/model'
+import { Item, Response, CommanderUpdate, ItemType, ColumnsType } from '../model/model'
 import { ThemesService } from '../services/themes.service'
 import { ConnectionService } from '../services/connection.service'
 import { ElectronService } from '../services/electron.service'
 
-// TODO: save last path
 // TODO: Refresh
 
 @Component({
@@ -101,9 +100,9 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     undoRestriction = () => {}
 
     ngOnInit() { 
-        //localStorage
-        //this.currentPath = 
-        this.get("root") 
+        const path = localStorage[this.id+"-path"]
+        this.currentPath = path || "root"
+        this.get(this.currentPath) 
     }
     ngAfterViewInit() { 
 
@@ -391,6 +390,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         const subscription = this.response.subscribe(items => {
             this.originalItems = items.items
             this.currentPath = items.path
+            localStorage[this.id+"-path"] = this.currentPath
             subscription.unsubscribe()
             this.refreshItems(items.itemToSelect);
         })

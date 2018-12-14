@@ -12,7 +12,7 @@ let (|DirectoryPath|_|) (path, basePath) =
     match (path, basePath) with
     | (Some "..", Some basePath) when String.length basePath > minPathLength 
         -> Some (combinePath basePath "..")
-    | (Some path, Some "") when path <> ROOT && path <> ".." -> Some path
+    | (Some path, None) when path <> ROOT && path <> ".." -> Some path
     | (Some path, Some basePath) when path <> ROOT && path <> ".." -> Some (combinePath basePath path)
     | _ -> None
 
@@ -46,7 +46,9 @@ let run request =
 
         let withColumns path = 
             match columnsName with
-            | Some columnsName -> if path = ROOT then columnsName <> ROOT else columnsName = ROOT
+            | Some columnsName -> 
+                printfn "Affe %s" columnsName
+                if path = ROOT then columnsName <> ROOT else columnsName = ROOT
             | None -> true
 
         match query.method with
