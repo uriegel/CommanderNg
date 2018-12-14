@@ -62,7 +62,7 @@ export class TableViewComponent implements OnInit {
     //onChange() { this.get("c:\\04 - Brayka Bay") }
 
     get(path: string) {
-        this.reconnectObservables(from(this.connection.get(callerId, path, this.tableView.columnsName)))
+        this.reconnectObservables(from(this.connection.get(callerId, path, this.tableView ? this.tableView.columnsName : undefined)))
     }
 
     onSort(sortEvent: IColumnSortEvent) {
