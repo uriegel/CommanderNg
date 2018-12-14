@@ -20,7 +20,7 @@ export class ConnectionComponent implements OnInit {
     withColumns: any
     async onGet(url: string) {
         try {
-            const response = await this.connection.get(callerId, url, url == "root" ? this.recentColumns != "root" : this.recentColumns == "root")
+            const response = await this.connection.get(callerId, url, this.recentColumns)
             console.log("Response", response)
             if (response.columns) {
                 this.recentColumns = response.columns.name

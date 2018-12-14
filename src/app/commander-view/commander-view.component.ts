@@ -382,7 +382,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     }
 
     private get(path: string, basePath = "") {
-        this.reconnectObservables(from(this.connection.get(this.id, path, this.withColumns(path), basePath)))
+        this.reconnectObservables(from(this.connection.get(this.id, path, this.tableView ? this.tableView.columnsName : null, basePath)))
     }
 
     private reconnectObservables(observable: Observable<Response>) {
@@ -396,12 +396,12 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         })
     }
 
-    private withColumns(path: string) {
-        if (this.tableView && this.tableView.columnsName)
-            return path == "root" ? this.tableView.columnsName != "root" : this.tableView.columnsName == "root"
-        else
-            return true
-    }
+    // private withColumns(path: string) {
+    //     if (this.tableView && this.tableView.columnsName)
+    //         return path == "root" ? this.tableView.columnsName != "root" : this.tableView.columnsName == "root"
+    //     else
+    //         return true
+    // }
 
     private refreshItems(itemToSelect?: string, noSelect = false) {
         const sortItems = (items: Item[]) => {

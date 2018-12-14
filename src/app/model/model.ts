@@ -10,7 +10,7 @@ export enum ItemType {
 export interface Get {
     requestId: number
     callerId: string
-    withColumns: boolean
+    columnsName?: string
     path: string
     basePath?: string
 }

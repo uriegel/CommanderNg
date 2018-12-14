@@ -14,7 +14,7 @@ const callerId = "1"
 export class TestColumnsComponent implements OnInit {
 
     constructor(private connection: ConnectionService) {
-        this.response = from(this.connection.get(callerId, "root", true))
+        this.response = from(this.connection.get(callerId, "root"))
     }
 
     response: Observable<Response>
@@ -31,7 +31,7 @@ export class TestColumnsComponent implements OnInit {
     }
 
     onChange(path: string) {
-        this.response = from(this.connection.get(callerId, path, path == "root" ? this.columns != "root" : this.columns == "root"))
+        this.response = from(this.connection.get(callerId, path, path))
     }
 
     private columns = ""

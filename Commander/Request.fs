@@ -30,7 +30,7 @@ let run request =
 
     let requestId = query.Query "requestId"
     let callerId = query.Query "callerId"
-    let withColumns = query.Query "withColumns" = Some "true"
+    let columnsName = query.Query "columnsName"
     let path = query.Query "path"
     let basePath = query.Query "basePath"
     async {
@@ -44,15 +44,20 @@ let run request =
             | None -> ()
         }
 
+        let withColumns path = 
+            match columnsName with
+            | Some columnsName -> if path = ROOT then columnsName <> ROOT else columnsName = ROOT
+            | None -> true
+
         match query.method with
         | "get" ->
             let response = 
                 match (path, basePath) with
                 | DirectoryPath path ->
                         match (requestId, callerId) with
-                        | (Some requestId, Some callerId) -> Some (getDirectoryItems path (int requestId) callerId withColumns)
+                        | (Some requestId, Some callerId) -> Some (getDirectoryItems path (int requestId) callerId (withColumns path))
                         | _ -> None
-                | Root _ -> Some (getRoot withColumns)
+                | Root _ -> Some (getRoot (withColumns ROOT))
                 | _ -> None
             match response with
             | Some response -> 

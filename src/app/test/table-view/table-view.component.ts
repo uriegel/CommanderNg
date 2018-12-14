@@ -62,18 +62,11 @@ export class TableViewComponent implements OnInit {
     //onChange() { this.get("c:\\04 - Brayka Bay") }
 
     get(path: string) {
-        this.reconnectObservables(from(this.connection.get(callerId, path, this.withColumns(path))))
+        this.reconnectObservables(from(this.connection.get(callerId, path, this.tableView.columnsName)))
     }
 
     onSort(sortEvent: IColumnSortEvent) {
         console.log(`Sorting: ${sortEvent.index} ascending: ${sortEvent.ascending}`)
-    }
-
-    private withColumns(path: string) {
-        if (this.tableView)
-            return path == "root" ? this.tableView.columnsName != "root" : this.tableView.columnsName == "root"
-        else
-            return true
     }
 
     private reconnectObservables(observable: Observable<Response>) {
