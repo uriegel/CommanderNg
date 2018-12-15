@@ -30,7 +30,8 @@ import { SelectAllDirective } from './directives/select-all.directive'
 import { DefaultButtonDirective } from './directives/default-button.directive'
 import { ConnectionComponent } from './test/connection/connection.component'
 import { TableViewTestItemComponent } from './test/table-view-test-item/table-view-test-item.component'
-import { ItemPipe } from './pipes/item.pipe'
+import { ItemPipe } from './pipes/item.pipe';
+import { FullPathPipe } from './pipes/full-path.pipe'
 
 @NgModule({
     declarations: [
@@ -63,6 +64,7 @@ import { ItemPipe } from './pipes/item.pipe'
         ConnectionComponent,
         TableViewTestItemComponent,
         ItemPipe,
+        FullPathPipe,
     ],
     imports: [
         BrowserModule,
