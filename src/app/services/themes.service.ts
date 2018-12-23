@@ -11,7 +11,7 @@ export class ThemesService {
 
     itemHeightChanged: Observable<boolean> = new Subject<boolean>();
 
-    theme = ""
+    theme = "blue"
 
     get itemHeight() { return this._itemHeight }
     set itemHeight(value: number) { 

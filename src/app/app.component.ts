@@ -1,4 +1,5 @@
 import { Component, ElementRef } from '@angular/core'
+import { ThemesService } from './services/themes.service';
 
 @Component({
     selector: 'app-root',
@@ -12,7 +13,7 @@ import { Component, ElementRef } from '@angular/core'
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-    constructor(private appElement: ElementRef) { 
+    constructor(private themes: ThemesService, private appElement: ElementRef) { 
         // electron.themeChanged.subscribe(theme => {
         //     console.log("Theme changed", theme)
         //     themes.theme = theme
