@@ -35,11 +35,20 @@
             "label": "build Angular",
             "type": "shell",
             "group": "build",
-            "command": "ng build",
+            "command": "ng build --output-hashing none",
             "problemMatcher": [
                 "$tsc"
             ]
-        }
+        },
+        {
+            "label": "build Angular Production",
+            "type": "shell",
+            "group": "build",
+            "command": "ng build --prod --output-hashing none",
+            "problemMatcher": [
+                "$tsc"
+            ]
+        },
         {
             "label": "build Electron Release",
             "type": "shell",
