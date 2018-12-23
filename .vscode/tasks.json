@@ -35,7 +35,7 @@
             "label": "build Angular",
             "type": "shell",
             "group": "build",
-            "command": "ng build --output-hashing none",
+            "command": "ng build",
             "problemMatcher": [
                 "$tsc"
             ]
@@ -44,7 +44,7 @@
             "label": "build Angular Production",
             "type": "shell",
             "group": "build",
-            "command": "ng build --prod --output-hashing none",
+            "command": "ng build --prod",
             "problemMatcher": [
                 "$tsc"
             ]
