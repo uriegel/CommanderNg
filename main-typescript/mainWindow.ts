@@ -90,6 +90,7 @@ function initializeMenu(mainWindow: BrowserWindow, theme: string, showHidden: bo
             {
                 label: 'Ordner &anlegen',
                 accelerator: "F7",
+                click: evt =>  mainWindow.webContents.send("onCreateFolder")
             },            
             {
                 label: '&Eigenschaften',

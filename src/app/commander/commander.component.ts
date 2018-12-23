@@ -24,16 +24,11 @@ export class CommanderComponent implements OnInit, AfterViewInit {
     constructor(public connection: ConnectionService, public electron: ElectronService, private zone: NgZone) {}
 
     ngOnInit() {
+        this.electron.onCreateFolder.subscribe(() => {
+            this.focusedView.createFolder(this.dialog)
+        })
         // ipcRenderer.on("viewer", (_: any, on: boolean) => this.zone.run(() => this.isViewVisible = on))
         // ipcRenderer.on("refresh", (_: any) => this.zone.run(() => this.focusedView.refresh()))
-        // ipcRenderer.on("setShowHidden", (_: any, on: boolean) => {
-        //     this.settings.showHidden = on
-        //     this.zone.run(() => {
-        //         this.leftView.refresh()
-        //         this.rightView.refresh()
-        //     })
-        // })
-        // ipcRenderer.on("createFolder", (_: any) => this.zone.run(() => this.focusedView.createFolder(this.dialog)))
         // ipcRenderer.on("delete", (_: any) => this.zone.run(() => this.focusedView.delete(this.dialog)))
     }
 
