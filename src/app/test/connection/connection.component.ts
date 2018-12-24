@@ -10,21 +10,22 @@ const callerId = "1"
 })
 export class ConnectionComponent implements OnInit {
 
-    constructor(public connection: ConnectionService) { }
+    constructor() {
 
-    ngOnInit() {
-        this.connection.serverEvents.subscribe(evt => {
-            console.log("Server event", evt)
-        })
     }
+
+    ngOnInit() { }
+    
     withColumns: any
     async onGet(url: string) {
         try {
-            const response = await this.connection.get(callerId, url, this.recentColumns)
-            console.log("Response", response)
-            if (response.columns) {
-                this.recentColumns = response.columns.name
-            }
+            var result = await CommanderLeft.test("Affe")
+            console.log(result)
+            // const response = await this.connection.get(callerId, url, this.recentColumns)
+            // console.log("Response", response)
+            // if (response.columns) {
+            //     this.recentColumns = response.columns.name
+            // }
 
             //const item = response.items[100]
             //console.log("Name", item.items[0])
@@ -39,3 +40,5 @@ export class ConnectionComponent implements OnInit {
 
     private recentColumns = ""
 }
+
+declare var CommanderLeft
