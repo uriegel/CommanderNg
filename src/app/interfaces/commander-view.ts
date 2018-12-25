@@ -1,3 +1,9 @@
+import { Columns } from "../model/model"
+
+export interface IProcessor {
+    ready(): string
+}
+
 export interface ICommanderView {
-    ready(): any
+    setColumns(columns: Columns): any
 }

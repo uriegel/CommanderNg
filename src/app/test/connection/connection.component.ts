@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
-import { ICommanderView } from 'src/app/interfaces/commander-view';
+import { IProcessor, ICommanderView } from 'src/app/interfaces/commander-view'
+import { Columns } from 'src/app/model/model'
 
 const callerId = "1"
 
@@ -8,15 +9,21 @@ const callerId = "1"
     templateUrl: './connection.component.html',
     styleUrls: ['./connection.component.css']
 })
-export class ConnectionComponent implements OnInit {
-
+export class ConnectionComponent implements OnInit, ICommanderView {
     constructor() {
-        CommanderLeft.ready()
+        const response = CommanderLeft.ready()
+        console.log(response)
+        commanderViewLeft = this
     }
 
     ngOnInit() { }
-    
+
     withColumns: any
+
+    setColumns(columns: Columns) {
+        console.log("New Columns", columns)
+    }
+
     async onGet(url: string) {
         try {
             // if (url == 'root')
@@ -44,5 +51,7 @@ export class ConnectionComponent implements OnInit {
     private recentColumns = ""
 }
 
-declare var CommanderLeft : ICommanderView
-declare var CommanderRight : ICommanderView
+declare var CommanderLeft : IProcessor
+declare var CommanderRight : IProcessor
+
+declare var commanderViewLeft : ICommanderView

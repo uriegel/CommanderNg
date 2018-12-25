@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { IColumnSortEvent } from '../../columns/columns.component'
 import { Response } from 'src/app/model/model';
-import { ConnectionService } from 'src/app/services/connection.service';
-import { Observable, from } from 'rxjs';
+import { ConnectionService } from 'src/app/services/connection.service'
+import { Observable, from } from 'rxjs'
 
 const callerId = "1"
 
