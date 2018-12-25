@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { ICommanderView } from 'src/native'
+import { ICommanderView } from 'src/app/interfaces/commander-view';
 
 const callerId = "1"
 
@@ -11,7 +11,7 @@ const callerId = "1"
 export class ConnectionComponent implements OnInit {
 
     constructor() {
-
+        CommanderLeft.ready()
     }
 
     ngOnInit() { }
@@ -19,11 +19,11 @@ export class ConnectionComponent implements OnInit {
     withColumns: any
     async onGet(url: string) {
         try {
-            if (url == 'root')
-                var result = await CommanderLeft.test("Affe")
-            else
-                var result = await CommanderRight.test("Affe")
-            console.log(result)
+            // if (url == 'root')
+            //     var result = await CommanderLeft.test("Affe")
+            // else
+            //     var result = await CommanderRight.test("Affe")
+            //console.log(result)
             // const response = await this.connection.get(callerId, url, this.recentColumns)
             // console.log("Response", response)
             // if (response.columns) {

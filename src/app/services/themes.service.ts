@@ -1,6 +1,6 @@
-import { Injectable, NgZone, ElementRef } from '@angular/core'
+import { Injectable, NgZone } from '@angular/core'
 import { Observable, Subject } from 'rxjs'
-import { IThemes } from '../interfaces/themes';
+import { IThemes } from '../interfaces/themes'
 
 @Injectable({
     providedIn: 'root'
