@@ -19,7 +19,10 @@ export class ConnectionComponent implements OnInit {
     withColumns: any
     async onGet(url: string) {
         try {
-            var result = await CommanderLeft.test("Affe")
+            if (url == 'root')
+                var result = await CommanderLeft.test("Affe")
+            else
+                var result = await CommanderRight.test("Affe")
             console.log(result)
             // const response = await this.connection.get(callerId, url, this.recentColumns)
             // console.log("Response", response)
@@ -42,3 +45,4 @@ export class ConnectionComponent implements OnInit {
 }
 
 declare var CommanderLeft
+declare var CommanderRight
