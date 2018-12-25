@@ -1,4 +1,4 @@
-import { Component, ElementRef, NgZone } from '@angular/core'
+import { Component, ElementRef } from '@angular/core'
 import { ThemesService } from './services/themes.service';
 
 @Component({
@@ -13,22 +13,7 @@ import { ThemesService } from './services/themes.service';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-    constructor(private zone: NgZone, private themes: ThemesService, private appElement: ElementRef) { 
-        app = this
-    }
-
-    setTheme(theme: string) {
-        this.zone.run(() => {
-            console.log("Theme changed", theme)
-            this.themes.theme = theme
-            setTimeout(() => {
-                const bodyStyles = window.getComputedStyle(this.appElement.nativeElement)
-                this.themes.itemHeight = <any>bodyStyles.getPropertyValue('--itemHeight')
-                this.themes.testItemHeight = <any>bodyStyles.getPropertyValue('--testItemHeight')
-                this.themes.columnHeight = <any>bodyStyles.getPropertyValue('--itemColumnHeight')
-            })        
-        })
+    constructor(private themes: ThemesService, private appElement: ElementRef<HTMLElement>) {
+        themes.initialize(appElement.nativeElement)
     }
 }
-
-declare var app: AppComponent

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { ConnectionService } from '../../services/connection.service'
+import { ICommanderView } from 'src/native'
 
 const callerId = "1"
 
@@ -44,5 +44,5 @@ export class ConnectionComponent implements OnInit {
     private recentColumns = ""
 }
 
-declare var CommanderLeft
-declare var CommanderRight
+declare var CommanderLeft : ICommanderView
+declare var CommanderRight : ICommanderView
