@@ -23,12 +23,8 @@ export class ConnectionComponent implements OnInit, ICommanderView {
         console.log("New Columns", columns)
     }
 
-    async onGet(url: string) {
-        try {
-            // if (url == 'root')
-            //     var result = await CommanderLeft.test("Affe")
-            // else
-            //     var result = await CommanderRight.test("Affe")
+    onGet(url: string) {
+        CommanderLeft.get(url)
             //console.log(result)
             // const response = await this.connection.get(callerId, url, this.recentColumns)
             // console.log("Response", response)
@@ -42,12 +38,7 @@ export class ConnectionComponent implements OnInit, ICommanderView {
             //console.log("Time", jsdate.toLocaleString([], {hour: '2-digit', minute:'2-digit'}))
             //console.log("Datum", jsdate.toLocaleString([], {day: '2-digit', month: '2-digit', year:'numeric'}))
             //console.log("Response", response)
-        } catch (err) {
-            console.log("HTTP request failed", err)
-        }
     }
-
-    private recentColumns = ""
 }
 
 declare var CommanderLeft : IProcessor
