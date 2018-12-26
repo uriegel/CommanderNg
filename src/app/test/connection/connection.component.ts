@@ -11,9 +11,8 @@ const callerId = "1"
 })
 export class ConnectionComponent implements OnInit, ICommanderView {
     constructor() {
-        const response = CommanderLeft.ready()
-        console.log(response)
         commanderViewLeft = this
+        CommanderLeft.ready()
     }
 
     ngOnInit() { }

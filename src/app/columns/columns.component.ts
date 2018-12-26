@@ -16,7 +16,6 @@ export class ColumnsComponent {
 
     @Input() id = ""
     @Output() onSort: EventEmitter<IColumnSortEvent> = new EventEmitter()    
-    @Output() onColumnsChanged: EventEmitter<string> = new EventEmitter()    
     @ViewChild("columnsRow") columnsRow: ElementRef
     @ViewChildren("th") 
     get ths() { return this._ths }
@@ -33,7 +32,6 @@ export class ColumnsComponent {
             this._columns = value
             if (this.columnsName != value.name) {
                 this.columnsName = value.name
-                this.onColumnsChanged.emit(value.name)
             }
         }
     }

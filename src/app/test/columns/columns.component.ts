@@ -1,38 +1,35 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, NgZone } from '@angular/core'
 import { IColumnSortEvent } from '../../columns/columns.component'
-import { Response } from 'src/app/model/model';
-import { ConnectionService } from 'src/app/services/connection.service'
-import { Observable, from } from 'rxjs'
-
-const callerId = "1"
+import { Columns } from 'src/app/model/model'
+import { ICommanderView, IProcessor } from 'src/app/interfaces/commander-view'
 
 @Component({
     selector: 'app-test-columns',
     templateUrl: './columns.component.html',
     styleUrls: ['./columns.component.css']
 })
-export class TestColumnsComponent implements OnInit {
+export class TestColumnsComponent implements ICommanderView {
 
-    constructor(private connection: ConnectionService) {
-        this.response = from(this.connection.get(callerId, "root"))
+    constructor(private zone: NgZone) { 
+        commanderViewLeft = this
+        CommanderLeft.ready()
     }
 
-    response: Observable<Response>
+    columns: Columns
 
-    ngOnInit() { }
-
-    onColumnsChanged(name: string) {
-        console.log("New Columns", name)
-        this.columns = name
+    setColumns(columns: Columns) {
+        console.log("New Columns", columns)
+        this.zone.run(() => this.columns = columns)
     }
-
+    
     onSort(sortEvent: IColumnSortEvent) {
         console.log(`Sorting: ${sortEvent.index} ascending: ${sortEvent.ascending}`)
     }
 
     onChange(path: string) {
-        this.response = from(this.connection.get(callerId, path, path))
+//        this.response = from(this.connection.get(callerId, path, path))
     }
-
-    private columns = ""
 }
+
+declare var CommanderLeft : IProcessor
+declare var commanderViewLeft : ICommanderView
