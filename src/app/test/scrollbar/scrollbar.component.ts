@@ -1,41 +1,39 @@
-import { Component, ViewChild, OnInit } from '@angular/core'
-import { Observable, Subscriber, from } from 'rxjs'
+import { Component, ViewChild, OnInit, NgZone } from '@angular/core'
+import { Subscriber, from } from 'rxjs'
 import { ScrollbarComponent as ScrollBar  } from "../../scrollbar/scrollbar.component"
-import { ConnectionService } from 'src/app/services/connection.service'
-import { Item } from 'src/app/model/model'
-
-const callerId = "1"
+import { Item, Columns } from 'src/app/model/model'
+import { ICommanderView, IProcessor } from 'src/app/interfaces/commander-view'
 
 @Component({
     selector: 'app-test-scrollbar',
     templateUrl: './scrollbar.component.html',
     styleUrls: ['./scrollbar.component.css']
 })
-export class ScrollbarComponent implements OnInit {
+export class ScrollbarComponent implements OnInit, ICommanderView {
 
     @ViewChild(ScrollBar) private scrollBar: ScrollBar
-    oitems: Observable<Item[]>
-    items: Item[]
+    items: Item[] = []
     
     ngOnInit() { 
-        this.oitems = this.get(this.dirs[1]) 
-        this.oitems.subscribe(obs => this.items = obs)
+        commanderViewLeft = this
+        this.get(this.dirs[1]) 
     }
 
-    constructor(private connection: ConnectionService) {}
+    constructor(private zone: NgZone) {}
+
+    setColumns(columns: Columns){}
+    itemsChanged(count: number) {
+        this.zone.run(() => this.items = JSON.parse(CommanderLeft.getItems(0, count -1)))
+    }
 
     onNew() {
         const index = this.seed++ % 3
         const dir = this.dirs[index]
-        this.oitems = this.get(dir)
-        this.oitems.subscribe(o => this.items = o)
+        this.get(dir)
     }
 
-    get(path: string): Observable<Item[]> { 
-        return from(new Promise(async (res, rej) => {
-            let response = await this.connection.get(callerId, path)
-            res(response.items)
-        }))
+    get(path: string) { 
+        CommanderLeft.changePath(path)
     }
 
     onKeyDown(evt: KeyboardEvent) {
@@ -113,3 +111,6 @@ export class ScrollbarComponent implements OnInit {
     //private dirs = [ "/", "/usr/share", "/opt"]
     private displayObserver: Subscriber<Item[]>
 }
+
+declare var CommanderLeft : IProcessor
+declare var commanderViewLeft : ICommanderView

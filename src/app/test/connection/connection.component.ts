@@ -30,19 +30,6 @@ export class ConnectionComponent implements OnInit, ICommanderView {
 
     onGet(url: string) {
         CommanderLeft.changePath(url)
-            //console.log(result)
-            // const response = await this.connection.get(callerId, url, this.recentColumns)
-            // console.log("Response", response)
-            // if (response.columns) {
-            //     this.recentColumns = response.columns.name
-            // }
-
-            //const item = response.items[100]
-            //console.log("Name", item.items[0])
-            //const jsdate = new Date(parseInt(item.items[2]))
-            //console.log("Time", jsdate.toLocaleString([], {hour: '2-digit', minute:'2-digit'}))
-            //console.log("Datum", jsdate.toLocaleString([], {day: '2-digit', month: '2-digit', year:'numeric'}))
-            //console.log("Response", response)
     }
 }
 
