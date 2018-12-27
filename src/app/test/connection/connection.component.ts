@@ -23,8 +23,13 @@ export class ConnectionComponent implements OnInit, ICommanderView {
         console.log("New Columns", columns)
     }
 
+    itemsChanged(count: number) { 
+        console.log("Items changed", count)
+        console.log(CommanderLeft.getItems(0, count - 1))
+    }
+
     onGet(url: string) {
-        CommanderLeft.get(url)
+        CommanderLeft.changePath(url)
             //console.log(result)
             // const response = await this.connection.get(callerId, url, this.recentColumns)
             // console.log("Response", response)
@@ -45,3 +50,4 @@ declare var CommanderLeft : IProcessor
 declare var CommanderRight : IProcessor
 
 declare var commanderViewLeft : ICommanderView
+declare var commanderViewRight : ICommanderView

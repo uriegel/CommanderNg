@@ -34,7 +34,6 @@ export interface Item {
 export interface Response {
     itemToSelect?: string
     path: string
-    columns?: Columns
     items: Item[]
 }
 

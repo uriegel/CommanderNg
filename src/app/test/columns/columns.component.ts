@@ -21,6 +21,8 @@ export class TestColumnsComponent implements ICommanderView {
         console.log("New Columns", columns)
         this.zone.run(() => this.columns = columns)
     }
+
+    itemsChanged(count: number) { console.log("Items changed", count)}
     
     onSort(sortEvent: IColumnSortEvent) {
         console.log(`Sorting: ${sortEvent.index} ascending: ${sortEvent.ascending}`)
