@@ -2,7 +2,7 @@ module Api
 open System
 open System.Runtime.InteropServices
 
-let FileAttributeNormal = 0x80
+let FileAttributeNormal = 0x80        
 
 [<DllImport("user32.dll", SetLastError = true)>]
 extern bool DestroyIcon (IntPtr hIcon)
