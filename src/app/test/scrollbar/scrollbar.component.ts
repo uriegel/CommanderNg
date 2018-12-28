@@ -15,11 +15,12 @@ export class ScrollbarComponent implements OnInit, ICommanderView {
     items: Item[] = []
     
     ngOnInit() { 
-        commanderViewLeft = this
         this.get(this.dirs[1]) 
     }
 
-    constructor(private zone: NgZone) {}
+    constructor(private zone: NgZone) {
+        commanderViewLeft = this
+    }
 
     setColumns(columns: Columns){}
     itemsChanged(count: number) {
