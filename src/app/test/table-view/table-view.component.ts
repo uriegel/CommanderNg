@@ -17,7 +17,7 @@ export class TableViewComponent implements OnInit, ICommanderView {
     }
 
     itemsChanged(count: number) {
-        this.zone.run(() => this.items = JSON.parse(CommanderLeft.getItems(0, count -1)))
+        this.zone.run(() => this.items = JSON.parse(this.commander.getItems(0, count -1)))
     }
 
     itemType = "item"
@@ -33,22 +33,25 @@ export class TableViewComponent implements OnInit, ICommanderView {
     }
 
     ngOnInit() { 
-        this.get("root") 
+        this.commander.ready()
     }
 
-    onNeu() { this.get("c:\\windows\\system32") }
+    onRoot() { this.get("root") }
+    onNew() { this.get("c:\\windows\\system32") }
 
     //onChange() { this.get("c:\\windows") }
     onChange() { this.get("c:\\") }
     //onChange() { this.get("c:\\04 - Brayka Bay") }
 
     get(path: string) {
-        CommanderLeft.changePath(path)
+        this.commander.changePath(path)
     }
 
     onSort(sortEvent: IColumnSortEvent) {
         console.log(`Sorting: ${sortEvent.index} ascending: ${sortEvent.ascending}`)
     }
+
+    private commander = CommanderLeft
 }
 
 declare var CommanderLeft : IProcessor
