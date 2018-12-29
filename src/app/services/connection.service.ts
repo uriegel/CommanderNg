@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Subject, Observable, BehaviorSubject } from 'rxjs'
-import { Response, Get, CommanderUpdate } from '../model/model'
+import { Response } from '../model/model'
 
 function formatParams(params) {
     return "?" + Object
@@ -14,9 +14,9 @@ function formatParams(params) {
     providedIn: 'root'
 })
 export class ConnectionService {
-    get serverEvents(): Observable<CommanderUpdate>  {
-        return this.serverEventsSubject
-    }
+    // get serverEvents(): Observable<CommanderUpdate>  {
+    //     return this.serverEventsSubject
+    // }
 
     get ready(): Observable<boolean>  {
         return this.readySubject
@@ -25,23 +25,23 @@ export class ConnectionService {
     constructor() {
         this.source.onopen = () => this.readySubject.next(true)
 
-        this.source.addEventListener("updates", (evtString: MessageEvent) => {
-            const evt = JSON.parse(evtString.data) as CommanderUpdate
-            this.serverEventsSubject.next(evt)
-        })
+        // this.source.addEventListener("updates", (evtString: MessageEvent) => {
+        //     const evt = JSON.parse(evtString.data) as CommanderUpdate
+        //     this.serverEventsSubject.next(evt)
+        // })
     }
 
-    get(callerId: string, path: string, columnsName?: string, basePath = "") {
-        const requestId = ++seed;
-        const get: Get = {
-            requestId: requestId,
-            callerId: callerId,
-            columnsName: columnsName,
-            path: path,
-            basePath: basePath
-        }
-        return this.post<Response>("get", formatParams(get))
-    }
+    // get(callerId: string, path: string, columnsName?: string, basePath = "") {
+    //     const requestId = ++seed;
+    //     const get: Get = {
+    //         requestId: requestId,
+    //         callerId: callerId,
+    //         columnsName: columnsName,
+    //         path: path,
+    //         basePath: basePath
+    //     }
+    //     return this.post<Response>("get", formatParams(get))
+    // }
 
     // process(commanderView: CommanderView, index: number) {
     //     const process: Process = {
@@ -71,7 +71,6 @@ export class ConnectionService {
     private readonly source = new EventSource("events")
     private readonly baseUrl = "http://localhost:20000"
     private readonly readySubject = new BehaviorSubject<boolean>(false)
-    private readonly serverEventsSubject = new Subject<CommanderUpdate>()
 }
 
 var seed = 0

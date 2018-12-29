@@ -7,19 +7,6 @@ export enum ItemType {
     Drive
 }
 
-export interface Get {
-    requestId: number
-    callerId: string
-    columnsName?: string
-    path: string
-    basePath?: string
-}
-
-export interface Process {
-    commanderView: number   
-    index: number
-}
-
 export interface Item {
     itemType: ItemType
     index: number
@@ -35,27 +22,6 @@ export interface Response {
     itemToSelect?: string
     path: string
     items: Item[]
-}
-
-export interface ShowHidden {
-    value: boolean
-}
-
-export interface CommanderEvent {
-    theme?: string
-    refresh?: boolean
-    showHidden?: ShowHidden
-}
-
-export interface DirectoryItem {
-    name: string
-    dateTime: Date
-}
-
-export interface FileItem {
-    name: string
-    extension: string
-    dateTime: Date
 }
 
 export interface Columns {
@@ -83,7 +49,3 @@ export interface UpdateItem  {
     value: string   
 }
 
-export interface CommanderUpdate {
-    id: string
-    updateItems: UpdateItem[]
-}

@@ -7,7 +7,7 @@ import { TableViewComponent } from '../table-view/table-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResultValue } from '../enums/dialog-result-value.enum'
-import { Item, Response, CommanderUpdate, ItemType, ColumnsType } from '../model/model'
+import { Item, Response, ItemType, ColumnsType } from '../model/model'
 import { ThemesService } from '../services/themes.service'
 import { ConnectionService } from '../services/connection.service'
 import { ElectronService } from '../services/electron.service'
@@ -65,22 +65,22 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     }
     private _items: Item[] = []
     
-    @Input()
-    set viewEvents(evt: CommanderUpdate) {
-        if (evt) {
-            if (evt.id == this.id) {
-                if (evt.updateItems) {
-                    const items = this.tableView.getAllItems()
-                    if (items) 
-                        evt.updateItems.forEach(n => {
-                            const item = items.find(m => m.index == n.index)
-                            item.items[n.columnIndex] = n.value   
-                            item.isExif = n.isExif
-                        })
-                }
-            }
-        }
-    }    
+    // @Input()
+    // set viewEvents(evt: CommanderUpdate) {
+    //     if (evt) {
+    //         if (evt.id == this.id) {
+    //             if (evt.updateItems) {
+    //                 const items = this.tableView.getAllItems()
+    //                 if (items) 
+    //                     evt.updateItems.forEach(n => {
+    //                         const item = items.find(m => m.index == n.index)
+    //                         item.items[n.columnIndex] = n.value   
+    //                         item.isExif = n.isExif
+    //                     })
+    //             }
+    //         }
+    //     }
+    // }    
 
     @Input()
     set showHiddenChanged(value: boolean) { 
@@ -102,7 +102,6 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     ngOnInit() { 
         const path = localStorage[this.id+"-path"]
         this.currentPath = path || "root"
-        this.get(this.currentPath) 
     }
     ngAfterViewInit() { 
 
@@ -234,7 +233,6 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     onFocusIn(evt: Event) { this.gotFocus.emit(this) }
 
     onInputChange() {
-        this.get(this.input.nativeElement.value)
         this.tableView.focus()
     }
 
@@ -339,7 +337,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         const index = this.tableView.getCurrentItemIndex()
         if (this.items[index].itemType == ItemType.Directory || this.items[index].itemType == ItemType.Parent) {
             //const item = this.items.find(m => m.index == index)
-            this.get(this.items[index].items[0], this.currentPath)
+            //this.get(this.items[index].items[0], this.currentPath)
         }
     }
 
@@ -381,9 +379,9 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         return undoRestriction
     }
 
-    private get(path: string, basePath = "") {
-        this.reconnectObservables(from(this.connection.get(this.id, path, this.tableView ? this.tableView.columnsName : null, basePath)))
-    }
+    // private get(path: string, basePath = "") {
+    //     this.reconnectObservables(from(this.connection.get(this.id, path, this.tableView ? this.tableView.columnsName : null, basePath)))
+    // }
 
     private reconnectObservables(observable: Observable<Response>) {
         this.response = observable

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, NgZone } from '@angular/core'
 import { IColumnSortEvent } from '../../columns/columns.component'
-import {  Item, Columns } from '../../model/model'
+import { Item, Columns, Response } from '../../model/model'
 import { ThemesService } from 'src/app/services/themes.service'
 import { TableViewComponent as TableView } from '../../table-view/table-view.component'
 import { IProcessor, ICommanderView } from 'src/app/interfaces/commander-view'
@@ -17,7 +17,10 @@ export class TableViewComponent implements OnInit, ICommanderView {
     }
 
     itemsChanged(count: number) {
-        this.zone.run(() => this.items = JSON.parse(this.commander.getItems()))
+        this.zone.run(() => {
+            const response: Response = JSON.parse(this.commander.getItems())
+            this.items = response.items
+        })
     }
 
     itemType = "item"
@@ -40,7 +43,7 @@ export class TableViewComponent implements OnInit, ICommanderView {
     onNew() { this.get("c:\\windows\\system32") }
 
     //onChange() { this.get("c:\\windows") }
-    onChange() { this.get("c:\\") }
+    onChange() { this.get("c:\\windows\\..") }
     //onChange() { this.get("c:\\04 - Brayka Bay") }
 
     get(path: string) {

@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit, NgZone } from '@angular/core'
-import { Subscriber, from } from 'rxjs'
+import { Subscriber } from 'rxjs'
 import { ScrollbarComponent as ScrollBar  } from "../../scrollbar/scrollbar.component"
-import { Item, Columns } from 'src/app/model/model'
+import { Item, Columns, Response } from 'src/app/model/model'
 import { ICommanderView, IProcessor } from 'src/app/interfaces/commander-view'
 
 @Component({
@@ -24,7 +24,10 @@ export class ScrollbarComponent implements OnInit, ICommanderView {
 
     setColumns(columns: Columns){}
     itemsChanged(count: number) {
-        this.zone.run(() => this.items = JSON.parse(CommanderLeft.getItems()))
+        this.zone.run(() => {
+            const response: Response = JSON.parse(CommanderLeft.getItems())
+            this.items = response.items
+        })
     }
 
     onNew() {

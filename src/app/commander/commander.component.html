@@ -1,8 +1,8 @@
 <app-grid-splitter [isVertical]="true" [isLastVisible]="isViewVisible" (onRatioChanged)="onRatioChanged()">
     <app-grid-splitter class="first">
-        <app-commander-view [id]="'leftView'" [viewEvents]="connection.serverEvents|async" [showHiddenChanged]="electron.showHiddenChanged|async"
+        <app-commander-view [id]="'leftView'" [showHiddenChanged]="electron.showHiddenChanged|async"
             #leftView class="first" (gotFocus)="gotFocus($event)"></app-commander-view>
-        <app-commander-view [id]="'rightView'" [viewEvents]="connection.serverEvents|async" [showHiddenChanged]="electron.showHiddenChanged|async"
+        <app-commander-view [id]="'rightView'" [showHiddenChanged]="electron.showHiddenChanged|async"
             #rightView class="last" (gotFocus)="gotFocus($event)"></app-commander-view>
     </app-grid-splitter>
     <div class="viewer last"></div>
