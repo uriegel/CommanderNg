@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef, Output, EventEmitter, Input } from '@
 import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.component'
 import { ColumnsComponent as IColumnSortEvent } from '../columns/columns.component'
 import { Item, Columns } from '../model/model'
+import { getBodyNode } from '@angular/animations/browser/src/render/shared';
 
 @Component({
     selector: 'app-table-view',
@@ -94,7 +95,7 @@ export class TableViewComponent {
                 this.pageUp()
                 break
             case 34:
-                this.pageDown()
+                this.pageDown(evt.repeat)
                 break
             case 35: // End
                 if (!evt.shiftKey)
@@ -153,10 +154,41 @@ export class TableViewComponent {
         this.setCurrentIndex(nextIndex, index)
     }
 
-    private pageDown() {
-        const index = this.getCurrentIndex(0)
-        const nextIndex = index < this.items.length - this.scrollbar.itemsCapacity + 1 ? index + this.scrollbar.itemsCapacity - 1: this.items.length - 1
-        this.setCurrentIndex(nextIndex, index)
+    private pageDown(repeated: boolean) {
+
+        let processPageDown = () => {
+            const index = this.getCurrentIndex(0)
+            const nextIndex = index < this.items.length - this.scrollbar.itemsCapacity + 1 ? index + this.scrollbar.itemsCapacity - 1: this.items.length - 1
+            this.setCurrentIndex(nextIndex, index)
+        }
+
+        let isLooping = false
+
+        let loopPageDown = () => {
+            processPageDown()
+            if (isLooping)
+                setTimeout(() => loopPageDown())
+        }
+
+        if (!repeated) 
+            processPageDown()
+        else {
+            let onkeyDown = function (evt: KeyboardEvent) {
+                evt.stopPropagation()
+                evt.preventDefault()
+            }
+
+            let onkeyUp = function () {
+                isLooping = false
+                document.removeEventListener("keydown", onkeyDown, true)
+                document.removeEventListener("keyup", onkeyUp, true)
+            }
+
+            document.addEventListener("keydown", onkeyDown, true)
+            document.addEventListener("keyup", onkeyUp, true)
+            isLooping = true
+            setTimeout(() => loopPageDown())
+        }
     }
 
     private pageUp() {
