@@ -1,6 +1,8 @@
 <app-table-view [id]="'left'" class="tableContainer" [columns]="columns" 
     [itemHeight]="themes.itemHeight" [columnHeight]="themes.columnHeight"
     [itemType]="itemType" [items]="items" (onSort)="onSort($event)"></app-table-view>
-<button (click)="onRoot()">Root</button>
-<button (click)="onNew()">New</button>
-<button (click)="onChange()">Change</button>
+<div>
+    <button (click)="onRoot()">Root</button>
+    <button (click)="onNew()">New</button>
+    <button (click)="onChange()">Change</button>
+</div>
