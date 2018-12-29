@@ -17,7 +17,7 @@ export class TableViewComponent implements OnInit, ICommanderView {
     }
 
     itemsChanged(count: number) {
-        this.zone.run(() => this.items = JSON.parse(this.commander.getItems(0, count -1)))
+        this.zone.run(() => this.items = JSON.parse(this.commander.getItems()))
     }
 
     itemType = "item"

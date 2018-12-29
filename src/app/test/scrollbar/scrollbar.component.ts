@@ -24,7 +24,7 @@ export class ScrollbarComponent implements OnInit, ICommanderView {
 
     setColumns(columns: Columns){}
     itemsChanged(count: number) {
-        this.zone.run(() => this.items = JSON.parse(CommanderLeft.getItems(0, count -1)))
+        this.zone.run(() => this.items = JSON.parse(CommanderLeft.getItems()))
     }
 
     onNew() {

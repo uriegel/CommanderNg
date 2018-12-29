@@ -25,7 +25,7 @@ export class ConnectionComponent implements OnInit, ICommanderView {
 
     itemsChanged(count: number) { 
         console.log("Items changed", count)
-        console.log(CommanderLeft.getItems(0, count - 1))
+        console.log(CommanderLeft.getItems())
     }
 
     onGet(url: string) {

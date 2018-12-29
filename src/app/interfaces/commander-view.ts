@@ -3,7 +3,7 @@ import { Columns } from "../model/model"
 export interface IProcessor {
     ready(): string
     changePath(path: string)
-    getItems(start: number, end: number): string
+    getItems(): string
 }
 
 export interface ICommanderView {
