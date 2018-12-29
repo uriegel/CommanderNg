@@ -92,7 +92,7 @@ export class TableViewComponent {
     onKeyDown(evt: KeyboardEvent) {
         switch (evt.which) {
             case 33:
-                this.pageUp()
+                this.pageUp(evt.repeat)
                 break
             case 34:
                 this.pageDown(evt.repeat)
@@ -155,23 +155,37 @@ export class TableViewComponent {
     }
 
     private pageDown(repeated: boolean) {
-
-        let processPageDown = () => {
+        this.repeatKey(repeated, () => {
             const index = this.getCurrentIndex(0)
             const nextIndex = index < this.items.length - this.scrollbar.itemsCapacity + 1 ? index + this.scrollbar.itemsCapacity - 1: this.items.length - 1
             this.setCurrentIndex(nextIndex, index)
-        }
+        })
+    }
 
+    private pageUp(repeated: boolean) {
+        this.repeatKey(repeated, () => {
+            const index = this.getCurrentIndex(0)
+            const nextIndex = index > this.scrollbar.itemsCapacity - 1? index - this.scrollbar.itemsCapacity + 1: 0
+            this.setCurrentIndex(nextIndex, index)
+        })
+    }
+
+    private end() { this.setCurrentIndex(this.items.length - 1) } 
+    
+    private pos1() { this.setCurrentIndex(0) } 
+
+    private repeatKey(repeated: boolean, process: ()=>void) {
         let isLooping = false
 
-        let loopPageDown = () => {
-            processPageDown()
-            if (isLooping)
-                setTimeout(() => loopPageDown())
+        let processLoop = () => {
+            if (isLooping) {
+                process()
+                setTimeout(() => processLoop())
+            }
         }
 
         if (!repeated) 
-            processPageDown()
+            process()
         else {
             let onkeyDown = function (evt: KeyboardEvent) {
                 evt.stopPropagation()
@@ -187,17 +201,7 @@ export class TableViewComponent {
             document.addEventListener("keydown", onkeyDown, true)
             document.addEventListener("keyup", onkeyUp, true)
             isLooping = true
-            setTimeout(() => loopPageDown())
+            setTimeout(() => processLoop())
         }
     }
-
-    private pageUp() {
-        const index = this.getCurrentIndex(0)
-        const nextIndex = index > this.scrollbar.itemsCapacity - 1? index - this.scrollbar.itemsCapacity + 1: 0
-        this.setCurrentIndex(nextIndex, index)
-    }
-
-    private end() { this.setCurrentIndex(this.items.length - 1) } 
-    
-    private pos1() { this.setCurrentIndex(0) } 
 }
