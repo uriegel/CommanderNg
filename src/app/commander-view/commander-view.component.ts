@@ -9,7 +9,7 @@ import { Buttons } from '../enums/buttons.enum'
 import { DialogResultValue } from '../enums/dialog-result-value.enum'
 import { Item, Response, ItemType, ColumnsType, Columns } from '../model/model'
 import { ThemesService } from '../services/themes.service'
-import { ICommanderView, IProcessor } from '../interfaces/commander-view'
+import { ICommanderView, IProcessor, ProcessItemType } from '../interfaces/commander-view'
 
 @Component({
     selector: 'app-commander-view',
@@ -66,8 +66,11 @@ export class CommanderViewComponent implements AfterViewInit, ICommanderView {
         this.zone.run(() => {
             const response: Response = JSON.parse(this.commander.getItems())
             this.items = response.items
+            this.currentPath = response.path
         })
     }
+    
+    currentPath = ""
 
     columns: Columns
     
@@ -203,6 +206,7 @@ export class CommanderViewComponent implements AfterViewInit, ICommanderView {
     onFocusIn(evt: Event) { this.gotFocus.emit(this) }
 
     onInputChange() {
+        this.commander.changePath(this.input.nativeElement.value)
         this.tableView.focus()
     }
 
@@ -226,7 +230,7 @@ export class CommanderViewComponent implements AfterViewInit, ICommanderView {
                 }    
                 break
             case 13: // Return
-                this.processItem()
+                this.processItem(evt.altKey ? ProcessItemType.Properties : (evt.ctrlKey ? ProcessItemType.StartAs : ProcessItemType.Show))
                 console.log("return")
                 break
             case 32: // _                
@@ -287,14 +291,14 @@ export class CommanderViewComponent implements AfterViewInit, ICommanderView {
 
     onDblClick(evt: MouseEvent) { 
         if ((evt.target as HTMLElement).closest("td")) 
-            this.processItem() 
+            this.processItem(evt.altKey ? ProcessItemType.Properties : (evt.ctrlKey ? ProcessItemType.StartAs : ProcessItemType.Show))
     }
 
     onColumnSort(evt: IColumnSortEvent) {
         this.commander.sort(evt.index, evt.ascending)
     }
 
-    private processItem() { this.commander.processItem() }
+    private processItem(processItemType: ProcessItemType) { this.commander.processItem(processItemType) }
 
     private initializeRestrict() {
         const inputChars = this.keyDownEvents.pipe(filter(n => !n.altKey && !n.ctrlKey && !n.shiftKey && n.key.length > 0 && n.key.length < 2))
