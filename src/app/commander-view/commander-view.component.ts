@@ -11,8 +11,6 @@ import { Item, Response, ItemType, ColumnsType, Columns } from '../model/model'
 import { ThemesService } from '../services/themes.service'
 import { ICommanderView, IProcessor } from '../interfaces/commander-view'
 
-// TODO: Refresh
-
 @Component({
     selector: 'app-commander-view',
     templateUrl: './commander-view.component.html',
