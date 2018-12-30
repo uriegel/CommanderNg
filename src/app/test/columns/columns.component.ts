@@ -22,7 +22,7 @@ export class TestColumnsComponent implements ICommanderView {
         this.zone.run(() => this.columns = columns)
     }
 
-    itemsChanged(count: number) { console.log("Items changed", count)}
+    itemsChanged() { console.log("Items changed")}
     
     onSort(sortEvent: IColumnSortEvent) {
         console.log(`Sorting: ${sortEvent.index} ascending: ${sortEvent.ascending}`)

@@ -23,8 +23,7 @@ export class ConnectionComponent implements OnInit, ICommanderView {
         console.log("New Columns", columns)
     }
 
-    itemsChanged(count: number) { 
-        console.log("Items changed", count)
+    itemsChanged() { 
         console.log(CommanderLeft.getItems())
     }
 

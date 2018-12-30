@@ -16,7 +16,7 @@ export class TableViewComponent implements OnInit, ICommanderView {
         this.columns = columns
     }
 
-    itemsChanged(count: number) {
+    itemsChanged() {
         this.zone.run(() => {
             const response: Response = JSON.parse(this.commander.getItems())
             this.items = response.items
@@ -24,9 +24,7 @@ export class TableViewComponent implements OnInit, ICommanderView {
     }
 
     onCurrentIndexChanged(index: number) {
-        console.log("vor index")
         this.commander.setIndex(this.items[index].index)
-        console.log("nach index")
     }
 
     itemType = "item"
@@ -57,7 +55,7 @@ export class TableViewComponent implements OnInit, ICommanderView {
     }
 
     onSort(sortEvent: IColumnSortEvent) {
-        console.log(`Sorting: ${sortEvent.index} ascending: ${sortEvent.ascending}`)
+        this.commander.sort(sortEvent.index, sortEvent.ascending)
     }
 
     private commander = CommanderLeft

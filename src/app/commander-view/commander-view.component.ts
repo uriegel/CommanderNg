@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef, Input, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core'
 import { trigger, state, style, transition, animate } from '@angular/animations'
-import { Observable, from, fromEvent, zip } from 'rxjs'
+import { Observable, fromEvent } from 'rxjs'
 import { filter, map } from 'rxjs/operators'
 import { IColumnSortEvent } from '../columns/columns.component'
 import { TableViewComponent } from '../table-view/table-view.component'
@@ -391,7 +391,7 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
             this.currentPath = items.path
             localStorage[this.id+"-path"] = this.currentPath
             subscription.unsubscribe()
-            this.refreshItems(items.itemToSelect);
+            //this.refreshItems(items.itemToSelect);
         })
     }
 
@@ -435,9 +435,6 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
                         const x = parseInt(a.items[this.columnSort.index])
                         const y = parseInt(b.items[this.columnSort.index])
                         result = x - y
-                        break
-                    case ColumnsType.Version:
-                        result = compareVersion(a.items[this.columnSort.index], b.items[this.columnSort.index])
                         break
                     default:
                         result = a.items[this.columnSort.index].localeCompare(b.items[this.columnSort.index])

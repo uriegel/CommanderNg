@@ -19,7 +19,6 @@ export interface Item {
 }
 
 export interface Response {
-    itemToSelect?: string
     path: string
     items: Item[]
 }
@@ -32,8 +31,7 @@ export interface Columns {
 export enum ColumnsType {
     String,
     Size,
-    Date,
-    Version
+    Date
 }
 
 export interface Column {
@@ -42,10 +40,4 @@ export interface Column {
     columnsType: ColumnsType
 }
 
-export interface UpdateItem  {
-    index: number
-    isExif: boolean
-    columnIndex: number
-    value: string   
-}
 

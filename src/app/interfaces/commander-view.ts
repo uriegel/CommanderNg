@@ -5,9 +5,10 @@ export interface IProcessor {
     changePath(path: string): any
     getItems(): string
     setIndex(index: number): any
+    sort(index: number, ascending: boolean): any
 }
 
 export interface ICommanderView {
     setColumns(columns: Columns): any
-    itemsChanged(count: number): any
+    itemsChanged(): any
 }
