@@ -47,11 +47,9 @@ export class TableViewComponent implements OnInit, ICommanderView {
     }
 
     onRoot() { this.get("root") }
-    onNew() { this.get("c:\\windows\\system32") }
-
-    //onChange() { this.get("c:\\windows") }
-    //onChange() { this.get("c:\\windows\\..") }
-    onChange() { this.get("c:\\04 - Brayka Bay") }
+    onC() { this.get("c:\\windows\\..") }
+    onSystem32() { this.get("c:\\windows\\system32") }
+    onPics() { this.get("c:\\04 - Brayka Bay") }
 
     get(path: string) {
         this.commander.changePath(path)
