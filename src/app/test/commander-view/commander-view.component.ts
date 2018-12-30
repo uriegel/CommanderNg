@@ -1,7 +1,5 @@
 import { Component, AfterViewInit, ViewChild, Input } from '@angular/core'
 import { CommanderViewComponent as Commander } from '../../commander-view/commander-view.component'
-import { ConnectionService } from 'src/app/services/connection.service'
-import { ElectronService } from 'src/app/services/electron.service'
 
 @Component({
     selector: 'test-commander-view',
@@ -14,6 +12,5 @@ export class CommanderViewComponent implements AfterViewInit {
 
     ngAfterViewInit() { this.commander.focus() }
 
-    constructor(public electron: ElectronService,
-        public connection: ConnectionService) {}
+    constructor() {}
 }

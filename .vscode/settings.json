@@ -1,13 +1,4 @@
 {
     "todo-tree.expanded": true,
-    "files.associations": {
-        "xlocale": "cpp",
-        "xstring": "cpp",
-        "xutility": "cpp",
-        "*.rh": "cpp",
-        "vector": "cpp",
-        "string": "cpp"
-    },
-    "FSharp.fsacRuntime": "netcore",
     "editor.smoothScrolling": true
 }

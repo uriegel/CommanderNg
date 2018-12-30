@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, Input, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core'
+import { Component, ViewChild, ElementRef, Input, AfterViewInit, Output, EventEmitter, NgZone } from '@angular/core'
 import { trigger, state, style, transition, animate } from '@angular/animations'
 import { Observable, fromEvent } from 'rxjs'
 import { filter, map } from 'rxjs/operators'
@@ -7,10 +7,9 @@ import { TableViewComponent } from '../table-view/table-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
 import { Buttons } from '../enums/buttons.enum'
 import { DialogResultValue } from '../enums/dialog-result-value.enum'
-import { Item, Response, ItemType, ColumnsType } from '../model/model'
+import { Item, Response, ItemType, ColumnsType, Columns } from '../model/model'
 import { ThemesService } from '../services/themes.service'
-import { ConnectionService } from '../services/connection.service'
-import { ElectronService } from '../services/electron.service'
+import { ICommanderView, IProcessor } from '../interfaces/commander-view'
 
 // TODO: Refresh
 
@@ -47,71 +46,51 @@ import { ElectronService } from '../services/electron.service'
         ])    
     ]
 })
-export class CommanderViewComponent implements OnInit, AfterViewInit {
+export class CommanderViewComponent implements AfterViewInit, ICommanderView {
 
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
     @ViewChild("input") private input: ElementRef
     @Output() private gotFocus: EventEmitter<CommanderViewComponent> = new EventEmitter()    
     @Input() id = ""
 
-    currentPath = ""
+    setColumns(columns: Columns) { 
+        this.columns = columns
+    }
+
+    itemsChanged() {
+        this.zone.run(() => {
+            const response: Response = JSON.parse(this.commander.getItems())
+            this.items = response.items
+        })
+    }
+
+    columns: Columns
     
-    response: Observable<Response>
-    pathObservable: Observable<string>
     get items() { return this._items}
     set items(value: Item[]) { 
         this.undoRestriction()
         this._items = value
     }
     private _items: Item[] = []
-    
-    // @Input()
-    // set viewEvents(evt: CommanderUpdate) {
-    //     if (evt) {
-    //         if (evt.id == this.id) {
-    //             if (evt.updateItems) {
-    //                 const items = this.tableView.getAllItems()
-    //                 if (items) 
-    //                     evt.updateItems.forEach(n => {
-    //                         const item = items.find(m => m.index == n.index)
-    //                         item.items[n.columnIndex] = n.value   
-    //                         item.isExif = n.isExif
-    //                     })
-    //             }
-    //         }
-    //     }
-    // }    
 
-    @Input()
-    set showHiddenChanged(value: boolean) { 
-        const item = this.tableView.getCurrentItem()
-        this.refreshItems() 
-        const previousItem = this.items.find(n => n.index == item.index)
-        if (previousItem) {
-            this.items[0].isCurrent = false
-            previousItem.isCurrent = true
-        }
+    onCurrentIndexChanged(index: number) {
+        this.commander.setIndex(this.items[index].index)
     }
-
-    currentItem: Item
-
+    
     restrictValue = ""
 
     undoRestriction = () => {}
 
     ngOnInit() { 
-        const path = localStorage[this.id+"-path"]
-        this.currentPath = path || "root"
+        this.commander.ready()
     }
+
     ngAfterViewInit() { 
-
-        this.refresh()
-
         this.keyDownEvents = fromEvent(this.tableView.table.nativeElement, "keydown") 
         this.undoRestriction = this.initializeRestrict() 
     }
 
-    constructor(public themes: ThemesService, public connection: ConnectionService, public electron: ElectronService) {}
+    constructor(public themes: ThemesService, private zone: NgZone) { commanderViewLeft = this }
 
     focus() { this.tableView.focus() }
 
@@ -136,54 +115,54 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
     }
 
     createFolder(dialog: DialogComponent) {
-        if (this.currentPath != "root") {
-            dialog.buttons = Buttons.OkCancel
-            dialog.text = "Möchtest Du einen neuen Ordner anlegen?"
-            dialog.withInput = true
-            const item = this.tableView.getCurrentItem()
-            dialog.inputText = item.items[0] != ".." ? item.items[0] : ""
-            const subscription = dialog.show().subscribe(result => {
-                subscription.unsubscribe()
-                if (result.result == DialogResultValue.Ok) {
-                    // const subscription = this.itemProcessor.createFolder(`${this.path}\\${result.text}`)
-                    //     .subscribe(obs => {
-                    //         subscription.unsubscribe()
-                    //         this.refresh()
-                    //         this.focus()
-                    //     }, err => {
-                    //         subscription.unsubscribe()
-                    //         switch (err) {
-                    //             case 183:
-                    //                 dialog.text = "Der Ordner existiert bereits!"
-                    //                 break
-                    //             case 123:
-                    //                 dialog.text = "Die Syntax für den Dateinamen, Verzeichnisnamen oder die Datenträgerbezeichnung ist falsch!"
-                    //                 break
-                    //             case 1223:
-                    //                 this.focus()    
-                    //                 return
-                    //             default:
-                    //                 dialog.text = `Fehler: ${err}`
-                    //                 break
-                    //         }
+        // if (this.currentPath != "root") {
+        //     dialog.buttons = Buttons.OkCancel
+        //     dialog.text = "Möchtest Du einen neuen Ordner anlegen?"
+        //     dialog.withInput = true
+        //     const item = this.tableView.getCurrentItem()
+        //     dialog.inputText = item.items[0] != ".." ? item.items[0] : ""
+        //     const subscription = dialog.show().subscribe(result => {
+        //         subscription.unsubscribe()
+        //         if (result.result == DialogResultValue.Ok) {
+        //             // const subscription = this.itemProcessor.createFolder(`${this.path}\\${result.text}`)
+        //             //     .subscribe(obs => {
+        //             //         subscription.unsubscribe()
+        //             //         this.refresh()
+        //             //         this.focus()
+        //             //     }, err => {
+        //             //         subscription.unsubscribe()
+        //             //         switch (err) {
+        //             //             case 183:
+        //             //                 dialog.text = "Der Ordner existiert bereits!"
+        //             //                 break
+        //             //             case 123:
+        //             //                 dialog.text = "Die Syntax für den Dateinamen, Verzeichnisnamen oder die Datenträgerbezeichnung ist falsch!"
+        //             //                 break
+        //             //             case 1223:
+        //             //                 this.focus()    
+        //             //                 return
+        //             //             default:
+        //             //                 dialog.text = `Fehler: ${err}`
+        //             //                 break
+        //             //         }
                             
-                    //         const subscriptionDialog = dialog.show().subscribe(result => {
-                    //             subscriptionDialog.unsubscribe()
-                    //             this.focus()
-                    //         })
-                    //     })
-                }
-                else
-                    this.focus()
-            })
-        }
-        else {
-            dialog.text = "Du kannst hier keinen Ordner anlegen!"
-            const subscription = dialog.show().subscribe(() => {
-                subscription.unsubscribe()
-                this.focus()
-            })
-        }
+        //             //         const subscriptionDialog = dialog.show().subscribe(result => {
+        //             //             subscriptionDialog.unsubscribe()
+        //             //             this.focus()
+        //             //         })
+        //             //     })
+        //         }
+        //         else
+        //             this.focus()
+        //     })
+        // }
+        // else {
+        //     dialog.text = "Du kannst hier keinen Ordner anlegen!"
+        //     const subscription = dialog.show().subscribe(() => {
+        //         subscription.unsubscribe()
+        //         this.focus()
+        //     })
+        // }
     }
 
     delete(dialog: DialogComponent) {
@@ -324,13 +303,8 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
             this.processItem() 
     }
 
-    onCurrentIndexChanged(index: number) {
-        this.currentItem = this.tableView.getCurrentItem()
-    }
-
     onColumnSort(evt: IColumnSortEvent) {
-        this.columnSort = evt
-        this.refreshItems(undefined, true)
+        this.commander.sort(evt.index, evt.ascending)
     }
 
     private processItem() {
@@ -379,97 +353,10 @@ export class CommanderViewComponent implements OnInit, AfterViewInit {
         return undoRestriction
     }
 
-    // private get(path: string, basePath = "") {
-    //     this.reconnectObservables(from(this.connection.get(this.id, path, this.tableView ? this.tableView.columnsName : null, basePath)))
-    // }
-
-    private reconnectObservables(observable: Observable<Response>) {
-        this.response = observable
-        this.pathObservable = this.response.pipe(map(n => n.path))
-        const subscription = this.response.subscribe(items => {
-            this.originalItems = items.items
-            this.currentPath = items.path
-            localStorage[this.id+"-path"] = this.currentPath
-            subscription.unsubscribe()
-            //this.refreshItems(items.itemToSelect);
-        })
-    }
-
-    // private withColumns(path: string) {
-    //     if (this.tableView && this.tableView.columnsName)
-    //         return path == "root" ? this.tableView.columnsName != "root" : this.tableView.columnsName == "root"
-    //     else
-    //         return true
-    // }
-
-    private refreshItems(itemToSelect?: string, noSelect = false) {
-        const sortItems = (items: Item[]) => {
-            const folders = items.filter(n => n.itemType == ItemType.Parent || n.itemType == ItemType.Directory)
-            const itemsToSort = items.filter(n => n.itemType == ItemType.File || n.itemType == ItemType.Drive)
-
-            const compareVersion = (versionLeft?: string, versionRight?: string) => {
-                if (!versionLeft)
-                    return -1
-                else if (!versionRight)
-                    return 1
-                else {
-                    var leftParts = <number[]><any>versionLeft.split('.')
-                    var rightParts = <number[]><any>versionRight.split('.')
-                    if (leftParts[0] != rightParts[0])
-                        return <number>leftParts[0] - rightParts[0]
-                    else if (leftParts[1] != rightParts[1])
-                        return leftParts[1] - rightParts[1]
-                    else if (leftParts[2] != rightParts[2])
-                        return leftParts[2] - rightParts[2]
-                    else if (leftParts[3] != rightParts[3])
-                        return leftParts[3] - rightParts[3]
-                    else return 0
-                }
-            }
-
-            const sortedItems = itemsToSort.sort((a, b) => {
-
-                let result = 0
-                switch (this.tableView.columns.values[this.columnSort.index].columnsType) {
-                    case ColumnsType.Size:
-                        const x = parseInt(a.items[this.columnSort.index])
-                        const y = parseInt(b.items[this.columnSort.index])
-                        result = x - y
-                        break
-                    default:
-                        result = a.items[this.columnSort.index].localeCompare(b.items[this.columnSort.index])
-                        break
-                }
-                    
-                if (result == 0 && this.columnSort.index > 0)
-                    result = a.items[0].localeCompare(b.items[0])
-                return this.columnSort.ascending ? result : -result
-            })
-
-            return folders.concat(sortedItems)
-        }
-
-        const itemsToSort = this.electron.showHidden ? this.originalItems : this.originalItems.filter(n => !n.isHidden)        
-        if (this.columnSort)
-            this.items = sortItems(itemsToSort)
-        else
-            this.items = itemsToSort
-
-        this.items.forEach(n => n.isCurrent = false)
-        if (!noSelect) {
-            if (this.items.length)
-                this.items[0].isCurrent = true
-            if (itemToSelect) {
-                const previousItem = this.items.find(n => n.items[0] == itemToSelect)
-                if (previousItem) {
-                    this.items[0].isCurrent = false
-                    previousItem.isCurrent = true
-                }
-            }
-        }
-    }
-
-    private originalItems: Item[] = []
-    private columnSort: IColumnSortEvent = null
     private keyDownEvents: Observable<KeyboardEvent>
+    private commander = CommanderLeft
 }
+
+// TODO: from test component
+declare var CommanderLeft : IProcessor
+declare var commanderViewLeft : ICommanderView

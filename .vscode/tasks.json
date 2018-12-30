@@ -4,34 +4,6 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build Commander",
-            "type": "shell",
-            "command": "dotnet build",
-            "group": "build",
-            "presentation": {
-                "reveal": "silent"
-            },
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "build Electron",
-            "type": "typescript",
-            "group": "build",
-            "tsconfig": "main-typescript/tsconfig.json",
-            "problemMatcher": [
-                "$tsc"
-            ]
-        },
-        {
-            "label": "build Electron",
-            "type": "typescript",
-            "group": "build",
-            "tsconfig": "main-typescript\\tsconfig.json",
-            "problemMatcher": [
-                "$tsc"
-            ]
-        },
-        {
             "label": "build Angular",
             "type": "shell",
             "group": "build",
@@ -42,15 +14,6 @@
         },
         {
             "label": "build Angular Production",
-            "type": "shell",
-            "group": "build",
-            "command": "ng build --prod",
-            "problemMatcher": [
-                "$tsc"
-            ]
-        },
-        {
-            "label": "build Electron Release",
             "type": "shell",
             "group": "build",
             "command": "ng build --prod",
