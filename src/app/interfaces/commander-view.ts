@@ -4,6 +4,7 @@ export interface IProcessor {
     ready(): any
     changePath(path: string): any
     getItems(): string
+    processItem(): any
     setIndex(index: number): any
     sort(index: number, ascending: boolean): any
 }

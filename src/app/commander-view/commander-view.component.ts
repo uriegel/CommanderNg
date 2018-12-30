@@ -105,20 +105,6 @@ export class CommanderViewComponent implements AfterViewInit, ICommanderView {
 
     onResize() { this.tableView.onResize() }
 
-    refresh() { 
-        //this.reconnectObservables(from(this.connection.get(this.id)))
-    }
-
-    getSelectedItems() {
-        const items = this.tableView.getAllItems().filter(n => n.isSelected)
-        if (items.length > 0)
-            return items;
-//        if (this.currentItem.itemType != ItemType.Parent)
-//            return [ this.currentItem ]
-  //      else
-    //        return []
-    }
-
     createFolder(dialog: DialogComponent) {
         // if (this.currentPath != "root") {
         //     dialog.buttons = Buttons.OkCancel
@@ -258,10 +244,6 @@ export class CommanderViewComponent implements AfterViewInit, ICommanderView {
                 if (this.toggleSelection(this.tableView.getCurrentItem()))
                     this.tableView.downOne()
                 break;
-            case 82: // r
-                if (evt.ctrlKey) 
-                    this.refresh()
-                break;
             case 107: // NUM +
                 this.selectAllItems(0, false)
                 break
@@ -312,13 +294,7 @@ export class CommanderViewComponent implements AfterViewInit, ICommanderView {
         this.commander.sort(evt.index, evt.ascending)
     }
 
-    private processItem() {
-        const index = this.tableView.getCurrentItemIndex()
-        if (this.items[index].itemType == ItemType.Directory || this.items[index].itemType == ItemType.Parent) {
-            //const item = this.items.find(m => m.index == index)
-            //this.get(this.items[index].items[0], this.currentPath)
-        }
-    }
+    private processItem() { this.commander.processItem() }
 
     private initializeRestrict() {
         const inputChars = this.keyDownEvents.pipe(filter(n => !n.altKey && !n.ctrlKey && !n.shiftKey && n.key.length > 0 && n.key.length < 2))
