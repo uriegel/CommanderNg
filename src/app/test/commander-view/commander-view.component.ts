@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, ViewChild, Input } from '@angular/core'
 import { CommanderViewComponent as Commander } from '../../commander-view/commander-view.component'
+import { IProcessor, ICommanderView } from 'src/app/interfaces/commander-view'
 
 @Component({
     selector: 'test-commander-view',
@@ -7,6 +8,8 @@ import { CommanderViewComponent as Commander } from '../../commander-view/comman
     styleUrls: ['./commander-view.component.css']
 })
 export class CommanderViewComponent implements AfterViewInit {
+
+    commanderView = CommanderLeft
     
     @ViewChild(Commander) private commander: Commander
 
@@ -14,3 +17,5 @@ export class CommanderViewComponent implements AfterViewInit {
 
     constructor() {}
 }
+
+declare var CommanderLeft : IProcessor

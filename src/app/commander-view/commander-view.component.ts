@@ -51,7 +51,14 @@ export class CommanderViewComponent implements AfterViewInit, ICommanderView {
     @ViewChild(TableViewComponent) private tableView: TableViewComponent
     @ViewChild("input") private input: ElementRef
     @Output() private gotFocus: EventEmitter<CommanderViewComponent> = new EventEmitter()    
-    @Input() id = ""
+    @Input() commander: IProcessor
+    @Input() 
+    set id(value: string) {
+        if (value == 'left') 
+            commanderViewLeft = this
+        else if (value == 'right') 
+            commanderViewRight = this
+    }
 
     setColumns(columns: Columns) { 
         this.columns = columns
@@ -90,7 +97,7 @@ export class CommanderViewComponent implements AfterViewInit, ICommanderView {
         this.undoRestriction = this.initializeRestrict() 
     }
 
-    constructor(public themes: ThemesService, private zone: NgZone) { commanderViewLeft = this }
+    constructor(public themes: ThemesService, private zone: NgZone) {}
 
     focus() { this.tableView.focus() }
 
@@ -354,9 +361,7 @@ export class CommanderViewComponent implements AfterViewInit, ICommanderView {
     }
 
     private keyDownEvents: Observable<KeyboardEvent>
-    private commander = CommanderLeft
 }
 
-// TODO: from test component
-declare var CommanderLeft : IProcessor
 declare var commanderViewLeft : ICommanderView
+declare var commanderViewRight : ICommanderView
