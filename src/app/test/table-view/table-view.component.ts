@@ -23,6 +23,12 @@ export class TableViewComponent implements OnInit, ICommanderView {
         })
     }
 
+    onCurrentIndexChanged(index: number) {
+        console.log("vor index")
+        this.commander.setIndex(this.items[index].index)
+        console.log("nach index")
+    }
+
     itemType = "item"
     //itemType = "testItem"
 
@@ -37,17 +43,19 @@ export class TableViewComponent implements OnInit, ICommanderView {
 
     ngOnInit() { 
         this.commander.ready()
+        this.tableView.focus()
     }
 
     onRoot() { this.get("root") }
     onNew() { this.get("c:\\windows\\system32") }
 
     //onChange() { this.get("c:\\windows") }
-    onChange() { this.get("c:\\windows\\..") }
-    //onChange() { this.get("c:\\04 - Brayka Bay") }
+    //onChange() { this.get("c:\\windows\\..") }
+    onChange() { this.get("c:\\04 - Brayka Bay") }
 
     get(path: string) {
         this.commander.changePath(path)
+        this.tableView.focus()
     }
 
     onSort(sortEvent: IColumnSortEvent) {

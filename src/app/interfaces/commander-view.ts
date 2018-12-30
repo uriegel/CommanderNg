@@ -1,9 +1,10 @@
 import { Columns } from "../model/model"
 
 export interface IProcessor {
-    ready(): string
-    changePath(path: string)
+    ready(): any
+    changePath(path: string): any
     getItems(): string
+    setIndex(index: number): any
 }
 
 export interface ICommanderView {

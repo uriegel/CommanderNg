@@ -16,7 +16,7 @@ export class TableViewComponent {
     @Input() itemHeight = 0
     @Input() itemType: string
     @Output() private onSort: EventEmitter<IColumnSortEvent> = new EventEmitter()    
-    @Output() private onCurrentIndexChanged: EventEmitter<Number> = new EventEmitter()    
+    @Output() onCurrentIndexChanged: EventEmitter<Number> = new EventEmitter()    
     @ViewChild("table") table: ElementRef
     @ViewChild(Scrollbar) private scrollbar: Scrollbar
     @ViewChild("tbody")
