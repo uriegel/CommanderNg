@@ -1,8 +1,9 @@
 <app-grid-splitter [isVertical]="true" [isLastVisible]="isViewVisible" (onRatioChanged)="onRatioChanged()">
     <app-grid-splitter class="first">
-        <app-commander-view [id]="'leftView'" #leftView class="first" (gotFocus)="gotFocus($event)"></app-commander-view>
-        <app-commander-view [id]="'rightView'" #rightView class="last" (gotFocus)="gotFocus($event)"></app-commander-view>
+        <app-commander-view [id]="'left'" [commander]="commanderViewLeft" #leftView class="first" (gotFocus)="gotFocus($event)"></app-commander-view>
+        <app-commander-view [id]="'right'" [commander]="commanderViewRight" #rightView class="last" (gotFocus)="gotFocus($event)"></app-commander-view>
     </app-grid-splitter>
     <div class="viewer last"></div>
 </app-grid-splitter>
-<div class="status">{{focusedView?.currentItem | fullPath : focusedView?.currentPath}}</div>
+<!-- <div class="status">{{focusedView?.currentItem | fullPath : focusedView?.currentPath}}</div> -->
+<div class="status"></div>
