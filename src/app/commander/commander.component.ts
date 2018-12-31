@@ -1,14 +1,15 @@
 import { Component, ViewChild, OnInit, NgZone, HostListener, AfterViewInit, Input } from '@angular/core'
 import { CommanderViewComponent } from '../commander-view/commander-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
-import { IProcessor } from '../interfaces/commander-view';
+import { IProcessor } from '../interfaces/commander-view'
+import { ICommander } from '../interfaces/commander'
 
 @Component({
     selector: 'app-commander',
     templateUrl: './commander.component.html',
     styleUrls: ['./commander.component.css']
 })
-export class CommanderComponent implements OnInit, AfterViewInit {
+export class CommanderComponent implements OnInit, AfterViewInit, ICommander {
 
     @ViewChild("leftView") leftView: CommanderViewComponent
     @ViewChild("rightView") rightView: CommanderViewComponent
@@ -23,7 +24,11 @@ export class CommanderComponent implements OnInit, AfterViewInit {
     commanderViewLeft = CommanderLeft
     commanderViewRight = CommanderRight
 
-    constructor(private zone: NgZone) {}
+    setViewer(on: boolean) {
+        this.zone.run(() => this.isViewVisible = on)
+    }
+
+    constructor(private zone: NgZone) { commander = this }
 
     ngOnInit() { }
 
@@ -58,3 +63,4 @@ export class CommanderComponent implements OnInit, AfterViewInit {
 
 declare var CommanderLeft : IProcessor
 declare var CommanderRight : IProcessor
+declare var commander : ICommander
