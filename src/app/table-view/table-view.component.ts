@@ -3,6 +3,7 @@ import { ScrollbarComponent as Scrollbar } from '../scrollbar/scrollbar.componen
 import { ColumnsComponent as IColumnSortEvent } from '../columns/columns.component'
 import { Item, Columns } from '../model/model'
 import { getBodyNode } from '@angular/animations/browser/src/render/shared';
+import { repeatKey } from '../functional/scrolling';
 
 @Component({
     selector: 'app-table-view',
@@ -81,12 +82,6 @@ export class TableViewComponent {
 
     getAllItems() { return this.items }
 
-    downOne() {
-        const index = this.getCurrentIndex(0)
-        const nextIndex = index < this.items.length - 1 ? index + 1 : index
-        this.setCurrentIndex(nextIndex, index)
-    }
-
     onResize() { this.scrollbar.onResize() }
 
     onKeyDown(evt: KeyboardEvent) {
@@ -106,10 +101,10 @@ export class TableViewComponent {
                     this.pos1()
                 break
             case 38:
-                this.upOne()
+                this.upOne(evt.repeat)
                 break
             case 40:
-                this.downOne()
+                this.downOne(evt.repeat)
                 break
             default:
                 return // exit this handler for other keys
@@ -131,6 +126,14 @@ export class TableViewComponent {
         this.onSort.emit(sortEvent)
     }
 
+    downOne(repeated = false) {
+        repeatKey(repeated, () => {
+            const index = this.getCurrentIndex(0)
+            const nextIndex = index < this.items.length - 1 ? index + 1 : index
+            this.setCurrentIndex(nextIndex, index)
+        })
+    }
+
     private getCurrentIndex(defaultValue?: number) { 
         const index = this.items.findIndex(n => n.isCurrent) 
         if (index != -1 || defaultValue == null)
@@ -148,14 +151,16 @@ export class TableViewComponent {
         this.onCurrentIndexChanged.emit(index)
     }
 
-    private upOne() {
-        const index = this.getCurrentIndex(0)
-        const nextIndex = index > 0 ? index - 1 : index
-        this.setCurrentIndex(nextIndex, index)
+    private upOne(repeated: boolean) {
+        repeatKey(repeated, () => {
+            const index = this.getCurrentIndex(0)
+            const nextIndex = index > 0 ? index - 1 : index
+            this.setCurrentIndex(nextIndex, index)
+        })
     }
 
     private pageDown(repeated: boolean) {
-        this.repeatKey(repeated, () => {
+        repeatKey(repeated, () => {
             const index = this.getCurrentIndex(0)
             const nextIndex = index < this.items.length - this.scrollbar.itemsCapacity + 1 ? index + this.scrollbar.itemsCapacity - 1: this.items.length - 1
             this.setCurrentIndex(nextIndex, index)
@@ -163,7 +168,7 @@ export class TableViewComponent {
     }
 
     private pageUp(repeated: boolean) {
-        this.repeatKey(repeated, () => {
+        repeatKey(repeated, () => {
             const index = this.getCurrentIndex(0)
             const nextIndex = index > this.scrollbar.itemsCapacity - 1? index - this.scrollbar.itemsCapacity + 1: 0
             this.setCurrentIndex(nextIndex, index)
@@ -174,34 +179,34 @@ export class TableViewComponent {
     
     private pos1() { this.setCurrentIndex(0) } 
 
-    private repeatKey(repeated: boolean, process: ()=>void) {
-        let isLooping = false
+    // private repeatKey(repeated: boolean, process: () => void) {
+    //     let isLooping = false
 
-        let processLoop = () => {
-            if (isLooping) {
-                process()
-                setTimeout(() => processLoop())
-            }
-        }
+    //     let processLoop = () => {
+    //         if (isLooping) {
+    //             process()
+    //             setTimeout(() => processLoop())
+    //         }
+    //     }
 
-        if (!repeated) 
-            process()
-        else {
-            let onkeyDown = function (evt: KeyboardEvent) {
-                evt.stopPropagation()
-                evt.preventDefault()
-            }
+    //     if (!repeated) 
+    //         process()
+    //     else {
+    //         let onkeyDown = function (evt: KeyboardEvent) {
+    //             evt.stopPropagation()
+    //             evt.preventDefault()
+    //         }
 
-            let onkeyUp = function () {
-                isLooping = false
-                document.removeEventListener("keydown", onkeyDown, true)
-                document.removeEventListener("keyup", onkeyUp, true)
-            }
+    //         let onkeyUp = function () {
+    //             isLooping = false
+    //             document.removeEventListener("keydown", onkeyDown, true)
+    //             document.removeEventListener("keyup", onkeyUp, true)
+    //         }
 
-            document.addEventListener("keydown", onkeyDown, true)
-            document.addEventListener("keyup", onkeyUp, true)
-            isLooping = true
-            setTimeout(() => processLoop())
-        }
-    }
+    //         document.addEventListener("keydown", onkeyDown, true)
+    //         document.addEventListener("keyup", onkeyUp, true)
+    //         isLooping = true
+    //         setTimeout(() => processLoop())
+    //     }
+    // }
 }

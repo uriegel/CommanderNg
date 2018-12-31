@@ -10,6 +10,7 @@ import { DialogResultValue } from '../enums/dialog-result-value.enum'
 import { Item, Response, ItemType, ColumnsType, Columns } from '../model/model'
 import { ThemesService } from '../services/themes.service'
 import { ICommanderView, IProcessor, ProcessItemType } from '../interfaces/commander-view'
+import { repeatKey } from '../functional/scrolling';
 
 @Component({
     selector: 'app-commander-view',
@@ -250,8 +251,10 @@ export class CommanderViewComponent implements AfterViewInit, ICommanderView {
                     this.selectAllItems(this.tableView.getCurrentItemIndex(), true)
                 break                
             case 45: // Einfg
-                if (this.toggleSelection(this.tableView.getCurrentItem()))
-                    this.tableView.downOne()
+                repeatKey(evt.repeat, () => {
+                    if (this.toggleSelection(this.tableView.getCurrentItem()))
+                        this.tableView.downOne()
+                })
                 break;
             case 107: // NUM +
                 this.selectAllItems(0, false)

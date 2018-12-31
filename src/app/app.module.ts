@@ -29,7 +29,9 @@ import { DialogComponent } from './dialog/dialog.component'
 import { SelectAllDirective } from './directives/select-all.directive'
 import { DefaultButtonDirective } from './directives/default-button.directive'
 import { ConnectionComponent } from './test/connection/connection.component'
-import { TableViewTestItemComponent } from './test/table-view-test-item/table-view-test-item.component'
+import { TableViewTestItemComponent } from './test/table-view-test-item/table-view-test-item.component';
+import { ImageViewerComponent } from './viewers/image-viewer/image-viewer.component';
+import { ViewerComponent } from './viewers/viewer/viewer.component'
 
 @NgModule({
     declarations: [
@@ -61,6 +63,8 @@ import { TableViewTestItemComponent } from './test/table-view-test-item/table-vi
         DefaultButtonDirective,
         ConnectionComponent,
         TableViewTestItemComponent,
+        ImageViewerComponent,
+        ViewerComponent,
     ],
     imports: [
         BrowserModule,
