@@ -23,12 +23,15 @@ export class ScrollbarComponent implements OnInit, ICommanderView {
     }
 
     setColumns(columns: Columns){}
+
     itemsChanged() {
         this.zone.run(() => {
             const response: Response = JSON.parse(CommanderLeft.getItems())
             this.items = response.items
         })
     }
+
+    setCurrentItem(item: string) { }
 
     onNew() {
         const index = this.seed++ % 3

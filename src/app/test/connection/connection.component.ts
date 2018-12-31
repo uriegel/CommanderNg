@@ -27,6 +27,10 @@ export class ConnectionComponent implements OnInit, ICommanderView {
         console.log(CommanderLeft.getItems())
     }
 
+    setCurrentItem(item: string) { 
+        console.log("current item", item)
+    }
+
     onGet(url: string) {
         CommanderLeft.changePath(url)
     }

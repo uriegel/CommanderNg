@@ -69,8 +69,13 @@ export class CommanderViewComponent implements AfterViewInit, ICommanderView {
             this.currentPath = response.path
         })
     }
+
+    setCurrentItem(item: string) { 
+        this.zone.run(() => this.currentItem = item)
+    }
     
     currentPath = ""
+    currentItem = ""
 
     columns: Columns
     

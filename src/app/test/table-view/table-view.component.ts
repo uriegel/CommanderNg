@@ -23,6 +23,8 @@ export class TableViewComponent implements OnInit, ICommanderView {
         })
     }
 
+    setCurrentItem(item: string) { }
+    
     onCurrentIndexChanged(index: number) {
         this.commander.setIndex(this.items[index].index)
     }

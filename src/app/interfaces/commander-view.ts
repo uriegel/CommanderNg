@@ -19,4 +19,5 @@ export interface IProcessor {
 export interface ICommanderView {
     setColumns(columns: Columns): any
     itemsChanged(): any
+    setCurrentItem(item: string): any
 }

@@ -24,6 +24,8 @@ export class TestColumnsComponent implements ICommanderView {
 
     itemsChanged() { console.log("Items changed")}
     
+    setCurrentItem(item: string) { }
+    
     onSort(sortEvent: IColumnSortEvent) {
         console.log(`Sorting: ${sortEvent.index} ascending: ${sortEvent.ascending}`)
     }
