@@ -8,6 +8,9 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ImageViewerComponent implements OnInit {
     constructor() { }
 
+    @Input()
+    image: string
+
     ngOnInit() {}
 
 }

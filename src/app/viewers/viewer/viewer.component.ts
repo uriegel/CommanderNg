@@ -9,10 +9,14 @@ export class ViewerComponent implements OnInit {
 
     isImage = false
 
+    file = ""
+
     @Input()
     set item(item: string) {
-        if (item)
+        if (item) {
             this.isImage = item.toLowerCase().endsWith(".jpg") || item.toLowerCase().endsWith(".png") || item.toLowerCase().endsWith(".jpeg")
+            this.file = "file?path=" + item
+        }
     }
     
     constructor() { }
