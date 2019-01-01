@@ -1,10 +1,16 @@
-export let repeatKey = (repeated: boolean, process: () => void) => {
+export const repeatKey = (repeated: boolean, process: () => void) => {
     let isLooping = false
+    let lastTime: Date
+    const scrollDelay = 5
 
     let processLoop = () => {
+        lastTime = new Date()
         if (isLooping) {
             process()
-            setTimeout(() => processLoop())
+            var timeNow = new Date()
+            var diffTime = timeNow.getMilliseconds() - lastTime.getMilliseconds()
+            var delay = diffTime < scrollDelay ? scrollDelay - diffTime : scrollDelay
+            setTimeout(() => processLoop(), delay)
         }
     }
 
