@@ -31,7 +31,9 @@ import { DefaultButtonDirective } from './directives/default-button.directive'
 import { ConnectionComponent } from './test/connection/connection.component'
 import { TableViewTestItemComponent } from './test/table-view-test-item/table-view-test-item.component';
 import { ImageViewerComponent } from './viewers/image-viewer/image-viewer.component';
-import { ViewerComponent } from './viewers/viewer/viewer.component'
+import { ViewerComponent } from './viewers/viewer/viewer.component';
+import { FrameViewerComponent } from './viewers/frame-viewer/frame-viewer.component';
+import { SanitizePipe } from './pipes/sanitize.pipe'
 
 @NgModule({
     declarations: [
@@ -65,6 +67,8 @@ import { ViewerComponent } from './viewers/viewer/viewer.component'
         TableViewTestItemComponent,
         ImageViewerComponent,
         ViewerComponent,
+        FrameViewerComponent,
+        SanitizePipe,
     ],
     imports: [
         BrowserModule,

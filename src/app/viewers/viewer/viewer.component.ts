@@ -9,7 +9,7 @@ import { IProgram } from 'src/app/interfaces/commander'
 export class ViewerComponent implements OnInit {
 
     isImage = false
-    isMedia = false
+    isFrame = false
 
     file = ""
 
@@ -17,9 +17,8 @@ export class ViewerComponent implements OnInit {
     set item(item: string) {
         if (item) {
             this.isImage = item.toLowerCase().endsWith(".jpg") || item.toLowerCase().endsWith(".png") || item.toLowerCase().endsWith(".jpeg")
-            this.isMedia = item.toLowerCase().endsWith(".mpg") || item.toLowerCase().endsWith(".mp4") || item.toLowerCase().endsWith(".ogv")
-            //this.file = "file?path=" + item
-            this.file = item
+            this.isFrame = item.toLowerCase().endsWith(".pdf") 
+            this.file = "file?path=" + item
         }
     }
 
