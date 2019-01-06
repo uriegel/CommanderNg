@@ -13,4 +13,4 @@ export class FrameViewerComponent implements OnInit {
     constructor() { }
 
     ngOnInit() { }
-    }
+}
