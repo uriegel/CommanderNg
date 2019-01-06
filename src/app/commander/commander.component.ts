@@ -1,8 +1,9 @@
-import { Component, ViewChild, OnInit, NgZone, HostListener, AfterViewInit, Input } from '@angular/core'
+import { Component, ViewChild, OnInit, NgZone, HostListener, AfterViewInit, Input, ElementRef } from '@angular/core'
 import { CommanderViewComponent } from '../commander-view/commander-view.component'
 import { DialogComponent } from '../dialog/dialog.component'
 import { IProcessor } from '../interfaces/commander-view'
 import { ICommander } from '../interfaces/commander'
+import { ViewerComponent } from '../viewers/viewer/viewer.component';
 
 @Component({
     selector: 'app-commander',
@@ -13,9 +14,13 @@ export class CommanderComponent implements OnInit, AfterViewInit, ICommander {
 
     @ViewChild("leftView") leftView: CommanderViewComponent
     @ViewChild("rightView") rightView: CommanderViewComponent
+    @ViewChild("viewer") viewer: ViewerComponent
+    @ViewChild("status") status: ElementRef
 
     @Input() 
     dialog: DialogComponent
+
+    viewerRatio = 0
 
     focusedView: CommanderViewComponent
 
@@ -28,11 +33,18 @@ export class CommanderComponent implements OnInit, AfterViewInit, ICommander {
         this.zone.run(() => this.isViewVisible = on)
     }
 
+    onResize() {
+        this.viewerRatio = (this.viewer.appElement.nativeElement as HTMLElement).clientHeight / document.body.clientHeight
+    }
+
     constructor(private zone: NgZone) { commander = this }
 
     ngOnInit() { }
 
-    ngAfterViewInit() { setTimeout(() => this.leftView.focus()) }
+    ngAfterViewInit() { 
+        setTimeout(() => this.leftView.focus()) 
+        this.viewer.statusRatio = (this.status.nativeElement as HTMLElement).clientHeight / document.body.clientHeight
+    }
 
     @HostListener('keydown', ['$event']) 
     private onKeydown(evt: KeyboardEvent) {
@@ -58,6 +70,7 @@ export class CommanderComponent implements OnInit, AfterViewInit, ICommander {
     onRatioChanged() {
         this.leftView.onResize()
         this.rightView.onResize()
+        this.viewerRatio = (this.viewer.appElement.nativeElement as HTMLElement).clientHeight / document.body.clientHeight
     }
 }
 
